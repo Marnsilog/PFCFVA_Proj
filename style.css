@@ -50,11 +50,11 @@ body{
 .nav-logo{
     display: flex;
     position: absolute;
-    left: .6cm;
-    top: .2cm;
+    left: 2%;
+    top: 15%;
 }
 .nav-logo img{
-    
+    filter: drop-shadow(10px 7px 10px rgba(255, 166, 0, 0.496));
     justify-content: flex-end; 
     width: 100px;
     height: 100px;
@@ -93,10 +93,23 @@ width:  240px;
 height: 60px;
 font-weight: 1000;
 font-size: 30px;
-background: rgba(255, 255, 255, 0.661);
+background: rgb(255, 255, 255);
 border: none;
 border-radius: 30px;
 cursor: pointer;
 transition: .3s ease;
 }
 
+.btn.white-btn{
+    background: rgba(239, 239, 239, 0.992);
+
+}
+.btn:hover{
+    background: rgba(255, 255, 255, 0.394);
+}
+.btn.white-btn:hover{
+    background: rgba(255, 255, 255, 0.5);
+}
+.nav-menu-btn{
+    display: none;
+}

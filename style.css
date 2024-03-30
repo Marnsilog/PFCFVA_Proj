@@ -223,9 +223,3 @@ form p{
     color: #000000;
 }
 
-.blur-background {
-    filter: blur(5px); /* Adjust the blur intensity as needed */
-    transition: filter 0.5s ease; /* Add a transition effect for smoothness */
-}
-
-

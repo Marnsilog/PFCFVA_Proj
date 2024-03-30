@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCVA || Dashboard</title>
+    <style>
+        /* Add any additional CSS styles here */
+        .container {
+            display: none; /* Initially hide the form container */
+        }
+    </style>
 </head>
 <body>
 
@@ -17,14 +23,14 @@
             <img src="img/pfcfvalogo.png" class="PFCVA">
         </div>
         <div class="nav-menu">
-        <ul>
-        <li><a href="#" class="link active">HOME</a></li>
-        <li><a href="#" class="link">ABOUT US</a></li>
-        <li><a href="#" class="link">VOLUNTEER</a></li>
-        <li><a href="#" class="link">DONATE</a></li>
-        <li><a href="#" class="link">LEADERBOARDS</a></li>
-        <li><a href="#" class="link">CONTACT US</a></li>
-        </ul>
+            <ul>
+                <li><a href="#" class="link active">HOME</a></li>
+                <li><a href="#" class="link">ABOUT US</a></li>
+                <li><a href="#" class="link">VOLUNTEER</a></li>
+                <li><a href="#" class="link">DONATE</a></li>
+                <li><a href="#" class="link">LEADERBOARDS</a></li>
+                <li><a href="#" class="link">CONTACT US</a></li>
+            </ul>
         </div>
         <div class="nav-button">
             <button class="btn white-btn" id="loginBtn">LOG IN</button>
@@ -37,7 +43,6 @@
             <h1 id="title">Login</h1>
             <form>
                 <div class="input-group">
-                    
                     <div class="input-feild">
                         <i class="fa-solid fa-user"></i>
                         <input type="email" placeholder="username">
@@ -46,13 +51,17 @@
                         <i class="fa-solid fa-lock"></i>
                         <input type="password" placeholder="Password">
                     </div>
-                       <a href="#" >Forgot Password</a>
+                    <div class="forgot-password">
+                        <a href="#">Forgot Password?</a>
+                    </div>
                 </div>
                 <div class="btn-feild">
                     <button type="button" id="btnLogIn" class="disable">Log In</button>
                 </div>
             </form>
         </div>
+    </div>
 </div>
+<script src="script.js" defer></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Graduate&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=Graduate&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 * {
    margin: 0;
    padding: 0;
@@ -13,6 +13,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+
 }
 .wrapper{
     display:flex;
@@ -113,3 +114,103 @@ transition: .3s ease;
 .nav-menu-btn{
     display: none;
 }
+.container{ 
+    width: 50%;
+    height: 70vh;
+    position: absolute;
+}
+
+.form-box {
+    color: #fff;
+    width: 100%;
+    max-width: 370px;
+    max-height: 370px;
+    position: absolute;
+    top: 50%;
+    left: 95%;
+    transform: translate(-50%,-50%);
+    background: #eaeaea;
+    padding: 40px 30px 70px;
+    text-align: center;
+    border: none;
+    border-radius: 30px;
+   
+}
+
+.form-box h1 {
+    font-family: "Istok Web", sans-serif;
+    font-size: 30px;
+    margin-bottom: 60px;
+    color: #000000;
+    position: relative;
+}
+
+.input-feild{
+
+    background: #fff;
+    margin: 30px 0;
+    border-radius: 3px;
+    display: flex;
+   align-items: center;
+    max-height: 40px;
+    transition: max-height 0.6s;
+    overflow: hidden;
+    border: 0;
+}
+
+input{
+    font-family: "Istok Web", sans-serif;
+    font-weight: 100;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-radius: 70%;
+    outline: 0;
+    padding: 18px 15px;
+}
+
+.input-feild i{
+    
+    margin-left: 15px;
+    color: #999;
+}
+
+form p{
+    
+    text-align: left;
+    font-size: 13px;
+}
+
+.btn-feild{
+    position: absolute;
+    top: 80%;
+    left: 10%;
+    align-items: center;
+    width: 620px;
+    display: flex;
+    justify-content: space-between;
+
+}
+.btn-feild button{
+    flex-basis: 48%;
+    background: #930000;
+    color: #fff;
+    height:  40px;
+    border-radius: 10px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 1s;
+
+}
+.btn-feild:hover{
+    background: rgb(52, 52, 52)aea;
+}
+.input-group{
+    height: 280px;
+    
+}
+
+
+
+

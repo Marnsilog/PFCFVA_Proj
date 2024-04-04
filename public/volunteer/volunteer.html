@@ -29,7 +29,7 @@
                 </nav>
         </div>
 
-    
+        <div>
             <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80">
                 <div class="flex flex-col justify-center h-full">
                     <div class="bg-black w-96 h-full rounded-tl-xl rounded-bl-xl">
@@ -80,8 +80,8 @@
                 </div>
 
                 <div class="container bg-white h-72 w-[49rem] absolute top-[21rem] border-2 border-black">
-                    <div class="container text-black ">
-                        <div class="overflow-x-auto">
+                    <div class="container text-black">
+                        <div class="overflow-x-auto overflow-y-auto"> <!-- Added overflow-y-auto for vertical scrolling -->
                             <table class="text-center table-auto border-collapse border border-black w-[49rem] h-64">
                                 <thead>
                                     <tr class="bg-gray-200 text-xl">
@@ -89,11 +89,10 @@
                                         <th class="px-4 py-2">TIME OUT</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-xl ">
+                                <tbody class="text-xl">
                                     <tr>
                                         <td class="border border-black">5:00pm</td>
                                         <td class="border border-black">11:00pm</td>
-
                                     </tr>
                                     <tr>
                                         <td class="border border-black">10:30am</td>
@@ -103,6 +102,19 @@
                                         <td class="border border-black">11:00pm</td>
                                         <td class="border border-black">7:00pm</td>
                                     </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <!-- Add more rows as needed -->
                                 </tbody>
                             </table>
                         </div>
@@ -110,7 +122,7 @@
                 </div>
                 
         </div>
-      
+    </div>
 </div>
 </body>
 </html>

@@ -20,9 +20,9 @@
                         <a href="#" onclick="myFunction()">
                             <!-- <i class="fa-solid fa-bell fa-lg"></i> -->
                         </a>
-                        <a href="#Volunteer_prof" onclick="myImage()" class="">
-                            <img src="/img/user.png" class="list-none inline-block w-12">
-                        </a>
+                      
+                            <img src="/img/user.png" class="list-none inline-block w-12" style="cursor: pointer;" onclick="myImage()">
+                       
                     </ul>
                     
                
@@ -30,7 +30,7 @@
         </div>
 
       <!-- VOLUNTEER PROFILE -->
-            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80"">
+            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80" id="profileDetail" style="display: none;">
                 <div class="flex flex-col justify-center h-full">
                     <div class="bg-black w-96 h-full rounded-tl-xl rounded-bl-xl">
                         <img src="/img/user.png" class="w-36 relative left-28 py-12" >
@@ -138,6 +138,7 @@
                 </div>
                 
         </div>
+        <script src="/public/volunteer/volunteer.js" defer></script>
 </div>
 </body>
 </html>

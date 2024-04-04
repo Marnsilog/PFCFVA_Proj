@@ -1,14 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./*/*.html', ],
+  content: ["./public/**/*.{html,js}"],
   theme: {
     extend: {
-      colors:{
-        mgray: '#EAEAEA',
-      }
-      
+      maxHeight: {
+        'maxtest': '250px',
+      },
+      minHeight: {
+        'mintest': '35rem',
+      },
+      height: {
+        'mars': '60%', // You can also use fixed values like pixels
+        '37':'150px',
+        '78':'300px',
+      },
+      padding: {
+        'custom': '650px 700px 70px', // Custom padding value
+      },
+      left:{
+        'test':'200%',
+      },
     },
   },
   plugins: [],
 }
-

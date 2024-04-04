@@ -3,63 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="volunteerstyle.css">
-    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <link href="/public/styles.css" rel="stylesheet">
+
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
-<body>
-    <div class="volunteer-dashboard">
+<body class="bg-white">
+    <div class="text-white">
     
-        <div class="dav-men" id="devMenu">
-                    <nav>
-                        <img src="../img/pfcfvalogo.png" class="PFCVA1">
-                    <ul>
-                        <li><a href="#" class="link active">Inventory</a></li>
-                        <li><a href="#" class="link">Leaderboards</a></li>
-                        <li><a href="#" class="link">Contact Us</a></li>
+        <div class="bg-black h-20">
+                    <nav class="flex items-center">
+                        <img src="/img/pfcfvalogo.png" class="fixed w-12 mx-5 my-2">
+                    <ul class="flex-1 text-right text-white text-base px-32">
+                        <li class="list-none inline-block px-10 py-6"><a href="#" class="link active">Inventory</a></li>
+                        <li class="list-none inline-block px-10 py-6"><a href="#" class="link">Leaderboards</a></li>
+                        <li class="list-none inline-block px-10 py-6"><a href="#" class="link">Contact Us</a></li>
                         <a href="#" onclick="myFunction()">
-                            <i class="fa-solid fa-bell fa-lg"></i>
+                            <!-- <i class="fa-solid fa-bell fa-lg"></i> -->
+                        </a>
+                        <a href="#Volunteer_prof" onclick="myImage()" class="">
+                            <img src="/img/user.png" class="list-none inline-block w-12">
                         </a>
                     </ul>
-                    <a href="#Volunteer_prof" onclick="myImage()">
-                    <img src="../img/user.png" class="user-pic">
-                </a>
+                    
+               
                 </nav>
         </div>
 
-        
+    
+            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80">
+                <div class="flex flex-col justify-center h-full">
+                    <div class="bg-black w-96 h-full rounded-tl-xl rounded-bl-xl">
+                        <img src="/img/user.png" class="w-36 relative left-28 py-12" >
+                        <div class="text-center">
+                        <p>
+                            <h2 class="text-2xl">Marniel Corsiga</h2>
+                        </p>
+                        <p class="pt-5">marnielcorsiga14@gmail.com</p>
+                        <p class="pt-1">09199225332</p>
 
-        <div class="volunteer-profile" id="Volunteer_prof">
-
-            <div class="profile-box">
-                
-                <div class="profile-sec">
-                    <img src="../img/user.png" class="user-pic2">
+                        <div class="pt-72">
+                            <a class="text-2xl" href="">Log Out</a>
+                        </div>
+                        </div>
+                    </div>
                     
-                    <div class="profile-detail">
-                    
-                           <p> <h2 class="name"> Marniel Corsiga</h2></p>
-                        
-                    <p class="email">marnielcorsiga14@gmail.com</p>
-                    <p class="number">09199225332</p>
                 </div>
+
+               <div class="bg-white rounded-xl h-80 w-60 absolute inset-6 left-1/3 border-2 border-black">
+                <div class="text-black text-center pt-36">
+                    <p class="text-3xl "><strong>Echo</strong></p>
+                    <p class="">Rank</p>
+                </div>
+               
+                <div class="bg-white rounded-xl h-37 w-72 absolute inset-6 top-0 left-64 border-2 border-black">
+                    <div>
+
+                    </div>
+                </div>
+
+                <!-- <div class="bg-white rounded-xl h-36 w-72 absolute inset-6 top-40 left-64 border-2 border-black">
+                    <div>
+
+                    </div>
+                </div> -->
+
+                 <!-- <div class="bg-white rounded-xl h-36 w-72 absolute top-0 left-full border-2 border-black">
+                    <div>
+
+                    </div>
+                </div> -->
+                <!-- <div class="bg-white rounded-xl h-36 w-72 absolute inset-6 top-40 left-64 border-2 border-black">
+                    <div>
+
+                    </div>
+                </div> -->
+                <!-- <div class="pt-16">
+                    <div class="border-black border-2 pr-72h-80 w-96">
+                        <select class="w-96" name="cars" id="cars">
+                            <table>
+                                <thead>
+                                  <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Age</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>John Doe</td>
+                                    <td>john@example.com</td>
+                                    <td>30</td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td>Jane Smith</td>
+                                    <td>jane@example.com</td>
+                                    <td>25</td>
+                                  </tr>
+                                  <tr>
+                                    <td>3</td>
+                                    <td>Michael Johnson</td>
+                                    <td>michael@example.com</td>
+                                    <td>40</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              
+                        </select>
+                    </div>
+               </div> -->
             </div>
-
-            <div class="ranks">
-
-                
             </div>
-
-            <div class="dutyhours">
-
-            </div>
-
-            <div class="fireresponse">
-
-
-            </div>
+            
         </div>
-        </div>
+      
 </div>
 </body>
 </html>

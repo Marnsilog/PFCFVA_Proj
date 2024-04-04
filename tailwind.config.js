@@ -21,6 +21,11 @@ module.exports = {
       top:{
         '41':'110.313rem',
       },
+      safelist:[
+        'bg-black',
+        'text-5xl',
+        'lg:text-4xl',
+      ]
     },
   },
   plugins: [],

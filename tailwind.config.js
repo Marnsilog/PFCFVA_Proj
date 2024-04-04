@@ -11,9 +11,14 @@ module.exports = {
       },
       height: {
         'mars': '60%', // You can also use fixed values like pixels
+        '37':'10rem',
+        '78':'300px',
       },
       padding: {
         'custom': '650px 700px 70px', // Custom padding value
+      },
+      left:{
+        'test':'200%',
       },
     },
   },

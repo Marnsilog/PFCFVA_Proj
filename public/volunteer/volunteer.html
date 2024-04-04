@@ -29,8 +29,8 @@
                 </nav>
         </div>
 
-    
-            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80">
+      <!-- VOLUNTEER PROFILE -->
+            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80" style="display: none;">
                 <div class="flex flex-col justify-center h-full">
                     <div class="bg-black w-96 h-full rounded-tl-xl rounded-bl-xl">
                         <img src="/img/user.png" class="w-36 relative left-28 py-12" >
@@ -49,76 +49,95 @@
                     
                 </div>
 
-               <div class="bg-white rounded-xl h-80 w-60 absolute inset-6 left-1/3 border-2 border-black">
+               <div class="bg-white rounded-xl h-80 w-60 absolute inset-6 left-1/3 border-2 border-black" id="rank">
                 <div class="text-black text-center pt-36">
                     <p class="text-3xl "><strong>Echo</strong></p>
                     <p class="">Rank</p>
                 </div>
                
-                <div class="bg-white rounded-xl h-37 w-72 absolute inset-6 top-0 left-64 border-2 border-black">
-                    <div>
-
+                <div class="bg-white rounded-xl h-37 w-64 absolute inset-6 top-0 left-64 border-2 border-black" id="dutyHours">
+                    <div class="text-black text-center">
+                        <div class="inset-6 w-[22rem] ">
+                            <p class="text-5xl pt-10 font-semibold">1,200</p>
+                            <p class="text-xs">Duty Hours</p>
+                        </div>
+                        
                     </div>
                 </div>
 
-                <!-- <div class="bg-white rounded-xl h-36 w-72 absolute inset-6 top-40 left-64 border-2 border-black">
-                    <div>
-
+                 <div class="bg-white rounded-xl h-37 w-64 absolute inset-6 top-40 left-64 border-2 border-black" id="Inventory">
+                    <div class="text-black text-center">
+                        <div class="inset-6 w-[22rem] ">
+                            <p class="text-5xl pt-9 font-semibold">4</p>
+                            <p class="pt-2 text-base">Inventory</p>
+                        </div>
+                        
                     </div>
-                </div> -->
+                </div>
 
-                 <!-- <div class="bg-white rounded-xl h-36 w-72 absolute top-0 left-full border-2 border-black">
-                    <div>
-
+                 <div class="bg-white rounded-xl h-37 w-64 absolute top-0 left-[33rem] border-2 border-black" id="Fire response">
+                    <div class="text-black text-center">
+                        <div class="inset-6 w-[22rem] ">
+                            <p class="text-5xl pt-9 font-semibold">15</p>
+                            <p class="pt-2 text-base">Fire Respo</p>
+                        </div>
+                        
                     </div>
-                </div> -->
-                <!-- <div class="bg-white rounded-xl h-36 w-72 absolute inset-6 top-40 left-64 border-2 border-black">
-                    <div>
-
+                </div>
+                
+                <div class="bg-white rounded-xl h-37 w-64 absolute top-40 left-[33rem] border-2 border-black">
+                    <div class="text-black text-center">
+                        <div class="inset-6 w-[22rem] ">
+                            <p class="text-5xl pt-9 font-semibold">2</p>
+                            <p class="pt-2 text-base">Activity</p>
+                        </div>
+                        
                     </div>
-                </div> -->
-                <!-- <div class="pt-16">
-                    <div class="border-black border-2 pr-72h-80 w-96">
-                        <select class="w-96" name="cars" id="cars">
-                            <table>
+                </div>
+
+                <div class="container bg-white h-72 w-[49rem] absolute top-[21rem] border-2 border-black">
+                    <div class="container text-black">
+                        <div class="overflow-x-auto overflow-y-auto"> <!-- Added overflow-y-auto for vertical scrolling -->
+                            <table class="text-center table-auto border-collapse border border-black w-[49rem] h-64">
                                 <thead>
-                                  <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Age</th>
-                                  </tr>
+                                    <tr class="bg-gray-200 text-xl">
+                                        <th class="px-4 py-2">TIME IN</th>
+                                        <th class="px-4 py-2">TIME OUT</th>
+                                    </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>1</td>
-                                    <td>John Doe</td>
-                                    <td>john@example.com</td>
-                                    <td>30</td>
-                                  </tr>
-                                  <tr>
-                                    <td>2</td>
-                                    <td>Jane Smith</td>
-                                    <td>jane@example.com</td>
-                                    <td>25</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3</td>
-                                    <td>Michael Johnson</td>
-                                    <td>michael@example.com</td>
-                                    <td>40</td>
-                                  </tr>
+                                <tbody class="text-xl">
+                                    <tr>
+                                        <td class="border border-black">5:00pm</td>
+                                        <td class="border border-black">11:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">10:30am</td>
+                                        <td class="border border-black">10:31am</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-black">11:00pm</td>
+                                        <td class="border border-black">7:00pm</td>
+                                    </tr>
+                                    <!-- Add more rows as needed -->
                                 </tbody>
-                              </table>
-                              
-                        </select>
+                            </table>
+                        </div>
                     </div>
-               </div> -->
-            </div>
-            </div>
-            
+                </div>
+                
         </div>
-      
 </div>
 </body>
 </html>

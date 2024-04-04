@@ -711,6 +711,10 @@ video {
   height: 9rem;
 }
 
+.h-37 {
+  height: 150px;
+}
+
 .h-80 {
   height: 20rem;
 }

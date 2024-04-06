@@ -22,6 +22,7 @@ module.exports = {
       fontFamily: {
         Istok: ['Istok Web', 'sans-serif'], 
         Inter: ['Inter','sans-serif'],
+        AdventPro:['Advent Pro','sans-serif'],
       },
     },
     safelist: {

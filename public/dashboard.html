@@ -6,48 +6,54 @@
     <link href="styles.css" rel="stylesheet">
 
     <title>PFCVA || Dashboard</title>
-
-    <style>
-        .container {
-            display: none; 
-        }
-    </style>
     
 </head>
+
+<div class="bg-black bg-opacity-30 h-screen border-none">
+<div class="bg-black bg-opacity-50 h-screen border-none" id="blackBackround" >
+
+
 <body style="background-image: url('/img/backround.jpg');" id="mainContent">
 
 <div>
     <!-- <div class="bg-black bg-opacity-50 h-screen border-none"> -->
-        <div class="px-7 py-5">
-                <div class="fixed mx-7 my-52">
+        <div class=" px-7 py-5 opacity-40" id="homepageSec">
+                <div class="fixed mx-7 my-52 ">
                     <p class="text-white text-9xl leading-tight">BE A <br>VOLUNTEER</p>
                     <div class="my-5">
-                        <button class="text-white border-4 text-2xl border-white hover:border-gray-300 h-14 w-56 rounded-full" onclick="showLogin()">LOG IN</button>
+                        <button class="text-white border-4 text-2xl border-white hover:border-gray-300 h-14 w-56 rounded-full" id="loginButton" onclick="handleLogin()">LOG IN</button>
                     </div>
                     
                 </div>
             
             
-                    <nav class="flex items-center">
+                    <nav class="flex items-center " id="navLinks">
                         <img src="/img/pfcfvalogo.png" class="w-20 cursor-pointer">
-                            <ul class="flex-1 text-right text-white text-xl">
-                                <li class="list-none inline-block px-14" ><a href="#">Home</a></li>
-                                <li class="list-none inline-block px-14"><a href="#">About us</a></li>
-                                <li class="list-none inline-block px-14"><a href="#">Volunteer</a></li>
-                                <li class="list-none inline-block px-14"><a href="#">Donate</a></li>
-                                <li class="list-none inline-block px-14"><a href="#">Leaderboards</a></li>
-                                <li class="list-none inline-block px-14"><a href="#">Contact Us</a></li>
+                            <ul class="flex-1 text-right text-white text-xl ">
+                                <li class="font-Inter list-none inline-block px-14 " ><a href="#">Home</a></li>
+                                <li class="font-Inter list-none inline-block px-14"><a href="#">About us</a></li>
+                                <li class="font-Inter list-none inline-block px-14"><a href="#">Volunteer</a></li>
+                                <li class="font-Inter list-none inline-block px-14"><a href="#">Donate</a></li>
+                                <li class="font-Inter list-none inline-block px-14"><a href="#">Leaderboards</a></li>
+                                <li class="font-Inter list-none inline-block px-14"><a href="#">Contact Us</a></li>
                             </ul>
                         
                     </nav>
+                    
         </div>
         <!-- </div> -->
-    <div class="grid grid-cols-3">
-        <div class="col-end-4 bg-gray-200 text-black font-mono rounded-xl w-8/12 h-96 mx-5 my-32 " id="form" style="display: none;">
+    <div class="grid grid-cols-3" >
+        <div class="col-end-4 bg-gray-200 text-black font-mono rounded-xl w-8/12 h-96 mx-5 my-32" id="form" style="display: none;" >
+            <div class="text-right mx-5 py-2">
+                <a class="text-2xl font-bold px-4" id="cancel" href="#">x</a>
+            </div>
+            
             <div class="text-lg  text-center">
-                <h1 class="text-2xl py-10">Login</h1>
+                <h1 class="text-4xl py-7 font-Istok font-bold">Login</h1>
+                
                 <form>
-                    <div class="space-y-2">
+                   
+                    <div class="space-y-2 ">
                         <div>
                             <!-- <i class="fa-solid fa-user"></i> -->
                             <input class="bg-white w-80 h-10 px-4 border rounded-md focus:outline-none focus:border-black" 
@@ -71,6 +77,9 @@
         </div>
     </div>
 </div>
+
 <script src="script.js" defer></script>
 </body>
+</div>
+</div>
 </html>

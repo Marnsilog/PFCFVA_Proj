@@ -1,0 +1,15 @@
+#progress {
+  width: 0%;
+  height: 30px;
+  background-color: #930D0D;
+  transition: width 2s ease;
+  border-radius: 20px; /* Half of the height to make it perfectly rounded */
+}
+
+#progress2 {
+    width: 0%;
+    height: 30px;
+    background-color: #930D0D;
+    transition: width 2s ease;
+    border-radius: 20px; /* Half of the height to make it perfectly rounded */
+  }

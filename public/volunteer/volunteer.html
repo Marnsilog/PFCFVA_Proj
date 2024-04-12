@@ -15,19 +15,35 @@
         <img src="/img/pfcfvalogo.png" class="mt-2 ml-10 w-24">
         <p class="pt-4 pl-10 text-white text-2xl font-semibold">PFCFVA</p>
     <ul class="flex-1 text-right text-white text-2xl pr-10 pt-6">
-        <li class="list-none inline-block px-16"><a href="#" class="link active">Dashboard</a></li>
-        <li class="list-none inline-block px-16"><a href="#" class="link active">Inventory</a></li>
-        <li class="list-none inline-block px-16"><a href="#" class="link">Leaderboards</a></li>
-        <li class="list-none inline-block px-16"><a href="#" class="link">Contact Us</a></li>
+        <li class="list-none inline-block px-16"><a href="#">Dashboard</a></li>
+        <li class="list-none inline-block px-16"><a href="#" onclick="showInventory()">Inventory</a></li>
+        <li class="list-none inline-block px-16"><a href="#" >Leaderboards</a></li>
+        <li class="list-none inline-block px-16"><a href="#">Contact Us</a></li>
         <li class="list-none inline-block px-7 after:transition after:ease-[ease] after:duration-300">
-            <img src="/img/user.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="showProfile()">
+            <img src="/img/user.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="toggleSetting()">
         </li>
         <a href="#"></a>   
 
     </ul>
 </nav>
 </div>
-<div class="grid grid-cols-3 gap-0 m-0">
+<div class="absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="myProfile()"><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>About Us</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Volunteer</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Donate</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Log Out</p></div>
+        
+        
+    </div>
+  </div>
+
+
+
+<div style="display: none;"  id="frmMainProfile">
+<div class="grid grid-cols-3 gap-0 m-0"  >
     
     <div class="my-0">
         <div class="pt-8 pb-5 ml-6 font-Inter">
@@ -39,7 +55,7 @@
             </div>
             
             <div class="text-center font-Inter">
-                <p class="pt-5 text-black text-2xl font-bold" id="Name">Marniel C. Corsiga</p>
+                <p class="pt-5 text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
                 <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
             </div>
             <div class="ml-[16.5rem] pt-7">
@@ -65,13 +81,13 @@
             
             <div class="mt-6 grid grid-cols-2 gap-2 place-items-center">
                 <div class="text-center font-Inter">
-                    <p class="text-xl">1</p>
-                    <p class="text-xl">Inventory</p>
+                    <p class="text-3xl font-semibold">1</p>
+                    <p class="text-3xl">Inventory</p>
                 </div>
     
                 <div class="text-center font-Inter">
-                    <p class="text-xl">4</p>
-                    <p class="text-xl">Activity</p>
+                    <p class="text-3xl font-semibold">4</p>
+                    <p class="text-3xl">Activity</p>
                 </div>
                 
             </div>
@@ -83,10 +99,10 @@
         <div>
             <nav class="flex items-start">
                 <ul class="flex-none text-center text-black text-3xl pt-12">
-                    <li class="list-none inline-block px-20"><a href="#" class="link active">My Profile</a></li>
-                    <li class="list-none inline-block px-20"><a href="#" class="link active">Achievements</a></li>
-                    <li class="list-none inline-block px-20"><a href="#" class="link">Rankings</a></li>
-                    <li class="list-none inline-block pl-10"><a href="#" class="link">Records</a></li>
+                    <li class="list-none inline-block px-20"><a href="#" onclick="Profile()" >My Profile</a></li>
+                    <li class="list-none inline-block px-20"><a href="#" onclick="Achievements()" >Achievements</a></li>
+                    <li class="list-none inline-block px-20"><a href="#" onclick="Rankings()">Rankings</a></li>
+                    <li class="list-none inline-block pl-10"><a href="#" onclick="Records()">Records</a></li>
                     <li class="list-none inline-block after:transition after:ease-[ease] after:duration-300">
                     <a href="#"></a>   
                 </ul>
@@ -94,7 +110,7 @@
                 <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
         </div>
 
-        <div class="pt-11 ml-16 font-Inter" id="frmMyprofile" style="display: none;" >
+        <div class="pt-11 ml-16 font-Inter" id="frmMyprofile">
             <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
 
                 <div class="text-4xl">
@@ -169,37 +185,171 @@
                     </div>
                 
                 </div>
-            
-            
+
             
             
         </div>
            
            
-        <div class="pt-11 ml-16 font-Inter">
-                <div class="flex items-start py-5">
-                    <div class="text-left list-none inline-block  ">
-                        <p>Aspirant</p>
-                        <p>100 duty Hours</p>
+        <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
+                <div class="flex items-start py-5 ml-28">
+                    <div class="text-5xl text-start list-none inline-block mx-20">
+                        <p class="font-bold">Aspirant</p>
+                        <p class="pt-5 text-3xl">100 duty Hours</p>
                     </div>
 
-                    <div class="text-center list-none inline-block  ">
-                        <p>Aspirant</p>
-                        <p>100 duty Hours</p>
+                    <div class=" text-5xl text-start list-none inline-block ml-[19rem]">
+                        <p class="font-bold">Echo 900</p>
+                        <p class="pt-5 text-3xl">2000 duty hours</p>
+                        <p class="text-3xl">20 fire response</p>
                     </div>
                     
                 </div>
-        </div>
-    
-    
-    </div>
-        
 
-    </div>
+                <div class="flex items-start py-16 ml-28">
+                    <div class="text-5xl text-start list-none inline-block mx-20">
+                        <p class="font-bold">Probationary</p>
+                        <p class="pt-5 text-3xl">1000 duty hours</p>
+                        <p class="text-3xl">10 fire response</p>
+                    </div>
 
+                    <div class=" text-5xl text-start list-none inline-block ml-52">
+                        <p class="font-bold">Echo 800</p>
+                        <p class="pt-5 text-3xl text-start">100 hours</p>
+                        
+                    </div>
+                    
+                </div>
+
+                <div class="flex items-start py-16 ml-28">
+                    <div class="text-5xl text-start list-none inline-block mx-20">
+                        <p class="font-bold">Echo</p>
+                        <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                    </div>
    
-
+                </div>
+             </div>
+         </div>
+    </div>
 </div>
+
+    <div class="pt-4" id="frmInventory" style="display: none;" >
+    
+        <div>
+            <div class="pt-7">
+                <div class="inline-block pl-16"> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600">+ Add Inventory log</button></div>
+                <div class="inline-block pl-[72rem]"><input type="text" class="border-[1px] border-black rounded-md h-10 w-96"></div>
+           
+            </div>
+        </div>
+
+        <div class="font-Inter">       
+        <table id="myTable" class="mt-10 w-full">
+            <thead class="bg-[#209AAD] text-white mt-10 h-16 rounded-t-full text-3xl ">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>?</th>
+                </tr>
+            </thead>
+            <tbody class="w-full text-center text-2xl">
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>09/25/23</td>
+                    <td>06:45 pm</td>
+                    <td><a class="underline underline-offset-1  text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>10/03/23</td>
+                    <td>10:48 am</td>
+                    <td><a class="underline underline-offset-1  text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+                <tr class="border-t-2 border-b-2 border-black h-16">
+                    <td>01/11/24</td>
+                    <td>12:37 pm</td>
+                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
+                </tr>
+
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+   
+    </div>
 
         
 

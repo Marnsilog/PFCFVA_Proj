@@ -24,6 +24,7 @@ module.exports = {
         Inter: ['Inter','sans-serif'],
         AdventPro:['Advent Pro','sans-serif'],
         JockeyOne:['Jockey One','sans-serif'],
+        kadwa:['Kadwa','sans-serif'],
       },
       colors: {
         'rosered': '#C11414',

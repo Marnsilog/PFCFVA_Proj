@@ -21,23 +21,79 @@ function animateProgressBar(targetWidth) {
     animateProgressBar2(40);
   });
 
+  //Changable form
+    function Profile() {
+      document.getElementById('frmMyprofile').style.display = 'block';
+      document.getElementById('frmRankings').style.display = 'none';
+      document.getElementById('frmAchievement').style.display = 'none';
+      document.getElementById('frmRecord').style.display = 'none';
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    const logoutLink = document.getElementById('logoutLink');
-
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const confirmLogout = confirm("Are you sure you want to log out?");
-
-            if (confirmLogout) {
-                window.location.href = '/public/dashboard.html';
-            }
-        });
     }
-});
+
+    function Achievements() {
+      document.getElementById('frmAchievement').style.display = 'block';
+      document.getElementById('frmMyprofile').style.display = 'none';
+      document.getElementById('frmRankings').style.display = 'none';
+      document.getElementById('frmRecord').style.display = 'none';
+  
+    }
+    function Rankings() {
+      document.getElementById('frmRankings').style.display = 'block';
+      document.getElementById('frmMyprofile').style.display = 'none';
+      document.getElementById('frmAchievement').style.display = 'none';
+      document.getElementById('frmRecord').style.display = 'none';
+  
+    }
+    function Records() {
+      document.getElementById('frmRecord').style.display = 'block';
+      document.getElementById('frmMyprofile').style.display = 'none';
+      document.getElementById('frmAchievement').style.display = 'none';
+      document.getElementById('frmRankings').style.display = 'none';
+    }
+
+    function toggleSetting() {
+      var profileForm = document.getElementById('Setting');
+      
+
+      if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+       
+          profileForm.style.display = 'block';
+      } else {
+        
+          profileForm.style.display = 'none';
+      }
+  }
+  
+
+  function myProfile(){
+    document.getElementById('frmMainProfile').style.display = 'block';
+    document.getElementById('frmInventory').style.display = 'none';
+    document.getElementById('Setting').style.display = 'none';
+    
+  }
+    function showInventory(){
+      document.getElementById('frmInventory').style.display = 'block';
+      document.getElementById('frmMainProfile').style.display = 'none';
+      document.getElementById('Setting').style.display = 'none';
+      
+    }
+    //Changable form
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const logoutLink = document.getElementById('logoutLink');
+
+//     if (logoutLink) {
+//         logoutLink.addEventListener('click', function(event) {
+//             event.preventDefault();
+
+//             const confirmLogout = confirm("Are you sure you want to log out?");
+
+//             if (confirmLogout) {
+//                 window.location.href = '/public/dashboard.html';
+//             }
+//         });
+//     }
+// });
 
 
 

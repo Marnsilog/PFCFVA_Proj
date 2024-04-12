@@ -5,12 +5,12 @@ module.exports = {
   theme: {
     extend: {
       minHeight: {
-        'mintest': '35rem', // Example custom minHeight definition
+        'mintest': '35rem', 
       },
       height: {
-        'mars': '60%', // Example custom height definition using percentage
-        '37': '150px', // Example custom height definition in pixels
-        '78': '300px', // Another example custom height definition in pixels
+        'mars': '60%', 
+        '37': '150px', 
+        '78': '300px',
       },
       padding: {
         'custom': '650px 700px 70px',
@@ -23,21 +23,17 @@ module.exports = {
         Istok: ['Istok Web', 'sans-serif'], 
         Inter: ['Inter','sans-serif'],
         AdventPro:['Advent Pro','sans-serif'],
+        JockeyOne:['Jockey One','sans-serif'],
+      },
+      colors: {
+        'rosered': '#C11414',
+        'rosered2':'#930D0D',
+        'mjgrey':'#EAEAEA',
       },
     },
     safelist: {
       standard: [
-        'bg-black', 
-        'bg-gray-400',
-        'bg-zinc-300',
-        'bg-zinc-400',
-        'text-5xl', 
-        'text-4xl', 
-        'lg:text-4xl',
-        'bg-opacity-30',
-        'text-opacity-10',
-        'opacity-40',
-        'py-7',
+        'w-96',
       ],
     },
   },

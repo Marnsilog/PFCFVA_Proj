@@ -4,247 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/public/styles.css" rel="stylesheet">
+    <link href="/public/volunteer/volunteer.css" rel="stylesheet">
 
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
-<body class="bg-white">
-    <div class="text-white">
-    
-        <div class="bg-black h-20">
-                    <nav class="flex items-center">
-                        <img src="/img/pfcfvalogo.png" class="w-12 mx-5 my-0">
-                    <ul class="flex-1 text-right text-white text-base px-32">
-                        <li class="list-none inline-block px-10 py-5"><a href="#" class="link active">Dashboard</a></li>
-                        <li class="list-none inline-block px-10 py-5"><a href="#" class="link active">Inventory</a></li>
-                        <li class="list-none inline-block px-10 py-5"><a href="#" class="link">Leaderboards</a></li>
-                        <li class="list-none inline-block px-10 py-5"><a href="#" class="link">Contact Us</a></li>
-                        <li class="list-none inline-block px-0 pt-5 after:transition after:ease-[ease] after:duration-300">
-                            <img src="/img/user.png" class="list-none inline-block w-12" style="cursor: pointer;" onclick="showProfile()">
-                        </li>
-                        <a href="#"></a>
-                      
-                           
-                       
-                    </ul>
-                    
-               
-                </nav>
+<div>
+    <body class="bg-white">
+<div class="bg-rosered2 h-28 font-Inter ">
+    <nav class="flex items-center">
+        <img src="/img/pfcfvalogo.png" class="fixed top-3 left-16 w-24">
+        <p class="pt-6 pl-44 text-white text-2xl">PFCFVA</p>
+    <ul class="flex-1 text-right text-white text-2xl pr-10 pt-6">
+        <li class=" list-none inline-block px-16"><a href="#" class="link active">Dashboard</a></li>
+        <li class="list-none inline-block px-16"><a href="#" class="link active">Inventory</a></li>
+        <li class="list-none inline-block px-16"><a href="#" class="link">Leaderboards</a></li>
+        <li class="list-none inline-block px-16"><a href="#" class="link">Contact Us</a></li>
+        <li class="list-none inline-block px-7 after:transition after:ease-[ease] after:duration-300">
+            <img src="/img/user.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="showProfile()">
+        </li>
+        <a href="#"></a>   
+
+    </ul>
+</nav>
+</div>
+
+<div class="snap-x">
+    <div class="pt-16 ml-64 font-Inter">
+        <p class="text-black text-3xl font-bold">MY PROFILE</p>
+    </div>
+    <div class="ml-60 w-[25rem] h-[42rem] bg-mjgrey pt-5 overflow-x-auto">
+        <div class="grid grid-cols-2 ml-36 place-items-center">
+            <img src="/img/user.png" class="w-56">
         </div>
+        
+        <div class="text-center font-Inter">
+            <p class="pt-5 text-black text-2xl font-bold" id="Name">Marniel C. Corsiga</p>
+            <p class="text-[#930D0D] text-xl" id="Name">Marniel C. Corsiga</p>
+        </div>
+        <div class="ml-32 pt-7">
+            <button class="bg-red-900 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
+        </div>
+        <div class="bg-[#9C9C9C] h-[3px] mt-3 mx-9"></div>
+        <div class="pt-7 px-11">
+            <p class="font-Inter font-semibold text-xl">Duty Hours</p>
+            <div class="bg-white border-black border-[1px] h-5 rounded-full overflow-hidden pt-[2.3px] px-2">
+                <div id="progress" class="h-full"></div>
+            </div>
+            <p class="text-end text-base">1200 duty Hours</p>
+        </div>
+
+        <div class="px-11">
+            <p class="font-Inter font-semibold text-xl">Fire Response</p>
+            <div class="bg-white border-black border-[1px] h-5 rounded-full overflow-hidden pt-[2.3px] px-2">
+                <div id="progress2" class="h-full"></div>
+            </div>
+            <p class="text-end text-base">12 fire Response</p>
+        </div>
+             
+    </div>
+</div>
 
         
 
-      <!-- VOLUNTEER PROFILE -->
-    <div>
-            <div class="bg-gray-300 border-2 border-black rounded-2xl absolute inset-5 sm:h-3/4 sm:w-4/6 md:top-32 md:left-80" style="display: none;" id="profileDetail">
-                <div class="flex flex-col justify-center h-full">
-                    <div class="bg-black w-96 h-full rounded-tl-xl rounded-bl-xl">
 
-                        <div style="cursor: pointer;" class="text-right absolute top-7 left-[20.4rem]"  onclick="editProfile()">
-                            <p >Edit</p>
-                        </div>
-                        
-                        <img src="/img/user.png" class="w-36 relative left-28 py-12" >
-                        <div class="text-center">
-                        <p>
-                            <h2 class="text-2xl">Marniel Corsiga</h2>
-                        </p>
-                        <p class="pt-5">marnielcorsiga14@gmail.com</p>
-                        <p class="pt-1">09199225332</p>
-                        
-                        <div class="pt-72">
-                            <a class="text-2xl" id="logoutLink" href="">Log Out</a>
-                        </div>
-
-                        
-                        </div>
-                    </div>
-                    
-                </div>
-            
-                <!-- Profile Stat -->
-            <div class="bg-white rounded-xl h-80 w-60 absolute inset-6 left-1/3 border-2 border-black text-center text-black" id="profileStat">
-                <div class="pt-36" id="rank">
-                    <p class="text-3xl font-bold">Echo</p>
-                    <p>Rank</p>
-                    <a class="text-xs absolute font-bold bottom-5 right-4" href="#" id="viewRankings">>></a>
-                </div>
-               
-                <div class="bg-white rounded-xl h-37 w-64 absolute inset-6 top-0 left-64 border-2 border-black" id="dutyHours">
-                        <div class="inset-6 w-[22rem] ">
-                            <p class="text-5xl pt-10 font-semibold">1,200</p>
-                            <p class="text-xs">Duty Hours</p>
-                        </div>
-                </div>
-
-                 <div class="bg-white rounded-xl h-37 w-64 absolute inset-6 top-40 left-64 border-2 border-black" id="Inventory">
-                        <div class="inset-6 w-[22rem] ">
-                            <p class="text-5xl pt-9 font-semibold">4</p>
-                            <p class="pt-2 text-base">Inventory</p>
-                        </div>
-                </div>
-
-                 <div class="bg-white rounded-xl h-37 w-64 absolute top-0 left-[33rem] border-2 border-black" id="Fire response">
-                        <div class="inset-6 w-[22rem] ">
-                            <p class="text-5xl pt-9 font-semibold">15</p>
-                            <p class="pt-2 text-base">Fire Respo</p>
-                        </div>
-                        
-                    
-                </div>
-                
-                <div class="bg-white rounded-xl h-37 w-64 absolute top-40 left-[33rem] border-2 border-black">
-                        <div class="inset-6 w-[22rem] ">
-                            <p class="text-5xl pt-9 font-semibold">2</p>
-                            <p class="pt-2 text-base">Activity</p>
-                        </div>
-                </div>
-
-                <div class="container bg-white h-72 w-[49rem] absolute top-[21rem] border-2 border-black">
-                    <div class="container text-black">
-                        <div class="overflow-x-auto overflow-y-auto"> <!-- Added overflow-y-auto for vertical scrolling -->
-                            <table class="text-center table-auto border-collapse border border-black w-[49rem] h-64">
-                                <thead>
-                                    <tr class="bg-gray-200 text-xl">
-                                        <th class="px-4 py-2">TIME IN</th>
-                                        <th class="px-4 py-2">TIME OUT</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-xl">
-                                    <tr>
-                                        <td class="border border-black">5:00pm</td>
-                                        <td class="border border-black">11:00pm</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border border-black">10:30am</td>
-                                        <td class="border border-black">10:31am</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border border-black">11:00pm</td>
-                                        <td class="border border-black">7:00pm</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border border-black">11:00pm</td>
-                                        <td class="border border-black">7:00pm</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border border-black">11:00pm</td>
-                                        <td class="border border-black">7:00pm</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border border-black">11:00pm</td>
-                                        <td class="border border-black">7:00pm</td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-    
-            <!-- Ranking Stat -->
-            <div class="text-black bg-black" style="display: none;" id="rankingStat" >
-                <div class="bg-white rounded-xl h-52 w-[49rem] absolute top-14 inset-6 left-1/3 border-2 border-black" >
-
-                    <a class="text-black font-bold text-xs absolute bottom-2 right-4" href="#" id="viewProfile"> << </a>
-
-                    <p class="text-xs pt-5 px-4">Rankings:</p>
-                  
-                    <div class="pl-16">
-                    <div class="text-center absolute bottom-7 left-14">
-                        <p class="text-xl font-bold">Aspirant</p>
-                        <p class="text-xs">100 Duty hours</p>
-                    </div>
-
-                    <div class="text-center absolute bottom-3 left-[11.5rem]">
-                        <p class="text-xl font-bold">Probitionary</p>
-                        <p class="text-xs">100 Duty hours <br>and 20 response</p>
-                    </div>
-                   
-                    <div class="text-center absolute bottom-11 left-[23rem]">
-                        <p class="text-xl font-bold">Echo</p>
-                    </div>
-
-                    <div class="text-center absolute bottom-3 right-56">
-                        <p class="text-xl font-bold">Echo 900</p>
-                        <p class="text-xs">2009 Duty hours <br>and 20 response</p>
-                    </div>
-                    <div class="text-center absolute bottom-11 right-[5rem]">
-                        <p class="text-xl font-bold">Prevo 800</p>
-                    </div>
-                    
-                </div>
-                </div>
-                 
-                <div class="bg-white h-78 w-[49rem] absolute top-80 left-1/3 border-2 border-black text-center text-black">
-
-                </div>
-            </div>
-           </div>
-
-           
-           <!-- EDIT PROFILE -->
-          <div style="display: none;" id="editProfile">
-                    <div class="text-black absolute inset-5 sm:h-64 sm:w-[32rem] md:top-32 md:left-0"   >
-
-                        <p class="text-4xl font-bold px-8">Edit Profile</p>
-
-                        <img id="userImage" src="/img/user.png" class="w-48 absolute top-24 left-[27rem]">
-                        <div><button type="button" id="btnChange" onclick="Change()" class="bg-zinc-300 hover:bg-gray-500 hover:text-white py-2 text-black
-                            grid-cols-3 rounded-xl font-semibold text-center w-[8.2rem] h-11 mx-[40rem] my-32 boarder">Change</button></div>
-                    </div>
-
-                    <div class="flex justify-center mt-4">
-                        <input type="file" id="fileInput" accept="image/*" class="hidden">
-                    </div>
-                    
-
-                    <div class="">
-                    <div class="text-black  pt-96 pl-[26rem] flex flex-col mb-4">
-                        <label class="mb-1 text-base"  for="name">Name</label>
-                        <input class="border-2 border-gray-400 h-10 w-80" type="text" id="name" name="name">
-                    </div>
-                    <div class="text-black pt-5 pl-[26rem] flex flex-col mb-4">
-                        <label class="mb-1 text-base"  for="email">Email</label>
-                        <input class="border-2 border-gray-400 h-10 w-80" type="text" id="email" name="email">
-                    </div>
-                    <div class="text-black pt-5 pl-[26rem] flex flex-col mb-4">
-                        <label class="mb-1 text-base" for="password">Password</label>
-                        <input class="border-2 border-gray-400 h-10 w-80" type="password" id="password" name="password">
-                    </div>
-                    
-
-                    </div>
-                    <div class="absolute top-[29rem] right-[37rem]">
-                            <div class="text-black flex flex-col mb-4">
-                                <label class="mb-1 text-base"  for="email">Username</label>
-                                <input class="border-2 border-gray-400 h-10 w-80" type="text" id="username" name="username">
-                            </div>
-                            <div class="text-black flex flex-col  pt-5 mb-4">
-                                <label class="mb-1 text-base"  for="email">Contact No.</label>
-                                <input class="border-2 border-gray-400 h-10 w-80" type="text" id="cpNo" name="cpNo">
-                            </div>
-
-                        
-                            <div class="pt-9  flex justify-start">
-                                <div class="mx-10 pt-6">
-                                    <button type="button" id="btnChange" onclick="Cancel()" class="bg-zinc-300 hover:bg-gray-500 hover:text-white text-black rounded-xl font-semibold text-center w-[6rem] h-9 border">Cancel</button>
-                                </div>
-                            
-                                <div class="pt-6">
-                                    <button type="button" id="btnSave" onclick="Save()" class="bg-zinc-300 hover:bg-gray-500 hover:text-white text-black rounded-xl font-semibold text-center w-[6rem] h-9 border">Save</button>
-                                </div>
-                            </div>
-                
-            
-                     </div>
-            </div>
-
-
-
-        </div>
-</div>
-
-<script src="/public/volunteer/volunteer.js" defer></script>
 </body>
-</html>
+</div>
+<script src="/public/volunteer/volunteer.js" defer></script>
+</html>s

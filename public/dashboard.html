@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="styles.css" rel="stylesheet">
-
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCVA || Dashboard</title>
     
 </head>
@@ -15,11 +15,15 @@
 
 <body style="background-image: url('/img/backround.jpg');" id="mainContent">
 
+<div class="bg-rosered bg-opacity-70 h-28">
+
 <div>
     <!-- <div class="bg-black bg-opacity-50 h-screen border-none"> -->
-        <div class=" px-7 py-5 opacity-40" id="homepageSec">
-                <div class="fixed mx-7 my-52 ">
-                    <p class="text-white text-9xl leading-tight font-AdventPro">BE A <br>VOLUNTEER</p>
+        <div class="px-7 py-5 opacity-40" id="homepageSec">
+                <div class="absolute mt-32 ">
+                  
+                        <P class="text-white text-5xl font-JockeyOne pl-96" >Parañaque Filipino - Chinese Fire Volunteer Association </P>
+                        <p class="mt-32 text-white text-8xl leading-tight font-AdventPro">"Sa pag iwas sa sunog, <br>hindi ka nag iisa!"</p>
                     <div class="my-5">
                         <button class="text-white border-4 text-2xl border-white hover:border-gray-300 h-14 w-56 rounded-full" id="loginButton" onclick="handleLogin()">LOG IN</button>
                     </div>
@@ -27,15 +31,15 @@
                 </div>
             
             
-                    <nav class="flex items-center " id="navLinks">
-                        <img src="/img/pfcfvalogo.png" class="w-20 cursor-pointer">
-                            <ul class="flex-1 text-right text-white text-xl ">
-                                <li class="font-Inter list-none inline-block px-14 " ><a href="#">Home</a></li>
-                                <li class="font-Inter list-none inline-block px-14"><a href="#">About us</a></li>
-                                <li class="font-Inter list-none inline-block px-14"><a href="#">Volunteer</a></li>
-                                <li class="font-Inter list-none inline-block px-14"><a href="#">Donate</a></li>
-                                <li class="font-Inter list-none inline-block px-14"><a href="#">Leaderboards</a></li>
-                                <li class="font-Inter list-none inline-block px-14"><a href="#">Contact Us</a></li>
+                    <nav class="flex items-center my-0" id="navLinks">
+                        <img src="/img/pfcfvalogo.png" class="fixed top-12 left-20 w-36">
+                            <ul class="pt-5 flex-1 text-right text-white text-2xl ">
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400" ><a href="#">Home</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">About us</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Volunteer</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Donate</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Leaderboards</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Contact Us</a></li>
                             </ul>
                         
                     </nav>
@@ -43,7 +47,7 @@
         </div>
         <!-- </div> -->
     <div class="grid grid-cols-3" >
-        <div class="col-end-4 bg-gray-200 text-black font-mono rounded-xl w-8/12 h-96 mx-5 my-32" id="form" style="display: none;" >
+        <div class="col-end-4 bg-gray-200 text-black rounded-xl w-8/12 h-96 mx-5 mt-[17rem]" style="display: none;"  id="form">
             <div class="text-right mx-5 py-2">
                 <a class="text-2xl font-bold px-4" id="cancel" href="#">x</a>
             </div>
@@ -53,16 +57,18 @@
                 
                 <form>
                    
-                    <div class="space-y-2 ">
+                    <div class="space-y-2 font-Istok text-xs">
                         <div>
-                            <!-- <i class="fa-solid fa-user"></i> -->
+                            <!-- <i class="fa-solid fa-user"> </i> -->
                             <input class="bg-white w-80 h-10 px-4 border rounded-md focus:outline-none focus:border-black" 
                             type="email" placeholder="username" id="username">
+
                         </div>
                         <div>
-                            <!-- <i class="fa-solid fa-lock"></i> -->
+                            <!-- <i class="fa-solid fa-lock"> </i> -->
                             <input class="w-80 h-10 px-4 py-5 border rounded-md focus:outline-none focus:border-black" 
                             type="password" placeholder="Password" id="password">
+                            
                         </div>
                         <div class="text-right px-16">
                             <a class="text-xs text-gray-400" href="#">Forgot Password?</a>
@@ -76,6 +82,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script src="script.js" defer></script>

@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/public/styles.css" rel="stylesheet">
     <link href="/public/volunteer/volunteer.css" rel="stylesheet">
-
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
 <div>
     <body class="bg-white">
-<div class="bg-rosered2 h-28 font-Inter ">
+<div class="bg-rosered2 h-28 font-Inter">
     <nav class="flex items-center">
         <img src="/img/pfcfvalogo.png" class="mt-2 ml-10 w-24">
         <p class="pt-4 pl-10 text-white text-2xl font-semibold">PFCFVA</p>
     <ul class="flex-1 text-right text-white text-2xl pr-10 pt-6">
-        <li class="list-none inline-block px-16"><a href="#">Dashboard</a></li>
+        <li class="list-none inline-block px-16"><a href="#" onclick="showDashboard()">Dashboard</a></li>
         <li class="list-none inline-block px-16"><a href="#" onclick="showInventory()">Inventory</a></li>
         <li class="list-none inline-block px-16"><a href="#" >Leaderboards</a></li>
-        <li class="list-none inline-block px-16"><a href="#">Contact Us</a></li>
+        <li class="list-none inline-block px-16"><a href="#" onclick="showContactus()">Contact Us</a></li>
+        <li class="list-none inline-block px-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
         <li class="list-none inline-block px-7 after:transition after:ease-[ease] after:duration-300">
             <img src="/img/user.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="toggleSetting()">
         </li>
@@ -32,15 +33,49 @@
         <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="myProfile()"><p>My Profile</p></div>
         <div class="bg-black h-[2px]"></div>
         <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>About Us</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Volunteer</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="showHwVolunteer()"><p>Volunteer</p></div>
         <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Donate</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Log Out</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
         
         
     </div>
   </div>
 
+<div class="bg-[#930d0ddc] absolute bottom-0 mt-32 w-full h-80" id="frmContactus" style="display: none;">
 
+    <div class="font-Inter text-white text-xl ml-[26rem] mt-8">
+        <div class="flex items-start py-5 ">
+            <div class="inline-block mr-[4rem]">
+                
+                <p>8182 Dr Arcadio Santos Ave,<br> Parañaque, 1700 Metro Manila</p> 
+                <p class="mt-12 underline underline-offset-1">pfcfva2003@gmail.com</p>
+            </div>
+            <div class="inline-block px-80">
+                <p>099175222526</p>
+                <p class="mt-16 underline underline-offset-1">https://www.facebook.com/pfcfva</p>
+            </div>
+          
+
+           
+        </div>
+        <p class="mt-12 ml-96 underline underline-offset-1">Privacy Policy</p>
+    
+    </div>
+   
+</div>
+
+
+  <div id="frmDashboard" style="display: none;">
+    
+        <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
+
+            <div class="text-black font-Inter pt-11 pl-10">
+                <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
+                <p class="text-lg">Volunteer</p>
+            </div>
+
+        </div>
+</div>
 
 <div style="display: none;"  id="frmMainProfile">
 <div class="grid grid-cols-3 gap-0 m-0"  >
@@ -232,7 +267,6 @@
          </div>
     </div>
 </div>
-
     <div class="pt-4" id="frmInventory" style="display: none;" >
     
         <div>
@@ -350,8 +384,48 @@
     </div>
    
     </div>
+<div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
+    <p class="text-5xl font-bold">How to volunteer?</p>
 
-        
+    <p class="text-3xl font-[500] ml-10 mt-14">What are the minimum requirements  I need to <br> meet to be a volunteer firefighter</p>
+    <div class="text-2xl ml-12 mt-2">
+        <li>Applicant volunteer must be at least 18 years old<br> and above. </li>
+        <li>Must be physically and mentally fit.</li>
+        <li>Must undergo screening/interview with the officers.</li>
+    </div>
+    <p class="text-3xl font-[500] ml-10 mt-10">Must submit the following:</p>
+    <div class="text-2xl ml-12 mt-2">
+        <li>Endorsement letter from old brigade. (For volunteer<br>
+            who wish to  be transferred to PFCFVA.) </li>
+
+        <li>Barangay Clearance</li>
+        <li>Updated resume with picture.</li>
+    </div>
+</div>
+<div class="font-black" style="display: none;">
+    <div class="text-center mt-20">
+        <p class="text-5xl font-bold">ABOUT US</p>
+        <p class="mt-10 text-2xl font-Inika ">No organization survives without a strong 
+            <br> ground holding them tight. From the start,
+            <br> we will always grow by these core values. </p>
+    </div>
+
+    <div class="">
+        <p class="text-4xl">ORGANIZATION VALUES</p>
+        <p class="text-2xl">Mission</p>
+        <p class="text-xl">Our mission is to respond to emergencies protecting people, property,<br>
+            the city of Paranaque, and its nearby cities fostering a responsible team<br>
+             approach planning, education, and hazard prevention with a dedicated,<br> 
+             professionally trained, and compassionate volunteer workforce.</p>
+
+        <p class="text-2xl">Vision</p>
+        <p class="text-xl">Our vision is to create a progressive volunteer organization unified in<br>
+            creating a safe and secure community that will impact people’s lives by<br>
+             striving for excellence and being recognized as the premiere Fire-EMS-<br>
+             Rescue volunteer in the city. </p>
+    </div>
+    
+</div>
 
 
 </body>

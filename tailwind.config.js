@@ -25,6 +25,7 @@ module.exports = {
         AdventPro:['Advent Pro','sans-serif'],
         JockeyOne:['Jockey One','sans-serif'],
         kadwa:['Kadwa','sans-serif'],
+        Inika:['Inika','sans-serif'],
       },
       colors: {
         'rosered': '#C11414',

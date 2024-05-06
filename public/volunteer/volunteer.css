@@ -13,3 +13,10 @@
     transition: width 2s ease;
     border-radius: 20px; /* Half of the height to make it perfectly rounded */
   }
+
+  .colorCircle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}

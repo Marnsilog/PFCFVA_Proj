@@ -249,7 +249,7 @@
     
         <div>
             <div class="pt-7">
-                <div class="inline-block pl-16"> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600">+ Add Inventory log</button></div>
+                <div class="inline-block pl-16"> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600" onclick="AddInventory()">+ Add Inventory log</button></div>
                 <div class="inline-block pl-[72rem]"><input type="text" class="border-[1px] border-black rounded-md h-10 w-96"></div>
            
             </div>
@@ -275,87 +275,7 @@
                     <td>10:48 am</td>
                     <td><a class="underline underline-offset-1  text-xl" href="#">See details</a></td>
                 </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-                <tr class="border-t-2 border-b-2 border-black h-16">
-                    <td>01/11/24</td>
-                    <td>12:37 pm</td>
-                    <td><a class="underline underline-offset-1 text-xl" href="#">See details</a></td>
-                </tr>
-
+               
                 <!-- Add more rows as needed -->
             </tbody>
         </table>
@@ -364,25 +284,62 @@
     </div>
 
 <!-- Add Inventory -->
-<div style="display: none;">
+<div   id="addInventory">
     <div class="mt-10 ml-10">
         <div class="flex items-start">
-            <p class="">Inventory</p>
-            <input class="bg-[#E9E8E8] w-96 h-10 px-4 rounded-lg" 
+            <p class="text-4xl font-semibold">Inventory</p>
+            <div class="pl-[75rem]">
+                <input class="bg-[#E9E8E8] w-96 h-10 px-4 rounded-lg" 
                         type="text" placeholder="Search" id="addInvSearch">
+
+            </div>
+            
         </div>
     </div>
-    <div  class="">
-        <select class="w-auto h-5 px-1 rounded-full border-[1px] rounded-black" id="truckId">
+    <div  class="pt-8 pl-12">
+        <select class="w-auto h-9 px-1 rounded-full border-[1px] rounded-black" id="truckId">
             <option value="text" disabled selected>Vehicle</option>
             <option value="text">Engine 72</option>
             <option value="text">Water Tender 72</option>
             <option value="text">Pumber 72</option>
         </select>
     </div>
-    <div>
-        
-    </div>
+            <div>
+                <div id="frmDutyhours">        
+                    <table id="myTable2" class="mt-10 w-full border-[1px] border-black shadow-lg shadow-gray-600">
+                        <tbody class="text-2xl text-start font-Inter">
+                            <tr class=" border-gray-500 h-16">
+                                <td class="pl-16">Name 1</td>
+                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500"></div></td>
+                            
+                            </tr>
+                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                                <td class="pl-16">Name 2</td>
+                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
+                            </tr>
+                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                                <td class="pl-16">Name 3</td>
+                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
+                            </tr>
+                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                                <td class="pl-16">Name 4</td>
+                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
+                            </tr>
+                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                                <td class="pl-16">Name 5</td>
+                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            
+            </div>
+
+            <div class="pl-[90rem]">
+                <button onclick="CancelInv()" class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
+                <button class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
+            </div>
 
     
 </div>
@@ -565,44 +522,44 @@
 
                             <div class="flex items-start pt-14 py-5">
                                 <p class="list-none inline-block font-semibold mr-[8rem]">Birthday: </p> 
-                                <p class="list-none inline-block" id="lblBirthday">June 07, 2001</p>
+                                <p class="list-none inline-block" id="Birthday">June 07, 2001</p>
                             </div>
                 
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[9rem]">Gender: </p> 
-                                <p class="list-none inline-block" id="lblGender">Male</p>
+                                <p class="list-none inline-block" id="Gender">Male</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[4.5rem]">Civil Status: </p> 
-                                <p class="list-none inline-block" id="lblGender">Single</p>
+                                <p class="list-none inline-block" id="CivilStat">Single</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[5rem]">Nationality: </p> 
-                                <p class="list-none inline-block" id="lblGender">Filipino</p>
+                                <p class="list-none inline-block" id="Nationality">Filipino</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[4.5rem]">Blood Type: </p> 
-                                <p class="list-none inline-block" id="lblGender">O+</p>
+                                <p class="list-none inline-block" id="BloodType">O+</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                                <p class="list-none inline-block" id="lblGender">College UnderGrad</p>
+                                <p class="list-none inline-block" id="CollegeUnd">College UnderGrad</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                                <p class="list-none inline-block" id="lblGender">Centro Scholar University</p>
+                                <p class="list-none inline-block" id="NOC">Centro Scholar University</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[12rem]">Years of Service: </p> 
-                                <p class="list-none inline-block" id="lblGender">2 Years</p>
+                                <p class="list-none inline-block" id="YOS">2 Years</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                                <p class="list-none inline-block" id="lblGender">Red Cross Phlebotomist Training</p>
+                                <p class="list-none inline-block" id="Skillandtraining">Red Cross Phlebotomist Training</p>
                             </div>
                             <div class="flex items-start py-5 ">
                                 <p class="list-none inline-block font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                                <p class="list-none inline-block" id="lblGender">STI Global City</p>
+                                <p class="list-none inline-block" id="others">STI Global City</p>
                             </div>
                         
                     </div>
@@ -612,24 +569,24 @@
                     <div class="text-4xl" >
                         <div class="flex items-start pt-14 py-5">
                             <p class="list-none inline-block font-semibold mr-[6rem]">Email Address: </p> 
-                            <p class="list-none inline-block" id="lblBirthday">Corsigamarniel14@gmail.com</p>
+                            <p class="list-none inline-block" id="emailAdd">Corsigamarniel14@gmail.com</p>
                         </div>
             
                         <div class="flex items-start py-5 ">
                             <p class="list-none inline-block font-semibold mr-[8.6rem]">Contact No.: </p> 
-                            <p class="list-none inline-block" id="lblGender">09199225389</p>
+                            <p class="list-none inline-block" id="ContactNum">09199225389</p>
                         </div>
                         <div class="flex items-start py-5 ">
                             <p class="list-none inline-block font-semibold mr-[14rem]">Adress: </p> 
-                            <p class="list-none inline-block" id="lblGender">262 Unit 1 C-6 Road, Taguig City</p>
+                            <p class="list-none inline-block" id="Address">262 Unit 1 C-6 Road, Taguig City</p>
                         </div>
                         <div class="flex items-start py-5">
                             <p class="list-none inline-block font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                            <p class="list-none inline-block" id="lblGender">Maria Corsiga Pangan</p>
+                            <p class="list-none inline-block" id="ECP">Maria Corsiga Pangan</p>
                         </div>
                         <div class="flex items-start py-5 ">
                             <p class="list-none inline-block font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                            <p class="list-none inline-block" id="lblGender">09199225389</p>
+                            <p class="list-none inline-block" id="ECN">09199225389</p>
                         </div>
                     
                     </div>

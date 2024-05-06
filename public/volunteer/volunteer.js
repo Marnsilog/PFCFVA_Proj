@@ -63,6 +63,14 @@ function animateProgressBar(targetWidth) {
     });
 }
 
+function CancelInv(){
+    var addinv = document.getElementById('addInventory');
+    var inv = document.getElementById('frmInventory');
+    addinv.style.display = 'none';
+    inv.style.display = 'block';
+    
+
+}
 function Profile() {
     displaySection('frmMyprofile');
 }
@@ -167,6 +175,14 @@ function showHwVolunteer() {
 function showEdit(){
     showElement('editProfile');
 }
+
+function AddInventory(){
+    var addInve = document.getElementById("addInventory");
+    var Inve = document.getElementById("frmInventory");
+    addInve.style.display = 'block';
+    Inve.style.display = 'none';
+
+}
 // window.onload = function() {
 //   showDashboard();
 // };
@@ -189,5 +205,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
 
+    const circles = document.querySelectorAll('.colorCircle');
 
+    circles.forEach(circle => {
+        circle.addEventListener('click', function () {
+            if (circle.classList.contains('bg-red-500')) {
+                circle.classList.remove('bg-red-500');
+                circle.classList.add('bg-green-500');
+            } else {
+                circle.classList.remove('bg-green-500');
+                circle.classList.add('bg-red-500');
+            }
+        });
+    });
+});

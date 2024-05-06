@@ -59,7 +59,7 @@ function directTo() {
 
     if (username === "marns" && password === "1234") {
 
-        window.location.href = "volunteer/volunteer.html";
+        window.location.href = "volunteer.html";
         return false;
     } else {
         alert("Invalid credentials. Please try again.");

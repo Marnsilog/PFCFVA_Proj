@@ -1251,6 +1251,10 @@ video {
   --tw-bg-opacity: 0.7;
 }
 
+.bg-\[url\(\'\/img\/backround\.jpg\'\)\]{
+  background-image: url('/img/backround.jpg');
+}
+
 .bg-auto{
   background-size: auto;
 }

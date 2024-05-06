@@ -52,13 +52,17 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-function directTo(){
+
+function directTo() {
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
 
-    if (username=="marns"&&password=="1234"){
-        window.location.href = "volunteer/volunteer.html";
-    }
-    
+    if (username === "marns" && password === "1234") {
 
+        window.location.href = "volunteer/volunteer.html";
+        return false;
+    } else {
+        alert("Invalid credentials. Please try again.");
+        return false; 
+    }
 }

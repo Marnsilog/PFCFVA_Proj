@@ -126,12 +126,8 @@ function addLine(LineId) {
         }
     });
 }
-
-
-
-  //to show and hide the form
   function showElement(elementId) {
-    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'frmInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'frmInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','addInventory'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -177,16 +173,19 @@ function showEdit(){
 }
 
 function AddInventory(){
-    var addInve = document.getElementById("addInventory");
-    var Inve = document.getElementById("frmInventory");
-    addInve.style.display = 'block';
-    Inve.style.display = 'none';
+    // var addInve = document.getElementById("addInventory");
+    // var Inve = document.getElementById("frmInventory");
+    // addInve.style.display = 'block';
+    // Inve.style.display = 'none';
+    showElement('addInventory');
 
 }
-// window.onload = function() {
-//   showDashboard();
-// };
-    //Changable form
+
+window.onload = function() {
+  showDashboard();
+};
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const logoutLink = document.getElementById('logoutLink');
 
@@ -197,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const confirmLogout = confirm("Are you sure you want to log out?");
 
             if (confirmLogout) {
-                window.location.href = '/public/dashboard.html';
+                window.location.href = 'dashboard.html';
             }
         });
     }

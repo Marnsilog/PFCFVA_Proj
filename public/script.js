@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     homepageSec.classList.remove('opacity-40');
 });
 
+
 function handleLogin() {
 
     var loginButton = document.getElementById('loginButton');
@@ -66,3 +67,34 @@ function directTo() {
         return false; 
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // Add event listener to toggle mobile menu
+    menuToggle.addEventListener('click', function () {
+        // Toggle the display of the mobile menu
+        if (mobileMenu.style.display === 'block') {
+            mobileMenu.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'block';
+        }
+    });
+
+    // Close mobile menu when a menu item is clicked (optional)
+    const mobileMenuItems = mobileMenu.querySelectorAll('a');
+    mobileMenuItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            mobileMenu.style.display = 'none';
+        });
+    });
+
+    // Close mobile menu when clicking outside of it (optional)
+    document.addEventListener('click', function (event) {
+        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+            mobileMenu.style.display = 'none';
+        }
+    });
+});
+

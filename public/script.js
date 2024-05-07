@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     homepageSec.classList.remove('opacity-40');
 });
 
+
 function handleLogin() {
 
     var loginButton = document.getElementById('loginButton');
@@ -52,13 +53,45 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-function directTo(){
+
+function directTo() {
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
 
-    if (username=="marns"&&password=="1234"){
-        window.location.href = "volunteer/volunteer.html";
-    }
-    
+    if (username === "marns" && password === "1234") {
 
+        window.location.href = "volunteer.html";
+        return false;
+    } else {
+        alert("Invalid credentials. Please try again.");
+        return false; 
+    }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+
+    menuToggle.addEventListener('click', function () {
+        if (mobileMenu.style.display === 'block') {
+            mobileMenu.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'block';
+        }
+    });
+
+    const mobileMenuItems = mobileMenu.querySelectorAll('a');
+    mobileMenuItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            mobileMenu.style.display = 'none';
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+            mobileMenu.style.display = 'none';
+        }
+    });
+});
+

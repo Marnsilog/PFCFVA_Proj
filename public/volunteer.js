@@ -6,10 +6,6 @@ function animateProgressBar(targetWidth) {
     }
   }
   
-  document.addEventListener('DOMContentLoaded', () => {
-    animateProgressBar(70);
-  });
-  
   function animateProgressBar2(targetWidth) {
     const progressBar2 = document.getElementById('progress2');
     if (progressBar2) {
@@ -17,10 +13,20 @@ function animateProgressBar(targetWidth) {
     }
   }
   
-  document.addEventListener('DOMContentLoaded', () => {
-    animateProgressBar2(40);
-  });
 
+
+  function showDutyHours(){
+    var dutyH = document.getElementById('dutyH');
+    var FireR = document.getElementById('FireR');
+    var frmFireResponse = document.getElementById('frmFireResponse');
+    var frmDutyhours = document.getElementById('frmDutyhours');
+    frmDutyhours.style.display = 'block';
+    frmFireResponse.style.display = 'none';
+    dutyH.classList.add('bg-red-700','text-white');
+    FireR.classList.remove('bg-red-700','text-white');
+    dutyH.classList.add('text-black');
+    
+  }
 
   function showFireRes(){
     
@@ -35,21 +41,8 @@ function animateProgressBar(targetWidth) {
     FireR.classList.add('text-black');
 
   }
-
-  function showDutyHours(){
-    var dutyH = document.getElementById('dutyH');
-    var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('frmFireResponse');
-    var frmDutyhours = document.getElementById('frmDutyhours');
-    frmDutyhours.style.display = 'block';
-    frmFireResponse.style.display = 'none';
-    dutyH.classList.add('bg-red-700','text-white');
-    FireR.classList.remove('bg-red-700','text-white');
-    dutyH.classList.add('text-black');
-    
-  }
   function displaySection(sectionName) {
-    const sections = ['frmMyprofile', 'frmRankings', 'frmAchievement', 'frmRecord'];
+    const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
     sections.forEach(section => {
 
@@ -63,14 +56,10 @@ function animateProgressBar(targetWidth) {
     });
 }
 
-function CancelInv(){
-    var addinv = document.getElementById('addInventory');
-    var inv = document.getElementById('frmInventory');
-    addinv.style.display = 'none';
-    inv.style.display = 'block';
-    
-
+function Records() {
+    displaySection('frmRecord');
 }
+
 function Profile() {
     displaySection('frmMyprofile');
 }
@@ -79,15 +68,20 @@ function Achievements() {
     displaySection('frmAchievement');
 }
 
+
 function Rankings() {
     displaySection('frmRankings');
 }
 
-function Records() {
-    displaySection('frmRecord');
+
+function CancelInv(){
+    var addinv = document.getElementById('addInventory');
+    var inv = document.getElementById('frmInventory');
+    addinv.style.display = 'none';
+    inv.style.display = 'block';
+    
+
 }
-
-
     function toggleSetting() {
       addLine('prof');
       var profileForm = document.getElementById('Setting');
@@ -102,15 +96,6 @@ function Records() {
       }
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    const datetimePicker = document.getElementById("datetimepicker");
-
-    flatpickr(datetimePicker, {
-        enableTime: true, 
-        dateFormat: "Y-m-d H:i", 
-        time_24hr: true, 
-    });
-});
 
 
 function addLine(LineId) {
@@ -171,52 +156,70 @@ function showHwVolunteer() {
 function showEdit(){
     showElement('editProfile');
 }
-
 function AddInventory(){
-    // var addInve = document.getElementById("addInventory");
-    // var Inve = document.getElementById("frmInventory");
-    // addInve.style.display = 'block';
-    // Inve.style.display = 'none';
     showElement('addInventory');
-
 }
 
-window.onload = function() {
-  showDashboard();
-};
-
+// window.onload = function() {
+//   showDashboard();
+// };
 
 document.addEventListener('DOMContentLoaded', function() {
-    const logoutLink = document.getElementById('logoutLink');
+    animateProgressBar(70);
+    animateProgressBar2(40);
 
+    const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
         logoutLink.addEventListener('click', function(event) {
             event.preventDefault();
-
             const confirmLogout = confirm("Are you sure you want to log out?");
-
             if (confirmLogout) {
                 window.location.href = 'dashboard.html';
             }
         });
     }
-});
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
 
     const circles = document.querySelectorAll('.colorCircle');
-
     circles.forEach(circle => {
         circle.addEventListener('click', function () {
-            if (circle.classList.contains('bg-red-500')) {
-                circle.classList.remove('bg-red-500');
-                circle.classList.add('bg-green-500');
-            } else {
-                circle.classList.remove('bg-green-500');
-                circle.classList.add('bg-red-500');
-            }
+            circle.classList.toggle('bg-red-500');
+            circle.classList.toggle('bg-green-500');
         });
     });
 });
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const logoutLink = document.getElementById('logoutLink');
+
+//     if (logoutLink) {
+//         logoutLink.addEventListener('click', function(event) {
+//             event.preventDefault();
+
+//             const confirmLogout = confirm("Are you sure you want to log out?");
+
+//             if (confirmLogout) {
+//                 window.location.href = 'dashboard.html';
+//             }
+//         });
+//     }
+// });
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const circles = document.querySelectorAll('.colorCircle');
+
+//     circles.forEach(circle => {
+//         circle.addEventListener('click', function () {
+//             if (circle.classList.contains('bg-red-500')) {
+//                 circle.classList.remove('bg-red-500');
+//                 circle.classList.add('bg-green-500');
+//             } else {
+//                 circle.classList.remove('bg-green-500');
+//                 circle.classList.add('bg-red-500');
+//             }
+//         });
+//     });
+// });

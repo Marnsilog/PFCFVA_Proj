@@ -52,10 +52,276 @@
 
     </div>
 </div>
+
 <!-- FORM FIRE RESPONSE -->
 <div id="frmFireResponse" style="display: none;">
-FIRE RESPONSE
+<div class="pt-4">
+    <div>
+        <div class="pt-7">
+            <div class="inline-block pl-16"> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600" onclick="AddFireResponse()">+ Start fire response operation</button></div>
+            <div class="inline-block pl-[72rem]"><input type="text" class="border-[1px] border-black rounded-md h-10 w-96"></div>
+       
+        </div>
+    </div>
+
+        <div class="font-Inter">
+            <table class="mt-10 w-full text-center" >
+                <thead class="bg-[#209AAD]  text-white mt-10 h-16 rounded-t-full text-3xl ">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody class="w-full text-center text-2xl">
+                    <tr class="border-t-2 border-b-2 border-black h-16">
+                        <td>2024-05-08</td>
+                        <td>10:00 AM</td>
+                        <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                    </tr>
+                    <tr class="border-t-2 border-b-2 border-black h-16">
+                        <td>2024-05-09</td>
+                        <td>2:30 PM</td>
+                        <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                    </tr>
+                    <tr class="border-t-2 border-b-2 border-black h-16">
+                        <td>2024-05-10</td>
+                        <td>9:15 AM</td>
+                        <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                    </tr>
+                    <tr class="border-t-2 border-b-2 border-black h-16">
+                        <td>2024-05-11</td>
+                        <td>4:00 PM</td>
+                        <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                    </tr>
+ 
+                </tbody>
+            </table>
+            <div>
+                
+            </div>
+            <div class="absolute top-[10rem] left-[30rem] font-Inter border border-black bg-white" id="firelog" style="display: none;">
+                <div class="mx-32 mt-16 mb-12 pr-10 max-w-[32rem] text-balance">
+                    <p class="text-2xl font-[800]">Fire Response Log</p>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[128px]">Incident Date </p> 
+                        <p id="Incidentdate">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[119px]">Dispatch Time</p> 
+                        <p id="Dispatchdate">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[163px]">Location</p> 
+                        <p id="location">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[129px]">Alarm Status</p> 
+                        <p id="AlarmStat">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[90px]">Who requested <br>the fire response?</p> 
+                        <p id="whoreq">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[138px]">Type of Fire</p> 
+                        <p id="typeoffire">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[128px]">Vehicle Used</p> 
+                        <p id="vehused">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[143px]">Responder</p> 
+                        <p id="responder">Name--------</p>
+                    </div>
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[142px]">Supervisor</p> 
+                        <p id="supervisor">Name--------</p>
+                    </div>
+
+                        <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
+                        <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
+
+                    <div class="text-center pt-16"><a href="#" class="underline underline-offset-1 " onclick="fireclose()">close</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
 </div>
+</div>
+<!-- ADD RESPONSE CHECLIST -->
+<div id="AddResponse" style="display: none;">
+    <div class="w-full h-full flex justify-center pt-16" >
+        <div class="max-w-[80rem] w-full h-full">
+            <div class="font-Inter text-black">
+                <p class="font-bold text-4xl">Fire Response Attendees Checklist</p>
+                <p class="mt-2 ml-3 text-xl">Choose volunteers to include in the Incident Command System (ICS). Make sure to select the vehicle assigned for the Officer In Charge. Only volunteers included will be able to receive fire response points after FIRE OUT.</p>
+            </div>
+        
+            <div  class="mt-9 flex justify-between">
+                <div class="">
+                    <select class="h-9 px-1 rounded-lg border-[2px] border-black" id="truckId">
+                        <option value="text">Choose Vehicle</option>
+                        <option value="text">Engine 72</option>
+                        <option value="text">Water Tender 72</option>
+                        <option value="text">Pumber 72</option>
+                    </select>
+                </div>
+        
+                <div class="">
+                    <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md " onclick="addthis()">+</button>
+                </div>
+            </div>
+        
+                <div class="mt-5 flex justify-center items-center m-w-[90rem]">
+                    <div class="font-Inter w-full" >
+              
+                        <table class="w-full text-center border-2 border-black" >
+                            <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
+                                <tr>
+                                    <th>CALL SIGN</th>
+                                    <th>NAME</th>
+                                    <th>INCLUDE</th>
+                                </tr>
+                            </thead>
+                            <tbody class="w-auto text-center text-xl ">
+                               
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 12</td>
+                                    <td>Marniel Corsiga</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                 </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16 bg-[#D9D9D9]">
+                                    <td>Probi 13</td>
+                                    <td>Maria Joanalynn Mariano</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                </tr>
+             
+                            </tbody>
+                        </table>
+                        <div class="flex justify-end">
+                            <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md">Confirm Attendance</button>
+                        </div>
+                       
+                    </div>
+                </div>
+            <div id="addPer" style="display: none;">
+                <div class="w-full h-full flex justify-center" >
+                    <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
+                        <div class="flex justify-end mr-3 font-bold text-2xl">
+                            <a href="#" onclick="canaddPerson()">X</a>
+                        </div>
+    
+                    </div>
+            </div>
+            </div>
+          
+              
+        </div>
+    </div>
+</div>
+
+<!-- INCIDENT COMMAND SYSTEM -->
+<div id="InciSys">
+    <div class="w-full h-full flex justify-center pt-16" >
+        <div class="max-w-[80rem] w-full">
+            <div class="font-Inter text-black">
+                <p class="font-bold text-4xl">Incident Command System (ICS)</p>
+                <div class="mt-2 flex justify-start font-semibold text-base">
+                    <p class="mr-2">OIC: </p>
+                    <p id="supervisorName">Name---------</p>
+                </div>
+                <div class="flex justify-start font-semibold text-base">
+                    <p class="mr-2">Vehicle: </p>
+                    <p id="vehicleName">Name---------</p>
+                </div>
+                
+            </div>
+        
+            <div  class="mt-9 flex justify-between text-xl text-white font-[500]" >
+
+                 <button class="bg-[#1C7D26] px-10 py-2  rounded-full">ACTIVATE</button>
+                 <button class="bg-[#E4A52A] px-10 py-2  rounded-full">INJURED</button>
+                 <button class="bg-[#DF0000] px-10 py-2  rounded-full">STANDOWN</button>
+                 <button class="bg-[#212D9C] px-10 py-2  rounded-full">FIRE OUT</button>
+                 <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button>
+
+            </div>
+        
+                <div class="mt-5 flex justify-center items-center m-w-[90rem]">
+                    <div class="font-Inter w-full" >
+              
+                        <table class="w-full text-center border-2 border-black" >
+                            <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
+                                <tr>
+                                    <th>CALL SIGN</th>
+                                    <th>NAME</th>
+                                    <th>Issue <br> Commands To</th>
+                                    <th>TIMER</th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody class="w-auto text-center text-xl ">
+                               
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 12</td>
+                                    <td>Marniel Corsiga</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                 </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16 bg-[#D9D9D9]">
+                                    <td>Probi 13</td>
+                                    <td>Maria Joanalynn Mariano</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+             
+                            </tbody>
+                        </table>
+                        <div  class="mt-9 flex justify-between text-lg text-white font-[500]" >
+
+                            <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight">REQUEST<br> BACK UP</button>
+                            <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
+                            <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight">RESUPPLY <br> WATER TANK</button>
+                            <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight">REQUEST <br> FALLBACK</button>
+           
+                       </div>
+                       
+                    </div>
+                </div>
+            <div id="addPer1" style="display: none;">
+                <div class="w-full h-full flex justify-center" >
+                    <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
+                        <div class="flex justify-end mr-3 font-bold text-2xl">
+                            <a href="#" onclick="canaddPerson1()">X</a>
+                        </div>
+    
+                    </div>
+            </div>
+            </div>
+          
+              
+        </div>
+    </div>
+</div>
+
+
 <!-- FORM LEADERBOARDS -->
 <div id="frmLeaderboards" style="display: none;">
     <div class="mt-24 ml-40">
@@ -67,7 +333,7 @@ FIRE RESPONSE
                 <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full ml-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
                     <p class="text-center font-Inter font-[700] pt-2">Duty Hours</p></div>
     
-                <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="FireRes()" id="FireR">
+                <div class="text-black hover:text-white hover:bg-red-700 rounded-full mr-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="FireRes()" id="FireR">
                     <p class="text-center font-Inter font-[700] pt-2">Fire Response</p></div>
                 
             
@@ -113,6 +379,7 @@ FIRE RESPONSE
                     </tbody>
                  </table>
              </div>
+
                 <!-- FIRE RESPONSE -->
              <div id="FireResponse" style="display: none;">        
                 <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
@@ -157,6 +424,7 @@ FIRE RESPONSE
     </div>
 </div>
 </div>
+
 <!--FORM INVENTORY-->
 <div class="pt-4" id="frmInventory" style="display: none;" >
     
@@ -231,52 +499,52 @@ FIRE RESPONSE
                     <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
             </div>
 
-            <!-- FORM PROFILE -->
-            <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
-                <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
+<!-- FORM PROFILE -->
+    <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
+        <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
 
-                    <div class="text-4xl">
+        <div class="text-4xl">
 
                             <div class="flex items-start pt-14 py-5">
-                                <p class="list-none inline-block font-semibold mr-[8rem]">Birthday: </p> 
-                                <p class="list-none inline-block" id="Birthday">June 07, 2001</p>
+                                <p class="font-semibold mr-[8rem]">Birthday: </p> 
+                                <p id="Birthday">June 07, 2001</p>
                             </div>
                 
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[9rem]">Gender: </p> 
-                                <p class="list-none inline-block" id="Gender">Male</p>
+                                <p class="font-semibold mr-[9rem]">Gender: </p> 
+                                <p id="Gender">Male</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Civil Status: </p> 
-                                <p class="list-none inline-block" id="CivilStat">Single</p>
+                                <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
+                                <p id="CivilStat">Single</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[5rem]">Nationality: </p> 
-                                <p class="list-none inline-block" id="Nationality">Filipino</p>
+                                <p class="font-semibold mr-[5rem]">Nationality: </p> 
+                                <p  id="Nationality">Filipino</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Blood Type: </p> 
-                                <p class="list-none inline-block" id="BloodType">O+</p>
+                                <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
+                                <p id="BloodType">O+</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                                <p class="list-none inline-block" id="CollegeUnd">College UnderGrad</p>
+                                <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
+                                <p id="CollegeUnd">College UnderGrad</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                                <p class="list-none inline-block" id="NOC">Centro Scholar University</p>
+                                <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
+                                <p  id="NOC">Centro Scholar University</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[12rem]">Years of Service: </p> 
-                                <p class="list-none inline-block" id="YOS">2 Years</p>
+                                <p class="font-semibold mr-[12rem]">Years of Service: </p> 
+                                <p id="YOS">2 Years</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                                <p class="list-none inline-block" id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                                <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
+                                <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
                             </div>
                             <div class="flex items-start py-5 ">
-                                <p class="list-none inline-block font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                                <p class="list-none inline-block" id="others">STI Global City</p>
+                                <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
+                                <p  id="others">STI Global City</p>
                             </div>
                         
                     </div>
@@ -285,25 +553,25 @@ FIRE RESPONSE
 
                     <div class="text-4xl" >
                         <div class="flex items-start pt-14 py-5">
-                            <p class="list-none inline-block font-semibold mr-[6rem]">Email Address: </p> 
-                            <p class="list-none inline-block" id="emailAdd">Corsigamarniel14@gmail.com</p>
+                            <p class=" font-semibold mr-[6rem]">Email Address: </p> 
+                            <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
                         </div>
             
                         <div class="flex items-start py-5 ">
-                            <p class="list-none inline-block font-semibold mr-[8.6rem]">Contact No.: </p> 
-                            <p class="list-none inline-block" id="ContactNum">09199225389</p>
+                            <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
+                            <p  id="ContactNum">09199225389</p>
                         </div>
                         <div class="flex items-start py-5 ">
-                            <p class="list-none inline-block font-semibold mr-[14rem]">Adress: </p> 
-                            <p class="list-none inline-block" id="Address">262 Unit 1 C-6 Road, Taguig City</p>
+                            <p class="font-semibold mr-[14rem]">Adress: </p> 
+                            <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
                         </div>
                         <div class="flex items-start py-5">
-                            <p class="list-none inline-block font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                            <p class="list-none inline-block" id="ECP">Maria Corsiga Pangan</p>
+                            <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
+                            <p  id="ECP">Maria Corsiga Pangan</p>
                         </div>
                         <div class="flex items-start py-5 ">
-                            <p class="list-none inline-block font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                            <p class="list-none inline-block" id="ECN">09199225389</p>
+                            <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
+                            <p  id="ECN">09199225389</p>
                         </div>
                     
                     </div>
@@ -312,7 +580,7 @@ FIRE RESPONSE
                 
             </div>
             
-            <!-- FORM RANKINGS -->
+<!-- FORM RANKINGS -->
             <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
                     <div class="flex items-start py-5 ml-28">
                         <div class="text-5xl text-start list-none inline-block mx-20">
@@ -351,8 +619,7 @@ FIRE RESPONSE
     
                     </div>
                 </div>
-
-            <!-- FORM RECORDS  -->
+ <!-- FORM RECORDS  -->
                 <div class="px-6" style="display: none;" id="frmRecord"  >        
                     <table class="mt-10 w-full  border-[1px] border-black">
                     <thead class="mt-10 h-16 text-base">
@@ -374,7 +641,8 @@ FIRE RESPONSE
        
             </div>
         </div>
-    </div>
+</div>
+
 <!-- Edit Profile -->
 <div style="display: none;" id="editProfile">
     <div class="mt-12 ml-96">
@@ -580,11 +848,13 @@ FIRE RESPONSE
     </div>
     
 </div>
+
 <!-- DONATE -->
 <div id="frmDonate">
 </div>
+
 <!-- FORM HOW TO VOLUNTEER -->
-    <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
+<div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
         <p class="text-5xl font-bold">How to volunteer?</p>
 
         <p class="text-3xl font-[500] ml-10 mt-14">What are the minimum requirements  I need to <br> meet to be a volunteer firefighter</p>
@@ -601,7 +871,7 @@ FIRE RESPONSE
             <li>Barangay Clearance</li>
             <li>Updated resume with picture.</li>
         </div>
-    </div>
+</div>
 
 </body>
 </div>

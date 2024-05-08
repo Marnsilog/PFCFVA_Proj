@@ -27,15 +27,25 @@ function addthis(){
     var addPer = document.getElementById('addPer');
     addPer.style.display = 'block';
 }
+function canaddPerson(){
+    var canAdd = document.getElementById('addPer');
+    canAdd.style.display = 'none';
+}
+
+function addthis1(){
+    var addPer = document.getElementById('addPer1');
+    addPer.style.display = 'block';
+}
+function canaddPerson1(){
+    var canAdd = document.getElementById('addPer1');
+    canAdd.style.display = 'none';
+}
 function fireclose(){
     var firelog = document.getElementById('firelog');
     firelog.style.display = 'none';
 }
 
-function canaddPerson(){
-    var canAdd = document.getElementById('addPer');
-    canAdd.style.display = 'none';
-}
+
 
 function AddFireResponse(){
     var AddResponse = document.getElementById('AddResponse');

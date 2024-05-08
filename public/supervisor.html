@@ -154,7 +154,7 @@
 <!-- ADD RESPONSE CHECLIST -->
 <div id="AddResponse" style="display: none;">
     <div class="w-full h-full flex justify-center pt-16" >
-        <div class="max-w-[90rem] ">
+        <div class="max-w-[80rem] w-full h-full">
             <div class="font-Inter text-black">
                 <p class="font-bold text-4xl">Fire Response Attendees Checklist</p>
                 <p class="mt-2 ml-3 text-xl">Choose volunteers to include in the Incident Command System (ICS). Make sure to select the vehicle assigned for the Officer In Charge. Only volunteers included will be able to receive fire response points after FIRE OUT.</p>
@@ -171,7 +171,7 @@
                 </div>
         
                 <div class="">
-                    <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md" onclick="addthis()">+</button>
+                    <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md " onclick="addthis()">+</button>
                 </div>
             </div>
         
@@ -227,6 +227,100 @@
         </div>
     </div>
 </div>
+
+<!-- INCIDENT COMMAND SYSTEM -->
+<div id="InciSys">
+    <div class="w-full h-full flex justify-center pt-16" >
+        <div class="max-w-[80rem] w-full">
+            <div class="font-Inter text-black">
+                <p class="font-bold text-4xl">Incident Command System (ICS)</p>
+                <div class="mt-2 flex justify-start font-semibold text-base">
+                    <p class="mr-2">OIC: </p>
+                    <p id="supervisorName">Name---------</p>
+                </div>
+                <div class="flex justify-start font-semibold text-base">
+                    <p class="mr-2">Vehicle: </p>
+                    <p id="vehicleName">Name---------</p>
+                </div>
+                
+            </div>
+        
+            <div  class="mt-9 flex justify-between text-xl text-white font-[500]" >
+
+                 <button class="bg-[#1C7D26] px-10 py-2  rounded-full">ACTIVATE</button>
+                 <button class="bg-[#E4A52A] px-10 py-2  rounded-full">INJURED</button>
+                 <button class="bg-[#DF0000] px-10 py-2  rounded-full">STANDOWN</button>
+                 <button class="bg-[#212D9C] px-10 py-2  rounded-full">FIRE OUT</button>
+                 <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button>
+
+            </div>
+        
+                <div class="mt-5 flex justify-center items-center m-w-[90rem]">
+                    <div class="font-Inter w-full" >
+              
+                        <table class="w-full text-center border-2 border-black" >
+                            <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
+                                <tr>
+                                    <th>CALL SIGN</th>
+                                    <th>NAME</th>
+                                    <th>Issue <br> Commands To</th>
+                                    <th>TIMER</th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody class="w-auto text-center text-xl ">
+                               
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 12</td>
+                                    <td>Marniel Corsiga</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                 </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16 bg-[#D9D9D9]">
+                                    <td>Probi 13</td>
+                                    <td>Maria Joanalynn Mariano</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+             
+                            </tbody>
+                        </table>
+                        <div  class="mt-9 flex justify-between text-lg text-white font-[500]" >
+
+                            <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight">REQUEST<br> BACK UP</button>
+                            <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
+                            <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight">RESUPPLY <br> WATER TANK</button>
+                            <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight">REQUEST <br> FALLBACK</button>
+           
+                       </div>
+                       
+                    </div>
+                </div>
+            <div id="addPer1" style="display: none;">
+                <div class="w-full h-full flex justify-center" >
+                    <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
+                        <div class="flex justify-end mr-3 font-bold text-2xl">
+                            <a href="#" onclick="canaddPerson1()">X</a>
+                        </div>
+    
+                    </div>
+            </div>
+            </div>
+          
+              
+        </div>
+    </div>
+</div>
+
 
 <!-- FORM LEADERBOARDS -->
 <div id="frmLeaderboards" style="display: none;">
@@ -486,7 +580,7 @@
                 
             </div>
             
-            <!-- FORM RANKINGS -->
+<!-- FORM RANKINGS -->
             <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
                     <div class="flex items-start py-5 ml-28">
                         <div class="text-5xl text-start list-none inline-block mx-20">
@@ -525,8 +619,7 @@
     
                     </div>
                 </div>
-
-            <!-- FORM RECORDS  -->
+ <!-- FORM RECORDS  -->
                 <div class="px-6" style="display: none;" id="frmRecord"  >        
                     <table class="mt-10 w-full  border-[1px] border-black">
                     <thead class="mt-10 h-16 text-base">

@@ -1,19 +1,4 @@
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
-  
-  function showDutyHours(){
+function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
     var frmFireResponse = document.getElementById('FireResponse');
@@ -25,8 +10,7 @@ function animateProgressBar(targetWidth) {
     dutyH.classList.add('text-black');
     
   }
-  function FireRes(){
-    
+function FireRes(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
     var frmFireResponse = document.getElementById('FireResponse');
@@ -37,7 +21,32 @@ function animateProgressBar(targetWidth) {
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
 
-  }
+}
+
+function addthis(){
+    var addPer = document.getElementById('addPer');
+    addPer.style.display = 'block';
+}
+function fireclose(){
+    var firelog = document.getElementById('firelog');
+    firelog.style.display = 'none';
+}
+
+function canaddPerson(){
+    var canAdd = document.getElementById('addPer');
+    canAdd.style.display = 'none';
+}
+
+function AddFireResponse(){
+    var AddResponse = document.getElementById('AddResponse');
+    var frmFireResponse = document.getElementById('frmFireResponse');
+    AddResponse.style.display = 'block';
+    frmFireResponse.style.display = 'none';
+}
+function seedetails(){
+    var firelog = document.getElementById('firelog');
+    firelog.style.display = 'block';
+}
 
 //PROFILE CONFIG
   function displaySection(sectionName) {
@@ -81,7 +90,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -169,4 +178,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function animateProgressBar(targetWidth) {
+  
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+      progressBar.style.width = targetWidth + '%';
+    }
+  }
+  
+  function animateProgressBar2(targetWidth) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+      progressBar2.style.width = targetWidth + '%';
+    }
+  }
+  
 

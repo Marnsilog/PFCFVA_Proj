@@ -214,12 +214,17 @@
             <div class="flex items-start py-5 ">
                 <div class="inline-block mr-[4rem]">
                     
-                    <p>8182 Dr Arcadio Santos Ave,<br> Parañaque, 1700 Metro Manila</p> 
+                    <a href="https://www.google.com/maps/place/8182+Dr+Arcadio+Santos+Ave,+Para%C3%B1aque,+1700+Metro+Manila/@14.4766088,120.996898,17z/data=!3m1!4b1!4m6!3m5!1s0x3397ce64d1892071:0x5b6c10f464a3d69b!8m2!3d14.4766036!4d120.9994729!16s%2Fg%2F11gjw3vzk2?entry=ttu"><p>8182 Dr Arcadio Santos Ave,<br> Parañaque, 1700 Metro Manila</p> </a>
+                    
                     <p class="mt-12 underline underline-offset-1">pfcfva2003@gmail.com</p>
                 </div>
                 <div class="inline-block px-80">
                     <p>099175222526</p>
-                    <p class="mt-16 underline underline-offset-1">https://www.facebook.com/pfcfva</p>
+                    <div class="mt-16 underline underline-offset-1" >
+                        <a href="https://www.facebook.com/pfcfva">PFCFVA Facebook Page</a>
+                    </div>
+                    
+            
                 </div>
             
 
@@ -305,7 +310,7 @@
         </select>
     </div>
             <div>
-                <div id="frmDutyhours">        
+                <div>        
                     <table id="myTable2" class="mt-10 w-full border-[1px] border-black shadow-lg shadow-gray-600">
                         <tbody class="text-2xl text-start font-Inter">
                             <tr class=" border-gray-500 h-16">
@@ -367,6 +372,7 @@
                         type="text" placeholder="" id="Search">
                     </div>
                     </div>
+                    <!-- DUTY HOURS -->
                     <div id="frmDutyhours">        
                         <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
                         <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
@@ -400,7 +406,7 @@
                             </tbody>
                          </table>
                      </div>
-
+                        <!-- FIRE RESPONSE -->
                      <div id="frmFireResponse" style="display: none;">        
                         <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
                         <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
@@ -446,7 +452,7 @@
     </div>
 
 <!-- FORM MAIN PROFILE -->
-    <div style="display: none;"  id="frmMainProfile">
+    <div id="frmMainProfile" style="display: none;">
     <div class="grid grid-cols-3 gap-0 m-0"  >
         
         <div class="my-0">
@@ -506,16 +512,14 @@
                         <li class="list-none inline-block px-20"><a href="#" onclick="Profile()" >My Profile</a></li>
                         <li class="list-none inline-block px-20"><a href="#" onclick="Achievements()" >Achievements</a></li>
                         <li class="list-none inline-block px-20"><a href="#" onclick="Rankings()">Rankings</a></li>
-                        <li class="list-none inline-block pl-10"><a href="#" onclick="Records()">Records</a></li>
-                        <li class="list-none inline-block after:transition after:ease-[ease] after:duration-300">
-                        <a href="#"></a>   
+                        <li class="list-none inline-block pl-10"><a href="#" onclick="Records()">Records</a></li>  
                     </ul>
                 </nav>
                     <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
             </div>
 
             <!-- FORM PROFILE -->
-            <div class="pt-11 ml-16 font-Inter" id="frmMyprofile">
+            <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
                 <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
 
                     <div class="text-4xl">
@@ -634,11 +638,30 @@
     
                     </div>
                 </div>
+
+            <!-- FORM RECORDS  -->
+                <div class="px-6" style="display: none;" id="frmRecord"  >        
+                    <table class="mt-10 w-full  border-[1px] border-black">
+                    <thead class="mt-10 h-16 text-base">
+                        <tr class="text-center text-black font-Inter font-[100] ">
+                            <th class="text-center border-2 border-black">Time In</th>
+                            <th class="text-center border-2 border-black">Time Out</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-2xl text-center font-Inter">
+                        <tr class="border-2 border-b-[1px] h-16">
+                            <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
+                            <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
+                        </tr>
+
+                    
+                        </tbody>
+                     </table>
+                 </div>
+       
             </div>
         </div>
     </div>
-
-
 <!-- FORM HOW TO VOLUNTEER -->
     <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
         <p class="text-5xl font-bold">How to volunteer?</p>

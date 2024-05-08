@@ -592,6 +592,10 @@ video {
   right: 1.25rem;
 }
 
+.top-16{
+  top: 4rem;
+}
+
 .top-5{
   top: 1.25rem;
 }
@@ -690,6 +694,10 @@ video {
 
 .ml-6{
   margin-left: 1.5rem;
+}
+
+.ml-7{
+  margin-left: 1.75rem;
 }
 
 .ml-96{
@@ -1313,6 +1321,11 @@ video {
 .px-5{
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+
+.px-6{
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .px-7{

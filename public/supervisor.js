@@ -13,12 +13,10 @@ function animateProgressBar(targetWidth) {
     }
   }
   
-
-
   function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('frmFireResponse');
+    var frmFireResponse = document.getElementById('FireResponse');
     var frmDutyhours = document.getElementById('frmDutyhours');
     frmDutyhours.style.display = 'block';
     frmFireResponse.style.display = 'none';
@@ -27,12 +25,11 @@ function animateProgressBar(targetWidth) {
     dutyH.classList.add('text-black');
     
   }
-
-  function showFireRes(){
+  function FireRes(){
     
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('frmFireResponse');
+    var frmFireResponse = document.getElementById('FireResponse');
     var frmDutyhours = document.getElementById('frmDutyhours');
     frmFireResponse.style.display = 'block';
     frmDutyhours.style.display = 'none';
@@ -41,6 +38,8 @@ function animateProgressBar(targetWidth) {
     FireR.classList.add('text-black');
 
   }
+
+//PROFILE CONFIG
   function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
@@ -55,51 +54,21 @@ function animateProgressBar(targetWidth) {
 
     });
 }
-
 function Records() {
     displaySection('frmRecord');
 }
-
 function Profile() {
     displaySection('frmMyprofile');
 }
-
 function Achievements() {
     displaySection('frmAchievement');
 }
-
-
 function Rankings() {
     displaySection('frmRankings');
 }
 
-
-function CancelInv(){
-    var addinv = document.getElementById('addInventory');
-    var inv = document.getElementById('frmInventory');
-    addinv.style.display = 'none';
-    inv.style.display = 'block';
-    
-
-}
-    function toggleSetting() {
-      addLine('prof');
-      var profileForm = document.getElementById('Setting');
-      
-
-      if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-       
-          profileForm.style.display = 'block';
-      } else {
-        
-          profileForm.style.display = 'none';
-      }
-  }
-
-
-
 function addLine(LineId) {
-    const formIds = ['dashb', 'inV', 'leadB', 'conN','prof'];
+    const formIds = ['dashb', 'fireS', 'leadB', 'inV','prof'];
     
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -112,7 +81,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'frmInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','addInventory'];
+    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -124,10 +93,16 @@ function addLine(LineId) {
     });
 }
 
-
+//DASHBOARD CONFIG
 function showDashboard() {
     showElement('frmDashboard');
     addLine('dashb');
+}
+function showFireRes() {
+    showElement('frmFireResponse');
+    addLine('fireS');
+    // const dashboard = document.getElementById('frmDashboard');
+    // dashboard.style.display = 'block';
 }
 function showInventory() {
     showElement('frmInventory');
@@ -137,12 +112,21 @@ function showLeaderboards() {
   showElement('frmLeaderboards');
   addLine('leadB');
 }
-function showContactus() {
-    showElement('frmContactus');
-    addLine('conN');
-    const dashboard = document.getElementById('frmDashboard');
-    dashboard.style.display = 'block';
+function toggleSetting() {
+
+    var profileForm = document.getElementById('Setting');
+    
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+     
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+    addLine('prof');
 }
+
+//SETTING CONFIG
 function myProfile() {
     showElement('frmMainProfile');
     
@@ -156,9 +140,7 @@ function showHwVolunteer() {
 function showEdit(){
     showElement('editProfile');
 }
-function AddInventory(){
-    showElement('addInventory');
-}
+
 
 // window.onload = function() {
 //   showDashboard();
@@ -188,38 +170,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const logoutLink = document.getElementById('logoutLink');
-
-//     if (logoutLink) {
-//         logoutLink.addEventListener('click', function(event) {
-//             event.preventDefault();
-
-//             const confirmLogout = confirm("Are you sure you want to log out?");
-
-//             if (confirmLogout) {
-//                 window.location.href = 'dashboard.html';
-//             }
-//         });
-//     }
-// });
-
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     const circles = document.querySelectorAll('.colorCircle');
-
-//     circles.forEach(circle => {
-//         circle.addEventListener('click', function () {
-//             if (circle.classList.contains('bg-red-500')) {
-//                 circle.classList.remove('bg-red-500');
-//                 circle.classList.add('bg-green-500');
-//             } else {
-//                 circle.classList.remove('bg-green-500');
-//                 circle.classList.add('bg-red-500');
-//             }
-//         });
-//     });
-// });

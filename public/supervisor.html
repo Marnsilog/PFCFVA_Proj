@@ -2,10 +2,608 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="./styles.css" rel="stylesheet">
+    <link href="volunteer.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>PFCFVA || Supervisor Dashboard</title>
 </head>
-<body>
+<div>
+    <body class="bg-white">
+<div class="bg-rosered2 h-28 font-Inter">
+    <nav class="flex items-center">
+        <img src="img/pfcfvalogo.png" class="mt-2 ml-10 w-24">
+        <p class="pt-4 pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+        <ul class="flex-1 text-right text-white text-2xl pr-10 pt-6">
+        <li id="dashb" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showDashboard()">Dashboard</a></li>
+        <li id="fireS" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showFireRes()">Fire Response</a></li>
+        <li id="leadB" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showLeaderboards()">Leaderboards</a></li>
+        <li id="inV" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showInventory()">Inventory</a></li>
+        <li class="list-none inline-block px-12 hover:underline hover:underline-offset-8"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+        <li class="list-none inline-block px-7 after:transition after:ease-[ease] after:duration-300">
+            <img id="prof" src="img/pfcfvalogo.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="toggleSetting()">
+        </li>
+        <a href="#"></a>   
+
+    </ul>
+</nav>
+</div>
+
+<!-- SETTINGS -->
+<div class="absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="myProfile()"><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="showAboutUs()"><p>About Us</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="showHwVolunteer()"><p>Volunteer</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Donate</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
+    </div>
+</div>
+
+<!-- FORM DASHBOARD -->
+<div id="frmDashboard" style="display: none;">
+        
+    <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
+
+        <div class="text-black font-Inter pt-11 pl-10">
+            <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
+            <p class="text-lg">Volunteer</p>
+        </div>
+
+    </div>
+</div>
+<!-- FORM FIRE RESPONSE -->
+<div id="frmFireResponse" style="display: none;">
+FIRE RESPONSE
+</div>
+<!-- FORM LEADERBOARDS -->
+<div id="frmLeaderboards" style="display: none;">
+    <div class="mt-24 ml-40">
+        <p class="font-Inter font-[600] text-4xl">Leaderboards</p>
+        <div class="ml-5">
+
+            <div class="flex items-start">
+            <div class="mt-12 rounded-full border-[1px] border-black w-[22rem] h-12 flex items-start">
+                <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full ml-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
+                    <p class="text-center font-Inter font-[700] pt-2">Duty Hours</p></div>
     
+                <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="FireRes()" id="FireR">
+                    <p class="text-center font-Inter font-[700] pt-2">Fire Response</p></div>
+                
+            
+                    
+            </div>
+
+            <div>
+                <input class="ml-[54rem] mt-14 bg-white w-96 h-10 px-4 border border-black rounded-lg" 
+                type="text" placeholder="" id="Search">
+            </div>
+            </div>
+            <!-- DUTY HOURS -->
+            <div id="frmDutyhours">        
+                <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
+                <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
+                    <tr>
+                        <th class="pr-[26rem]">Volunteers</th>
+                        <th class="pl-[22rem] ">Points</th>
+                    </tr>
+                </thead>
+                <tbody class="text-2xl text-start font-Inter">
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">1. Diosdado Amog</td>
+                        <td class="pl-[38rem]">2297</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">2. Mj Marianoa</td>
+                        <td class="pl-[38rem]">2290</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">3. Anne Pangan</td>
+                        <td class="pl-[38rem]">1005</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">4. Marniel Corsiga</td>
+                        <td class="pl-[38rem]">1001</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">5. James Aguirre </td>
+                        <td class="pl-[38rem]">905</td>
+                    </tr>
+                
+                    </tbody>
+                 </table>
+             </div>
+                <!-- FIRE RESPONSE -->
+             <div id="FireResponse" style="display: none;">        
+                <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
+                <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
+                    <tr>
+                        <th class="pr-[26rem]">Volunteers</th>
+                        <th class="pl-[22rem] ">Fire Response</th>
+                    </tr>
+                </thead>
+                <tbody class="text-2xl text-start font-Inter">
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">1. James Aguirre</td>
+                        <td class="pl-[38rem]">30</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">2. Marniel Corsiga</td>
+                        <td class="pl-[38rem]">24</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">3. Anne Pangan</td>
+                        <td class="pl-[38rem]">22</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">4. Mj Mariano</td>
+                        <td class="pl-[38rem]">20</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">5. Diosdado Amog</td>
+                        <td class="pl-[38rem]">19</td>
+                    </tr>
+                    <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
+                        <td class="pl-3">5.Lyster Liwanag</td>
+                        <td class="pl-[38rem]">15</td>
+                    </tr>
+                
+                    </tbody>
+                 </table>
+             </div>
+
+        
+    
+    </div>
+</div>
+</div>
+<!--FORM INVENTORY-->
+<div class="pt-4" id="frmInventory" style="display: none;" >
+    
+ INVENTORY
+</div>
+
+
+<!-- FORM MAIN PROFILE -->
+<div id="frmMainProfile" style="display: none;">
+    <div class="grid grid-cols-3 gap-0 m-0"  >
+        
+        <div class="my-0">
+            <div class="pt-8 pb-5 ml-6 font-Inter">
+                <p class="text-black text-4xl font-bold">My Profile</p>
+            </div>
+            <div class=" w-[42rem] h-full bg-mjgrey pt-5 overflow-x-auto">
+                <div class="">
+                    <img src="img/user.png" class="w-80 ml-[11rem]">
+                </div>
+                
+                <div class="text-center font-Inter">
+                    <p class="pt-5 text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
+                    <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
+                </div>
+                <div class="ml-[16.5rem] pt-7">
+                    <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
+                </div>
+                <div class="bg-[#9C9C9C] h-[3px] mt-3 mx-3"></div>
+                <div class="pt-3 px-16">
+                    <p class="font-Inter text-xl">Duty Hours</p>
+                    <div class="bg-white border-black border-[1px] h-10 rounded-full overflow-hidden pt-[3.5px] px-5">
+                        <div id="progress" class="h-full"></div>
+                    </div>
+                    <p class="text-end text-base text-[#4B4B4B]">1200 duty Hours</p>
+                </div>
+        
+                <div class="px-16">
+                    <p class="font-Inter text-xl">Fire Response</p>
+                    <div class="bg-white border-black border-[1px] h-10 rounded-full overflow-hidden pt-[3.5px] px-5">
+                        <div id="progress2" class="h-full"></div>
+                    </div>
+                    <p class="text-end text-base text-[#4B4B4B]">12 fire Response</p>
+                </div>
+                <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
+                
+                <div class="mt-6 grid grid-cols-2 gap-2 place-items-center">
+                    <div class="text-center font-Inter">
+                        <p class="text-3xl font-semibold">1</p>
+                        <p class="text-3xl">Inventory</p>
+                    </div>
+        
+                    <div class="text-center font-Inter">
+                        <p class="text-3xl font-semibold">4</p>
+                        <p class="text-3xl">Activity</p>
+                    </div>
+                    
+                </div>
+                    
+        </div>
+        
+        </div>
+        <div class="w-[76rem] mt-[90px] ml-[38px] font-Inter">
+            <div>
+                <nav class="flex items-start">
+                    <ul class="flex-none text-center text-black text-3xl pt-12">
+                        <li class="list-none inline-block px-20"><a href="#" onclick="Profile()" >My Profile</a></li>
+                        <li class="list-none inline-block px-20"><a href="#" onclick="Achievements()" >Achievements</a></li>
+                        <li class="list-none inline-block px-20"><a href="#" onclick="Rankings()">Rankings</a></li>
+                        <li class="list-none inline-block pl-10"><a href="#" onclick="Records()">Records</a></li>  
+                    </ul>
+                </nav>
+                    <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
+            </div>
+
+            <!-- FORM PROFILE -->
+            <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
+                <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
+
+                    <div class="text-4xl">
+
+                            <div class="flex items-start pt-14 py-5">
+                                <p class="list-none inline-block font-semibold mr-[8rem]">Birthday: </p> 
+                                <p class="list-none inline-block" id="Birthday">June 07, 2001</p>
+                            </div>
+                
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[9rem]">Gender: </p> 
+                                <p class="list-none inline-block" id="Gender">Male</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Civil Status: </p> 
+                                <p class="list-none inline-block" id="CivilStat">Single</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[5rem]">Nationality: </p> 
+                                <p class="list-none inline-block" id="Nationality">Filipino</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Blood Type: </p> 
+                                <p class="list-none inline-block" id="BloodType">O+</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[4.5rem]">Educational Attainment: </p> 
+                                <p class="list-none inline-block" id="CollegeUnd">College UnderGrad</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[5.5rem]">Name of the Company: </p> 
+                                <p class="list-none inline-block" id="NOC">Centro Scholar University</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[12rem]">Years of Service: </p> 
+                                <p class="list-none inline-block" id="YOS">2 Years</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[15.5rem]">Skill/Training: </p> 
+                                <p class="list-none inline-block" id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                            </div>
+                            <div class="flex items-start py-5 ">
+                                <p class="list-none inline-block font-semibold mr-[12.3rem]">Other Affiliation: </p> 
+                                <p class="list-none inline-block" id="others">STI Global City</p>
+                            </div>
+                        
+                    </div>
+
+                    <p class="text-[#9E9E9E] text-5xl font-bold py-10">Contact Information </p>
+
+                    <div class="text-4xl" >
+                        <div class="flex items-start pt-14 py-5">
+                            <p class="list-none inline-block font-semibold mr-[6rem]">Email Address: </p> 
+                            <p class="list-none inline-block" id="emailAdd">Corsigamarniel14@gmail.com</p>
+                        </div>
+            
+                        <div class="flex items-start py-5 ">
+                            <p class="list-none inline-block font-semibold mr-[8.6rem]">Contact No.: </p> 
+                            <p class="list-none inline-block" id="ContactNum">09199225389</p>
+                        </div>
+                        <div class="flex items-start py-5 ">
+                            <p class="list-none inline-block font-semibold mr-[14rem]">Adress: </p> 
+                            <p class="list-none inline-block" id="Address">262 Unit 1 C-6 Road, Taguig City</p>
+                        </div>
+                        <div class="flex items-start py-5">
+                            <p class="list-none inline-block font-semibold mr-[5rem]">Emergency Contact Person: </p> 
+                            <p class="list-none inline-block" id="ECP">Maria Corsiga Pangan</p>
+                        </div>
+                        <div class="flex items-start py-5 ">
+                            <p class="list-none inline-block font-semibold mr-[4rem]">Emergency Contact Number: </p> 
+                            <p class="list-none inline-block" id="ECN">09199225389</p>
+                        </div>
+                    
+                    </div>
+
+                
+                
+            </div>
+            
+            <!-- FORM RANKINGS -->
+            <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
+                    <div class="flex items-start py-5 ml-28">
+                        <div class="text-5xl text-start list-none inline-block mx-20">
+                            <p class="font-bold">Aspirant</p>
+                            <p class="pt-5 text-3xl">100 duty Hours</p>
+                        </div>
+
+                        <div class=" text-5xl text-start list-none inline-block ml-[19rem]">
+                            <p class="font-bold">Echo 900</p>
+                            <p class="pt-5 text-3xl">2000 duty hours</p>
+                            <p class="text-3xl">20 fire response</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="flex items-start py-16 ml-28">
+                        <div class="text-5xl text-start list-none inline-block mx-20">
+                            <p class="font-bold">Probationary</p>
+                            <p class="pt-5 text-3xl">1000 duty hours</p>
+                            <p class="text-3xl">10 fire response</p>
+                        </div>
+
+                        <div class=" text-5xl text-start list-none inline-block ml-52">
+                            <p class="font-bold">Echo 800</p>
+                            <p class="pt-5 text-3xl text-start">100 hours</p>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <div class="flex items-start py-16 ml-28">
+                        <div class="text-5xl text-start list-none inline-block mx-20">
+                            <p class="font-bold">Echo</p>
+                            <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                        </div>
+    
+                    </div>
+                </div>
+
+            <!-- FORM RECORDS  -->
+                <div class="px-6" style="display: none;" id="frmRecord"  >        
+                    <table class="mt-10 w-full  border-[1px] border-black">
+                    <thead class="mt-10 h-16 text-base">
+                        <tr class="text-center text-black font-Inter font-[100] ">
+                            <th class="text-center border-2 border-black">Time In</th>
+                            <th class="text-center border-2 border-black">Time Out</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-2xl text-center font-Inter">
+                        <tr class="border-2 border-b-[1px] h-16">
+                            <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
+                            <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
+                        </tr>
+
+                    
+                        </tbody>
+                     </table>
+                 </div>
+       
+            </div>
+        </div>
+    </div>
+<!-- Edit Profile -->
+<div style="display: none;" id="editProfile">
+    <div class="mt-12 ml-96">
+        <p class="font-Inter font-bold text-3xl">Edit Profile</p>
+        <div class="flex items-start pt-9 py-5 ">
+            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
+            <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
+
+        </div>
+
+      
+            <form class="font-Inter text-xl font-[600]">
+                <div class="flex items-start">
+                    <div class="ml-12">
+                        <p>Lastname</p>
+                        <input class="bg-white x;w-80 h-10 px-4 border border-black" 
+                        type="lastname" placeholder="Lastname" id="lastname">
+                    </div>
+
+                    <div class="ml-12 ">
+                        <p>First Name</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="firstname" placeholder="Firstname" id="firstname">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Middle Name</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="middlename" placeholder="MiddleName" id="middlename">
+                    </div>
+                </div>
+
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Username</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Username" placeholder="Username" id="Username">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Email Address</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="EmailAdd" placeholder="EmailAdd" id="EmailAdd">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Contact Number</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="ContactNum" placeholder="ContactNum" id="ContactNum">
+                    </div>
+                </div>
+
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Old Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="Old Password" id="OldPass">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>New Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="New Password" id="NewPass">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Confirm Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="Confirm Password" id="ConPass">
+                    </div>
+                </div>
+                
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Civil Status</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Civil Status" placeholder="Civil Status" id="civilStat">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Nationality</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Nationality" placeholder="Nationality" id="Nationality">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Blood Type</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="BloodType" placeholder="BloodType" id="BloodType">
+                    </div>
+                </div>
+               
+
+                <div class="flex items-center space-x-[22.7rem] pt-5">
+                    <div class="ml-20">
+                        <input type="text" id="datetimepicker" placeholder="Select Date and Time">
+                    </div>
+
+                        <div  class="ml-12 w-96">
+                            <input type="text" id="" placeholder="Gender">
+                            <select class="w-96 h-10 border-[1px] border-black" id="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                </div>
+              
+                <div class="ml-12">
+                    <p>Current Address</p>
+                    <input class="bg-white w-[66rem] h-10 px-4 border border-black" 
+                    type="Current Address" placeholder="Current Address" id="currentAdd">
+                </div>
+
+                <div class="flex items-center pt-5">
+                    <div class="ml-[50px]">
+                        <p>Emergency Contact Person</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Emergency Contact Person" id="ECP">
+                    </div>
+
+                    <div class="mx-[10rem]">
+                        <p>Emergency Contact Number</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="Emergency Contact Number" placeholder="Emergency Contact Number" id="ECN">
+                    </div>
+                </div>   
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Highest Educational Attainment</p>
+                        <input class="bg-white w-[25rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Highest Educational Attainment" id="hea">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Name of the Company</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="text" placeholder="Name of the Company" id="noc">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Years in service</p>
+                        <input class="bg-white w-60 h-10 px-4 border border-black" 
+                        type="text" placeholder="Years in service" id="yis">
+                    </div>
+                </div>     
+                <div class="flex items-center pt-5">
+                    <div class="ml-[50px]">
+                        <p>Skills/Training</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Skills/Training" id="ST">
+                    </div>
+
+                    <div class="mx-[10rem]">
+                        <p>Other Affiliation</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Other Affiliation" id="OA">
+                    </div>
+                </div>   
+                
+                <div class="flex items-start py-14 ml-[48rem]">
+                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
+                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
+                </div>     
+            </form>
+
+    </div>
+</div>
+
+
+<!-- ABOUT US -->
+<div class="font-black" id="frmaboutus" style="display: none;">
+        
+    <div class="bg-center" style="background-image: url('img/img1.JPG'); background-size: cover;">
+        <div class="bg-black bg-opacity-40  border-none">
+            <div class="text-white text-center py-14">
+                <p class="text-5xl font-bold ">ABOUT US</p>
+                <p class="mt-10 text-2xl font-Inika font-[500]">No organization survives without a strong 
+                    <br> ground holding them tight. From the start,
+                    <br> we will always grow by these core values. </p>
+            </div>
+        </div>
+    
+    </div>
+
+
+
+    <div class="mt-4 ml-[26rem]">
+        <p class="text-5xl font-inter">ORGANIZATION VALUES</p>
+        <div class="font-Inter font-[300] ml-16">
+            <p class="text-4xl mt-6 font-bold">Mission</p>
+            <p class="text-3xl mt-4">Our mission is to respond to emergencies protecting people, property,<br>
+                the city of Paranaque, and its nearby cities fostering a responsible team<br>
+                approach planning, education, and hazard prevention with a dedicated,<br> 
+                professionally trained, and compassionate volunteer workforce.</p>
+    
+            <p class="text-4xl mt-6 font-bold">Vision</p>
+            <p class="text-3xl mt-4">Our vision is to create a progressive volunteer organization unified in<br>
+                creating a safe and secure community that will impact people’s lives by<br>
+                striving for excellence and being recognized as the premiere Fire-EMS-<br>
+                Rescue volunteer in the city. </p>
+        </div>
+    
+    </div>
+    
+</div>
+<!-- DONATE -->
+<div id="frmDonate">
+</div>
+<!-- FORM HOW TO VOLUNTEER -->
+    <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
+        <p class="text-5xl font-bold">How to volunteer?</p>
+
+        <p class="text-3xl font-[500] ml-10 mt-14">What are the minimum requirements  I need to <br> meet to be a volunteer firefighter</p>
+        <div class="text-2xl ml-12 mt-2">
+            <li>Applicant volunteer must be at least 18 years old<br> and above. </li>
+            <li>Must be physically and mentally fit.</li>
+            <li>Must undergo screening/interview with the officers.</li>
+        </div>
+        <p class="text-3xl font-[500] ml-10 mt-10">Must submit the following:</p>
+        <div class="text-2xl ml-12 mt-2">
+            <li>Endorsement letter from old brigade. (For volunteer<br>
+                who wish to  be transferred to PFCFVA.) </li>
+
+            <li>Barangay Clearance</li>
+            <li>Updated resume with picture.</li>
+        </div>
+    </div>
+
 </body>
+</div>
+<script src="supervisor.js" defer></script>
 </html>

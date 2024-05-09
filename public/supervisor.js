@@ -31,7 +31,19 @@ function canaddPerson(){
     var canAdd = document.getElementById('addPer');
     canAdd.style.display = 'none';
 }
-
+function ConfirmAdd(){
+    var AddResponse = document.getElementById('AddResponse');
+    var InciSys = document.getElementById('InciSys');
+    InciSys.style.display = 'block';
+    AddResponse.style.display = 'none';
+}
+function icsDone(){
+    var fireresponseform = document.getElementById('fireresponseform');
+    var InciSys = document.getElementById('InciSys');
+    fireresponseform.style.display = 'block';
+    InciSys.style.display = 'none';
+    
+}
 function addthis1(){
     var addPer = document.getElementById('addPer1');
     addPer.style.display = 'block';
@@ -100,7 +112,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse'];
+    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse','fireresponseform'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);

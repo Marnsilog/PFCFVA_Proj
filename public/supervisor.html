@@ -151,7 +151,7 @@
         </div>
 </div>
 </div>
-<!-- ADD RESPONSE CHECLIST -->
+<!-- ADD RESPONSE  ATTENDESS CHECKLIST -->
 <div id="AddResponse" style="display: none;">
     <div class="w-full h-full flex justify-center pt-16" >
         <div class="max-w-[80rem] w-full h-full">
@@ -207,7 +207,7 @@
                             </tbody>
                         </table>
                         <div class="flex justify-end">
-                            <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md">Confirm Attendance</button>
+                            <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md" onclick="ConfirmAdd()">Confirm Attendance</button>
                         </div>
                        
                     </div>
@@ -227,11 +227,10 @@
         </div>
     </div>
 </div>
-
 <!-- INCIDENT COMMAND SYSTEM -->
-<div id="InciSys">
-    <div class="w-full h-full flex justify-center pt-16" >
-        <div class="max-w-[80rem] w-full">
+<div id="InciSys" style="display: none;">
+    <div class="w-full h-full flex justify-center pt-16 pb-32" >
+        <div class="max-w-[75rem] w-full">
             <div class="font-Inter text-black">
                 <p class="font-bold text-4xl">Incident Command System (ICS)</p>
                 <div class="mt-2 flex justify-start font-semibold text-base">
@@ -291,6 +290,28 @@
                                     <td>02:40:09</td>
                                     <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
                                 </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+                                <tr class="border-t-2 border-b-2 border-black h-16">
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                    <td><input type="checkbox" id="option1" name="option1"></td>
+                                    <td>02:40:09</td>
+                                    <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
+                                </tr>
+
              
                             </tbody>
                         </table>
@@ -302,11 +323,86 @@
                             <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight">REQUEST <br> FALLBACK</button>
            
                        </div>
+
+                       <div class="flex justify-center mt-5"> 
+                            <div class="max-w-[70rem] w-full">
+                                <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" type="text" placeholder="Type message here..."></textarea>
+                            </div>
+                       </div>
+                       <div class="flex justify-end">
+                            <button class="bg-[#CBC9C2] px-7 py-3 mt-16 text-xl font-[500] rounded-md">SEND MESSAGE</button>
+                       </div>
+
+                       <div class="w-full h-32 mt-16 ">
+                            <div class="flex justify-start">
+                                <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
+                                <!-- <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl"><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div> -->
+                            </div>
+                        
+                            <div  class="bg-[#F3F3F3] w-full pb-14">
+                                <div class="max-h-[38rem] overflow-y-auto"> 
+                                    <table class="text-center  pt-10 " >
+                                    <thead class="mt-10">
+                                        <tr>
+                                            <th> </th>
+                                            <th> </th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody class="w-auto text-lg  font-Inter font-bold">
+                                    
+                                        <tr class="h-16 ">
+                                            <td class="text-start pl-7 text-[#00A110] w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:55 AM</td>
+                                        </tr>
+                                        <tr class="h-16 ">
+                                            <td class="text-start pl-7 text-[#202D9C] w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:54 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:45 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING TO FALLBACK DUE TO UNFORESEEN CIRCUMSTANCES.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING FOR MEDICAL ASSISTANCE.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:01 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 w-3/4 ">PROBI 13 has been injured.</td>
+                                            <td class="text-end mx-14  pr-14">04/11/24 - 1:50 AM</td>
+                                        </tr>
+                                        <tr class="h-16">
+                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS RESUPPLYING THE WATER TANK..</td>
+                                            <td class="text-end mx-14 pr-14">04/11/24 - 1:41 AM</td>
+                                        </tr>
+
+        
+                    
+                                    </tbody>
+                                </table>
+                            </div>
+                               
+                            </div>
+                            <div class="w-full flex justify-end py-10">
+                                <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="icsDone()">Done</button>
+                            </div>
+                           
+
+                       </div>
                        
                     </div>
                 </div>
-            <div id="addPer1" style="display: none;">
+            <div id="addPer1" style="display: none;" class="mx-16">
                 <div class="w-full h-full flex justify-center" >
+                  
                     <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
                         <div class="flex justify-end mr-3 font-bold text-2xl">
                             <a href="#" onclick="canaddPerson1()">X</a>
@@ -319,6 +415,128 @@
               
         </div>
     </div>
+</div>
+<!-- FIRE RESPONSE FORM -->
+<div  style="display: none;" id="fireresponseform">
+    <div class="w-full h-full flex justify-center mt-14">
+        <div class="max-w-[60rem] font-Inter w-full">
+            <p class="text-4xl font-[700]">Fire Response Form</p>
+            <div class="flex justify-center">
+                <div class="mt-11">
+                    <div class="flex justify-start">
+                        <p class="text-lg font-bold mr-32">Incident Date</p>
+                        <input class="border-[1px] border-black w-72" type="date">
+                    </div>
+                    <div class="flex justify-start mt-4">
+                        <p class="text-lg font-bold mr-[120px]">Dispatch Time</p>
+                        <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="">
+                    </div>
+                    <div class="flex  justify-start mt-4">
+                        <p class="text-lg font-bold mr-[170px]">Location</p>
+                        <textarea class="border-[1px] border-black max-w-72 w-full h-28"></textarea>
+                    </div>
+                    <div class="flex justify-start mt-7">
+                        <p class="text-lg font-bold mr-[132px]">Alarm Status</p>
+                        
+                            <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                <option value="" disabled selected> </option>
+                                <option value="1stAlarm">1st Alarm</option>
+                                <option value="">2nd Alarm</option>
+                                <option value="">3rd Alarm</option>
+                                <option value="">4th Alarm</option>
+                                <option value="">5th Alarm</option>
+                                <option value="">Task force alpha</option>
+                                <option value="">Task force bravo</option>
+                                <option value="">Task force charlie</option>
+                                <option value="">Task force delta</option>
+                                <option value="">Task force echo</option>
+                                <option value="">Task force foxtrot</option>
+                                <option value="">Task force golf</option>
+                                <option value="">Task force hotel</option>
+                                <option value="">Task force india</option>
+                                <option value="">General alarm</option>
+                                <option value="">FUC upon arrival</option>
+                                <option value="">Rekindle with operation</option>
+                                <option value="">Rekindle without operation</option>
+                                <option value="">Mapping Operation</option>
+                                <option value="">95 - Disinfection</option>
+                                <option value="">95  - Water Salute</option>
+                                <option value="">95  - Others</option>
+                    
+                                </select>
+    
+                     
+                    </div>
+                    <div class="flex justify-start mt-7">
+                        <p class="text-lg font-bold mr-[110px]">Who requested<br>the response?</p>
+                            <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                <option value="" disabled selected> </option>
+                                <option value="">Caller</option>
+                                <option value="">Monitored through radio</option>
+                            </select>
+                    </div>
+            
+                    <div  class="flex justify-start mt-5">
+                        <p class="text-lg font-bold mr-[140px]">Type of Fire</p>
+                        <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                            <option value="" disabled selected> </option>
+                            <option value="1stAlarm">Residential</option>
+                            <option value="">Commercial</option>
+                            <option value="">Industrial</option>
+                            <option value="">Rubbish</option>
+                            <option value="">Vehicular</option>
+                        </select>
+            
+                    </div>
+            
+                    <div class="flex justify-start mt-7">
+                        <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
+                        <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                            <option value="" disabled selected> </option>
+                            <option value="">Pumper 72</option>
+                            <option value="">Engine 72</option>
+                            <option value="">Tanker 72</option>
+                            <option value="">Brianza Ambulance</option>
+                            <option value="">Private/Personal Vehicle</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-start mt-7">
+                        <p class="text-lg font-bold mr-[145px]">Responder</p>
+                        <div>
+                            <table class="w-[20rem]" >
+                                <tr>
+                                    <td>Echo 12</td>
+                                    <td>Marniel Corsiga</td>
+                                </tr>
+                                <tr>
+                                    <td>Probi 13</td>
+                                    <td>Maria Joanalynn Mariano</td>
+                                </tr>
+                                <tr>
+                                    <td>Echo 1</td>
+                                    <td>Dinesh Anne Pangan</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div class="flex justify-start mt-7">
+                        <p class="text-lg font-bold mr-[165px]">Remarks</p>
+                        <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id=""></textarea>
+                    </div>
+                    <div class="w-full flex justify-end pt-5 pb-16">
+                        <div>
+                            <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md">Submit</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                </div>
+               
+        </div>
+    </div>
+  
 </div>
 
 
@@ -426,7 +644,7 @@
 </div>
 
 <!--FORM INVENTORY-->
-<div class="pt-4" id="frmInventory" style="display: none;" >
+<div class="pt-4" id="frmInventory">
     
  INVENTORY
 </div>

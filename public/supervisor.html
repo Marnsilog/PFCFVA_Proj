@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
     <link href="volunteer.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Supervisor Dashboard</title>
 </head>
@@ -49,8 +50,13 @@
             <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
             <p class="text-lg">Volunteer</p>
         </div>
+        
 
     </div>
+    <div class="mt-5 flex justify-end mr-14">
+        <div class="w-96 h-96 shadow-md shadow-black border-[.2px] border-black" id="calendar"></div>
+    </div>
+   
 </div>
 
 <!-- FORM FIRE RESPONSE -->
@@ -1129,4 +1135,6 @@
 </body>
 </div>
 <script src="supervisor.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
 </html>

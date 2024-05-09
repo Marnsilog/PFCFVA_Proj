@@ -173,9 +173,9 @@ function showEdit(){
 }
 
 
-// window.onload = function() {
-//   showDashboard();
-// };
+window.onload = function() {
+  showDashboard();
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
@@ -217,3 +217,13 @@ function animateProgressBar(targetWidth) {
   }
   
 
+//test
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth' // Display the calendar in month view
+    });
+
+    calendar.render();
+});

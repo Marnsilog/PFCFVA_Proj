@@ -72,141 +72,153 @@
 </div>
 
 <!-- FORM REGISTER -->
-<div id="fmrRegister">
+<div id="fmrRegister" style="display: none;">
     <div>
-        <div>
-            <div>
-                <p>REGISTER</p>
-                <form>
+        <div class="w-full flex justify-center mt-10">
+            <div class=" max-w-[60rem] w-full text-inter">
+                <p class="text-4xl font-bold ">REGISTER</p>
+                <form class="mt-5">
                     <div class="flex justify-normal">
-                        <input type="checkbox" id="checkbox1">
-                        <label for="checkbox1">Bio Data</label>
+                        <div class="pr-5">
+                            <input type="checkbox" id="checkbox1">
+                            <label for="checkbox1">Bio Data</label>
+                        </div>
+                        <div class="px-5">
+                            <input type="checkbox" id="checkbox2">
+                            <label for="checkbox2">Interview</label>
+                        </div>
     
-                        <input type="checkbox" id="checkbox2">
-                        <label for="checkbox2">Interview</label>
+
                     </div>
     
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
-                            <p>Last Name  <span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input type="text" id="lname">
+                            <p>Last Name <span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lname">
                         </div>
                         <div>
-                            <p>First Name</p>
-                            <input type="text" id="fname">
+                            <p>First Name<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="fname">
                             
                         </div>
                         <div>
                             <p>Middle Name</p>
-                            <input type="text" id="mname">
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="mname">
                         </div>
                     </div>
 
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
-                            <p>Account Type</p>
-                            <input type="text" id="lname">
+                            <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="accounttype">
                         </div>
                         <div>
-                            <p>Call Sign</p>
-                            <input type="text" id="fname">
+                            <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="callsign">
                             
                         </div>
                         <div>
-                            <p>Date of Birth</p>
-                            <input type="date" id="mname">
+                            <p>Date of Birth<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateofbirth">
                         </div>
                     </div>
 
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
-                            <p>Civil Status</p>
-                            <input type="text" id="lname">
+                            <p>Civil Status<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input  class="border-[1px] border-black w-[14rem] h-7"  type="text" id="civstat">
                         </div>
                         <div>
-                            <p>Nationality</p>
-                            <input type="text" id="fname">
+                            <p>Nationality<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="nationality">
                             
                         </div>
                         <div>
-                            <p>Gender</p>
-                            <input type="text" id="fname">
+                            <p>Gender<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender">
+                                <option value="" disabled selected> </option>
+                                <option value="male">male</option>
+                                <option value="female">female</option>
+                            </select>
                             
                         </div>
                         <div>
-                            <p>BloodType</p>
-                            <input type="text" id="fname">
-                            
-                        </div>
-                    </div>
-                    <div class="flex justify-start">
-                        <div>
-                            <p>Email Address</p>
-                            <input type="text" id="lname">
-                        </div>
-                        <div>
-                            <p>Contact Number</p>
-                            <input type="text" id="fname">
+                            <p>BloodType<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="bloodtype">
                             
                         </div>
                     </div>
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
-                            <p>Password</p>
-                            <input type="password" id="lname">
+                            <p>Email Address<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="emailadd">
                         </div>
                         <div>
-                            <p>Confirm Password</p>
-                            <input type="password" id="fname">
+                            <p>Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[20rem] h-7" type="text" id="contactnum">
                             
                         </div>
                     </div>
-                    <div>
-                        <p>Curren Address</p>
-                        <input type="text" id="lname">
+                    <div class="flex justify-between mt-5">
+                        <div>
+                            <p>Password<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="password">
+                        </div>
+                        <div>
+                            <p>Confirm Password<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="confirmpass">
+                            
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <p>Current Address<span class="text-red-500 font-bold mr-1">*</span></p>
+                        <input class="border-[1px] border-black w-full h-7" type="text" id="currentadd">
                     </div>
 
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
-                            <p>Emergency Contact Person</p>
-                            <input type="text" id="lname">
+                            <p>Emergency Contact Person<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="ecp">
                         </div>
                         <div>
-                            <p>Emergency Contact Number</p>
-                            <input type="text" id="fname">
+                            <p>Emergency Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="ecn">
                             
                         </div>
                     </div>
                     
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
                             <p>Highest Educational Attainment</p>
-                            <input type="text" id="lname">
+                            <input class="border-[1px] border-black w-[20rem] h-7" type="text" id="hea">
                         </div>
                         <div>
                             <p>Name of the Company</p>
-                            <input type="text" id="fname">
+                            <input class="border-[1px] border-black w-[20rem] h-7" type="text" id="noc">
                         </div>
                         <div>
                             <p>Years in service</p>
-                            <input type="text" id="fname">
+                            <input class="border-[1px] border-black w-[8rem] h-7" type="text" id="yis">
                         </div>
                     </div>
 
-                    <div class="flex justify-start">
+                    <div class="flex justify-between mt-5">
                         <div>
                             <p>Skills/Training</p>
-                            <input type="text" id="lname">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="skillstraining">
                         </div>
                         <div>
                             <p>Other Affiliation</p>
-                            <input type="text" id="fname">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="others">
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="imageUpload" class="block text-sm font-medium text-gray-700">Choose an image:</label>
-                        <input type="file" id="imageUpload" name="imageUpload"  accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Attach File">
+                    <div class="mb-4 mt-5">
+                        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file:bg-[#E1E1E1] file:rounded-full file:text-black file:w-36 file:h-10 file:border-[1px]">
+                    </div>
+                    <div class="pt-12 pb-24 w-full flex justify-end">
+                        <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
+                        <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                     </div>
                 </form>
                 

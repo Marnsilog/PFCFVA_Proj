@@ -1,75 +1,3 @@
-function showDutyHours(){
-    var dutyH = document.getElementById('dutyH');
-    var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('FireResponse');
-    var frmDutyhours = document.getElementById('frmDutyhours');
-    frmDutyhours.style.display = 'block';
-    frmFireResponse.style.display = 'none';
-    dutyH.classList.add('bg-red-700','text-white');
-    FireR.classList.remove('bg-red-700','text-white');
-    dutyH.classList.add('text-black');
-    
-  }
-function FireRes(){
-    var dutyH = document.getElementById('dutyH');
-    var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('FireResponse');
-    var frmDutyhours = document.getElementById('frmDutyhours');
-    frmFireResponse.style.display = 'block';
-    frmDutyhours.style.display = 'none';
-    FireR.classList.add('bg-red-700','text-white');
-    dutyH.classList.remove('bg-red-700','text-white');
-    FireR.classList.add('text-black');
-
-}
-
-function addthis(){
-    var addPer = document.getElementById('addPer');
-    addPer.style.display = 'block';
-}
-function canaddPerson(){
-    var canAdd = document.getElementById('addPer');
-    canAdd.style.display = 'none';
-}
-function ConfirmAdd(){
-    var AddResponse = document.getElementById('AddResponse');
-    var InciSys = document.getElementById('InciSys');
-    InciSys.style.display = 'block';
-    AddResponse.style.display = 'none';
-}
-function icsDone(){
-    var fireresponseform = document.getElementById('fireresponseform');
-    var InciSys = document.getElementById('InciSys');
-    fireresponseform.style.display = 'block';
-    InciSys.style.display = 'none';
-    
-}
-function addthis1(){
-    var addPer = document.getElementById('addPer1');
-    addPer.style.display = 'block';
-}
-function canaddPerson1(){
-    var canAdd = document.getElementById('addPer1');
-    canAdd.style.display = 'none';
-}
-function fireclose(){
-    var firelog = document.getElementById('firelog');
-    firelog.style.display = 'none';
-}
-
-
-
-function AddFireResponse(){
-    var AddResponse = document.getElementById('AddResponse');
-    var frmFireResponse = document.getElementById('frmFireResponse');
-    AddResponse.style.display = 'block';
-    frmFireResponse.style.display = 'none';
-}
-function seedetails(){
-    var firelog = document.getElementById('firelog');
-    firelog.style.display = 'block';
-}
-
 //PROFILE CONFIG
   function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
@@ -99,7 +27,7 @@ function Rankings() {
 }
 
 function addLine(LineId) {
-    const formIds = ['dashb', 'fireS', 'leadB', 'inV','prof'];
+    const formIds = ['dashb', 'reg', 'att', 'ranks','inc','inV','prof'];
     
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -112,7 +40,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse','fireresponseform'];
+    const formIds = ['frmDashboard', 'fmrRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -129,20 +57,27 @@ function showDashboard() {
     showElement('frmDashboard');
     addLine('dashb');
 }
-function showFireRes() {
-    showElement('frmFireResponse');
-    addLine('fireS');
-    // const dashboard = document.getElementById('frmDashboard');
-    // dashboard.style.display = 'block';
+function showRegister(){
+    showElement('fmrRegister');
+    addLine('reg');
+}
+function showAttendance(){
+    showElement('frmAttendance');
+    addLine('att');
+}
+function showRanks(){
+    showElement('frmRanks');
+    addLine('ranks');
+}
+function showIncident(){
+    showElement('frmIncident');
+    addLine('inc');
 }
 function showInventory() {
     showElement('frmInventory');
     addLine('inV');
 }
-function showLeaderboards() {
-  showElement('frmLeaderboards');
-  addLine('leadB');
-}
+
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');
@@ -173,9 +108,9 @@ function showEdit(){
 }
 
 
-window.onload = function() {
-  showDashboard();
-};
+// window.onload = function() {
+//   showDashboard();
+// };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);

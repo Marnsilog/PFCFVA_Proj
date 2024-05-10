@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+</head>
+<body>
+    <h2>User Registration Form</h2>
+    <form id="registerForm" action="/register" method="POST">
+        <!-- User Accounts -->
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="position">Position:</label><br>
+        <input type="text" id="position" name="position" required><br><br>
+
+        <!-- Volunteer Profile -->
+        <label for="lastName">Last Name:</label><br>
+        <input type="text" id="lastName" name="lastName"><br><br>
+
+        <label for="firstName">First Name:</label><br>
+        <input type="text" id="firstName" name="firstName"><br><br>
+
+        <label for="middleName">Middle Name:</label><br>
+        <input type="text" id="middleName" name="middleName"><br><br>
+
+        <label for="middleInitial">Middle Initial:</label><br>
+        <input type="text" id="middleInitial" name="middleInitial" maxlength="1"><br><br>
+
+        <label for="callSign">Call Sign:</label><br>
+        <input type="text" id="callSign" name="callSign"><br><br>
+
+        <label for="currentAddress">Current Address:</label><br>
+        <input type="text" id="currentAddress" name="currentAddress"><br><br>
+
+        <label for="dateOfBirth">Date of Birth:</label><br>
+        <input type="date" id="dateOfBirth" name="dateOfBirth"><br><br>
+
+        <label for="civilStatus">Civil Status:</label><br>
+        <input type="text" id="civilStatus" name="civilStatus"><br><br>
+
+        <label for="gender">Gender:</label><br>
+        <input type="text" id="gender" name="gender"><br><br>
+
+        <label for="nationality">Nationality:</label><br>
+        <input type="text" id="nationality" name="nationality"><br><br>
+
+        <label for="bloodType">Blood Type:</label><br>
+        <input type="text" id="bloodType" name="bloodType"><br><br>
+
+        <label for="mobileNumber">Mobile Number:</label><br>
+        <input type="text" id="mobileNumber" name="mobileNumber"><br><br>
+
+        <label for="emailAddress">Email Address:</label><br>
+        <input type="email" id="emailAddress" name="emailAddress"><br><br>
+
+        <label for="emergencyContactPerson">Emergency Contact Person:</label><br>
+        <input type="text" id="emergencyContactPerson" name="emergencyContactPerson"><br><br>
+
+        <label for="emergencyContactNumber">Emergency Contact Number:</label><br>
+        <input type="text" id="emergencyContactNumber" name="emergencyContactNumber"><br><br>
+
+        <label for="highestEducationalAttainment">Highest Educational Attainment:</label><br>
+        <input type="text" id="highestEducationalAttainment" name="highestEducationalAttainment"><br><br>
+
+        <label for="nameOfCompany">Name of Company:</label><br>
+        <input type="text" id="nameOfCompany" name="nameOfCompany"><br><br>
+
+        <label for="yearsInService">Years in Service:</label><br>
+        <input type="text" id="yearsInService" name="yearsInService"><br><br>
+
+        <label for="skillsTraining">Skills Training:</label><br>
+        <input type="text" id="skillsTraining" name="skillsTraining"><br><br>
+
+        <label for="otherAffiliation">Other Affiliation:</label><br>
+        <input type="text" id="otherAffiliation" name="otherAffiliation"><br><br>
+
+        <label for="idPicture">ID Picture:</label><br>
+        <input type="file" id="idPicture" name="idPicture"><br><br>
+
+        <label for="requiredDocument1">Required Document 1:</label>
+        <input type="checkbox" id="requiredDocument1" name="requiredDocument1"><br><br>
+
+        <label for="requiredDocument2">Required Document 2:</label>
+        <input type="checkbox" id="requiredDocument2" name="requiredDocument2"><br><br>
+
+        <label for="requiredDocument3">Required Document 3:</label>
+        <input type="checkbox" id="requiredDocument3" name="requiredDocument3"><br><br>
+
+
+        <!-- Submit Button -->
+        <button type="submit">Register</button>
+    </form>
+
+    <script src="register.js"></script>
+</body>
+</html>

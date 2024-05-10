@@ -3,24 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <link href="./styles.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <title>PFCVA || Dashboard</title>
+    
 </head>
-<body>
-    <div class="bg-gray-600 bg-auto absolute inset-5 h-mars">
-        <div>
-            <div> 
-              <div class="text-white ">
-                            <!-- <img src="../img/user.png" class="user-pic2"> -->                            
-                                <p> <h2 class="name"> Marniel Corsiga</h2></p>
-                                
-                            <p>marnielcorsiga14@gmail.com</p>
-                            <p>09199225332</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus sed accusantium, rerum et harum quidem ipsam deserunt vero mollitia reiciendis recusandae eaque quisquam neque voluptatibus reprehenderit veniam distinctio odit provident.</p>
-                             
 
+<div class="bg-black bg-opacity-30 h-fit w-full border-none sm:h-full">
+<div class="bg-black bg-opacity-50 h-fit w-full border-none sm:h-full" id="blackBackround" >
+
+
+<body class="bg-[url('img/backround.jpg')]" id="mainContent">
+
+<div class="fixed w-full bg-rosered bg-opacity-70 h-20 md:h-28">
+
+<div>
+    <!-- <div class="bg-black bg-opacity-50 h-screen border-none"> -->
+        <div class="px-7 py-5 opacity-40" id="homepageSec">
+                <div class="mt-2 md:absolute md:mt-32">
+                  
+                        <P class="text-white text-base font-JockeyOne || md:text-5xl md:pl-96" >Parañaque Filipino - Chinese Fire Volunteer Association </P>
+                        <p class="text-white text-4xl leading-tight font-AdventPro mt-44 || md:mt-32 md:text-8xl md:leading-tight">"Sa pag iwas sa sunog, <br>hindi ka nag iisa!"</p>
+                    <div class="my-5">
+                        <button class="text-white border-4 border-white hover:border-gray-300 rounded-full text-lg h-12 w-40 font-bold || md:text-2xl md:h-16 md:w-56 " id="loginButton" onclick="handleLogin()">LOG IN</button>
+                    </div>
+                    
                 </div>
-            </div>   
+            
+                <img src="img/pfcfvalogo.png" class="absolute top-[90px] left-2 w-16 md:top-12 md:left-20 md:w-36">
+                    <nav class=" items-center my-0 hidden md:block" id="navLinks">
+                        
+                            <ul class="pt-5 flex-1 text-right text-white text-2xl ">
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400" ><a href="#">Home</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">About us</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Volunteer</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Donate</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Leaderboards</a></li>
+                                <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Contact Us</a></li>
+                            </ul>
+                        
+                    </nav>
+
+                    <button id="menu-toggle" class="absolute md:hidden text-white focus:outline-none right-5 top-[90px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>`
+                <div class="md:hidden mt-4 p-5 absolute top-16 w-full bg-white text-black text-center bg-opacity-70" id="mobile-menu" style="display: none;">
+                    <a href="#" class="block py-2 px-4">Home</a>
+                    <a href="#" class="block py-2 px-4">About Us</a>
+                    <a href="#" class="block py-2 px-4">Volunteer</a>
+                    <a href="#" class="block py-2 px-4">Donate</a>
+                    <a href="#" class="block py-2 px-4">Leaderboards</a>
+                    <a href="#" class="block py-2 px-4">Contact Us</a>
+                </div>
+                    
+        </div>
+        <!-- </div> -->
+    <div class="md:grid md:grid-cols-3" >
+        <div class=" bg-gray-200 text-black rounded-xl mt-[12rem] absolute top-5 w-80 h-[330px] ml-7 || md:right-24 md:w-96 md:h-96 mx-5 md:mt-[17rem] md:col-end-4" style="display: none;" id="form">
+            <div class="text-right mx-5 py-2">
+                <a class="text-2xl font-bold px-4" id="cancel" href="#">x</a>
+            </div>
+            
+            <div class="text-lg  text-center">
+                <h1 class="font-Istok font-bold text-2xl py-3 || md:text-4xl md:py-7 ">Login</h1>
+                
+                <form id="loginForm">
+                    <div class="space-y-2 font-Istok text-xs">
+                        <div>
+                            <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" 
+                            type="text" placeholder="username" id="username">
+                        </div>
+                        <div class="pt-2 md:pt-0">
+                            <input class="px-14 py-3 border rounded-xl focus:outline-none focus:border-black md:w-80 md:h-10 md:px-4 md:py-5 md:rounded-md" 
+                            type="password" placeholder="Password" id="password">
+                        </div>
+                        <div class="pl-[110px] || md:text-right md:px-16">
+                            <a class="text-xs text-gray-400" href="#">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div class="mt-5 md:mt-0">
+                        <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
+<script src="script.js"></script>
+<script src="login.js"></script>
 </body>
+</div>
+</div>
 </html>

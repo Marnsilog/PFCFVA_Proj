@@ -58,7 +58,7 @@ function showDashboard() {
     addLine('dashb');
 }
 function showRegister(){
-    showElement('fmrRegister');
+    showElement('frmRegister');
     addLine('reg');
 }
 function showAttendance(){

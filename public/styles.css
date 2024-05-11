@@ -2370,3 +2370,15 @@ video {
     line-height: 1.25;
   }
 }
+
+
+
+/* countdown timer */
+.countdown {
+  position: fixed;
+  top: 70%;
+  right: 2%;
+  font-size: 40px; 
+  color: white;
+  text-align: center;
+}

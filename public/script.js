@@ -95,3 +95,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+
+
+//PAMPA KABA
+function updateCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const deadline = new Date('2024-05-19T00:00:00');
+    const currentTime = new Date();
+  
+    const timeDiff = deadline - currentTime;
+
+    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+    countdownElement.innerHTML = `Countdown to Capstone:<br>${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+}
+
+setInterval(updateCountdown, 1000);
+
+updateCountdown();

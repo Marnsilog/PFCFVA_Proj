@@ -152,13 +152,22 @@ function animateProgressBar(targetWidth) {
   }
   
 
-//test
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+  function rankOpt(){
+    var rankhead1 = document.getElementById('rankhead1');
+    var rankOpt1 = document.getElementById('rankOpt1');
+    var buttonContainer = document.getElementById('buttonContainer');
+    var currentDisplayStyle = window.getComputedStyle(rankOpt1).display;
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth' // Display the calendar in month view
-    });
-
-    calendar.render();
-});
+    if (currentDisplayStyle === 'none') {
+        buttonContainer.classList.add('border-2','border-black','rounded-lg');
+        rankhead1.classList.add('border-b-[1px]','border-b-gray-300','rounded-b-none')
+        rankhead1.classList.remove('shadow-lg','shadow-gray-400','border-2')
+        rankOpt1.style.display = 'block';
+    } else {
+        buttonContainer.classList.remove('border-2','border-black','rounded-lg');
+        rankhead1.classList.remove('border-b-[1px]','border-b-gray-300','rounded-b-none')
+        rankhead1.classList.add('shadow-lg','shadow-gray-400','border-2')
+        rankOpt1.style.display = 'none';
+    }
+   
+  }

@@ -5,7 +5,6 @@
     <link href="./styles.css" rel="stylesheet">
     <link href="admin.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
 </head>
@@ -62,11 +61,6 @@
             <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
             <p class="text-lg">Volunteer</p>
         </div>
-        
-
-    </div>
-    <div class="mt-5 flex justify-end mr-14">
-        <div class="w-96 h-96 shadow-md shadow-black border-[.2px] border-black" id="calendar"></div>
     </div>
    
 </div>
@@ -75,8 +69,8 @@
 <div id="fmrRegister" style="display: none;">
     <div>
         <div class="w-full flex justify-center mt-10">
-            <div class=" max-w-[60rem] w-full text-inter">
-                <p class="text-4xl font-bold ">REGISTER</p>
+            <div class=" max-w-[55rem] w-full text-inter">
+                <p class="text-4xl font-bold ">Register</p>
                 <form class="mt-5">
                     <div class="flex justify-normal">
                         <div class="pr-5">
@@ -230,12 +224,188 @@
 
 <!-- FORM ATTENDANCE -->
 <div id="frmAttendance" style="display: none;">
-ATTENDANCE
+    <div class="w-full flex justify-center mt-14">
+        <div class="max-w-[100rem] w-full">
+           
+            <div class="font-Inter">
+                <p class="text-4xl font-bold">Attendance</p>
+                <table class="w-full mt-14 text-center" >
+                    <thead class="text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+                        <tr>
+                            <th class="py-2">Name</th>
+                            <th>Ranks</th>
+                            <th>Date of Time In</th>
+                            <th>Time In</th>
+                            <th>Date of Time Out</th>
+                            <th>Time Out</th>
+                            <th>Status</th>
+                            <th>User</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-[500]">
+                        <tr>
+                            <td class="py-3">Pedro Penduko</td>
+                            <td>PROBI</td>
+                            <td>03/20/24</td>
+                            <td>09:00 am</td>
+                            <td>03/20/24</td>
+                            <td>-</td>
+                            <td>Active</td>
+                            <td>Volunteer</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Hanna Manalo</td>
+                            <td>PROBI</td>
+                            <td>03/20/24</td>
+                            <td>09:00 am</td>
+                            <td>03/20/24</td>
+                            <td>-</td>
+                            <td>Active</td>
+                            <td>Volunteer</td>
+                        </tr>
+
+                        <tr>
+                            <td class="py-3">Henry Polo</td>
+                            <td>PROBI</td>
+                            <td>03/20/24</td>
+                            <td>09:00 am</td>
+                            <td>03/20/24</td>
+                            <td>-</td>
+                            <td>Active</td>
+                            <td>Volunteer</td>
+                        </tr>
+     
+                    </tbody>
+                </table>   
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- FORM RANKS -->
-<div id="frmRanks" style="display: none;">
-RANKS
+<div id="frmRanks">
+    <div>
+        <div>
+            <p>Ranks</p>
+            <div class="w-[60%] h-[7rem] overflow-x-auto flex flex-wrap">
+
+                <div class="w-[280px] mx-5 my-5" id="buttonContainer">
+                    <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead1">
+                        <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                            <p>Aspirants</p>
+                        </div>
+                        <Button class=" text-center h-full w-[15%]" onclick="rankOpt()">/</Button>
+                    </div>
+                    <div class="bg-white w-full font-Inter hidden" id="rankOpt1" >
+                        <div class="my-5">
+                            <p class="mt-2 text-md font-semibold">Requrements:</p>
+                            <p class="mt-2 text-center">100 duty hours</p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="w-[280px] mx-5 my-5" id="buttonContainer2">
+                        <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead2">
+                            <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                                <p>Aspirants</p>
+                            </div>
+                            <Button class=" text-center h-full w-[15%]" onclick="rankOpt2()">/</Button>
+                        </div>
+                        <div class="bg-white w-full font-Inter hidden" id="rankOpt2" >
+                            <div class="my-5">
+                                <p class="mt-2 text-md font-semibold">Requrements:</p>
+                                <p class="mt-2 text-center">100 duty hours</p>
+                            </div>
+    
+                        </div>
+                    </div>
+  
+            </div>
+
+          
+        </div>
+    </div>
 </div>
 
 <!-- FORM INCIDENT -->
@@ -728,6 +898,4 @@ INCIDENT
 </body>
 </div>
 <script src="admin.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
 </html>

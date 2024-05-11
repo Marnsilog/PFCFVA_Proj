@@ -137,8 +137,8 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const yearsInService = document.getElementById('yearsInService').value;
     const skillsTraining = document.getElementById('skillsTraining').value;
     const otherAffiliation = document.getElementById('otherAffiliation').value;
-    const bioDataChecked = document.getElementById('cbBioData').checked;
-    const interviewChecked = document.getElementById('cbInterview').checked;
+    const bioDataChecked = document.getElementById('cbBioData').checked ? 1 : 0;
+    const interviewChecked = document.getElementById('cbInterview').checked ? 1 : 0;
     const fireResponsePoints = document.getElementById('fireResponse').value;
     const activityPoints = document.getElementById('activityPoints').value;
     const inventoryPoints = document.getElementById('inventoryPoints').value;
@@ -194,3 +194,4 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     })
     .catch(error => console.error('Error registering:', error));
 });
+

@@ -87,16 +87,16 @@
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Last Name <span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lastName">
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lastName" required>
                         </div>
                         <div>
                             <p>First Name<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="firstName">
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="firstName" required>
                             
                         </div>
                         <div>
                             <p>Middle Name</p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="middleName">
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="middleName" required>
                         </div>
                     </div>
 
@@ -104,37 +104,37 @@
                         <div>
                             <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
                            
-                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType">
+                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType" required>
                                 <option value="" disabled selected> </option>
-                                <option value="">Volunteer</option>
-                                <option value="">Supervisor</option>
-                                <option value="">Admin</option>
+                                <option value="Volunteer">Volunteer</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
                         <div>
                             <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="callSign">
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="callSign" required>
                             
                         </div>
                         <div>
                             <p>Date of Birth<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateOfBirth">
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateOfBirth" required>
                         </div>
                     </div>
 
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Civil Status<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input  class="border-[1px] border-black w-[14rem] h-7"  type="text" id="civilStatus">
+                            <input  class="border-[1px] border-black w-[14rem] h-7"  type="text" id="civilStatus" required>
                         </div>
                         <div>
                             <p>Nationality<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="nationality">
+                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="nationality" required>
                             
                         </div>
                         <div>
                             <p>Gender<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender">
+                            <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender" required> 
                                 <option value="" disabled selected> </option>
                                 <option value="male">male</option>
                                 <option value="female">female</option>
@@ -143,49 +143,49 @@
                         </div>
                         <div>
                             <p>BloodType<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="bloodType">
+                            <input class="border-[1px] border-black w-[14rem] h-7" type="text" id="bloodType" required>
                             
                         </div>
                     </div>
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Username<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="username">
+                            <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="username" required>
                         </div>
                         <div>
                             <p>Email Address<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="emailAddress">
+                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="emailAddress" required>
                         </div>
                         <div>
                             <p>Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="contactNumber">
+                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="contactNumber" required pattern="[0-9]+" title="Please enter numbers only">
                             
                         </div>
                     </div>
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Password<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="password">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="password" required>
                         </div>
                         <div>
                             <p>Confirm Password<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="confirmPassword">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="password" id="confirmPassword" required>
                             
                         </div>
                     </div>
                     <div class="mt-5">
                         <p>Current Address<span class="text-red-500 font-bold mr-1">*</span></p>
-                        <input class="border-[1px] border-black w-full h-7" type="text" id="currentAddress">
+                        <input class="border-[1px] border-black w-full h-7" type="text" id="currentAddress" required>
                     </div>
 
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Emergency Contact Person<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="emergencyContactPerson">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="emergencyContactPerson" required>
                         </div>
                         <div>
                             <p>Emergency Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="emergencyContactNumber">
+                            <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="emergencyContactNumber" required pattern="[0-9]+" title="Please enter numbers only">
                             
                         </div>
                     </div>
@@ -201,7 +201,7 @@
                         </div>
                         <div>
                             <p>Years in service</p>
-                            <input class="border-[1px] border-black w-[8rem] h-7" type="text" id="yearsInService">
+                            <input class="border-[1px] border-black w-[8rem] h-7" type="text" id="yearsInService" pattern="[0-9]+" title="Please enter numbers only">
                         </div>
                     </div>
 
@@ -225,20 +225,20 @@
                             
                             <div>
                                 <p>Duty Hours</p>
-                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours">
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours" pattern="[0-9]+" title="Please enter numbers only">
                             </div>
                             <div>
                                 <p>Fire response</p>
-                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse">
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse" pattern="[0-9]+" title="Please enter numbers only">
                                 
                             </div>
                             <div>
                                 <p>Activity Points</p>
-                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints">
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints" pattern="[0-9]+" title="Please enter numbers only">
                             </div>
                             <div>
                                 <p>Inventory points</p>
-                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints">
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints" pattern="[0-9]+" title="Please enter numbers only">
                             </div>
                         </div> 
                     </div>

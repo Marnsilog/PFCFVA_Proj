@@ -162,17 +162,37 @@ app.post('/register', (req, res) => {
 
 
 
+// // Login route
+// app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+//     const sql = 'SELECT * FROM tbl_accounts WHERE username = ? AND password = ?';
+//     db.query(sql, [username, password], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error logging in');
+//             return;
+//         }
+//         if (result.length > 0) {
+//             res.status(200).send('Login successful');
+//         } else {
+//             res.status(401).send('Invalid username or password');
+//         }
+//     });
+// });
+
+
 // Login route
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const sql = 'SELECT * FROM tbl_temp_users WHERE username = ? AND password = ?';
+    const sql = 'SELECT * FROM tbl_accounts WHERE username = ? AND password = ?';
     db.query(sql, [username, password], (err, result) => {
         if (err) {
             res.status(500).send('Error logging in');
             return;
         }
         if (result.length > 0) {
-            res.status(200).send('Login successful');
+            // Assuming 'accountType' is a column in your database table
+            const accountType = result[0].accountType;
+            res.status(200).json({ message: 'Login successful', accountType: accountType });
         } else {
             res.status(401).send('Invalid username or password');
         }

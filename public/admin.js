@@ -40,7 +40,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'fmrRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);

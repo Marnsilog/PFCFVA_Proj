@@ -71,10 +71,10 @@
         <div class="w-full flex justify-center mt-10">
             <div class=" max-w-[55rem] w-full text-inter">
                 <p class="text-4xl font-bold ">Register</p>
-                <form class="mt-5">
+                <form class="mt-5" id="registerForm">
                     <div class="flex justify-normal">
                         <div class="pr-5">
-                            <input type="checkbox" id="cbInterview">
+                            <input type="checkbox" id="cbBioData">
                             <label for="checkbox1">Bio Data</label>
                         </div>
                         <div class="px-5">
@@ -104,7 +104,7 @@
                         <div>
                             <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
                            
-                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="">
+                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType">
                                 <option value="" disabled selected> </option>
                                 <option value="">Volunteer</option>
                                 <option value="">Supervisor</option>
@@ -150,7 +150,7 @@
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Username<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="Username">
+                            <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="username">
                         </div>
                         <div>
                             <p>Email Address<span class="text-red-500 font-bold mr-1">*</span></p>
@@ -245,7 +245,7 @@
 
                     <div class="pt-12 pb-24 w-full flex justify-end">
                         <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
-                        <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
+                        <button type="submit" class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                     </div>
                 </form>
 
@@ -932,4 +932,5 @@ INCIDENT
 </body>
 </div>
 <script src="admin.js" defer></script>
+<script src="register.js" defer></script>
 </html>

@@ -41,18 +41,124 @@ app.use(express.json());
 app.use(express.static('public'));
 
 //Register route (test)
+// app.post('/register', (req, res) => {
+//     const { username, password } = req.body;
+//     const sql = 'INSERT INTO tbl_temp_users (username, password) VALUES (?, ?)';
+//     db.query(sql, [username, password], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error registering user');
+//             return;
+//         }
+//         res.status(200).send('User registered successfully');
+//     });
+// });
+
+// Assuming you have already configured 'db' for database connection
+
 app.post('/register', (req, res) => {
-    const { username, password } = req.body;
-    const sql = 'INSERT INTO tbl_temp_users (username, password) VALUES (?, ?)';
-    db.query(sql, [username, password], (err, result) => {
+    const {
+        username,
+        password,
+        accountType,
+        lastName,
+        firstName,
+        middleName,
+        middleInitial,
+        callSign,
+        currentAddress,
+        dateOfBirth,
+        civilStatus,
+        gender,
+        nationality,
+        bloodType,
+        mobileNumber,
+        emailAddress,
+        emergencyContactPerson,
+        emergencyContactNumber,
+        highestEducationalAttainment,
+        nameOfCompany,
+        yearsInService,
+        skillsTraining,
+        otherAffiliation,
+        bioDataChecked,
+        interviewChecked,
+        fireResponsePoints,
+        activityPoints,
+        inventoryPoints,
+        dutyHours
+    } = req.body;
+
+    const sql = `INSERT INTO tbl_accounts (
+        username,
+        password,
+        accountType,
+        lastName,
+        firstName,
+        middleName,
+        middleInitial,
+        callSign,
+        currentAddress,
+        dateOfBirth,
+        civilStatus,
+        gender,
+        nationality,
+        bloodType,
+        mobileNumber,
+        emailAddress,
+        emergencyContactPerson,
+        emergencyContactNumber,
+        highestEducationalAttainment,
+        nameOfCompany,
+        yearsInService,
+        skillsTraining,
+        otherAffiliation,
+        bioDataChecked,
+        interviewChecked,
+        fireResponsePoints,
+        activityPoints,
+        inventoryPoints,
+        dutyHours
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(sql, [
+        username,
+        password,
+        accountType,
+        lastName,
+        firstName,
+        middleName,
+        middleInitial,
+        callSign,
+        currentAddress,
+        dateOfBirth,
+        civilStatus,
+        gender,
+        nationality,
+        bloodType,
+        mobileNumber,
+        emailAddress,
+        emergencyContactPerson,
+        emergencyContactNumber,
+        highestEducationalAttainment,
+        nameOfCompany,
+        yearsInService,
+        skillsTraining,
+        otherAffiliation,
+        bioDataChecked,
+        interviewChecked,
+        fireResponsePoints,
+        activityPoints,
+        inventoryPoints,
+        dutyHours
+    ], (err, result) => {
         if (err) {
+            console.error('Error registering user:', err);
             res.status(500).send('Error registering user');
             return;
         }
         res.status(200).send('User registered successfully');
     });
 });
-
 
 
 

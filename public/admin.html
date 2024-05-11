@@ -103,7 +103,13 @@
                     <div class="flex justify-between mt-5">
                         <div>
                             <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="accountType">
+                           
+                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="">
+                                <option value="" disabled selected> </option>
+                                <option value="">Volunteer</option>
+                                <option value="">Supervisor</option>
+                                <option value="">Admin</option>
+                            </select>
                         </div>
                         <div>
                             <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
@@ -209,36 +215,40 @@
                             <input class="border-[1px] border-black w-[25rem] h-7" type="text" id="otherAffiliation">
                         </div>
                     </div>
-                    <div class="flex justify-between mt-5">
-                        <div>
-                            <p>Duty Hours<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[7rem] h-7" type="text" id="dutyHours">
-                        </div>
-                        <div>
-                            <p>Fire response<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[7rem] h-7" type="text" id="fireResponse">
-                            
-                        </div>
-                        <div>
-                            <p>Activity Points</p>
-                            <input class="border-[1px] border-black w-[7rem] h-7" type="text" id="activityPoints">
-                        </div>
-                        <div>
-                            <p>Inventory points</p>
-                            <input class="border-[1px] border-black w-[7rem] h-7" type="text" id="inventoryPoints">
-                        </div>
-                    </div>
-
-
+                   
                     <div class="mb-4 mt-5">
                         <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file:bg-[#E1E1E1] file:rounded-full file:text-black file:w-36 file:h-10 file:border-[1px]">
                     </div>
-                    
+                    <div class="mt-5 font-Inter">
+                        <p class="font-bold text-4xl">Points</p>
+                        <div class="flex justify-between ">
+                            
+                            <div>
+                                <p>Duty Hours</p>
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours">
+                            </div>
+                            <div>
+                                <p>Fire response</p>
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse">
+                                
+                            </div>
+                            <div>
+                                <p>Activity Points</p>
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints">
+                            </div>
+                            <div>
+                                <p>Inventory points</p>
+                                <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints">
+                            </div>
+                        </div> 
+                    </div>
+
                     <div class="pt-12 pb-24 w-full flex justify-end">
                         <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
                         <button class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                     </div>
                 </form>
+
                 
                 
             </div>

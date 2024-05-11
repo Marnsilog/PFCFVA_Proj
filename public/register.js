@@ -1,28 +1,28 @@
-document.getElementById('frmRegister').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+// document.getElementById('registerForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
 
-    fetch('/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.text();
-        }
-        throw new Error('Registration failed');
-    })
-    .then(message => {
-        alert(message);
-        // Optionally, you can redirect the user to another page after successful registration
-        // window.location.href = '/login.html';
-    })
-    .catch(error => console.error('Error registering:', error));
-});
+//     fetch('/register', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username, password })
+//     })
+//     .then(response => {
+//         if (response.ok) {
+//             return response.text();
+//         }
+//         throw new Error('Registration failed');
+//     })
+//     .then(message => {
+//         alert(message);
+//         // Optionally, you can redirect the user to another page after successful registration
+//         // window.location.href = '/login.html';
+//     })
+//     .catch(error => console.error('Error registering:', error));
+// });
 
 
 // document.getElementById('registerForm').addEventListener('submit', function(event) {
@@ -109,3 +109,88 @@ document.getElementById('frmRegister').addEventListener('submit', function(event
 //     })
 //     .catch(error => console.error('Error registering:', error));
 // });
+
+
+
+document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const accountType = document.getElementById('accountType').value;
+    const lastName = document.getElementById('lastName').value;
+    const firstName = document.getElementById('firstName').value;
+    const middleName = document.getElementById('middleName').value;
+    const middleInitial = ''; // This field is not available in the form, so it's left empty
+    const callSign = document.getElementById('callSign').value;
+    const currentAddress = document.getElementById('currentAddress').value;
+    const dateOfBirth = document.getElementById('dateOfBirth').value;
+    const civilStatus = document.getElementById('civilStatus').value;
+    const gender = document.getElementById('gender').value;
+    const nationality = document.getElementById('nationality').value;
+    const bloodType = document.getElementById('bloodType').value;
+    const mobileNumber = document.getElementById('contactNumber').value;
+    const emailAddress = document.getElementById('emailAddress').value;
+    const emergencyContactPerson = document.getElementById('emergencyContactPerson').value;
+    const emergencyContactNumber = document.getElementById('emergencyContactNumber').value;
+    const highestEducationalAttainment = document.getElementById('highestEducationalAttainment').value;
+    const nameOfCompany = document.getElementById('nameOfCompany').value;
+    const yearsInService = document.getElementById('yearsInService').value;
+    const skillsTraining = document.getElementById('skillsTraining').value;
+    const otherAffiliation = document.getElementById('otherAffiliation').value;
+    const bioDataChecked = document.getElementById('cbBioData').checked;
+    const interviewChecked = document.getElementById('cbInterview').checked;
+    const fireResponsePoints = document.getElementById('fireResponse').value;
+    const activityPoints = document.getElementById('activityPoints').value;
+    const inventoryPoints = document.getElementById('inventoryPoints').value;
+    const dutyHours = document.getElementById('dutyHours').value;
+
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            username, 
+            password, 
+            accountType, 
+            lastName, 
+            firstName, 
+            middleName, 
+            middleInitial, 
+            callSign, 
+            currentAddress, 
+            dateOfBirth, 
+            civilStatus, 
+            gender, 
+            nationality, 
+            bloodType, 
+            mobileNumber, 
+            emailAddress, 
+            emergencyContactPerson, 
+            emergencyContactNumber, 
+            highestEducationalAttainment, 
+            nameOfCompany, 
+            yearsInService, 
+            skillsTraining, 
+            otherAffiliation, 
+            bioDataChecked, 
+            interviewChecked, 
+            fireResponsePoints, 
+            activityPoints, 
+            inventoryPoints, 
+            dutyHours
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.text();
+        }
+        throw new Error('Registration failed');
+    })
+    .then(message => {
+        alert(message);
+        // Optionally, you can redirect the user to another page after successful registration
+        // window.location.href = '/login.html';
+    })
+    .catch(error => console.error('Error registering:', error));
+});

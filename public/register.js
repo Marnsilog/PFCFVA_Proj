@@ -195,3 +195,34 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     .catch(error => console.error('Error registering:', error));
 });
 
+
+
+ // Fetch data from Node.js server
+//  fetch('/products')
+//  .then(response => response.json())
+//  .then(products => {
+//      const productList = document.getElementById('product-list');
+//      products.forEach(product => {
+//          // Create HTML elements to display product information
+//          const productElement = document.createElement('div');
+//          productElement.innerHTML = `
+//          <div class="bg-[#D8BC8C80] w-[318px] h-[500px] outline outline-outline outline-1 rounded-xl pt-5 pr-5 relative">
+//                      <div class="z-[-1] flex flex-col items-center ">
+//                          <div>
+//                              <img src="data:image/jpeg;base64,${product.productImage}" alt="${product.productName}" class = "w-[12rem] mt-[5rem]">
+//                              </div>
+//                          <div class = "absolute bottom-1">
+//                              <h2>${product.productName}</h2>
+//                              <p>Price: ${product.productPrice}</p>
+//                          </div>
+//                      </div>
+//                      <div class="bg-[#FFFFFF] w-[62px] h-[87px] rounded-[50%] outline outline-outline outline-1 absolute right-1 top-1 z-10">
+                         
+//                      </div>
+//              </div>
+
+//          `;
+//          productList.appendChild(productElement);
+//      });
+//  })
+//  .catch(error => console.error('Error fetching products:', error));

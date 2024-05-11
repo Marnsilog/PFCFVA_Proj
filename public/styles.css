@@ -572,10 +572,6 @@ video {
   position: absolute;
 }
 
-.bottom-0{
-  bottom: 0px;
-}
-
 .left-2{
   left: 0.5rem;
 }
@@ -616,6 +612,10 @@ video {
   margin: 0px;
 }
 
+.m-\[6px\]{
+  margin: 6px;
+}
+
 .mx-0{
   margin-left: 0px;
   margin-right: 0px;
@@ -629,6 +629,11 @@ video {
 .mx-16{
   margin-left: 4rem;
   margin-right: 4rem;
+}
+
+.mx-2{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .mx-20{
@@ -671,8 +676,22 @@ video {
   margin-bottom: 3px;
 }
 
+.my-2{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.my-1{
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
 .mb-12{
   margin-bottom: 3rem;
+}
+
+.mb-20{
+  margin-bottom: 5rem;
 }
 
 .mb-4{
@@ -705,6 +724,10 @@ video {
 
 .ml-3{
   margin-left: 0.75rem;
+}
+
+.ml-4{
+  margin-left: 1rem;
 }
 
 .ml-40{
@@ -955,16 +978,16 @@ video {
   margin-top: 1.75rem;
 }
 
-.mt-8{
-  margin-top: 2rem;
-}
-
 .mt-9{
   margin-top: 2.25rem;
 }
 
 .mt-\[12rem\]{
   margin-top: 12rem;
+}
+
+.mt-\[50\%\]{
+  margin-top: 50%;
 }
 
 .mt-\[59px\]{
@@ -981,6 +1004,10 @@ video {
 
 .mt-\[90px\]{
   margin-top: 90px;
+}
+
+.mt-\[7px\]{
+  margin-top: 7px;
 }
 
 .block{
@@ -1047,16 +1074,16 @@ video {
   height: 2rem;
 }
 
-.h-80{
-  height: 20rem;
-}
-
 .h-9{
   height: 2.25rem;
 }
 
 .h-\[2px\]{
   height: 2px;
+}
+
+.h-\[30\%\]{
+  height: 30%;
 }
 
 .h-\[330px\]{
@@ -1069,6 +1096,10 @@ video {
 
 .h-\[40rem\]{
   height: 40rem;
+}
+
+.h-\[45\%\]{
+  height: 45%;
 }
 
 .h-\[45px\]{
@@ -1154,6 +1185,10 @@ video {
 
 .w-72{
   width: 18rem;
+}
+
+.w-8{
+  width: 2rem;
 }
 
 .w-80{
@@ -1380,10 +1415,28 @@ video {
   margin-left: calc(22.7rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-x-\[30rem\] > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(30rem * var(--tw-space-x-reverse));
+  margin-left: calc(30rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-12 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+
 .space-y-2 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-7 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
 }
 
 .overflow-hidden{
@@ -1653,6 +1706,10 @@ video {
   background-color: rgb(147 13 13 / var(--tw-bg-opacity));
 }
 
+.bg-transparent{
+  background-color: transparent;
+}
+
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -1682,13 +1739,12 @@ video {
   background-position: center;
 }
 
-.p-5{
-  padding: 1.25rem;
+.fill-current{
+  fill: currentColor;
 }
 
-.px-1{
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+.p-5{
+  padding: 1.25rem;
 }
 
 .px-10{
@@ -1741,11 +1797,6 @@ video {
   padding-right: 1.75rem;
 }
 
-.px-80{
-  padding-left: 20rem;
-  padding-right: 20rem;
-}
-
 .py-10{
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
@@ -1779,6 +1830,31 @@ video {
 .py-5{
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-7{
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
+.px-3{
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-1{
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.py-1{
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .pb-14{
@@ -1849,20 +1925,16 @@ video {
   padding-left: 72rem;
 }
 
-.pl-\[75rem\]{
-  padding-left: 75rem;
-}
-
-.pl-\[90rem\]{
-  padding-left: 90rem;
-}
-
 .pr-10{
   padding-right: 2.5rem;
 }
 
 .pr-14{
   padding-right: 3.5rem;
+}
+
+.pr-20{
+  padding-right: 5rem;
 }
 
 .pr-5{
@@ -2132,6 +2204,14 @@ video {
 
 .underline-offset-8{
   text-underline-offset: 8px;
+}
+
+.underline-offset-2{
+  text-underline-offset: 2px;
+}
+
+.underline-offset-4{
+  text-underline-offset: 4px;
 }
 
 .opacity-40{

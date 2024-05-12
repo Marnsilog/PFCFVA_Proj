@@ -199,6 +199,37 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Server side route to retrieve account data for the currently logged-in user
+app.get('/getAccountData', (req, res) => {
+    // Check if the user is authenticated and their session contains user information
+    if (!req.session || !req.session.userId) {
+        // If the user is not logged in or session data is missing, return an error
+        res.status(401).send('User is not authenticated');
+        return;
+    }
+    
+    // Retrieve the user ID from the session
+    const userId = req.session.userId;
+
+    // Perform a database query to retrieve account data based on the user ID
+    const sql = 'SELECT * FROM tbl_accounts WHERE id = ?'; // Adjust this query based on your database schema
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            console.error('Error retrieving account data:', err);
+            res.status(500).send('Error retrieving account data');
+            return;
+        }
+        if (result.length === 0) {
+            // If no account data is found for the user ID, return a not found error
+            res.status(404).send('Account not found');
+            return;
+        }
+        // Send the retrieved account data as JSON response
+        const accountData = result[0]; // Assuming you're only retrieving one account
+        res.status(200).json(accountData);
+    });
+});
+
 
 //port
 const PORT = 3000;

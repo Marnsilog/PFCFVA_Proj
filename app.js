@@ -55,6 +55,114 @@ app.use(express.static('public'));
 
 // Assuming you have already configured 'db' for database connection
 
+//register route
+// app.post('/register', (req, res) => {
+//     const {
+//         username,
+//         password,
+//         accountType,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         callSign,
+//         currentAddress,
+//         dateOfBirth,
+//         civilStatus,
+//         gender,
+//         nationality,
+//         bloodType,
+//         mobileNumber,
+//         emailAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation,
+//         bioDataChecked,
+//         interviewChecked,
+//         fireResponsePoints,
+//         activityPoints,
+//         inventoryPoints,
+//         dutyHours
+//     } = req.body;
+
+    
+        
+//     const sql = `INSERT INTO tbl_accounts (
+//         username,
+//         password,
+//         accountType,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         callSign,
+//         currentAddress,
+//         dateOfBirth,
+//         civilStatus,
+//         gender,
+//         nationality,
+//         bloodType,
+//         mobileNumber,
+//         emailAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation,
+//         bioDataChecked,
+//         interviewChecked,
+//         fireResponsePoints,
+//         activityPoints,
+//         inventoryPoints,
+//         dutyHours
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//     db.query(sql, [
+//         username,
+//         password,
+//         accountType,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         callSign,
+//         currentAddress,
+//         dateOfBirth,
+//         civilStatus,
+//         gender,
+//         nationality,
+//         bloodType,
+//         mobileNumber,
+//         emailAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation,
+//         bioDataChecked,
+//         interviewChecked,
+//         fireResponsePoints,
+//         activityPoints,
+//         inventoryPoints,
+//         dutyHours
+//     ], (err, result) => {
+//         if (err) {
+//             console.error('Error registering user:', err);
+//             res.status(500).send('Error registering user');
+//             return;
+//         }
+//         res.status(200).send('User registered successfully');
+//     });
+// });
+
 app.post('/register', (req, res) => {
     const {
         username,
@@ -88,78 +196,94 @@ app.post('/register', (req, res) => {
         dutyHours
     } = req.body;
 
-    const sql = `INSERT INTO tbl_accounts (
-        username,
-        password,
-        accountType,
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        callSign,
-        currentAddress,
-        dateOfBirth,
-        civilStatus,
-        gender,
-        nationality,
-        bloodType,
-        mobileNumber,
-        emailAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation,
-        bioDataChecked,
-        interviewChecked,
-        fireResponsePoints,
-        activityPoints,
-        inventoryPoints,
-        dutyHours
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-    db.query(sql, [
-        username,
-        password,
-        accountType,
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        callSign,
-        currentAddress,
-        dateOfBirth,
-        civilStatus,
-        gender,
-        nationality,
-        bloodType,
-        mobileNumber,
-        emailAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation,
-        bioDataChecked,
-        interviewChecked,
-        fireResponsePoints,
-        activityPoints,
-        inventoryPoints,
-        dutyHours
-    ], (err, result) => {
-        if (err) {
-            console.error('Error registering user:', err);
-            res.status(500).send('Error registering user');
+    // Check if the username already exists in the database
+    const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
+    db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
+        if (checkErr) {
+            console.error('Error checking username:', checkErr);
+            res.status(500).send('Error checking username');
             return;
         }
-        res.status(200).send('User registered successfully');
+
+        // If username already exists, send an error response
+        if (checkResult[0].count > 0) {
+            res.status(400).send('Username already exists');
+            return;
+        }
+
+        // If username does not exist, proceed with registration
+        const sql = `INSERT INTO tbl_accounts (
+            username,
+            password,
+            accountType,
+            lastName,
+            firstName,
+            middleName,
+            middleInitial,
+            callSign,
+            currentAddress,
+            dateOfBirth,
+            civilStatus,
+            gender,
+            nationality,
+            bloodType,
+            mobileNumber,
+            emailAddress,
+            emergencyContactPerson,
+            emergencyContactNumber,
+            highestEducationalAttainment,
+            nameOfCompany,
+            yearsInService,
+            skillsTraining,
+            otherAffiliation,
+            bioDataChecked,
+            interviewChecked,
+            fireResponsePoints,
+            activityPoints,
+            inventoryPoints,
+            dutyHours
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        db.query(sql, [
+            username,
+            password,
+            accountType,
+            lastName,
+            firstName,
+            middleName,
+            middleInitial,
+            callSign,
+            currentAddress,
+            dateOfBirth,
+            civilStatus,
+            gender,
+            nationality,
+            bloodType,
+            mobileNumber,
+            emailAddress,
+            emergencyContactPerson,
+            emergencyContactNumber,
+            highestEducationalAttainment,
+            nameOfCompany,
+            yearsInService,
+            skillsTraining,
+            otherAffiliation,
+            bioDataChecked,
+            interviewChecked,
+            fireResponsePoints,
+            activityPoints,
+            inventoryPoints,
+            dutyHours
+        ], (err, result) => {
+            if (err) {
+                console.error('Error registering user:', err);
+                res.status(500).send('Error registering user');
+                return;
+            }
+            res.status(200).send('User registered successfully');
+        });
     });
 });
-
 
 
 // // Login route

@@ -312,3 +312,17 @@ document.addEventListener('DOMContentLoaded', function() {
 //     })
 //     .catch(error => console.error('Error logging in:', error));
 // });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Fetch user data from the server
+    fetch('/getUserData')
+        .then(response => response.json())
+        .then(data => {
+            // Update HTML elements with user data
+            document.getElementById('name').innerText = `${data.firstName} ${data.middleInitial} ${data.lastName}`;
+            document.getElementById('callSign').innerText = data.callSign;
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+});

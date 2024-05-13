@@ -528,9 +528,19 @@
                 </div>
                 
                 <div class="text-center font-Inter">
-                    <p class="pt-5 text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
-                    <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
+                    <p class="pt-5 text-black text-4xl font-bold" id="name">Name Here</p>
+                    <p class="text-[#930D0D] text-xl" id="callSign">ECHO 817</p>
                 </div>
+                <!-- <script>
+                    // Retrieve URL parameters
+                    const params = new URLSearchParams(window.location.search);
+                    const name = params.get('name');
+                    const callSign = params.get('callSign');
+            
+                    // Update HTML elements with user's name and call sign
+                    document.getElementById('name').innerText = name;
+                    document.getElementById('callSign').innerText = callSign;
+                </script> -->
                 <div class="ml-[16.5rem] pt-7">
                     <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
                 </div>
@@ -783,7 +793,10 @@
 
 </body>
 </div>
+
 <script src="volunteer.js" defer></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
 </html>

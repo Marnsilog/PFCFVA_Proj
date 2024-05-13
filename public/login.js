@@ -51,6 +51,50 @@
 // });
 
 
+// //working recent
+// document.getElementById('loginForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
+
+//     fetch('/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username, password })
+//     })
+//     .then(response => {
+//         if (response.status === 200) {
+//             return response.json();
+//         } else if (response.status === 401) {
+//             alert('Invalid username or password');
+//         } else {
+//             throw new Error('Error logging in');
+//         }
+//     })
+//     .then(data => {
+//         // Redirect based on account type
+//         const accountType = data.accountType;
+//         switch (accountType) {
+//             case 'Admin':
+//                 window.location.href = 'admin.html';
+//                 break;
+//             case 'Volunteer':
+//                 window.location.href = 'volunteer.html';
+//                 break;
+//             case 'Supervisor':
+//                 window.location.href = 'supervisor.html';
+//                 break;
+//             default:
+//                 alert('Unknown account type');
+//         }
+//     })
+//     .catch(error => console.error('Error logging in:', error));
+// });
+
+
+//test get profile
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
@@ -80,7 +124,14 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                 window.location.href = 'admin.html';
                 break;
             case 'Volunteer':
-                window.location.href = 'volunteer.html';
+                // Pass user data as URL parameters to volunteer.html
+                const params = new URLSearchParams({
+                    firstName: data.firstName,
+                    middleInitial: data.middleInitial,
+                    lastName: data.lastName,
+                    callSign: data.callSign
+                });
+                window.location.href = `volunteer.html?${params.toString()}`;
                 break;
             case 'Supervisor':
                 window.location.href = 'supervisor.html';
@@ -91,6 +142,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
     .catch(error => console.error('Error logging in:', error));
 });
+
+
+
 
 
 

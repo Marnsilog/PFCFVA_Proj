@@ -382,7 +382,7 @@ app.post('/register', (req, res) => {
 //     });
 // });
 
-// Login route (test-hash)
+// // Login route (test-hash)
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
@@ -410,6 +410,69 @@ app.post('/login', (req, res) => {
         });
     });
 });
+
+
+// Server side route to retrieve user data after login
+app.get('/getUserData', (req, res) => {
+    // Retrieve the user ID from the session or any other means of identification
+    const userId = req.session.userId; // Adjust this based on your authentication mechanism
+
+    // Perform a database query to retrieve user data based on the user ID
+    const sql = 'SELECT firstName, middleInitial, lastName, callSign FROM tbl_accounts WHERE id = ?'; // Adjust this query based on your database schema
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            console.error('Error retrieving user data:', err);
+            res.status(500).send('Error retrieving user data');
+            return;
+        }
+        if (result.length === 0) {
+            // If no user data is found, return a not found error
+            res.status(404).send('User data not found');
+            return;
+        }
+        // Send the retrieved user data as JSON response
+        const userData = result[0]; // Assuming you're only retrieving one user's data
+        res.status(200).json(userData);
+    });
+});
+
+
+
+// Login route (test-get profile)
+// app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+//     const sql = 'SELECT firstName, middleInitial, lastName, callSign, accountType FROM tbl_accounts WHERE username = ?';
+//     db.query(sql, [username], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error logging in');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(401).send('Invalid username or password');
+//             return;
+//         }
+//         const hashedPassword = result[0].password;
+//         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
+//             if (compareErr) {
+//                 res.status(500).send('Error comparing passwords');
+//                 return;
+//             }
+//             if (compareResult) {
+//                 const userData = {
+//                     firstName: result[0].firstName,
+//                     middleInitial: result[0].middleInitial,
+//                     lastName: result[0].lastName,
+//                     callSign: result[0].callSign,
+//                     accountType: result[0].accountType
+//                 };
+//                 res.status(200).json(userData);
+//             } else {
+//                 res.status(401).send('Invalid username or password');
+//             }
+//         });
+//     });
+// });
+
 
 
 

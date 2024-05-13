@@ -1,6 +1,9 @@
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const path = require('path');
 
 // Create connection
 const db = mysql.createConnection({

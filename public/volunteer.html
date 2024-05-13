@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
-    <link href="volunteer.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
@@ -528,19 +528,9 @@
                 </div>
                 
                 <div class="text-center font-Inter">
-                    <p class="pt-5 text-black text-4xl font-bold" id="name">Name Here</p>
-                    <p class="text-[#930D0D] text-xl" id="callSign">ECHO 817</p>
+                    <p class="pt-5 text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
+                    <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
                 </div>
-                <!-- <script>
-                    // Retrieve URL parameters
-                    const params = new URLSearchParams(window.location.search);
-                    const name = params.get('name');
-                    const callSign = params.get('callSign');
-            
-                    // Update HTML elements with user's name and call sign
-                    document.getElementById('name').innerText = name;
-                    document.getElementById('callSign').innerText = callSign;
-                </script> -->
                 <div class="ml-[16.5rem] pt-7">
                     <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
                 </div>
@@ -591,149 +581,149 @@
                     <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
             </div>
 
-<!-- FORM PROFILE -->
-<div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
-                <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
-
-                <div class="text-4xl">
-
-                    <div class="flex items-start pt-14 py-5">
-                        <p class="font-semibold mr-[8rem]">Birthday: </p> 
-                        <p id="Birthday">June 07, 2001</p>
-                    </div>
-        
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[9rem]">Gender: </p> 
-                        <p id="Gender">Male</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
-                        <p id="CivilStat">Single</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[5rem]">Nationality: </p> 
-                        <p  id="Nationality">Filipino</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
-                        <p id="BloodType">O+</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                        <p id="CollegeUnd">College UnderGrad</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                        <p  id="NOC">Centro Scholar University</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[12rem]">Years of Service: </p> 
-                        <p id="YOS">2 Years</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                        <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                        <p  id="others">STI Global City</p>
-                    </div>
+                    <!-- FORM PROFILE -->
+                    <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile" >
+                        <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
                 
-            </div>
-
-            <p class="text-[#9E9E9E] text-5xl font-bold py-10 pl-5">Contact Information </p>
-
-            <div class="text-4xl" >
-                <div class="flex items-start pt-14 py-5">
-                    <p class=" font-semibold mr-[6rem]">Email Address: </p> 
-                    <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
-                </div>
-    
-                <div class="flex items-start py-5 ">
-                    <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
-                    <p  id="ContactNum">09199225389</p>
-                </div>
-                <div class="flex items-start py-5 ">
-                    <p class="font-semibold mr-[14rem]">Adress: </p> 
-                    <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
-                </div>
-                <div class="flex items-start py-5">
-                    <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                    <p  id="ECP">Maria Corsiga Pangan</p>
-                </div>
-                <div class="flex items-start py-5 ">
-                    <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                    <p  id="ECN">09199225389</p>
-                </div>
-            
-            </div>
-
-    </div>
-
-            
-            <!-- FORM RANKINGS -->
-            <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
-                    <div class="flex items-start py-5 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Aspirant</p>
-                            <p class="pt-5 text-3xl">100 duty Hours</p>
-                        </div>
-
-                        <div class=" text-5xl text-start list-none inline-block ml-[19rem]">
-                            <p class="font-bold">Echo 900</p>
-                            <p class="pt-5 text-3xl">2000 duty hours</p>
-                            <p class="text-3xl">20 fire response</p>
-                        </div>
-                        
-                    </div>
-
-                    <div class="flex items-start py-16 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Probationary</p>
-                            <p class="pt-5 text-3xl">1000 duty hours</p>
-                            <p class="text-3xl">10 fire response</p>
-                        </div>
-
-                        <div class=" text-5xl text-start list-none inline-block ml-52">
-                            <p class="font-bold">Echo 800</p>
-                            <p class="pt-5 text-3xl text-start">100 hours</p>
+                        <div class="text-4xl">
+                
+                                            <div class="flex items-start pt-14 py-5">
+                                                <p class="font-semibold mr-[8rem]">Birthday: </p> 
+                                                <p id="Birthday">June 07, 2001</p>
+                                            </div>
+                                
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[9rem]">Gender: </p> 
+                                                <p id="Gender">Male</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
+                                                <p id="CivilStat">Single</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[5rem]">Nationality: </p> 
+                                                <p  id="Nationality">Filipino</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
+                                                <p id="BloodType">O+</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
+                                                <p id="CollegeUnd">College UnderGrad</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
+                                                <p  id="NOC">Centro Scholar University</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[12rem]">Years of Service: </p> 
+                                                <p id="YOS">2 Years</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
+                                                <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
+                                                <p  id="others">STI Global City</p>
+                                            </div>
+                                        
+                                    </div>
+                
+                                    <p class="text-[#9E9E9E] text-5xl font-bold py-10">Contact Information </p>
+                
+                                    <div class="text-4xl" >
+                                        <div class="flex items-start pt-14 py-5">
+                                            <p class=" font-semibold mr-[6rem]">Email Address: </p> 
+                                            <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
+                                        </div>
                             
-                        </div>
-                        
+                                        <div class="flex items-start py-5 ">
+                                            <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
+                                            <p  id="ContactNum">09199225389</p>
+                                        </div>
+                                        <div class="flex items-start py-5 ">
+                                            <p class="font-semibold mr-[14rem]">Adress: </p> 
+                                            <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
+                                        </div>
+                                        <div class="flex items-start py-5">
+                                            <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
+                                            <p  id="ECP">Maria Corsiga Pangan</p>
+                                        </div>
+                                        <div class="flex items-start py-5 ">
+                                            <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
+                                            <p  id="ECN">09199225389</p>
+                                        </div>
+                                    
+                                    </div>
+                
+                                
+                                
                     </div>
+                    <!-- FORM RANKINGS -->
+                    <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
+                            <div class="flex justify-center space-x-48">
+                                <div class="text-5xl text-start mr-5">
+                                    <p class="font-bold">Aspirant</p>
+                                    <p class="pt-5 text-3xl">100 duty Hours</p>
+                                </div>
 
-                    <div class="flex items-start py-16 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Echo</p>
-                            <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
-                        </div>
+                                <div class=" text-5xl text-start list-none">
+                                    <p class="font-bold">Echo 900</p>
+                                    <p class="pt-5 text-3xl">2000 duty hours</p>
+                                    <p class="text-3xl">20 fire response</p>
+                                </div>
+                                
+                            </div>
+
+                            <div class="flex justify-center space-x-32 mt-16">
+                                <div class="text-5xl text-start">
+                                    <p class="font-bold">Probationary</p>
+                                    <p class="pt-5 text-3xl">1000 duty hours</p>
+                                    <p class="text-3xl">10 fire response</p>
+                                </div>
+
+                                <div class=" text-5xl text-start pr-5">
+                                    <p class="font-bold">Echo 800</p>
+                                    <p class="pt-5 text-3xl text-start">100 hours</p>
+                                    
+                                </div>
+                                
+                            </div>
+
+                            <div class="flex justify-center mt-16">
+                                <div class="text-5xl text-start list-none inline-block mx-20">
+                                    <p class="font-bold">Echo</p>
+                                    <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                                </div>
+
+                            </div>
+                    </div>
+                    <!-- FORM RECORDS  -->
+                    <div class="px-6" style="display: none;" id="frmRecord"  >        
+                        <table class="mt-10 w-full  border-[1px] border-black">
+                        <thead class="mt-10 h-16 text-base">
+                            <tr class="text-center text-black font-Inter font-[100] ">
+                                <th class="text-center border-2 border-black">Time In</th>
+                                <th class="text-center border-2 border-black">Time Out</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-2xl text-center font-Inter">
+                            <tr class="border-2 border-b-[1px] h-16">
+                                <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
+                                <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
+                            </tr>
     
-                    </div>
+                        
+                            </tbody>
+                         </table>
+                     </div>
                 </div>
-
-            <!-- FORM RECORDS  -->
-                <div class="px-6" style="display: none;" id="frmRecord"  >        
-                    <table class="mt-10 w-full  border-[1px] border-black">
-                    <thead class="mt-10 h-16 text-base">
-                        <tr class="text-center text-black font-Inter font-[100] ">
-                            <th class="text-center border-2 border-black">Time In</th>
-                            <th class="text-center border-2 border-black">Time Out</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-2xl text-center font-Inter">
-                        <tr class="border-2 border-b-[1px] h-16">
-                            <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
-                            <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
-                        </tr>
-
-                    
-                        </tbody>
-                     </table>
-                 </div>
-       
-            </div>
+            </div>        
         </div>
     </div>
+</div>
 <!-- FORM HOW TO VOLUNTEER -->
     <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
         <p class="text-5xl font-bold">How to volunteer?</p>

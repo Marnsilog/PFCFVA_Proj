@@ -125,9 +125,90 @@
 
 
 
-
+// // Login route (test-hash) working, no session //
+// app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+//     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+//     db.query(sql, [username], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error logging in');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(401).send('Invalid username or password');
+//             return;
+//         }
+//         const hashedPassword = result[0].password;
+//         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
+//             if (compareErr) {
+//                 res.status(500).send('Error comparing passwords');
+//                 return;
+//             }
+//             if (compareResult) {
+//                 const accountType = result[0].accountType;
+//                 res.status(200).json({ message: 'Login successful', accountType: accountType });
+//             } else {
+//                 res.status(401).send('Invalid username or password');
+//             }
+//         });
+//     });
+// });
 
 // // Login route
+
+// document.getElementById('loginForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
+
+//     fetch('/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username, password })
+//     })
+//     .then(response => {
+//         if (response.status === 200) {
+//             alert('Login successful');
+//         } else if (response.status === 401) {
+//             alert('Invalid username or password');
+//         } else {
+//             throw new Error('Error logging in');
+//         }
+//     })
+//     .catch(error => console.error('Error logging in:', error));
+// });
+
+
+
+
+// document.getElementById('loginForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
+
+//     fetch('/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username, password })
+//     })
+//     .then(response => {
+//         if (response.status === 200) {
+//             // Redirect to volunteer.html upon successful login
+//             window.location.href = 'volunteer.html';
+//         } else if (response.status === 401) {
+//             alert('Invalid username or password');
+//         } else {
+//             throw new Error('Error logging in');
+//         }
+//     })
+//     .catch(error => console.error('Error logging in:', error));
+// });
+
+
 // app.post('/login', (req, res) => {
 //     const { username, password } = req.body;
 //     const sql = 'SELECT * FROM tbl_accounts WHERE username = ? AND password = ?';

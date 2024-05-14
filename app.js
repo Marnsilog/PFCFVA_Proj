@@ -179,36 +179,6 @@ app.post('/register', (req, res) => {
 
 
 
-// // Login route (test-hash)
-// app.post('/login', (req, res) => {
-//     const { username, password } = req.body;
-//     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-//     db.query(sql, [username], (err, result) => {
-//         if (err) {
-//             res.status(500).send('Error logging in');
-//             return;
-//         }
-//         if (result.length === 0) {
-//             res.status(401).send('Invalid username or password');
-//             return;
-//         }
-//         const hashedPassword = result[0].password;
-//         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
-//             if (compareErr) {
-//                 res.status(500).send('Error comparing passwords');
-//                 return;
-//             }
-//             if (compareResult) {
-//                 const accountType = result[0].accountType;
-//                 res.status(200).json({ message: 'Login successful', accountType: accountType });
-//             } else {
-//                 res.status(401).send('Invalid username or password');
-//             }
-//         });
-//     });
-// });
-
-
 // Login route (test-hash)
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -232,8 +202,11 @@ app.post('/login', (req, res) => {
                 const user = result[0];
                 req.session.loggedin = true;
                 req.session.username = user.username;
-                req.session.fullName = `${user.firstName} ${user.lastName}`;
+                req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
+                req.session.dateOfBirth = user.dateOfBirth; //need format fix
+                req.session.gender = user.gender;
+                req.session.civilStatus = user.civilStatus;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -253,7 +226,13 @@ app.get('/volunteer', (req, res) => {
 
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
-        res.json({ fullName: req.session.fullName, callSign: req.session.callSign });
+        res.json({ 
+            fullName: req.session.fullName, 
+            callSign: req.session.callSign, 
+            dateOfBirth: req.session.dateOfBirth, 
+            gender: req.session.gender,
+            civilStatus: req.session.civilStatus
+        });
     } else {
         res.status(401).send('Not logged in');
     }

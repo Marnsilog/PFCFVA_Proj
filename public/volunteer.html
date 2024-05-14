@@ -532,27 +532,7 @@
                     <p class="text-[#930D0D] text-xl" id="callSign"></p>
                 </div>
                 
-                <!-- pass args -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-                        fetch('/profile')
-                        .then(response => {
-                            if (response.status === 200) {
-                                return response.json();
-                            } else {
-                                throw new Error('Not logged in');
-                            }
-                        })
-                        .then(data => {
-                            document.getElementById('name').textContent = data.fullName;
-                            document.getElementById('callSign').textContent = data.callSign;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching profile:', error);
-                            window.location.href = '/';
-                        });
-                    });
-                </script>
+                
                 <div class="ml-[16.5rem] pt-7">
                     <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
                 </div>
@@ -611,16 +591,16 @@
                 
                                             <div class="flex items-start pt-14 py-5">
                                                 <p class="font-semibold mr-[8rem]">Birthday: </p> 
-                                                <p id="Birthday">June 07, 2001</p>
+                                                <p id="Birthday"></p>
                                             </div>
                                 
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[9rem]">Gender: </p> 
-                                                <p id="Gender">Male</p>
+                                                <p id="Gender"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
-                                                <p id="CivilStat">Single</p>
+                                                <p id="CivilStatus"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[5rem]">Nationality: </p> 
@@ -805,6 +785,30 @@
 
 </body>
 </div>
+<!-- pass args -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/profile')
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error('Not logged in');
+            }
+        })
+        .then(data => {
+            document.getElementById('name').textContent = data.fullName;
+            document.getElementById('callSign').textContent = data.callSign;
+            document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
+            document.getElementById('Gender').textContent = data.gender;
+            document.getElementById('CivilStatus').textContent = data.civilStatus;
+        })
+        .catch(error => {
+            console.error('Error fetching profile:', error);
+            window.location.href = '/';
+        });
+    });
+</script>
 
 <script src="volunteer.js" defer></script>
 

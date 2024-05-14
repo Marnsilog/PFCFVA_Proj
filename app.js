@@ -204,6 +204,7 @@ app.post('/login', (req, res) => {
                 req.session.username = user.username;
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
+                req.session.dateOfBirth = user.dateOfBirth; //deleting content, need fix
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {

@@ -204,7 +204,8 @@ app.post('/login', (req, res) => {
                 req.session.username = user.username;
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
-                req.session.dateOfBirth = user.dateOfBirth; //deleting content, need fix
+                req.session.dateOfBirth = user.dateOfBirth; //need format fix
+                req.session.gender = user.gender;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -224,7 +225,7 @@ app.get('/volunteer', (req, res) => {
 
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
-        res.json({ fullName: req.session.fullName, callSign: req.session.callSign });
+        res.json({ fullName: req.session.fullName, callSign: req.session.callSign, dateOfBirth: req.session.dateOfBirth, gender: req.session.gender });
     } else {
         res.status(401).send('Not logged in');
     }

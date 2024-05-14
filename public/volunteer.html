@@ -591,12 +591,12 @@
                 
                                             <div class="flex items-start pt-14 py-5">
                                                 <p class="font-semibold mr-[8rem]">Birthday: </p> 
-                                                <p id="Birthday">June 07, 2001</p>
+                                                <p id="Birthday"></p>
                                             </div>
                                 
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[9rem]">Gender: </p> 
-                                                <p id="Gender">Male</p>
+                                                <p id="Gender"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
@@ -800,6 +800,7 @@
             document.getElementById('name').textContent = data.fullName;
             document.getElementById('callSign').textContent = data.callSign;
             document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
+            document.getElementById('Gender').textContent = data.gender;
         })
         .catch(error => {
             console.error('Error fetching profile:', error);

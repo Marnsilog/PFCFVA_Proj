@@ -206,6 +206,7 @@ app.post('/login', (req, res) => {
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
                 req.session.gender = user.gender;
+                req.session.civilStatus = user.civilStatus;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -225,7 +226,13 @@ app.get('/volunteer', (req, res) => {
 
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
-        res.json({ fullName: req.session.fullName, callSign: req.session.callSign, dateOfBirth: req.session.dateOfBirth, gender: req.session.gender });
+        res.json({ 
+            fullName: req.session.fullName, 
+            callSign: req.session.callSign, 
+            dateOfBirth: req.session.dateOfBirth, 
+            gender: req.session.gender,
+            civilStatus: req.session.civilStatus
+        });
     } else {
         res.status(401).send('Not logged in');
     }

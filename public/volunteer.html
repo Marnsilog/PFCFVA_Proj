@@ -600,7 +600,7 @@
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
-                                                <p id="CivilStat">Single</p>
+                                                <p id="CivilStatus"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[5rem]">Nationality: </p> 
@@ -801,6 +801,7 @@
             document.getElementById('callSign').textContent = data.callSign;
             document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
             document.getElementById('Gender').textContent = data.gender;
+            document.getElementById('CivilStatus').textContent = data.civilStatus;
         })
         .catch(error => {
             console.error('Error fetching profile:', error);

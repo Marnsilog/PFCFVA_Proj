@@ -125,7 +125,34 @@
 
 
 
-
+// // Login route (test-hash) working, no session //
+// app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+//     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+//     db.query(sql, [username], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error logging in');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(401).send('Invalid username or password');
+//             return;
+//         }
+//         const hashedPassword = result[0].password;
+//         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
+//             if (compareErr) {
+//                 res.status(500).send('Error comparing passwords');
+//                 return;
+//             }
+//             if (compareResult) {
+//                 const accountType = result[0].accountType;
+//                 res.status(200).json({ message: 'Login successful', accountType: accountType });
+//             } else {
+//                 res.status(401).send('Invalid username or password');
+//             }
+//         });
+//     });
+// });
 
 // // Login route
 

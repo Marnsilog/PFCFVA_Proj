@@ -207,6 +207,8 @@ app.post('/login', (req, res) => {
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
                 req.session.gender = user.gender;
                 req.session.civilStatus = user.civilStatus;
+                req.session.nationality = user.nationality;
+                req.session.bloodType = user.bloodType;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -231,7 +233,9 @@ app.get('/profile', (req, res) => {
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
             gender: req.session.gender,
-            civilStatus: req.session.civilStatus
+            civilStatus: req.session.civilStatus,
+            nationality: req.session.nationality,
+            bloodType: req.session.bloodType
         });
     } else {
         res.status(401).send('Not logged in');

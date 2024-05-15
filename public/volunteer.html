@@ -122,13 +122,13 @@
                     <div class="ml-12">
                         <p>Nationality</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Nationality" placeholder="Nationality" id="Nationality">
+                        type="Nationality" placeholder="Nationality" id="nationality">
                     </div>
 
                     <div class="ml-12">
                         <p>Blood Type</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="BloodType" placeholder="BloodType" id="BloodType">
+                        type="BloodType" placeholder="BloodType" id="bloodType">
                     </div>
                 </div>
                
@@ -604,7 +604,7 @@
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[5rem]">Nationality: </p> 
-                                                <p  id="Nationality">Filipino</p>
+                                                <p  id="Nationality"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
@@ -786,6 +786,34 @@
 </body>
 </div>
 
+<!-- pass args -->
+<script>
+    //disable here to fix live server (session pass args)
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/profile')
+    .then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw new Error('Not logged in');
+        }
+    })
+    .then(data => {
+        document.getElementById('name').textContent = data.fullName;
+        document.getElementById('callSign').textContent = data.callSign;
+        document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
+        document.getElementById('Gender').textContent = data.gender;
+        document.getElementById('CivilStatus').textContent = data.civilStatus;
+        document.getElementById('Nationality').textContent = data.nationality;
+        document.getElementById('BloodType').textContent = data.bloodType;
+    })
+    .catch(error => {
+        
+        console.error('Error fetching profile:', error);
+        window.location.href = '/';
+    });
+});
+</script>
 
 <script src="volunteer.js" defer></script>
 

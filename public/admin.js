@@ -151,7 +151,42 @@ function animateProgressBar(targetWidth) {
     }
   }
   
+  function inciform(){
+    var incidentLog = document.getElementById('incidentLog');
+    
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
 
+  }
+
+  function exitinc(){
+    var incidentLog = document.getElementById('incidentLog');
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
+  }
+
+  function showICS(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'none';
+    InciSys.style.display = 'block';
+  }
+function icsBack(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'block';
+    InciSys.style.display = 'none';
+}
   function rankOpt(){
     var rankhead1 = document.getElementById('rankhead1');
     var rankOpt1 = document.getElementById('rankOpt1');

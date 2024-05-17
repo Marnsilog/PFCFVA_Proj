@@ -111,9 +111,20 @@
                                 <option value="Admin">Admin</option>
                             </select>
                         </div>
-                        <div>
+                        <div >
                             <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7"  type="text" id="callSign" required>
+                            <div class="border-[1px] border-black w-[17rem] h-7 flex justify-start">
+                                <select class="border-r-[1px] border-gray-500 w-[70%] h-auto" name="" id="accountType" required>
+                                    <option value="" disabled selected> </option>
+                                    <option value="Volunteer">Aspirant</option>
+                                    <option value="Supervisor">Probi</option>
+                                    <option value="Admin">Echo</option>
+                                    <option value="Admin">Echo800</option>
+                                    <option value="Admin">Echo900</option>
+                                </select>
+                                <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSign" required>
+                            </div>
+                           
                             
                         </div>
                         <div>

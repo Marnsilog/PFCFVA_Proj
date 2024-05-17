@@ -108,13 +108,15 @@ function showEdit(){
 }
 
 
-// window.onload = function() {
-//   showDashboard();
-// };
+    // window.onload = function() {
+    // showDashboard();
+    // };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
     animateProgressBar2(40);
+    animateProgressBar3(60);
+    animateProgressBar4(10);
 
     const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
@@ -148,6 +150,20 @@ function animateProgressBar(targetWidth) {
     const progressBar2 = document.getElementById('progress2');
     if (progressBar2) {
       progressBar2.style.width = targetWidth + '%';
+    }
+  }
+
+  function animateProgressBar3(targetWidth) {
+    const progressBar3 = document.getElementById('progress3');
+    if (progressBar3) {
+      progressBar3.style.width = targetWidth + '%';
+    }
+  }
+
+  function animateProgressBar4(targetWidth) {
+    const progress4 = document.getElementById('progress4');
+    if (progress4) {
+        progress4.style.width = targetWidth + '%';
     }
   }
   

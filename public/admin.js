@@ -222,3 +222,14 @@ function icsBack(){
     }
    
   }
+
+
+
+    //for calendar
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dateOfBirthInput = document.getElementById('dateOfBirth');
+        const today = new Date().toISOString().split('T')[0];
+        dateOfBirthInput.setAttribute('max', today);
+    });
+
+

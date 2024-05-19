@@ -108,13 +108,15 @@ function showEdit(){
 }
 
 
-// window.onload = function() {
-//   showDashboard();
-// };
+    // window.onload = function() {
+    // showDashboard();
+    // };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
     animateProgressBar2(40);
+    animateProgressBar3(60);
+    animateProgressBar4(10);
 
     const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
@@ -150,8 +152,57 @@ function animateProgressBar(targetWidth) {
       progressBar2.style.width = targetWidth + '%';
     }
   }
-  
 
+  function animateProgressBar3(targetWidth) {
+    const progressBar3 = document.getElementById('progress3');
+    if (progressBar3) {
+      progressBar3.style.width = targetWidth + '%';
+    }
+  }
+
+  function animateProgressBar4(targetWidth) {
+    const progress4 = document.getElementById('progress4');
+    if (progress4) {
+        progress4.style.width = targetWidth + '%';
+    }
+  }
+  
+  function inciform(){
+    var incidentLog = document.getElementById('incidentLog');
+    
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
+
+  }
+
+  function exitinc(){
+    var incidentLog = document.getElementById('incidentLog');
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
+  }
+
+  function showICS(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'none';
+    InciSys.style.display = 'block';
+  }
+function icsBack(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'block';
+    InciSys.style.display = 'none';
+}
   function rankOpt(){
     var rankhead1 = document.getElementById('rankhead1');
     var rankOpt1 = document.getElementById('rankOpt1');
@@ -171,3 +222,14 @@ function animateProgressBar(targetWidth) {
     }
    
   }
+
+
+
+    //for calendar
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dateOfBirthInput = document.getElementById('dateOfBirth');
+        const today = new Date().toISOString().split('T')[0];
+        dateOfBirthInput.setAttribute('max', today);
+    });
+
+

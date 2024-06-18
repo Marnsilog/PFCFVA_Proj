@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
-    <link href="volunteer.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.css" rel="stylesheet">
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
 <div>
@@ -30,17 +29,17 @@
 </nav>
 </div>
 <!-- SETTINGS -->
-    <div class="absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
-        <div class="bg-white rounded-lg border-[1px] border-black w-64">
-            <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="myProfile()"><p>My Profile</p></div>
-            <div class="bg-black h-[2px]"></div>
-            <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="showAboutUs()"><p>About Us</p></div>
-            <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="showHwVolunteer()"><p>Volunteer</p></div>
-            <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"><p>Donate</p></div>
-            <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
-        </div>
+<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;" onclick="myProfile()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;" onclick="showAboutUs()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg><p>About Us</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;" onclick="showHwVolunteer()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M544 248v3.3l69.7-69.7c21.9-21.9 21.9-57.3 0-79.2L535.6 24.4c-21.9-21.9-57.3-21.9-79.2 0L416.3 64.5c-2.7-.3-5.5-.5-8.3-.5H296c-37.1 0-67.6 28-71.6 64H224V248c0 22.1 17.9 40 40 40s40-17.9 40-40V176c0 0 0-.1 0-.1V160l16 0 136 0c0 0 0 0 .1 0H464c44.2 0 80 35.8 80 80v8zM336 192v56c0 39.8-32.2 72-72 72s-72-32.2-72-72V129.4c-35.9 6.2-65.8 32.3-76 68.2L99.5 255.2 26.3 328.4c-21.9 21.9-21.9 57.3 0 79.2l78.1 78.1c21.9 21.9 57.3 21.9 79.2 0l37.7-37.7c.9 0 1.8 .1 2.7 .1H384c26.5 0 48-21.5 48-48c0-5.6-1-11-2.7-16H432c26.5 0 48-21.5 48-48c0-12.8-5-24.4-13.2-33c25.7-5 45.1-27.6 45.2-54.8v-.4c-.1-30.8-25.1-55.8-56-55.8c0 0 0 0 0 0l-120 0z"/></svg><p>Volunteer</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M326.7 403.7c-22.1 8-45.9 12.3-70.7 12.3s-48.7-4.4-70.7-12.3c-.3-.1-.5-.2-.8-.3c-30-11-56.8-28.7-78.6-51.4C70 314.6 48 263.9 48 208C48 93.1 141.1 0 256 0S464 93.1 464 208c0 55.9-22 106.6-57.9 144c-1 1-2 2.1-3 3.1c-21.4 21.4-47.4 38.1-76.3 48.6zM256 84c-11 0-20 9-20 20v14c-7.6 1.7-15.2 4.4-22.2 8.5c-13.9 8.3-25.9 22.8-25.8 43.9c.1 20.3 12 33.1 24.7 40.7c11 6.6 24.7 10.8 35.6 14l1.7 .5c12.6 3.8 21.8 6.8 28 10.7c5.1 3.2 5.8 5.4 5.9 8.2c.1 5-1.8 8-5.9 10.5c-5 3.1-12.9 5-21.4 4.7c-11.1-.4-21.5-3.9-35.1-8.5c-2.3-.8-4.7-1.6-7.2-2.4c-10.5-3.5-21.8 2.2-25.3 12.6s2.2 21.8 12.6 25.3c1.9 .6 4 1.3 6.1 2.1l0 0 0 0c8.3 2.9 17.9 6.2 28.2 8.4V312c0 11 9 20 20 20s20-9 20-20V298.2c8-1.7 16-4.5 23.2-9c14.3-8.9 25.1-24.1 24.8-45c-.3-20.3-11.7-33.4-24.6-41.6c-11.5-7.2-25.9-11.6-37.1-15l-.7-.2c-12.8-3.9-21.9-6.7-28.3-10.5c-5.2-3.1-5.3-4.9-5.3-6.7c0-3.7 1.4-6.5 6.2-9.3c5.4-3.2 13.6-5.1 21.5-5c9.6 .1 20.2 2.2 31.2 5.2c10.7 2.8 21.6-3.5 24.5-14.2s-3.5-21.6-14.2-24.5c-6.5-1.7-13.7-3.4-21.1-4.7V104c0-11-9-20-20-20zM48 352H64c19.5 25.9 44 47.7 72.2 64H64v32H256 448V416H375.8c28.2-16.3 52.8-38.1 72.2-64h16c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V400c0-26.5 21.5-48 48-48z"/></svg><p>Donate</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" id="logoutLink" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
     </div>
-    
+</div>
 <!-- Edit Profile -->
 <div style="display: none;" id="editProfile">
     <div class="mt-12 ml-96">
@@ -123,13 +122,13 @@
                     <div class="ml-12">
                         <p>Nationality</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Nationality" placeholder="Nationality" id="Nationality">
+                        type="Nationality" placeholder="Nationality" id="nationality">
                     </div>
 
                     <div class="ml-12">
                         <p>Blood Type</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="BloodType" placeholder="BloodType" id="BloodType">
+                        type="BloodType" placeholder="BloodType" id="bloodType">
                     </div>
                 </div>
                
@@ -209,50 +208,83 @@
     </div>
 </div>
 <!-- CONTACT US -->
-    <div class="bg-[#930d0ddc] absolute bottom-0 mt-32 w-full h-80" id="frmContactus" style="display: none;">
+    <div  id="frmContactus">
+        <div class="h-screen   w-full">
+            <div class="h-[45%] w-full"></div>
+          
+                <div class="w-full bg-[#930d0ddc] mt-32 h-[30%] py-10">
 
-        <div class="font-Inter text-white text-xl ml-[26rem] mt-8">
-            <div class="flex items-start py-5 ">
-                <div class="inline-block mr-[4rem]">
+                    <div class="font-Inter text-white text-xl ">
+                        <div class="flex justify-center w-full space-x-[30rem]">
+                            <div class="space-y-7">
+                                <div class="flex justify-normal space-x-5">
+                                    <div class="rounded-full border-[1px] px-2 py-2 h-10 mt-2">                                    
+                                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path class="fill-current" fill="currentColor" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
+                                    </svg></div>
+
+                                    
+                                    <a href="https://www.google.com/maps/place/8182+Dr+Arcadio+Santos+Ave,+Para%C3%B1aque,+1700+Metro+Manila/@14.4766088,120.996898,17z/data=!3m1!4b1!4m6!3m5!1s0x3397ce64d1892071:0x5b6c10f464a3d69b!8m2!3d14.4766036!4d120.9994729!16s%2Fg%2F11gjw3vzk2?entry=ttu">
+                                        <p>8182 Dr Arcadio Santos Ave,<br> Parañaque, 1700 Metro Manila</p> </a>
+                                </div>
+                                <div class="flex justify-normal space-x-5">
+                                    <div class=" rounded-full border-[1px] px-2 py-2 ">
+                                        <svg  class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path class="fill-current" fill="currentColor" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                                    </div>
+ 
+                                    <p class="underline underline-offset-8">pfcfva2003@gmail.com</p>
+                                 </div>
+                            </div>
+                            <div class="space-y-12">
+                                <div class="flex justify-normal space-x-5">
+                                    <div class=" rounded-full border-[1px] px-2 py-2 ">
+                                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path class="fill-current" fill="currentColor" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
+                                    </div>
+    
+                                    <p class="mt-2">099175222526</p>
+                                </div>
+                              
+                                <div class="flex justify-normal space-x-5">
+                                    <div class=" rounded-full border-[1px] px-2 py-2">
+                                        <svg  class="w-5 h-5 text-white rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path  class="fill-current" fill="currentColor" d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/></svg>
+                                    </div>
+
+                                    <a class="mt-[7px] underline underline-offset-8" href="https://www.facebook.com/pfcfva">PFCFVA Facebook Page</a>
+                                </div>
+                                
+                            </div>
+                        
+                        </div>
+                        <a href="#"><p class="text-center underline underline-offset-1 mt-5">Privacy Policy</p></a>
+                        
+                       
                     
-                    <a href="https://www.google.com/maps/place/8182+Dr+Arcadio+Santos+Ave,+Para%C3%B1aque,+1700+Metro+Manila/@14.4766088,120.996898,17z/data=!3m1!4b1!4m6!3m5!1s0x3397ce64d1892071:0x5b6c10f464a3d69b!8m2!3d14.4766036!4d120.9994729!16s%2Fg%2F11gjw3vzk2?entry=ttu"><p>8182 Dr Arcadio Santos Ave,<br> Parañaque, 1700 Metro Manila</p> </a>
-                    
-                    <p class="mt-12 underline underline-offset-1">pfcfva2003@gmail.com</p>
-                </div>
-                <div class="inline-block px-80">
-                    <p>099175222526</p>
-                    <div class="mt-16 underline underline-offset-1" >
-                        <a href="https://www.facebook.com/pfcfva">PFCFVA Facebook Page</a>
                     </div>
-                    
-            
                 </div>
-            
-
-            
-            </div>
-            <p class="mt-12 ml-96 underline underline-offset-1">Privacy Policy</p>
         
+      
+
         </div>
+      
+
     
     </div>
 
 <!-- FORM DASHBOARD -->
-    <div id="frmDashboard" style="display: none;">
+<div id="frmDashboard" style="display: none;">
         
-            <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
+    <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
 
-                <div class="text-black font-Inter pt-11 pl-10">
-                    <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
-                    <p class="text-lg">Volunteer</p>
-                </div>
+        <div class="text-black font-Inter pt-11 pl-10">
+            <p class="text-2xl font-bold">Welcome, Marniel Corsiga</p>
+            <p class="text-lg">Volunteer</p>
+        </div>
+        
 
-            </div>
-
-            <div class="mt-5 flex justify-end mr-14">
-                <div class="w-96 h-96 shadow-md shadow-black border-[.2px] border-black" id="calendar"></div>
-            </div>
     </div>
+
+   
+</div>
 
 <!--FORM INVENTORY-->
 <div class="pt-4" id="frmInventory" style="display: none;" >
@@ -294,65 +326,91 @@
 </div>
 
 <!-- Add Inventory -->
-<div  style="display: none;" id="addInventory">
-    <div class="mt-10 ml-10">
-        <div class="flex items-start">
-            <p class="text-4xl font-semibold">Inventory</p>
-            <div class="pl-[75rem]">
-                <input class="bg-[#E9E8E8] w-96 h-10 px-4 rounded-lg" 
-                        type="text" placeholder="Search" id="addInvSearch">
-
-            </div>
-            
-        </div>
-    </div>
-    <div  class="pt-8 pl-12">
-        <select class="w-auto h-9 px-1 rounded-full border-[1px] rounded-black" id="truckId">
-            <option value="text" disabled selected>Vehicle</option>
-            <option value="text">Engine 72</option>
-            <option value="text">Water Tender 72</option>
-            <option value="text">Pumber 72</option>
-        </select>
-    </div>
-            <div>
-                <div>        
-                    <table id="myTable2" class="mt-10 w-full border-[1px] border-black shadow-lg shadow-gray-600">
-                        <tbody class="text-2xl text-start font-Inter">
-                            <tr class=" border-gray-500 h-16">
-                                <td class="pl-16">Name 1</td>
-                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500"></div></td>
-                            
-                            </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-16">Name 2</td>
-                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-16">Name 3</td>
-                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-16">Name 4</td>
-                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-16">Name 5</td>
-                                <td class="pl-[90rem]"><div class="colorCircle bg-red-500 flex items-center"></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-            
-            </div>
-
-            <div class="pl-[90rem]">
-                <button onclick="CancelInv()" class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
-                <button class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
-            </div>
-
+<div id="addInventory" style="display: none;">
+    <div   class="w-full flex justify-center" >
+        <div class="max-w-[75rem] w-full">
+            <div class="mt-5 font-Inter w-full" >
+                <p class="font-bold text-4xl">Inventory</p>
+                <div class="w-full flex justify-between mt-16">
+                    <div>
+                        <select class="rounded-full border-[1px] rounded-black" id="truckId">
+                            <option value="text" disabled selected>Vehicle</option>
+                            <option value="text">Engine 72</option>
+                            <option value="text">Water Tender 72</option>
+                            <option value="text">Pumber 72</option>
+                        </select>
+                    </div>
     
+                    <div class="flex justify-start bg-[#E9E8E8] rounded-lg h-10">
+                        <svg class="w-5 h-5 mx-2 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                        <div class="bg-[#E9E8E8] rounded-lg ">
+                            <input class="h-10 w-[20rem] bg-transparent" 
+                            type="text" placeholder=" Search" id="addInvSearch">
+                        </div>
+    
+                    </div>
+                </div>
+    
+             <div class="w-full mt-7">        
+                                <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600">
+                                    <div class="bg-black">
+                                        <tbody class="text-2xl text-start font-Inter">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                                <td><div class="flex justify-start space-x-5 ml-4">
+                                                    <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 1</p>
+                                                </div></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                            
+                                            </tr>
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                                <td><div class="flex justify-start space-x-5 ml-4">
+                                                    <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 2</p>
+                                                </div></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                            
+                                            </tr>
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                                <td><div class="flex justify-start space-x-5 ml-4">
+                                                    <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 3</p>
+                                                </div></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                            
+                                            </tr>
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                                <td><div class="flex justify-start space-x-5 ml-4">
+                                                    <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 4</p>
+                                                </div></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                            
+                                            </tr>
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                                <td><div class="flex justify-start space-x-5 ml-4">
+                                                    <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 5</p>
+                                                </div></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                            
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                  
+                                </table>
+                                <div class="mt-10 mb-20 w-full flex justify-end space-x-5">
+                                    <button onclick="CancelInv()" class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 text-white text-xl font-Inter font-[500]">Cancel</button>
+                                    <button class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36  text-white text-xl font-Inter font-[500]">Submit</button>
+                                </div>
+             </div>
+                            
+            
+    
+            
+            </div>
+        </div>
+      
+       
+        
+    </div>
 </div>
+
 
 <!-- FORM LEADERBOARDS -->
     <div id="frmLeaderboards" style="display: none;">
@@ -470,9 +528,11 @@
                 </div>
                 
                 <div class="text-center font-Inter">
-                    <p class="pt-5 text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
-                    <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
+                    <p class="pt-5 text-black text-4xl font-bold" id="name"></p>
+                    <p class="text-[#930D0D] text-xl" id="callSign"></p>
                 </div>
+                
+                
                 <div class="ml-[16.5rem] pt-7">
                     <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
                 </div>
@@ -523,149 +583,149 @@
                     <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
             </div>
 
-<!-- FORM PROFILE -->
-<div class="pt-11 ml-16 font-Inter"  id="frmMyprofile">
-                <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
-
-                <div class="text-4xl">
-
-                    <div class="flex items-start pt-14 py-5">
-                        <p class="font-semibold mr-[8rem]">Birthday: </p> 
-                        <p id="Birthday">June 07, 2001</p>
-                    </div>
-        
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[9rem]">Gender: </p> 
-                        <p id="Gender">Male</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
-                        <p id="CivilStat">Single</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[5rem]">Nationality: </p> 
-                        <p  id="Nationality">Filipino</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
-                        <p id="BloodType">O+</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                        <p id="CollegeUnd">College UnderGrad</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                        <p  id="NOC">Centro Scholar University</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[12rem]">Years of Service: </p> 
-                        <p id="YOS">2 Years</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                        <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
-                    </div>
-                    <div class="flex items-start py-5 ">
-                        <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                        <p  id="others">STI Global City</p>
-                    </div>
+                    <!-- FORM PROFILE -->
+                    <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile" >
+                        <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
                 
-            </div>
-
-            <p class="text-[#9E9E9E] text-5xl font-bold py-10 pl-5">Contact Information </p>
-
-            <div class="text-4xl" >
-                <div class="flex items-start pt-14 py-5">
-                    <p class=" font-semibold mr-[6rem]">Email Address: </p> 
-                    <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
-                </div>
-    
-                <div class="flex items-start py-5 ">
-                    <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
-                    <p  id="ContactNum">09199225389</p>
-                </div>
-                <div class="flex items-start py-5 ">
-                    <p class="font-semibold mr-[14rem]">Adress: </p> 
-                    <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
-                </div>
-                <div class="flex items-start py-5">
-                    <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                    <p  id="ECP">Maria Corsiga Pangan</p>
-                </div>
-                <div class="flex items-start py-5 ">
-                    <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                    <p  id="ECN">09199225389</p>
-                </div>
-            
-            </div>
-
-    </div>
-
-            
-            <!-- FORM RANKINGS -->
-            <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
-                    <div class="flex items-start py-5 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Aspirant</p>
-                            <p class="pt-5 text-3xl">100 duty Hours</p>
-                        </div>
-
-                        <div class=" text-5xl text-start list-none inline-block ml-[19rem]">
-                            <p class="font-bold">Echo 900</p>
-                            <p class="pt-5 text-3xl">2000 duty hours</p>
-                            <p class="text-3xl">20 fire response</p>
-                        </div>
-                        
-                    </div>
-
-                    <div class="flex items-start py-16 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Probationary</p>
-                            <p class="pt-5 text-3xl">1000 duty hours</p>
-                            <p class="text-3xl">10 fire response</p>
-                        </div>
-
-                        <div class=" text-5xl text-start list-none inline-block ml-52">
-                            <p class="font-bold">Echo 800</p>
-                            <p class="pt-5 text-3xl text-start">100 hours</p>
+                        <div class="text-4xl">
+                
+                                            <div class="flex items-start pt-14 py-5">
+                                                <p class="font-semibold mr-[8rem]">Birthday: </p> 
+                                                <p id="Birthday"></p>
+                                            </div>
+                                
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[9rem]">Gender: </p> 
+                                                <p id="Gender"></p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
+                                                <p id="CivilStatus"></p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[5rem]">Nationality: </p> 
+                                                <p  id="Nationality"></p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
+                                                <p id="BloodType">O+</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
+                                                <p id="CollegeUnd">College UnderGrad</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
+                                                <p  id="NOC">Centro Scholar University</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[12rem]">Years of Service: </p> 
+                                                <p id="YOS">2 Years</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
+                                                <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                                            </div>
+                                            <div class="flex items-start py-5 ">
+                                                <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
+                                                <p  id="others">STI Global City</p>
+                                            </div>
+                                        
+                                    </div>
+                
+                                    <p class="text-[#9E9E9E] text-5xl font-bold py-10">Contact Information </p>
+                
+                                    <div class="text-4xl" >
+                                        <div class="flex items-start pt-14 py-5">
+                                            <p class=" font-semibold mr-[6rem]">Email Address: </p> 
+                                            <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
+                                        </div>
                             
-                        </div>
-                        
+                                        <div class="flex items-start py-5 ">
+                                            <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
+                                            <p  id="ContactNum">09199225389</p>
+                                        </div>
+                                        <div class="flex items-start py-5 ">
+                                            <p class="font-semibold mr-[14rem]">Adress: </p> 
+                                            <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
+                                        </div>
+                                        <div class="flex items-start py-5">
+                                            <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
+                                            <p  id="ECP">Maria Corsiga Pangan</p>
+                                        </div>
+                                        <div class="flex items-start py-5 ">
+                                            <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
+                                            <p  id="ECN">09199225389</p>
+                                        </div>
+                                    
+                                    </div>
+                
+                                
+                                
                     </div>
+                    <!-- FORM RANKINGS -->
+                    <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
+                            <div class="flex justify-center space-x-48">
+                                <div class="text-5xl text-start mr-5">
+                                    <p class="font-bold">Aspirant</p>
+                                    <p class="pt-5 text-3xl">100 duty Hours</p>
+                                </div>
 
-                    <div class="flex items-start py-16 ml-28">
-                        <div class="text-5xl text-start list-none inline-block mx-20">
-                            <p class="font-bold">Echo</p>
-                            <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
-                        </div>
+                                <div class=" text-5xl text-start list-none">
+                                    <p class="font-bold">Echo 900</p>
+                                    <p class="pt-5 text-3xl">2000 duty hours</p>
+                                    <p class="text-3xl">20 fire response</p>
+                                </div>
+                                
+                            </div>
+
+                            <div class="flex justify-center space-x-32 mt-16">
+                                <div class="text-5xl text-start">
+                                    <p class="font-bold">Probationary</p>
+                                    <p class="pt-5 text-3xl">1000 duty hours</p>
+                                    <p class="text-3xl">10 fire response</p>
+                                </div>
+
+                                <div class=" text-5xl text-start pr-5">
+                                    <p class="font-bold">Echo 800</p>
+                                    <p class="pt-5 text-3xl text-start">100 hours</p>
+                                    
+                                </div>
+                                
+                            </div>
+
+                            <div class="flex justify-center mt-16">
+                                <div class="text-5xl text-start list-none inline-block mx-20">
+                                    <p class="font-bold">Echo</p>
+                                    <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                                </div>
+
+                            </div>
+                    </div>
+                    <!-- FORM RECORDS  -->
+                    <div class="px-6" style="display: none;" id="frmRecord"  >        
+                        <table class="mt-10 w-full  border-[1px] border-black">
+                        <thead class="mt-10 h-16 text-base">
+                            <tr class="text-center text-black font-Inter font-[100] ">
+                                <th class="text-center border-2 border-black">Time In</th>
+                                <th class="text-center border-2 border-black">Time Out</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-2xl text-center font-Inter">
+                            <tr class="border-2 border-b-[1px] h-16">
+                                <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
+                                <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
+                            </tr>
     
-                    </div>
+                        
+                            </tbody>
+                         </table>
+                     </div>
                 </div>
-
-            <!-- FORM RECORDS  -->
-                <div class="px-6" style="display: none;" id="frmRecord"  >        
-                    <table class="mt-10 w-full  border-[1px] border-black">
-                    <thead class="mt-10 h-16 text-base">
-                        <tr class="text-center text-black font-Inter font-[100] ">
-                            <th class="text-center border-2 border-black">Time In</th>
-                            <th class="text-center border-2 border-black">Time Out</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-2xl text-center font-Inter">
-                        <tr class="border-2 border-b-[1px] h-16">
-                            <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
-                            <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
-                        </tr>
-
-                    
-                        </tbody>
-                     </table>
-                 </div>
-       
-            </div>
+            </div>        
         </div>
     </div>
+</div>
 <!-- FORM HOW TO VOLUNTEER -->
     <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
         <p class="text-5xl font-bold">How to volunteer?</p>
@@ -725,8 +785,39 @@
 
 </body>
 </div>
+
+<!-- pass args -->
+<script>
+    //disable here to fix live server (session pass args)
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/profile')
+    .then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw new Error('Not logged in');
+        }
+    })
+    .then(data => {
+        document.getElementById('name').textContent = data.fullName;
+        document.getElementById('callSign').textContent = data.callSign;
+        document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
+        document.getElementById('Gender').textContent = data.gender;
+        document.getElementById('CivilStatus').textContent = data.civilStatus;
+        document.getElementById('Nationality').textContent = data.nationality;
+        document.getElementById('BloodType').textContent = data.bloodType;
+    })
+    .catch(error => {
+        
+        console.error('Error fetching profile:', error);
+        window.location.href = '/';
+    });
+});
+</script>
+
 <script src="volunteer.js" defer></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
-
 </html>

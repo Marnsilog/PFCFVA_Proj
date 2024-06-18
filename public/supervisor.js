@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             const confirmLogout = confirm("Are you sure you want to log out?");
             if (confirmLogout) {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'index.html';
             }
         });
     }

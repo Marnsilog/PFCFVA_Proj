@@ -40,7 +40,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'fmrRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -58,7 +58,7 @@ function showDashboard() {
     addLine('dashb');
 }
 function showRegister(){
-    showElement('fmrRegister');
+    showElement('frmRegister');
     addLine('reg');
 }
 function showAttendance(){
@@ -108,13 +108,15 @@ function showEdit(){
 }
 
 
-// window.onload = function() {
-//   showDashboard();
-// };
+    // window.onload = function() {
+    // showDashboard();
+    // };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
     animateProgressBar2(40);
+    animateProgressBar3(60);
+    animateProgressBar4(10);
 
     const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
@@ -122,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             const confirmLogout = confirm("Are you sure you want to log out?");
             if (confirmLogout) {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'index.html';
             }
         });
     }
@@ -150,15 +152,84 @@ function animateProgressBar(targetWidth) {
       progressBar2.style.width = targetWidth + '%';
     }
   }
+
+  function animateProgressBar3(targetWidth) {
+    const progressBar3 = document.getElementById('progress3');
+    if (progressBar3) {
+      progressBar3.style.width = targetWidth + '%';
+    }
+  }
+
+  function animateProgressBar4(targetWidth) {
+    const progress4 = document.getElementById('progress4');
+    if (progress4) {
+        progress4.style.width = targetWidth + '%';
+    }
+  }
   
+  function inciform(){
+    var incidentLog = document.getElementById('incidentLog');
+    
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
 
-//test
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+  }
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth' // Display the calendar in month view
+  function exitinc(){
+    var incidentLog = document.getElementById('incidentLog');
+    if (incidentLog.style.display === 'none' || incidentLog.style.display === '') {
+     
+        incidentLog.style.display = 'block';
+    } else {
+      
+        incidentLog.style.display = 'none';
+    }
+  }
+
+  function showICS(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'none';
+    InciSys.style.display = 'block';
+  }
+function icsBack(){
+    var InciSys = document.getElementById('InciSys');
+    var frmIncident = document.getElementById('frmIncident');
+    frmIncident.style.display = 'block';
+    InciSys.style.display = 'none';
+}
+  function rankOpt(){
+    var rankhead1 = document.getElementById('rankhead1');
+    var rankOpt1 = document.getElementById('rankOpt1');
+    var buttonContainer = document.getElementById('buttonContainer');
+    var currentDisplayStyle = window.getComputedStyle(rankOpt1).display;
+
+    if (currentDisplayStyle === 'none') {
+        buttonContainer.classList.add('border-2','border-black','rounded-lg');
+        rankhead1.classList.add('border-b-[1px]','border-b-gray-300','rounded-b-none')
+        rankhead1.classList.remove('shadow-lg','shadow-gray-400','border-2')
+        rankOpt1.style.display = 'block';
+    } else {
+        buttonContainer.classList.remove('border-2','border-black','rounded-lg');
+        rankhead1.classList.remove('border-b-[1px]','border-b-gray-300','rounded-b-none')
+        rankhead1.classList.add('shadow-lg','shadow-gray-400','border-2')
+        rankOpt1.style.display = 'none';
+    }
+   
+  }
+
+
+
+    //for calendar
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dateOfBirthInput = document.getElementById('dateOfBirth');
+        const today = new Date().toISOString().split('T')[0];
+        dateOfBirthInput.setAttribute('max', today);
     });
 
-    calendar.render();
-});
+

@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-
+//add rfid to database
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {

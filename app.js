@@ -47,6 +47,7 @@ app.use(bodyParser.json());
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {
+        rfid,
         username,
         password,
         accountType,
@@ -102,6 +103,7 @@ app.post('/register', (req, res) => {
             }
 
             const sql = `INSERT INTO tbl_accounts (
+                rfid,
                 username,
                 password,
                 accountType,
@@ -131,9 +133,10 @@ app.post('/register', (req, res) => {
                 activityPoints,
                 inventoryPoints,
                 dutyHours
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
             db.query(sql, [
+                rfid,
                 username,
                 hash, // Store the hashed password 
                 accountType,

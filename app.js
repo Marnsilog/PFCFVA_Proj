@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-//add rfid to database
+//add rfid to database (done)
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {
@@ -205,6 +205,7 @@ app.post('/login', (req, res) => {
                 const user = result[0];
                 req.session.loggedin = true;
                 req.session.username = user.username;
+                req.session.rfid = user.rfid; //this 2
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
@@ -229,9 +230,11 @@ app.get('/volunteer', (req, res) => {
     }
 });
 
+//profiling session
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
         res.json({ 
+            rfid: req.session.rfid,// this 3
             fullName: req.session.fullName, 
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 

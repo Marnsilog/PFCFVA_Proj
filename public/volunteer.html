@@ -393,18 +393,18 @@
 </div>
 
 <!--FORM INVENTORY-->
-<div class="pt-4 w-full flex justify-center">
-
-    <div class="md:max-w-[85rem] md:w-full md:pt-7"  id="frmInventory">
+<div class="pt-4 w-full flex justify-center" >
+    <div class="w-full md:max-w-[85rem] md:pt-7"  id="frmInventory" style="display: none;">
             <div class="w-full">
                         <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
                             <div class=""> <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="AddInventory()">+ Add Inventory log</button></div>
-                            <div class=""><input type="text" class="border-[1px] border-black rounded-md h-10 w-96"></div>
-                    
+                            <div class="w-full flex justify-center md:justify-end">
+                                <input type="text" class="border-[1px] border-black h-8 w-[20rem] rounded-md md:h-10 md:w-96">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="font-Inter">       
+                    <div class="font-Inter w-full">       
                     <table id="myTable" class="mt-5 w-full md:mt-10 ">
                         <thead class="bg-[#209AAD] opacity-75 text-white md:mt-10 mdh-16 md:text-3xl ">
                             <tr>
@@ -446,14 +446,23 @@
             </div>
 
 <!-- Add Inventory -->
-<div id="addInventory" style="display: none;">
+<div id="addInventory">
     <div   class="w-full flex justify-center" >
-        <div class="max-w-[75rem] w-full">
-            <div class="mt-5 font-Inter w-full" >
-                <p class="font-bold text-4xl">Inventory</p>
-                <div class="w-full flex justify-between mt-16">
-                    <div>
-                        <select class="rounded-full border-[1px] rounded-black" id="truckId">
+        <div class="md:max-w-[75rem] w-full">
+            <div class="md:mt-5 font-Inter w-full" >
+                <p class="font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
+                <div class="mt-5 w-full md:flex md:justify-between md:mt-16">
+                    <div class="h-10 md:w-[20rem] flex justify-start bg-[#E9E8E8] rounded-lg ">
+                        <svg class="w-5 h-5 mx-2 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                        <div class="bg-[#E9E8E8] rounded-lg w-full">
+                            <input class="h-10 w-full  bg-transparent" 
+                            type="text" placeholder=" Search" id="addInvSearch">
+                        </div>
+    
+                    </div>
+
+                    <div class="mt-7 ml-2 || md:ml-0 md:mt-0">
+                        <select class="rounded-lg border-[1px] rounded-black  md:rounded-full" id="truckId">
                             <option value="text" disabled selected>Vehicle</option>
                             <option value="text">Engine 72</option>
                             <option value="text">Water Tender 72</option>
@@ -461,68 +470,56 @@
                         </select>
                     </div>
     
-                    <div class="flex justify-start bg-[#E9E8E8] rounded-lg h-10">
-                        <svg class="w-5 h-5 mx-2 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                        <div class="bg-[#E9E8E8] rounded-lg ">
-                            <input class="h-10 w-[20rem] bg-transparent" 
-                            type="text" placeholder=" Search" id="addInvSearch">
-                        </div>
-    
-                    </div>
                 </div>
     
-             <div class="w-full mt-7">        
+             <div class="w-full mt-2 md:mt-7">        
                                 <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600">
                                     <div class="bg-black">
-                                        <tbody class="text-2xl text-start font-Inter">
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                        <tbody class="md:text-2xl text-lg text-start font-Inter">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
                                                 <td><div class="flex justify-start space-x-5 ml-4">
                                                     <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 1</p>
                                                 </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="md:mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-2 md:mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
                                             
                                             </tr>
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
                                                 <td><div class="flex justify-start space-x-5 ml-4">
                                                     <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 2</p>
                                                 </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="md:mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-2 md:mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
                                             
                                             </tr>
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
                                                 <td><div class="flex justify-start space-x-5 ml-4">
                                                     <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 3</p>
                                                 </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="md:mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-2 md:mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
                                             
                                             </tr>
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
                                                 <td><div class="flex justify-start space-x-5 ml-4">
                                                     <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 4</p>
                                                 </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="md:mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-2 md:mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
                                             
                                             </tr>
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-12">
+                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
                                                 <td><div class="flex justify-start space-x-5 ml-4">
                                                     <img src="./img/user.png" class="w-8 h-8" id="" alt=""> <p>Name 5</p>
                                                 </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5"><div class="mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
+                                                <td class="flex justify-end pr-5 space-x-5"><div class="md:mt-[6px] colorCircle bg-red-500"></div><svg class="w-5 h-5 mt-2 md:mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></td>
                                             
                                             </tr>
                                         </tbody>
                                     </div>
                                   
                                 </table>
-                                <div class="mt-10 mb-20 w-full flex justify-end space-x-5">
-                                    <button onclick="CancelInv()" class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36 text-white text-xl font-Inter font-[500]">Cancel</button>
-                                    <button class="bg-[#17217A] hover:bg-gray-500 rounded-full h-12 w-36  text-white text-xl font-Inter font-[500]">Submit</button>
+                                <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
+                                    <button onclick="CancelInv()" class="bg-[#17217A] hover:bg-gray-500 rounded-full  text-white h-8 w-20 || md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
+                                    <button class="bg-[#17217A] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 || md:text-xl md:h-12 md:w-36 ">Submit</button>
                                 </div>
              </div>
-                            
-            
-    
-            
             </div>
         </div>
       

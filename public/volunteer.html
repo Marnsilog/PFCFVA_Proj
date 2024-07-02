@@ -9,24 +9,59 @@
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
 <div>
-    <body class="bg-white">
-<div class="bg-rosered2 h-28 font-Inter">
-    <nav class="flex items-center">
-        <img src="img/pfcfvalogo.png" class="mt-2 ml-10 w-24">
-        <p class="pt-4 pl-10 text-white text-2xl font-semibold">PFCFVA</p>
-        <ul class="flex-1 text-right text-white text-2xl pr-10 pt-6">
-        <li id="dashb" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showDashboard()">Dashboard</a></li>
-        <li id="inV" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showInventory()">Inventory</a></li>
-        <li id="leadB" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showLeaderboards()">Leaderboards</a></li>
-        <li id="conN" class="list-none inline-block px-16 hover:underline hover:underline-offset-8"><a href="#" onclick="showContactus()">Contact Us</a></li>
-        <li class="list-none inline-block px-12 hover:underline hover:underline-offset-8"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
-        <li class="list-none inline-block px-7 after:transition after:ease-[ease] after:duration-300">
-            <img id="prof" src="img/pfcfvalogo.png" class="list-none inline-block w-16" style="cursor: pointer;" onclick="toggleSetting()">
-        </li>
-        <a href="#"></a>   
+<body class="bg-white w-screen h-screen">
+<div class="bg-rosered2 font-Inter h-[5rem] w-screen || md:h-28 md:w-full">
+    <div class="flex justify-between md:h-full md:w-full">
+        <div class="flex justify-between md:h-full">
+            <img src="img/pfcfvalogo.png" class="h-15 w-16 mt-2 ml-5 || md:mt-2 md:h-24 md:w-24">
+            <p class="pt-6 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+    
+        </div>
+        
+        <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
+            <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
+                <li id="dashb" class="md:mt-12 "><a href="#" onclick="showDashboard()">Dashboard</a></li>
+                <li id="inV" class="md:mt-12 "><a href="#" onclick="showInventory()">Inventory</a></li>
+                <li id="leadB" class="md:mt-12 "><a href="#" onclick="showLeaderboards()">Leaderboards</a></li>
+                <li id="conN" class="md:mt-12 "><a href="#" onclick="showContactus()">Contact Us</a></li>
+                <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                <li class="md:mt-6">
+                    <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                </li>
+            </ul>
+    </nav>
+    <div class="flex justify-start space-x-3 mr-2">
+        <div>
+            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-8 h-8" viewBox="0 0 448 512">
+                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+              </i></a>
+        </div>
 
-    </ul>
-</nav>
+     
+            <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+
+
+    </div>
+
+    </div>
+    
+    <div class="w-full flex justify-end">
+        <div class="md:hidden w-1/2 h-[17.5rem] py-8 bg-rosered2 text-white text-start text-xl" id="mobile-menu" style="display: none;" id="mobile-menu">
+            <a href="#" class="ml-3 block py-2" >My Profile</a>
+            <a href="#" class="ml-3 block py-2" onclick="showDashboard()">Dashboard</a>
+            <a href="#" class="ml-3 block py-2" onclick="showInventory()">Inventory</a>
+            <a href="#" class="ml-3 block py-2" onclick="showLeaderboards()">Leaderboards</a>
+            <a href="#" class="ml-3 block py-2" onclick="showContactus()">Contact Us</a>
+        </div>
+    </div>
+        
+
+   
 </div>
 <!-- SETTINGS -->
 <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
@@ -208,7 +243,7 @@
     </div>
 </div>
 <!-- CONTACT US -->
-    <div  id="frmContactus">
+    <div  id="frmContactus" style="display: none;">
         <div class="h-screen   w-full">
             <div class="h-[45%] w-full"></div>
           
@@ -787,7 +822,7 @@
 </div>
 
 <!-- pass args -->
-<script>
+<!-- <script>
     //disable here to fix live server (session pass args)
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/profile')
@@ -813,7 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     });
 });
-</script>
+</script> -->
 
 <script src="volunteer.js" defer></script>
 

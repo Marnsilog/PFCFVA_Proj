@@ -22,6 +22,7 @@
             document.getElementById('BloodType').textContent = data.bloodType;
             document.getElementById('EducationalAttainment').textContent = data.highestEducationalAttainment;
             document.getElementById('NameOfCompany').textContent = data.nameOfCompany;
+            document.getElementById('YearsInService').textContent = data.yearsInService;
             
             
         })

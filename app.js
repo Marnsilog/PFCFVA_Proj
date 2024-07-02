@@ -43,10 +43,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-
+//add rfid to database (done)
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {
+        rfid,
         username,
         password,
         accountType,
@@ -102,6 +103,7 @@ app.post('/register', (req, res) => {
             }
 
             const sql = `INSERT INTO tbl_accounts (
+                rfid,
                 username,
                 password,
                 accountType,
@@ -131,9 +133,10 @@ app.post('/register', (req, res) => {
                 activityPoints,
                 inventoryPoints,
                 dutyHours
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
             db.query(sql, [
+                rfid,
                 username,
                 hash, // Store the hashed password 
                 accountType,
@@ -180,6 +183,7 @@ app.post('/register', (req, res) => {
 
 
 // Login route (test-hash)
+//format: req.session.dataName = user.dataName;
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
@@ -202,6 +206,7 @@ app.post('/login', (req, res) => {
                 const user = result[0];
                 req.session.loggedin = true;
                 req.session.username = user.username;
+                req.session.rfid = user.rfid; //this 2
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
@@ -209,6 +214,8 @@ app.post('/login', (req, res) => {
                 req.session.civilStatus = user.civilStatus;
                 req.session.nationality = user.nationality;
                 req.session.bloodType = user.bloodType;
+                req.session.highestEducationalAttainment = user.highestEducationalAttainment;
+                req.session.nameOfCompany = user.nameOfCompany;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -226,16 +233,21 @@ app.get('/volunteer', (req, res) => {
     }
 });
 
+//profiling session
+//format: dataName: req.session.dataName,
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
         res.json({ 
+            rfid: req.session.rfid,// this 3
             fullName: req.session.fullName, 
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
             gender: req.session.gender,
             civilStatus: req.session.civilStatus,
             nationality: req.session.nationality,
-            bloodType: req.session.bloodType
+            bloodType: req.session.bloodType,
+            highestEducationalAttainment: req.session.highestEducationalAttainment,
+            nameOfCompany: req.session.nameOfCompany
         });
     } else {
         res.status(401).send('Not logged in');

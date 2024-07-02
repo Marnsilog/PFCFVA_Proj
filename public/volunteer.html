@@ -554,8 +554,9 @@
     <div class="grid grid-cols-3 gap-0 m-0"  >
         
         <div class="my-0">
-            <div class="pt-8 pb-5 ml-6 font-Inter">
-                <p class="text-black text-4xl font-bold">My Profile</p>
+            <div class="flex items-start pt-8 pb-5 ml-6 font-Inter">
+                <p class="text-black text-4xl font-bold">ID #: </p> 
+                <p class="text-black text-4xl font-bold" id="rfid"></p>
             </div>
             <div class=" w-[42rem] h-full bg-mjgrey pt-5 overflow-x-auto">
                 <div class="">
@@ -643,27 +644,27 @@
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
-                                                <p id="BloodType">O+</p>
+                                                <p id="BloodType"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                                                <p id="CollegeUnd">College UnderGrad</p>
+                                                <p id="EducationalAttainment"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                                                <p  id="NOC">Centro Scholar University</p>
+                                                <p  id="NameOfCompany"></p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[12rem]">Years of Service: </p> 
-                                                <p id="YOS">2 Years</p>
+                                                <p id="YearsOfService">2 Years</p>
                                             </div>
                                             <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                                                <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                                                <p class="font-semibold mr-[15.5rem]">Skills/Training: </p> 
+                                                <p  id="SkillsTraining">Red Cross Phlebotomist Training</p>
                                             </div>
                                             <div class="flex items-start py-5 ">
                                                 <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                                                <p  id="others">STI Global City</p>
+                                                <p  id="OtherAffiliation">STI Global City</p>
                                             </div>
                                         
                                     </div>
@@ -673,12 +674,12 @@
                                     <div class="text-4xl" >
                                         <div class="flex items-start pt-14 py-5">
                                             <p class=" font-semibold mr-[6rem]">Email Address: </p> 
-                                            <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
+                                            <p  id="EmailAddress">Corsigamarniel14@gmail.com</p>
                                         </div>
                             
                                         <div class="flex items-start py-5 ">
                                             <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
-                                            <p  id="ContactNum">09199225389</p>
+                                            <p  id="ContactNumber">09199225389</p>
                                         </div>
                                         <div class="flex items-start py-5 ">
                                             <p class="font-semibold mr-[14rem]">Adress: </p> 
@@ -686,11 +687,11 @@
                                         </div>
                                         <div class="flex items-start py-5">
                                             <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                                            <p  id="ECP">Maria Corsiga Pangan</p>
+                                            <p  id="EmergencyContact">Maria Corsiga Pangan</p>
                                         </div>
                                         <div class="flex items-start py-5 ">
                                             <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                                            <p  id="ECN">09199225389</p>
+                                            <p  id="EmergencyContactNumber">09199225389</p>
                                         </div>
                                     
                                     </div>
@@ -821,35 +822,8 @@
 </body>
 </div>
 
-<!-- pass args -->
-<!-- <script>
-    //disable here to fix live server (session pass args)
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/profile')
-    .then(response => {
-        if (response.status === 200) {
-            return response.json();
-        } else {
-            throw new Error('Not logged in');
-        }
-    })
-    .then(data => {
-        document.getElementById('name').textContent = data.fullName;
-        document.getElementById('callSign').textContent = data.callSign;
-        document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
-        document.getElementById('Gender').textContent = data.gender;
-        document.getElementById('CivilStatus').textContent = data.civilStatus;
-        document.getElementById('Nationality').textContent = data.nationality;
-        document.getElementById('BloodType').textContent = data.bloodType;
-    })
-    .catch(error => {
-        
-        console.error('Error fetching profile:', error);
-        window.location.href = '/';
-    });
-});
-</script> -->
 
+<script src="sessions.js" defer></script>
 <script src="volunteer.js" defer></script>
 
 

@@ -183,6 +183,7 @@ app.post('/register', (req, res) => {
 
 
 // Login route (test-hash)
+//format: req.session.dataName = user.dataName;
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
@@ -213,6 +214,8 @@ app.post('/login', (req, res) => {
                 req.session.civilStatus = user.civilStatus;
                 req.session.nationality = user.nationality;
                 req.session.bloodType = user.bloodType;
+                req.session.highestEducationalAttainment = user.highestEducationalAttainment;
+                req.session.nameOfCompany = user.nameOfCompany;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -231,6 +234,7 @@ app.get('/volunteer', (req, res) => {
 });
 
 //profiling session
+//format: dataName: req.session.dataName,
 app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
         res.json({ 
@@ -241,7 +245,9 @@ app.get('/profile', (req, res) => {
             gender: req.session.gender,
             civilStatus: req.session.civilStatus,
             nationality: req.session.nationality,
-            bloodType: req.session.bloodType
+            bloodType: req.session.bloodType,
+            highestEducationalAttainment: req.session.highestEducationalAttainment,
+            nameOfCompany: req.session.nameOfCompany
         });
     } else {
         res.status(401).send('Not logged in');

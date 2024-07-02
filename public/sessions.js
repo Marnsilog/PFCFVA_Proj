@@ -1,8 +1,7 @@
 
 
-//VOLUNTEER sessions pass args 
+//VOLUNTEER SESSIONS
 
-    //disable this to fix live server (for frontend)
     document.addEventListener('DOMContentLoaded', () => {
         fetch('/profile') //fetch profile from server app.js sheesh
         .then(response => {
@@ -12,7 +11,7 @@
                 throw new Error('Not logged in');
             }
         })
-        .then(data => {
+        .then(data => { //format: document.getElementById('FrontEndID').textContent = data.dataName;
             document.getElementById('rfid').textContent = data.rfid;//this 1
             document.getElementById('name').textContent = data.fullName;
             document.getElementById('callSign').textContent = data.callSign;
@@ -21,6 +20,10 @@
             document.getElementById('CivilStatus').textContent = data.civilStatus;
             document.getElementById('Nationality').textContent = data.nationality;
             document.getElementById('BloodType').textContent = data.bloodType;
+            document.getElementById('EducationalAttainment').textContent = data.highestEducationalAttainment;
+            document.getElementById('NameOfCompany').textContent = data.nameOfCompany;
+            
+            
         })
         .catch(error => {
             
@@ -28,3 +31,8 @@
             window.location.href = '/';
         });
     });
+
+
+//SUPERVISOR SESSIONS
+
+//ADMIN SESSIONS

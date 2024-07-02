@@ -216,6 +216,7 @@ app.post('/login', (req, res) => {
                 req.session.bloodType = user.bloodType;
                 req.session.highestEducationalAttainment = user.highestEducationalAttainment;
                 req.session.nameOfCompany = user.nameOfCompany;
+                req.session.yearsInService = user.yearsInService;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -247,7 +248,8 @@ app.get('/profile', (req, res) => {
             nationality: req.session.nationality,
             bloodType: req.session.bloodType,
             highestEducationalAttainment: req.session.highestEducationalAttainment,
-            nameOfCompany: req.session.nameOfCompany
+            nameOfCompany: req.session.nameOfCompany,
+            yearsInService: req.session.yearsInService
         });
     } else {
         res.status(401).send('Not logged in');

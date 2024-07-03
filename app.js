@@ -207,6 +207,7 @@ app.post('/login', (req, res) => {
                 req.session.loggedin = true;
                 req.session.username = user.username;
                 req.session.rfid = user.rfid; //this 2
+                //basic info
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
@@ -217,6 +218,21 @@ app.post('/login', (req, res) => {
                 req.session.highestEducationalAttainment = user.highestEducationalAttainment;
                 req.session.nameOfCompany = user.nameOfCompany;
                 req.session.yearsInService = user.yearsInService;
+                req.session.skillsTraining = user.skillsTraining;
+                req.session.otherAffiliation = user.otherAffiliation;
+                //contact info
+                req.session.emailAddress = user.emailAddress;
+                req.session.mobileNumber = user.mobileNumber;
+                req.session.currentAddress = user.currentAddress;
+                req.session.emergencyContactPerson = user.emergencyContactPerson;
+                req.session.emergencyContactNumber = user.emergencyContactNumber;
+                //points
+                req.session.dutyHours = user.dutyHours;
+                req.session.fireResponsePoints = user.fireResponsePoints;
+                req.session.inventoryPoints = user.inventoryPoints;
+                req.session.activityPoints = user.activityPoints;
+                //etc
+                req.session.accountType = user.accountType;
 
                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
             } else {
@@ -240,6 +256,7 @@ app.get('/profile', (req, res) => {
     if (req.session.loggedin) {
         res.json({ 
             rfid: req.session.rfid,// this 3
+            //basic info
             fullName: req.session.fullName, 
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
@@ -249,7 +266,23 @@ app.get('/profile', (req, res) => {
             bloodType: req.session.bloodType,
             highestEducationalAttainment: req.session.highestEducationalAttainment,
             nameOfCompany: req.session.nameOfCompany,
-            yearsInService: req.session.yearsInService
+            yearsInService: req.session.yearsInService,
+            skillsTraining: req.session.skillsTraining,
+            otherAffiliation: req.session.otherAffiliation,
+            //contact info
+            emailAddress: req.session.emailAddress,
+            mobileNumber: req.session.mobileNumber,
+            currentAddress: req.session.currentAddress,
+            emergencyContactPerson: req.session.emergencyContactPerson,
+            emergencyContactNumber: req.session.emergencyContactNumber,
+            //points
+            dutyHours: req.session.dutyHours,
+            fireResponsePoints: req.session.fireResponsePoints,
+            inventoryPoints: req.session.inventoryPoints,
+            activityPoints: req.session.activityPoints,
+            //etc
+            accountType: req.session.accountType,
+            
         });
     } else {
         res.status(401).send('Not logged in');

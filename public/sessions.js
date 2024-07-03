@@ -45,12 +45,13 @@
             document.getElementById('ActivityPoints').textContent = data.activityPoints || '0' ;
 
             //dashboard
-            document.getElementById('DashboardName').textContent = data.fullName;
+            document.getElementById('MenuFullName').textContent = data.fullName;
+            document.getElementById('DashboardFullName').textContent = data.fullName;
             document.getElementById('DashboardAccountType').textContent = data.accountType;
             document.getElementById('DashboardDutyHours').textContent = data.dutyHours;
             document.getElementById('DashboardFireResponse').textContent = data.fireResponsePoints;
             document.getElementById('DashboardInventoryPoints').textContent = data.inventoryPoints;
-            document.getElementById('DashboardActivityPoints').textContent = data.activityPoints            
+            document.getElementById('DashboardActivityPoints').textContent = data.activityPoints;        
 
             
             

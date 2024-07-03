@@ -51,7 +51,7 @@
     <div class="relative w-full flex justify-end z-30">
         <div class="md:hidden w-1/2 h-[19rem] py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
             <div class="ml-3 flex justify-center mr-3"  style="cursor: pointer;">
-                <p class="ml-2 py-2 text-sm" id="FullName">Hev C. Abi</p>
+                <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
                 <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
             </div>
             
@@ -165,7 +165,7 @@
     <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
 
         <div class="text-black font-Inter pt-11 pl-10">
-            <p class="text-2xl font-bold" id="DashboardName">Hev C. Abi</p>
+            <p class="text-2xl font-bold" id="DashboardFullName">Hev C. Abi</p>
             <p class="text-lg" id="DashboardAccountType">Volunteer</p>
         </div>
     </div>
@@ -688,19 +688,19 @@
                     <div class="ml-12">
                         <p>Lastname</p>
                         <input class="bg-white x;w-80 h-10 px-4 border border-black" 
-                        type="lastname" placeholder="Lastname" id="lastname">
+                        type="text" placeholder="Lastname" id="EditLastName">
                     </div>
 
                     <div class="ml-12 ">
                         <p>First Name</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="firstname" placeholder="Firstname" id="firstname">
+                        type="text" placeholder="Firstname" id="EditFirstName">
                     </div>
 
                     <div class="ml-12">
                         <p>Middle Name</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="middlename" placeholder="MiddleName" id="middlename">
+                        type="text" placeholder="MiddleName" id="EditMiddleName">
                     </div>
                 </div>
 
@@ -708,19 +708,19 @@
                     <div class="ml-12">
                         <p>Username</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Username" placeholder="Username" id="Username">
+                        type="text" placeholder="Username" id="EditUsername">
                     </div>
 
                     <div class="ml-12">
                         <p>Email Address</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="EmailAdd" placeholder="EmailAdd" id="EmailAdd">
+                        type="text" placeholder="Email Address" id="EditEmailAddress">
                     </div>
 
                     <div class="ml-12">
                         <p>Contact Number</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="ContactNum" placeholder="ContactNum" id="ContactNum">
+                        type="text" placeholder="Contact Number" id="EditContactNumber">
                     </div>
                 </div>
 
@@ -728,19 +728,19 @@
                     <div class="ml-12">
                         <p>Old Password</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="Old Password" id="OldPass">
+                        type="password" placeholder="Old Password" id="EditOldPassword">
                     </div>
 
                     <div class="ml-12">
                         <p>New Password</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="New Password" id="NewPass">
+                        type="password" placeholder="New Password" id="EditNewPassword">
                     </div>
 
                     <div class="ml-12">
                         <p>Confirm Password</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="Confirm Password" id="ConPass">
+                        type="password" placeholder="Confirm Password" id="EditConfirmPassword">
                     </div>
                 </div>
                 
@@ -748,31 +748,32 @@
                     <div class="ml-12">
                         <p>Civil Status</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Civil Status" placeholder="Civil Status" id="civilStat">
+                        type="text" placeholder="Civil Status" id="EditCivilStatus">
                     </div>
 
                     <div class="ml-12">
                         <p>Nationality</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Nationality" placeholder="Nationality" id="Nationality">
+                        type="text" placeholder="Nationality" id="EditNationality">
                     </div>
 
                     <div class="ml-12">
                         <p>Blood Type</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="BloodType" placeholder="BloodType" id="BloodType">
+                        type="text" placeholder="BloodType" id="EditBloodType">
                     </div>
                 </div>
                
 
                 <div class="flex items-center space-x-[22.7rem] pt-5">
                     <div class="ml-20">
-                        <input type="text" id="datetimepicker" placeholder="Select Date and Time">
+                        <input type="text" id="datetimepicker" placeholder="Select Date and Time"> 
+                        <!-- bkt ba nandito to -->
                     </div>
 
                         <div  class="ml-12 w-96">
                             <input type="text" id="" placeholder="Gender">
-                            <select class="w-96 h-10 border-[1px] border-black" id="gender">
+                            <select class="w-96 h-10 border-[1px] border-black" id="EditGender">
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
@@ -782,52 +783,52 @@
                 <div class="ml-12">
                     <p>Current Address</p>
                     <input class="bg-white w-[66rem] h-10 px-4 border border-black" 
-                    type="Current Address" placeholder="Current Address" id="currentAdd">
+                    type="text" placeholder="Current Address" id="EditCurrentAddress">
                 </div>
 
                 <div class="flex items-center pt-5">
                     <div class="ml-[50px]">
                         <p>Emergency Contact Person</p>
                         <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Emergency Contact Person" id="ECP">
+                        type="text" placeholder="Emergency Contact Person" id="EditEmergencyContactPerson">
                     </div>
 
                     <div class="mx-[10rem]">
                         <p>Emergency Contact Number</p>
                         <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="Emergency Contact Number" placeholder="Emergency Contact Number" id="ECN">
+                        type="text" placeholder="Emergency Contact Number" id="EditEmergencyContactNumber">
                     </div>
                 </div>   
                 <div class="flex items-start pt-5">
                     <div class="ml-12">
                         <p>Highest Educational Attainment</p>
                         <input class="bg-white w-[25rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Highest Educational Attainment" id="hea">
+                        type="text" placeholder="Highest Educational Attainment" id="EditHighestEducationalAttainment">
                     </div>
 
                     <div class="ml-12">
                         <p>Name of the Company</p>
                         <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="text" placeholder="Name of the Company" id="noc">
+                        type="text" placeholder="Name of the Company" id="EditNameOfCompany">
                     </div>
 
                     <div class="ml-12">
                         <p>Years in service</p>
                         <input class="bg-white w-60 h-10 px-4 border border-black" 
-                        type="text" placeholder="Years in service" id="yis">
+                        type="text" placeholder="Years in service" id="EditYearsInService">
                     </div>
                 </div>     
                 <div class="flex items-center pt-5">
                     <div class="ml-[50px]">
                         <p>Skills/Training</p>
                         <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Skills/Training" id="ST">
+                        type="text" placeholder="Skills/Training" id="EditSkillsTraining">
                     </div>
 
                     <div class="mx-[10rem]">
                         <p>Other Affiliation</p>
                         <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Other Affiliation" id="OA">
+                        type="text" placeholder="Other Affiliation" id="EditOtherAffiliation">
                     </div>
                 </div>   
                 

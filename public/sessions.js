@@ -12,10 +12,10 @@
             }
         })
         .then(data => { //format: document.getElementById('FrontEndID').textContent = data.dataName;
-            document.getElementById('rfid').textContent = data.rfid;//this 1
+            document.getElementById('RFID').textContent = `ID#: ${data.rfid}`; //this 1
             //basic info
-            document.getElementById('name').textContent = data.fullName;
-            document.getElementById('callSign').textContent = data.callSign;
+            document.getElementById('FullName').textContent = data.fullName;
+            document.getElementById('CallSign').textContent = data.callSign;
             const dateOfBirth = new Date(data.dateOfBirth);
             const formattedDate = dateOfBirth.toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -27,7 +27,7 @@
             document.getElementById('CivilStatus').textContent = data.civilStatus;
             document.getElementById('Nationality').textContent = data.nationality;
             document.getElementById('BloodType').textContent = data.bloodType;
-            document.getElementById('EducationalAttainment').textContent = data.highestEducationalAttainment;
+            document.getElementById('HighestEducationalAttainment').textContent = data.highestEducationalAttainment;
             document.getElementById('NameOfCompany').textContent = data.nameOfCompany;
             document.getElementById('YearsInService').textContent = data.yearsInService;
             document.getElementById('SkillsTraining').textContent = data.skillsTraining;
@@ -39,10 +39,10 @@
             document.getElementById('EmergencyContactPerson').textContent = data.emergencyContactPerson;
             document.getElementById('EmergencyContactNumber').textContent = data.emergencyContactNumber;
             //points
-            document.getElementById('DutyHours').textContent = `${data.dutyHours} hrs`;
-            document.getElementById('FireResponse').textContent = `${data.fireResponsePoints} points`;
-            document.getElementById('InventoryPoints').textContent = data.inventoryPoints || 'No data';
-            document.getElementById('ActivityPoints').textContent = data.activityPoints;
+            document.getElementById('DutyHours').textContent = `${data.dutyHours || 0} hrs`;
+            document.getElementById('FireResponse').textContent = `${data.fireResponsePoints || 0} points`;
+            document.getElementById('InventoryPoints').textContent = data.inventoryPoints || '0';
+            document.getElementById('ActivityPoints').textContent = data.activityPoints || '0' ;
 
             //dashboard
             document.getElementById('DashboardName').textContent = data.fullName;

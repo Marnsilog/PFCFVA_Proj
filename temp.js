@@ -459,3 +459,171 @@
 //     })
 //     .catch(error => console.error('Error fetching user profile data:', error));
 // }
+
+
+
+
+
+
+
+
+//from volunteer.js CLEANUP
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const logoutLink = document.getElementById('logoutLink');
+
+//     if (logoutLink) {
+//         logoutLink.addEventListener('click', function(event) {
+//             event.preventDefault();
+
+//             const confirmLogout = confirm("Are you sure you want to log out?");
+
+//             if (confirmLogout) {
+//                 window.location.href = 'dashboard.html';
+//             }
+//         });
+//     }
+// });
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const circles = document.querySelectorAll('.colorCircle');
+
+//     circles.forEach(circle => {
+//         circle.addEventListener('click', function () {
+//             if (circle.classList.contains('bg-red-500')) {
+//                 circle.classList.remove('bg-red-500');
+//                 circle.classList.add('bg-green-500');
+//             } else {
+//                 circle.classList.remove('bg-green-500');
+//                 circle.classList.add('bg-red-500');
+//             }
+//         });
+//     });
+// });
+
+
+// // Fetch data from the server
+// fetch('/getAccountData') // Assuming you have a server route to retrieve account data
+//     .then(response => {
+//         if (response.ok) {
+//             return response.json();
+//         }
+//         throw new Error('Failed to retrieve account data');
+//     })
+//     .then(data => {
+//         // Populate HTML elements with retrieved data
+//         document.getElementById('Birthday').innerText = data.dateOfBirth;
+//         document.getElementById('Gender').innerText = data.gender;
+//         document.getElementById('CivilStat').innerText = data.civilStatus;
+//         document.getElementById('Nationality').innerText = data.nationality;
+//         document.getElementById('BloodType').innerText = data.bloodType;
+//         document.getElementById('CollegeUnd').innerText = data.highestEducationalAttainment;
+//         document.getElementById('NOC').innerText = data.nameOfCompany;
+//         document.getElementById('YOS').innerText = data.yearsInService;
+//         document.getElementById('Skillandtraining').innerText = data.skillsTraining;
+//         document.getElementById('others').innerText = data.otherAffiliation;
+//         document.getElementById('emailAdd').innerText = data.emailAddress;
+//         document.getElementById('ContactNum').innerText = data.mobileNumber;
+//         document.getElementById('Address').innerText = data.currentAddress;
+//         document.getElementById('ECP').innerText = data.emergencyContactPerson;
+//         document.getElementById('ECN').innerText = data.emergencyContactNumber;
+//     })
+//     .catch(error => console.error('Error:', error));
+
+
+    //
+    // Function to retrieve user profile data after login
+// function getUserProfileData() {
+//     fetch('/getAccountData') // Replace with your endpoint to fetch user profile data
+//     .then(response => {
+//         if (response.ok) {
+//             return response.json(); // Assuming the response is in JSON format
+//         }
+//         throw new Error('Failed to fetch user profile data');
+//     })
+//     .then(data => {
+//         // Update HTML elements with user profile data
+//         document.getElementById('Birthday').innerText = data.dateOfBirth;
+//         document.getElementById('Gender').innerText = data.gender;
+//         document.getElementById('CivilStat').innerText = data.civilStatus;
+//         document.getElementById('Nationality').innerText = data.nationality;
+//         document.getElementById('BloodType').innerText = data.bloodType;
+//         document.getElementById('CollegeUnd').innerText = data.highestEducationalAttainment;
+//         document.getElementById('NOC').innerText = data.nameOfCompany;
+//         document.getElementById('YOS').innerText = data.yearsInService;
+//         document.getElementById('Skillandtraining').innerText = data.skillsTraining;
+//         document.getElementById('others').innerText = data.otherAffiliation;
+//         document.getElementById('emailAdd').innerText = data.emailAddress;
+//         document.getElementById('ContactNum').innerText = data.mobileNumber;
+//         document.getElementById('Address').innerText = data.currentAddress;
+//         document.getElementById('ECP').innerText = data.emergencyContactPerson;
+//         document.getElementById('ECN').innerText = data.emergencyContactNumber;
+//         // Update other HTML elements similarly
+//     })
+//     .catch(error => console.error('Error fetching user profile data:', error));
+// }
+
+// // Event listener for login form submission
+// document.getElementById('loginForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     const username = document.getElementById('username').value;
+//     const password = document.getElementById('password').value;
+
+//     fetch('/login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ username, password })
+//     })
+//     .then(response => {
+//         if (response.status === 200) {
+//             // Upon successful login, fetch user profile data
+//             getUserProfileData();
+//             // Redirect or perform other actions as needed
+//         } else if (response.status === 401) {
+//             alert('Invalid username or password');
+//         } else {
+//             throw new Error('Error logging in');
+//         }
+//     })
+//     .catch(error => console.error('Error logging in:', error));
+// });
+
+// //disable here to fix live server (session pass args)
+// document.addEventListener('DOMContentLoaded', () => {
+//     fetch('/profile')
+//     .then(response => {
+//         if (response.status === 200) {
+//             return response.json();
+//         } else {
+//             throw new Error('Not logged in');
+//         }
+//     })
+//     .then(data => {
+//         document.getElementById('name').textContent = data.fullName;
+//         document.getElementById('callSign').textContent = data.callSign;
+//         document.getElementById('Birthday').textContent = data.dateOfBirth; //bday
+//         document.getElementById('Gender').textContent = data.gender;
+//         document.getElementById('CivilStatus').textContent = data.civilStatus;
+//     })
+//     .catch(error => {
+//         console.error('Error fetching profile:', error);
+//         window.location.href = '/';
+//     });
+// });
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     // Fetch user data from the server
+//     fetch('/getUserData')
+//         .then(response => response.json())
+//         .then(data => {
+//             // Update HTML elements with user data
+//             document.getElementById('name').innerText = `${data.firstName} ${data.middleInitial} ${data.lastName}`;
+//             document.getElementById('callSign').innerText = data.callSign;
+//         })
+//         .catch(error => console.error('Error fetching user data:', error));
+// });

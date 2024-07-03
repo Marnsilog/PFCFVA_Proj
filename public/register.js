@@ -132,6 +132,7 @@
 
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    const rfid = document.getElementById('rfid').value; //make this required
     const username = document.getElementById('username').value; //make this required
     const password = document.getElementById('password').value; //make this required
     const confirmPassword = document.getElementById('confirmPassword').value; //make this required         
@@ -181,6 +182,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
+            rfid,
             username, 
             password, 
             accountType, 

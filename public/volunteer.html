@@ -9,7 +9,7 @@
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
 <div>
-<body class="bg-white w-screen h-screen">
+<body class="bg-white w-full h-screen">
 <div class="bg-rosered2 font-Inter h-[4rem] w-screen || md:h-28 md:w-full">
     <div class="flex justify-between md:h-full md:w-full">
         <div class="flex justify-between md:h-full">
@@ -95,173 +95,7 @@
         <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" id="logoutLink" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
     </div>
 </div>
-<!-- Edit Profile -->
-<div style="display: none;" id="editProfile">
-    <div class="mt-12 ml-96">
-        <p class="font-Inter font-bold text-3xl">Edit Profile</p>
-        <div class="flex items-start pt-9 py-5 ">
-            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
-            <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
 
-        </div>
-
-      
-            <form class="font-Inter text-xl font-[600]">
-                <div class="flex items-start">
-                    <div class="ml-12">
-                        <p>Lastname</p>
-                        <input class="bg-white x;w-80 h-10 px-4 border border-black" 
-                        type="lastname" placeholder="Lastname" id="lastname">
-                    </div>
-
-                    <div class="ml-12 ">
-                        <p>First Name</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="firstname" placeholder="Firstname" id="firstname">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Middle Name</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="middlename" placeholder="MiddleName" id="middlename">
-                    </div>
-                </div>
-
-                <div class="flex items-start pt-5">
-                    <div class="ml-12">
-                        <p>Username</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Username" placeholder="Username" id="Username">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Email Address</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="EmailAdd" placeholder="EmailAdd" id="EmailAdd">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Contact Number</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="ContactNum" placeholder="ContactNum" id="ContactNum">
-                    </div>
-                </div>
-
-                <div class="flex items-start pt-5">
-                    <div class="ml-12">
-                        <p>Old Password</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="Old Password" id="OldPass">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>New Password</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="New Password" id="NewPass">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Confirm Password</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="password" placeholder="Confirm Password" id="ConPass">
-                    </div>
-                </div>
-                
-                <div class="flex items-start pt-5">
-                    <div class="ml-12">
-                        <p>Civil Status</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Civil Status" placeholder="Civil Status" id="civilStat">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Nationality</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="Nationality" placeholder="Nationality" id="nationality">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Blood Type</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="BloodType" placeholder="BloodType" id="bloodType">
-                    </div>
-                </div>
-               
-
-                <div class="flex items-center space-x-[22.7rem] pt-5">
-                    <div class="ml-20">
-                        <input type="text" id="datetimepicker" placeholder="Select Date and Time">
-                    </div>
-
-                        <div  class="ml-12 w-96">
-                            <input type="text" id="" placeholder="Gender">
-                            <select class="w-96 h-10 border-[1px] border-black" id="gender">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                </div>
-              
-                <div class="ml-12">
-                    <p>Current Address</p>
-                    <input class="bg-white w-[66rem] h-10 px-4 border border-black" 
-                    type="Current Address" placeholder="Current Address" id="currentAdd">
-                </div>
-
-                <div class="flex items-center pt-5">
-                    <div class="ml-[50px]">
-                        <p>Emergency Contact Person</p>
-                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Emergency Contact Person" id="ECP">
-                    </div>
-
-                    <div class="mx-[10rem]">
-                        <p>Emergency Contact Number</p>
-                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="Emergency Contact Number" placeholder="Emergency Contact Number" id="ECN">
-                    </div>
-                </div>   
-                <div class="flex items-start pt-5">
-                    <div class="ml-12">
-                        <p>Highest Educational Attainment</p>
-                        <input class="bg-white w-[25rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Highest Educational Attainment" id="hea">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Name of the Company</p>
-                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                        type="text" placeholder="Name of the Company" id="noc">
-                    </div>
-
-                    <div class="ml-12">
-                        <p>Years in service</p>
-                        <input class="bg-white w-60 h-10 px-4 border border-black" 
-                        type="text" placeholder="Years in service" id="yis">
-                    </div>
-                </div>     
-                <div class="flex items-center pt-5">
-                    <div class="ml-[50px]">
-                        <p>Skills/Training</p>
-                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Skills/Training" id="ST">
-                    </div>
-
-                    <div class="mx-[10rem]">
-                        <p>Other Affiliation</p>
-                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
-                        type="text" placeholder="Other Affiliation" id="OA">
-                    </div>
-                </div>   
-                
-                <div class="flex items-start py-14 ml-[48rem]">
-                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
-                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
-                </div>     
-            </form>
-
-    </div>
-</div>
 <!-- CONTACT US -->
     <div  id="frmContactus" style="display: none;">
         <div class="h-screen   w-full">
@@ -446,11 +280,11 @@
             </div>
 
 <!-- Add Inventory -->
-<div id="addInventory">
+<div id="addInventory" style="display: none;">
     <div   class="w-full flex justify-center" >
         <div class="md:max-w-[75rem] w-full">
             <div class="md:mt-5 font-Inter w-full" >
-                <p class="font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
+                <p class="text-center font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
                 <div class="mt-5 w-full md:flex md:justify-between md:mt-16">
                     <div class="h-10 md:w-[20rem] flex justify-start bg-[#E9E8E8] rounded-lg ">
                         <svg class="w-5 h-5 mx-2 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
@@ -530,57 +364,58 @@
 
 
 <!-- FORM LEADERBOARDS -->
-    <div id="frmLeaderboards" style="display: none;">
-            <div class="mt-24 ml-40">
-                <p class="font-Inter font-[600] text-4xl">Leaderboards</p>
-                <div class="ml-5">
-
-                    <div class="flex items-start">
-                    <div class="mt-12 rounded-full border-[1px] border-black w-[22rem] h-12 flex items-start">
-                        <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full ml-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
-                            <p class="text-center font-Inter font-[700] pt-2">Duty Hours</p></div>
-            
-                        <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 my-[3px] h-10 w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
-                            <p class="text-center font-Inter font-[700] pt-2">Fire Response</p></div>
-                        
+    <div class="md:w-full md:flex md:justify-center" id="frmLeaderboards" style="display: none;" >
+            <div class="md:max-w-[90rem] md:w-full md:mt-16 md:ml-40">
+                <p class="text-center font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
+                <div class="md:ml-5">
+                    <div class="mt-5 md:flex md:justify-between md:mt-0">
                     
-                            
-                    </div>
-
+                        <div class="w-full flex justify-center md:block">
+                            <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
+                                <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
+                                    <p class="text-center font-Inter font-[700] md:pt-2">Duty Hours</p></div>
+                                    
+                                <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 w-[12rem] h-[27px] my-[1px] || md:mr-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
+                                    <p class="text-center font-Inter font-[700] md:pt-2">Fire Response</p></div>
+   
+                            </div>
+        
+                        </div>
+                  
                     <div>
-                        <input class="ml-[54rem] mt-14 bg-white w-96 h-10 px-4 border border-black rounded-lg" 
+                        <input class="h-8 w-full mt-2 bg-white border border-black rounded-lg || md:w-96 md:h-10 md:mt-14 md:px-4 " 
                         type="text" placeholder="" id="Search">
                     </div>
                     </div>
                     <!-- DUTY HOURS -->
                     <div id="frmDutyhours">        
-                        <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
-                        <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
+                        <table id="myTable2" class="mt-5 text-start border-[1px] border-black shadow-lg shadow-gray-600 md:mt-10 w-full">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:mt-10 md:h-16">
                             <tr>
-                                <th class="pr-[26rem]">Volunteers</th>
-                                <th class="pl-[22rem] ">Points</th>
+                                <th class="text-start">Volunteers</th>
+                                <th class="text-center">Points</th>
                             </tr>
                         </thead>
-                        <tbody class="text-2xl text-start font-Inter">
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">1. Diosdado Amog</td>
-                                <td class="pl-[38rem]">2297</td>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>1. Diosdado Amog</td>
+                                <td class="text-center">2297</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">2. Mj Marianoa</td>
-                                <td class="pl-[38rem]">2290</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>2. Mj Marianoa</td>
+                                <td class="text-center">2290</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">3. Anne Pangan</td>
-                                <td class="pl-[38rem]">1005</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>3. Anne Pangan</td>
+                                <td class="text-center">1005</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">4. Marniel Corsiga</td>
-                                <td class="pl-[38rem]">1001</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>4. Marniel Corsiga</td>
+                                <td class="text-center">1001</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">5. James Aguirre </td>
-                                <td class="pl-[38rem]">905</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>5. James Aguirre </td>
+                                <td class="text-center">905</td>
                             </tr>
                         
                             </tbody>
@@ -588,37 +423,37 @@
                      </div>
                         <!-- FIRE RESPONSE -->
                      <div id="frmFireResponse" style="display: none;">        
-                        <table id="myTable2" class="mt-10 w-[100rem] border-[1px] border-black shadow-lg shadow-gray-600">
-                        <thead class="font-Inter font-[100] text-[#5B5B5B] mt-10 h-16 text-base mx-0 ">
+                        <table id="myTable3" class="mt-5 text-start border-[1px] border-black shadow-lg shadow-gray-600 md:mt-10 w-full">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:mt-10 md:h-16">
                             <tr>
-                                <th class="pr-[26rem]">Volunteers</th>
-                                <th class="pl-[22rem] ">Fire Response</th>
+                                <th class="text-start">Volunteers</th>
+                                <th class="text-center">Fire Response</th>
                             </tr>
                         </thead>
-                        <tbody class="text-2xl text-start font-Inter">
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">1. James Aguirre</td>
-                                <td class="pl-[38rem]">30</td>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>1. James Aguirre</td>
+                                <td class="text-center">30</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">2. Marniel Corsiga</td>
-                                <td class="pl-[38rem]">24</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>2. Marniel Corsiga</td>
+                                <td class="text-center">24</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">3. Anne Pangan</td>
-                                <td class="pl-[38rem]">22</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>3. Anne Pangan</td>
+                                <td class="text-center">22</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">4. Mj Mariano</td>
-                                <td class="pl-[38rem]">20</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td >4. Mj Mariano</td>
+                                <td class="text-center">20</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">5. Diosdado Amog</td>
-                                <td class="pl-[38rem]">19</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>5. Diosdado Amog</td>
+                                <td class="text-center">19</td>
                             </tr>
-                            <tr class="border-t-2 border-b-[1px] border-gray-500 h-16">
-                                <td class="pl-3">5.Lyster Liwanag</td>
-                                <td class="pl-[38rem]">15</td>
+                            <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16">
+                                <td>5.Lyster Liwanag</td>
+                                <td class="text-center">15</td>
                             </tr>
                         
                             </tbody>
@@ -632,217 +467,381 @@
     </div>
 
 <!-- FORM MAIN PROFILE -->
-    <div id="frmMainProfile" style="display: none;">
-    <div class="grid grid-cols-3 gap-0 m-0"  >
-        
-        <div class="my-0">
-            <div class="pt-8 pb-5 ml-6 font-Inter">
-                <p class="text-black text-4xl font-bold">My Profile</p>
-            </div>
-            <div class=" w-[42rem] h-full bg-mjgrey pt-5 overflow-x-auto">
-                <div class="">
-                    <img src="img/user.png" class="w-80 ml-[11rem]">
-                </div>
+    <div id="frmMainProfile">
+        <div class="w-full flex justify-center">
+            <div class="max-w-[90rem] w-full" >
+                <p class="text-black text-4xl font-bold font-Inter my-7">My Profile</p>
+                <div class="w-full h-full flex justify-start">
+                    <div class="w-[30%] h-screen bg-mjgrey">
+                        <div class="pt-5 w-full flex justify-center">
+                            <img src="img/user.png" class="w-52 h-52">
+                        </div>
+                        
+                        <div class="w-full text-center">
+                         
+                            <p class="text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
+                            <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
+                           
+                        </div>
+                        <div class="mt-5 w-full flex justify-center">
+                            <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
+                        </div>
+                        <div class="bg-[#9C9C9C] h-[3px] mt-3 mx-3"></div>
+                        <div class="pt-3 px-10">
+                            <p class="font-Inter text-xl">Duty Hours</p>
+                            <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
+                                <div id="progress" class="h-full"></div>
+                            </div>
+                            <p class="text-end text-base text-[#4B4B4B]">1200 duty Hours</p>
+                        </div>
                 
-                <div class="text-center font-Inter">
-                    <p class="pt-5 text-black text-4xl font-bold" id="name"></p>
-                    <p class="text-[#930D0D] text-xl" id="callSign"></p>
-                </div>
+                        <div class="px-10">
+                            <p class="font-Inter text-xl">Fire Response</p>
+                            <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
+                                <div id="progress2" class="h-full"></div>
+                            </div>
+                            <p class="text-end text-base text-[#4B4B4B]">12 fire Response</p>
+                        </div>
+                        <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
+                        
+                        <div class="mt-6 flex justify-center space-x-10 text-2xl">
+                            <div class="text-center font-Inter ">
+                                <p class="font-semibold">1</p>
+                                <p >Inventory</p>
+                            </div>
                 
-                
-                <div class="ml-[16.5rem] pt-7">
-                    <button onclick="showEdit()" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
+                            <div class="text-center font-Inter">
+                                <p class="font-semibold">4</p>
+                                <p>Activity</p>
+                            </div>
+                            
+                        </div>
+                            
                 </div>
-                <div class="bg-[#9C9C9C] h-[3px] mt-3 mx-3"></div>
-                <div class="pt-3 px-16">
-                    <p class="font-Inter text-xl">Duty Hours</p>
-                    <div class="bg-white border-black border-[1px] h-10 rounded-full overflow-hidden pt-[3.5px] px-5">
-                        <div id="progress" class="h-full"></div>
-                    </div>
-                    <p class="text-end text-base text-[#4B4B4B]">1200 duty Hours</p>
-                </div>
-        
-                <div class="px-16">
-                    <p class="font-Inter text-xl">Fire Response</p>
-                    <div class="bg-white border-black border-[1px] h-10 rounded-full overflow-hidden pt-[3.5px] px-5">
-                        <div id="progress2" class="h-full"></div>
-                    </div>
-                    <p class="text-end text-base text-[#4B4B4B]">12 fire Response</p>
-                </div>
-                <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
-                
-                <div class="mt-6 grid grid-cols-2 gap-2 place-items-center">
-                    <div class="text-center font-Inter">
-                        <p class="text-3xl font-semibold">1</p>
-                        <p class="text-3xl">Inventory</p>
-                    </div>
-        
-                    <div class="text-center font-Inter">
-                        <p class="text-3xl font-semibold">4</p>
-                        <p class="text-3xl">Activity</p>
-                    </div>
+                <div class="w-[70%] mt-5">
+                        <nav class="font-Inter text-2xl w-full">
+                            <ul class=" flex justify-between">
+                                <li class="list-none ml-10"><a href="#" onclick="Profile()" >My Profile</a></li>
+                                <li class="list-none"><a href="#" onclick="Achievements()" >Achievements</a></li>
+                                <li class="list-none"><a href="#" onclick="Rankings()">Rankings</a></li>
+                                <li class="list-none mr-10"><a href="#" onclick="Records()">Records</a></li>  
+                            </ul>
+                        </nav>
+                            <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
+    
+                        <!-- FORM PROFILE -->
+                        <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile" >
+                            <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
                     
-                </div>
+                            <div class="text-4xl">
                     
-        </div>
-        
-        </div>
-        <div class="w-[76rem] mt-[90px] ml-[38px] font-Inter">
-            <div>
-                <nav class="flex items-start">
-                    <ul class="flex-none text-center text-black text-3xl pt-12">
-                        <li class="list-none inline-block px-20"><a href="#" onclick="Profile()" >My Profile</a></li>
-                        <li class="list-none inline-block px-20"><a href="#" onclick="Achievements()" >Achievements</a></li>
-                        <li class="list-none inline-block px-20"><a href="#" onclick="Rankings()">Rankings</a></li>
-                        <li class="list-none inline-block pl-10"><a href="#" onclick="Records()">Records</a></li>  
-                    </ul>
-                </nav>
-                    <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
-            </div>
-
-                    <!-- FORM PROFILE -->
-                    <div class="pt-11 ml-16 font-Inter"  id="frmMyprofile" >
-                        <p class="text-[#9E9E9E] text-5xl font-bold">Basic Information</p>
-                
-                        <div class="text-4xl">
-                
+                                                <div class="flex items-start pt-14 py-5">
+                                                    <p class="font-semibold mr-[8rem]">Birthday: </p> 
+                                                    <p id="Birthday">June 07, 2001</p>
+                                                </div>
+                                    
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[9rem]">Gender: </p> 
+                                                    <p id="Gender">Male</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
+                                                    <p id="CivilStat">Single</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[5rem]">Nationality: </p> 
+                                                    <p  id="Nationality">Filipino</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
+                                                    <p id="BloodType">O+</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
+                                                    <p id="CollegeUnd">College UnderGrad</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
+                                                    <p  id="NOC">Centro Scholar University</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[12rem]">Years of Service: </p> 
+                                                    <p id="YOS">2 Years</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
+                                                    <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
+                                                </div>
+                                                <div class="flex items-start py-5 ">
+                                                    <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
+                                                    <p  id="others">STI Global City</p>
+                                                </div>
+                                            
+                                        </div>
+                    
+                                        <p class="text-[#9E9E9E] text-5xl font-bold py-10">Contact Information </p>
+                    
+                                        <div class="text-4xl" >
                                             <div class="flex items-start pt-14 py-5">
-                                                <p class="font-semibold mr-[8rem]">Birthday: </p> 
-                                                <p id="Birthday"></p>
+                                                <p class=" font-semibold mr-[6rem]">Email Address: </p> 
+                                                <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
                                             </div>
                                 
                                             <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[9rem]">Gender: </p> 
-                                                <p id="Gender"></p>
+                                                <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
+                                                <p  id="ContactNum">09199225389</p>
                                             </div>
                                             <div class="flex items-start py-5 ">
-                                                <p class=" font-semibold mr-[4.5rem]">Civil Status: </p> 
-                                                <p id="CivilStatus"></p>
+                                                <p class="font-semibold mr-[14rem]">Adress: </p> 
+                                                <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
+                                            </div>
+                                            <div class="flex items-start py-5">
+                                                <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
+                                                <p  id="ECP">Maria Corsiga Pangan</p>
                                             </div>
                                             <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[5rem]">Nationality: </p> 
-                                                <p  id="Nationality"></p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[4.5rem]">Blood Type: </p> 
-                                                <p id="BloodType">O+</p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[4.5rem]">Educational Attainment: </p> 
-                                                <p id="CollegeUnd">College UnderGrad</p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class=" font-semibold mr-[5.5rem]">Name of the Company: </p> 
-                                                <p  id="NOC">Centro Scholar University</p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[12rem]">Years of Service: </p> 
-                                                <p id="YOS">2 Years</p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[15.5rem]">Skill/Training: </p> 
-                                                <p  id="Skillandtraining">Red Cross Phlebotomist Training</p>
-                                            </div>
-                                            <div class="flex items-start py-5 ">
-                                                <p class="font-semibold mr-[12.3rem]">Other Affiliation: </p> 
-                                                <p  id="others">STI Global City</p>
+                                                <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
+                                                <p  id="ECN">09199225389</p>
                                             </div>
                                         
-                                    </div>
-                
-                                    <p class="text-[#9E9E9E] text-5xl font-bold py-10">Contact Information </p>
-                
-                                    <div class="text-4xl" >
-                                        <div class="flex items-start pt-14 py-5">
-                                            <p class=" font-semibold mr-[6rem]">Email Address: </p> 
-                                            <p  id="emailAdd">Corsigamarniel14@gmail.com</p>
                                         </div>
-                            
-                                        <div class="flex items-start py-5 ">
-                                            <p class=" font-semibold mr-[8.6rem]">Contact No.: </p> 
-                                            <p  id="ContactNum">09199225389</p>
-                                        </div>
-                                        <div class="flex items-start py-5 ">
-                                            <p class="font-semibold mr-[14rem]">Adress: </p> 
-                                            <p  id="Address">262 Unit 1 C-6 Road, Taguig City</p>
-                                        </div>
-                                        <div class="flex items-start py-5">
-                                            <p class=" font-semibold mr-[5rem]">Emergency Contact Person: </p> 
-                                            <p  id="ECP">Maria Corsiga Pangan</p>
-                                        </div>
-                                        <div class="flex items-start py-5 ">
-                                            <p class=" font-semibold mr-[4rem]">Emergency Contact Number: </p> 
-                                            <p  id="ECN">09199225389</p>
-                                        </div>
+                    
                                     
-                                    </div>
-                
-                                
-                                
-                    </div>
-                    <!-- FORM RANKINGS -->
-                    <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
-                            <div class="flex justify-center space-x-48">
-                                <div class="text-5xl text-start mr-5">
-                                    <p class="font-bold">Aspirant</p>
-                                    <p class="pt-5 text-3xl">100 duty Hours</p>
-                                </div>
-
-                                <div class=" text-5xl text-start list-none">
-                                    <p class="font-bold">Echo 900</p>
-                                    <p class="pt-5 text-3xl">2000 duty hours</p>
-                                    <p class="text-3xl">20 fire response</p>
-                                </div>
-                                
-                            </div>
-
-                            <div class="flex justify-center space-x-32 mt-16">
-                                <div class="text-5xl text-start">
-                                    <p class="font-bold">Probationary</p>
-                                    <p class="pt-5 text-3xl">1000 duty hours</p>
-                                    <p class="text-3xl">10 fire response</p>
-                                </div>
-
-                                <div class=" text-5xl text-start pr-5">
-                                    <p class="font-bold">Echo 800</p>
-                                    <p class="pt-5 text-3xl text-start">100 hours</p>
                                     
-                                </div>
-                                
-                            </div>
-
-                            <div class="flex justify-center mt-16">
-                                <div class="text-5xl text-start list-none inline-block mx-20">
-                                    <p class="font-bold">Echo</p>
-                                    <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
-                                </div>
-
-                            </div>
-                    </div>
-                    <!-- FORM RECORDS  -->
-                    <div class="px-6" style="display: none;" id="frmRecord"  >        
-                        <table class="mt-10 w-full  border-[1px] border-black">
-                        <thead class="mt-10 h-16 text-base">
-                            <tr class="text-center text-black font-Inter font-[100] ">
-                                <th class="text-center border-2 border-black">Time In</th>
-                                <th class="text-center border-2 border-black">Time Out</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-2xl text-center font-Inter">
-                            <tr class="border-2 border-b-[1px] h-16">
-                                <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
-                                <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
-                            </tr>
+                        </div>
+                        <!-- FORM RANKINGS -->
+                        <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
+                                <div class="flex justify-center space-x-48">
+                                    <div class="text-5xl text-start mr-5">
+                                        <p class="font-bold">Aspirant</p>
+                                        <p class="pt-5 text-3xl">100 duty Hours</p>
+                                    </div>
     
-                        
-                            </tbody>
-                         </table>
-                     </div>
-                </div>
-            </div>        
+                                    <div class=" text-5xl text-start list-none">
+                                        <p class="font-bold">Echo 900</p>
+                                        <p class="pt-5 text-3xl">2000 duty hours</p>
+                                        <p class="text-3xl">20 fire response</p>
+                                    </div>
+                                    
+                                </div>
+    
+                                <div class="flex justify-center space-x-32 mt-16">
+                                    <div class="text-5xl text-start">
+                                        <p class="font-bold">Probationary</p>
+                                        <p class="pt-5 text-3xl">1000 duty hours</p>
+                                        <p class="text-3xl">10 fire response</p>
+                                    </div>
+    
+                                    <div class=" text-5xl text-start pr-5">
+                                        <p class="font-bold">Echo 800</p>
+                                        <p class="pt-5 text-3xl text-start">100 hours</p>
+                                        
+                                    </div>
+                                    
+                                </div>
+    
+                                <div class="flex justify-center mt-16">
+                                    <div class="text-5xl text-start list-none inline-block mx-20">
+                                        <p class="font-bold">Echo</p>
+                                        <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                                    </div>
+    
+                                </div>
+                        </div>
+                        <!-- FORM RECORDS  -->
+                        <div class="px-6" style="display: none;" id="frmRecord"  >        
+                            <table class="mt-10 w-full  border-[1px] border-black">
+                            <thead class="mt-10 h-16 text-base">
+                                <tr class="text-center text-black font-Inter font-[100] ">
+                                    <th class="text-center border-2 border-black">Time In</th>
+                                    <th class="text-center border-2 border-black">Time Out</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-2xl text-center font-Inter">
+                                <tr class="border-2 border-b-[1px] h-16">
+                                    <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
+                                    <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
+                                </tr>
+        
+                            
+                                </tbody>
+                             </table>
+                         </div>
+                    </div>
+                </div>        
+            </div>
         </div>
     </div>
+<!-- Edit Profile -->
+<div style="display: none;" id="editProfile">
+    <div class="mt-12 ml-96">
+        <p class="font-Inter font-bold text-3xl">Edit Profile</p>
+        <div class="flex items-start pt-9 py-5 ">
+            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
+            <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
+
+        </div>
+
+      
+            <form class="font-Inter text-xl font-[600]">
+                <div class="flex items-start">
+                    <div class="ml-12">
+                        <p>Lastname</p>
+                        <input class="bg-white x;w-80 h-10 px-4 border border-black" 
+                        type="lastname" placeholder="Lastname" id="lastname">
+                    </div>
+
+                    <div class="ml-12 ">
+                        <p>First Name</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="firstname" placeholder="Firstname" id="firstname">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Middle Name</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="middlename" placeholder="MiddleName" id="middlename">
+                    </div>
+                </div>
+
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Username</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Username" placeholder="Username" id="Username">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Email Address</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="EmailAdd" placeholder="EmailAdd" id="EmailAdd">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Contact Number</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="ContactNum" placeholder="ContactNum" id="ContactNum">
+                    </div>
+                </div>
+
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Old Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="Old Password" id="OldPass">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>New Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="New Password" id="NewPass">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Confirm Password</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="password" placeholder="Confirm Password" id="ConPass">
+                    </div>
+                </div>
+                
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Civil Status</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Civil Status" placeholder="Civil Status" id="civilStat">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Nationality</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="Nationality" placeholder="Nationality" id="Nationality">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Blood Type</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="BloodType" placeholder="BloodType" id="BloodType">
+                    </div>
+                </div>
+               
+
+                <div class="flex items-center space-x-[22.7rem] pt-5">
+                    <div class="ml-20">
+                        <input type="text" id="datetimepicker" placeholder="Select Date and Time">
+                    </div>
+
+                        <div  class="ml-12 w-96">
+                            <input type="text" id="" placeholder="Gender">
+                            <select class="w-96 h-10 border-[1px] border-black" id="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                </div>
+              
+                <div class="ml-12">
+                    <p>Current Address</p>
+                    <input class="bg-white w-[66rem] h-10 px-4 border border-black" 
+                    type="Current Address" placeholder="Current Address" id="currentAdd">
+                </div>
+
+                <div class="flex items-center pt-5">
+                    <div class="ml-[50px]">
+                        <p>Emergency Contact Person</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Emergency Contact Person" id="ECP">
+                    </div>
+
+                    <div class="mx-[10rem]">
+                        <p>Emergency Contact Number</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="Emergency Contact Number" placeholder="Emergency Contact Number" id="ECN">
+                    </div>
+                </div>   
+                <div class="flex items-start pt-5">
+                    <div class="ml-12">
+                        <p>Highest Educational Attainment</p>
+                        <input class="bg-white w-[25rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Highest Educational Attainment" id="hea">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Name of the Company</p>
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                        type="text" placeholder="Name of the Company" id="noc">
+                    </div>
+
+                    <div class="ml-12">
+                        <p>Years in service</p>
+                        <input class="bg-white w-60 h-10 px-4 border border-black" 
+                        type="text" placeholder="Years in service" id="yis">
+                    </div>
+                </div>     
+                <div class="flex items-center pt-5">
+                    <div class="ml-[50px]">
+                        <p>Skills/Training</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Skills/Training" id="ST">
+                    </div>
+
+                    <div class="mx-[10rem]">
+                        <p>Other Affiliation</p>
+                        <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                        type="text" placeholder="Other Affiliation" id="OA">
+                    </div>
+                </div>   
+                
+                <div class="flex items-start py-14 ml-[48rem]">
+                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
+                    <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
+                </div>     
+            </form>
+
+    </div>
 </div>
+
+
+    
 <!-- FORM HOW TO VOLUNTEER -->
     <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">
         <p class="text-5xl font-bold">How to volunteer?</p>

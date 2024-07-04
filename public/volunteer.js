@@ -138,11 +138,10 @@ function showLeaderboards() {
   addLine('leadB');
 }
 function showContactus() {
-    const dashboard = document.getElementById('frmDashboard');
-    dashboard.style.display = 'block';
     showElement('frmContactus');
     addLine('conN');
-
+    const dashboard = document.getElementById('frmDashboard');
+    dashboard.style.display = 'block';
 }
 function myProfile() {
     showElement('frmMainProfile');

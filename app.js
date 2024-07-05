@@ -291,6 +291,294 @@ app.get('/profile', (req, res) => {
 
 
 
+//new edit
+app.post('/updateProfile', (req, res) => {
+    const {
+        rfid,
+        lastName,
+        firstName,
+        middleName,
+        middleInitial,
+        username,
+        emailAddress,
+        mobileNumber,
+        oldPassword,
+        newPassword,
+        confirmPassword,
+        civilStatus,
+        nationality,
+        bloodType,
+        gender,
+        currentAddress,
+        emergencyContactPerson,
+        emergencyContactNumber,
+        highestEducationalAttainment,
+        nameOfCompany,
+        yearsInService,
+        skillsTraining,
+        otherAffiliation
+    } = req.body;
+
+    const updateFields = {
+        lastName,
+        firstName,
+        middleName,
+        middleInitial,
+        username,
+        emailAddress,
+        mobileNumber,
+        civilStatus,
+        nationality,
+        bloodType,
+        gender,
+        currentAddress,
+        emergencyContactPerson,
+        emergencyContactNumber,
+        highestEducationalAttainment,
+        nameOfCompany,
+        yearsInService,
+        skillsTraining,
+        otherAffiliation
+    };
+
+    // Filter out empty fields
+    const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
+        if (value !== undefined && value !== '') acc[key] = value;
+        return acc;
+    }, {});
+
+    const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
+    const params = [...Object.values(fieldsToUpdate), rfid];
+
+    let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
+
+    const handlePasswordUpdate = () => {
+        if (oldPassword && newPassword && confirmPassword) {
+            const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+            db.query(passwordQuery, [rfid], (err, results) => {
+                if (err) {
+                    console.error('Error fetching password:', err);
+                    return res.status(500).json({ success: false, message: 'Error fetching password' });
+                }
+
+                const storedPassword = results[0].password;
+                bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
+                    if (compareErr || !isMatch) {
+                        return res.status(400).json({ success: false, message: 'Incorrect old password' });
+                    }
+
+                    if (newPassword !== confirmPassword) {
+                        return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
+                    }
+
+                    bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
+                        if (hashErr) {
+                            console.error('Error hashing new password:', hashErr);
+                            return res.status(500).json({ success: false, message: 'Error hashing new password' });
+                        }
+
+                        fieldsToUpdate.password = hashedNewPassword;
+                        updateDatabase();
+                    });
+                });
+            });
+        } else {
+            updateDatabase();
+        }
+    };
+
+    const updateDatabase = () => {
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                console.error('Error updating profile:', err);
+                return res.status(500).json({ success: false, message: 'Error updating profile' });
+            }
+            res.status(200).json({ success: true, message: 'Profile updated successfully' });
+        });
+    };
+
+    handlePasswordUpdate();
+});
+
+
+
+
+
+//for editing prpfile (working with bugs)
+// app.post('/updateProfile', (req, res) => {
+//     const {
+//         rfid,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         username,
+//         emailAddress,
+//         mobileNumber,
+//         oldPassword,
+//         newPassword,
+//         confirmPassword,
+//         civilStatus,
+//         nationality,
+//         bloodType,
+//         gender,
+//         currentAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation
+//     } = req.body;
+
+//     const updateFields = {
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         username,
+//         emailAddress,
+//         mobileNumber,
+//         civilStatus,
+//         nationality,
+//         bloodType,
+//         gender,
+//         currentAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation
+//     };
+
+//     // Filter out empty fields
+//     const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
+//         if (value !== undefined && value !== '') acc[key] = value;
+//         return acc;
+//     }, {});
+
+//     const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
+//     const params = [...Object.values(fieldsToUpdate), rfid];
+
+//     let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
+
+//     const handlePasswordUpdate = () => {
+//         if (oldPassword && newPassword && confirmPassword) {
+//             const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+//             db.query(passwordQuery, [rfid], (err, results) => {
+//                 if (err) {
+//                     console.error('Error fetching password:', err);
+//                     return res.status(500).json({ success: false, message: 'Error fetching password' });
+//                 }
+
+//                 const storedPassword = results[0].password;
+//                 bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
+//                     if (compareErr || !isMatch) {
+//                         return res.status(400).json({ success: false, message: 'Incorrect old password' });
+//                     }
+
+//                     if (newPassword !== confirmPassword) {
+//                         return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
+//                     }
+
+//                     bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
+//                         if (hashErr) {
+//                             console.error('Error hashing new password:', hashErr);
+//                             return res.status(500).json({ success: false, message: 'Error hashing new password' });
+//                         }
+
+//                         fieldsToUpdate.password = hashedNewPassword;
+//                         updateDatabase();
+//                     });
+//                 });
+//             });
+//         } else {
+//             updateDatabase();
+//         }
+//     };
+
+//     const updateDatabase = () => {
+//         db.query(sql, params, (err, result) => {
+//             if (err) {
+//                 console.error('Error updating profile:', err);
+//                 return res.status(500).json({ success: false, message: 'Error updating profile' });
+//             }
+//             res.status(200).json({ success: true, message: 'Profile updated successfully' });
+//         });
+//     };
+
+//     handlePasswordUpdate();
+// });
+
+
+//update profile (WORKING)
+// app.post('/updateProfile', (req, res) => {
+//     const {
+//         rfid,
+//         lastName,
+//         firstName,
+//         middleName,
+//         username,
+//         emailAddress,
+//         mobileNumber,
+//         oldPassword,
+//         newPassword,
+//         confirmPassword,
+//         civilStatus,
+//         nationality,
+//         bloodType,
+//         gender,
+//         currentAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation
+//     } = req.body;
+
+//     // Optional: Add validation for the inputs here
+
+//     // Update password only if provided and confirmed
+//     if (newPassword && newPassword === confirmPassword) {
+//         bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
+//             if (hashErr) {
+//                 console.error('Error hashing new password:', hashErr);
+//                 res.status(500).send({ success: false, message: 'Error hashing new password' });
+//                 return;
+//             }
+//             updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
+//         });
+//     } else {
+//         // Update without password change
+//         updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, null, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
+//     }
+// });
+
+// function updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res) {
+//     const sql = hashedNewPassword
+//         ? `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, password = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`
+//         : `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`;
+
+//     const params = hashedNewPassword
+//         ? [lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid]
+//         : [lastName, firstName, middleName, username, emailAddress, mobileNumber, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid];
+
+//     db.query(sql, params, (err, result) => {
+//         if (err) {
+//             console.error('Error updating profile:', err);
+//             res.status(500).send({ success: false, message: 'Error updating profile' });
+//             return;
+//         }
+//         res.status(200).send({ success: true, message: 'Profile updated successfully' });
+//     });
+// }
+
+
 
 //port
 const PORT = 3000;

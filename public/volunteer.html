@@ -684,18 +684,295 @@
             </div>
         </div>
     </div>
+
 <!-- Edit Profile -->
 <div id="editProfile">
     <div class="mt-12 ml-96">
         <p class="font-Inter font-bold text-3xl">Edit Profile</p>
         <div class="flex items-start pt-9 py-5 ">
+
             <div class="ml-12"> <img src="img/user.png" class="w-48"></div>
+
+            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48" id="EditProfileImage"></div>
+            <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
+        </div>
+        <form class="font-Inter text-xl font-[600]" id="editProfileForm">
+            <input type="hidden" id="EditRFID">
+            <div class="flex items-start">
+                <div class="ml-12">
+                    <p>Lastname</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Lastname" id="EditLastName">
+                </div>
+                <div class="ml-12">
+                    <p>First Name</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Firstname" id="EditFirstName">
+                </div>
+                <div class="ml-12">
+                    <p>Middle Name</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="MiddleName" id="EditMiddleName">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Username</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Username" id="EditUsername">
+                </div>
+                <div class="ml-12">
+                    <p>Email Address</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Email Address" id="EditEmailAddress">
+                </div>
+                <div class="ml-12">
+                    <p>Contact Number</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Contact Number" id="EditContactNumber">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Old Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="password" placeholder="Old Password" id="EditOldPassword">
+                </div>
+                <div class="ml-12">
+                    <p>New Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="password" placeholder="New Password" id="EditNewPassword">
+                </div>
+                <div class="ml-12">
+                    <p>Confirm Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="password" placeholder="Confirm Password" id="EditConfirmPassword">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Civil Status</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Civil Status" id="EditCivilStatus">
+                </div>
+                <div class="ml-12">
+                    <p>Nationality</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Nationality" id="EditNationality">
+                </div>
+                <div class="ml-12">
+                    <p>Blood Type</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="BloodType" id="EditBloodType">
+                </div>
+            </div>
+            <div class="flex items-center space-x-[22.7rem] pt-5">
+                <div class="ml-20">
+                    <input type="text" id="datetimepicker" placeholder="Select Date and Time">
+                </div>
+                <div class="ml-12 w-96">
+                    <input type="text" id="" placeholder="Gender">
+                    <select class="w-96 h-10 border-[1px] border-black" id="EditGender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ml-12">
+                <p>Current Address</p>
+                <input class="bg-white w-[66rem] h-10 px-4 border border-black" 
+                       type="text" placeholder="Current Address" id="EditCurrentAddress">
+            </div>
+            <div class="flex items-center pt-5">
+                <div class="ml-[50px]">
+                    <p>Emergency Contact Person</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                           type="text" placeholder="Emergency Contact Person" id="EditEmergencyContactPerson">
+                </div>
+                <div class="mx-[10rem]">
+                    <p>Emergency Contact Number</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                           type="text" placeholder="Emergency Contact Number" id="EditEmergencyContactNumber">
+                </div>
+            </div>   
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Highest Educational Attainment</p>
+                    <input class="bg-white w-[25rem] h-10 px-4 border border-black" 
+                           type="text" placeholder="Highest Educational Attainment" id="EditHighestEducationalAttainment">
+                </div>
+                <div class="ml-12">
+                    <p>Name of the Company</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                           type="text" placeholder="Name of the Company" id="EditNameOfCompany">
+                </div>
+                <div class="ml-12">
+                    <p>Years in service</p>
+                    <input class="bg-white w-60 h-10 px-4 border border-black" 
+                           type="text" placeholder="Years in service" id="EditYearsInService">
+                </div>
+            </div>     
+            <div class="flex items-center pt-5">
+                <div class="ml-[50px]">
+                    <p>Skills/Training</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                           type="text" placeholder="Skills/Training" id="EditSkillsTraining">
+                </div>
+                <div class="mx-[10rem]">
+                    <p>Other Affiliation</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" 
+                           type="text" placeholder="Other Affiliation" id="EditOtherAffiliation">
+                </div>
+            </div>   
+            <div class="flex items-start py-14 ml-[48rem]">
+                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]" onclick="cancelEdit()">Cancel</button>
+                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]" onclick="saveProfile()">Save</button>
+            </div>     
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Edit Profile (WORKING) -->
+<!-- <div style="display: none;" id="editProfile">
+    <div class="mt-12 ml-96">
+        <p class="font-Inter font-bold text-3xl">Edit Profile</p>
+        <div class="flex items-start pt-9 py-5">
+            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
+            <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
+        </div>
+        <form class="font-Inter text-xl font-[600]" id="editProfileForm">
+            <input type="hidden" id="EditRFID" name="rfid">
+            <div class="flex items-start">
+                <div class="ml-12">
+                    <p>Last Name</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Last Name" id="EditLastName" name="lastName">
+                </div>
+                <div class="ml-12">
+                    <p>First Name</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="First Name" id="EditFirstName" name="firstName">
+                </div>
+                <div class="ml-12">
+                    <p>Middle Name</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Middle Name" id="EditMiddleName" name="middleName">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Username</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Username" id="EditUsername" name="username">
+                </div>
+                <div class="ml-12">
+                    <p>Email Address</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Email Address" id="EditEmailAddress" name="emailAddress">
+                </div>
+                <div class="ml-12">
+                    <p>Contact Number</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Contact Number" id="EditContactNumber" name="mobileNumber">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Old Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="password" placeholder="Old Password" id="EditOldPassword" name="oldPassword">
+                </div>
+                <div class="ml-12">
+                    <p>New Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="password" placeholder="New Password" id="EditNewPassword" name="newPassword">
+                </div>
+                <div class="ml-12">
+                    <p>Confirm Password</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="password" placeholder="Confirm Password" id="EditConfirmPassword" name="confirmPassword">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Civil Status</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Civil Status" id="EditCivilStatus" name="civilStatus">
+                </div>
+                <div class="ml-12">
+                    <p>Nationality</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Nationality" id="EditNationality" name="nationality">
+                </div>
+                <div class="ml-12">
+                    <p>Blood Type</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Blood Type" id="EditBloodType" name="bloodType">
+                </div>
+            </div>
+            <div class="flex items-center space-x-[22.7rem] pt-5">
+                <div class="ml-20">
+                    <input type="text" id="datetimepicker" placeholder="Select Date and Time">
+                </div>
+                <div class="ml-12 w-96">
+                    <input type="text" placeholder="Gender">
+                    <select class="w-96 h-10 border-[1px] border-black" id="EditGender" name="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ml-12">
+                <p>Current Address</p>
+                <input class="bg-white w-[66rem] h-10 px-4 border border-black" type="text" placeholder="Current Address" id="EditCurrentAddress" name="currentAddress">
+            </div>
+            <div class="flex items-center pt-5">
+                <div class="ml-[50px]">
+                    <p>Emergency Contact Person</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" type="text" placeholder="Emergency Contact Person" id="EditEmergencyContactPerson" name="emergencyContactPerson">
+                </div>
+                <div class="mx-[10rem]">
+                    <p>Emergency Contact Number</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" type="text" placeholder="Emergency Contact Number" id="EditEmergencyContactNumber" name="emergencyContactNumber">
+                </div>
+            </div>
+            <div class="flex items-start pt-5">
+                <div class="ml-12">
+                    <p>Highest Educational Attainment</p>
+                    <input class="bg-white w-[25rem] h-10 px-4 border border-black" type="text" placeholder="Highest Educational Attainment" id="EditHighestEducationalAttainment" name="highestEducationalAttainment">
+                </div>
+                <div class="ml-12">
+                    <p>Name of the Company</p>
+                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Name of the Company" id="EditNameOfCompany" name="nameOfCompany">
+                </div>
+                <div class="ml-12">
+                    <p>Years in service</p>
+                    <input class="bg-white w-60 h-10 px-4 border border-black" type="text" placeholder="Years in service" id="EditYearsInService" name="yearsInService">
+                </div>
+            </div>
+            <div class="flex items-center pt-5">
+                <div class="ml-[50px]">
+                    <p>Skills/Training</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" type="text" placeholder="Skills/Training" id="EditSkillsTraining" name="skillsTraining">
+                </div>
+                <div class="mx-[10rem]">
+                    <p>Other Affiliation</p>
+                    <input class="bg-white w-[28rem] h-10 px-4 border border-black" type="text" placeholder="Other Affiliation" id="EditOtherAffiliation" name="otherAffiliation">
+                </div>
+            </div>
+            <div class="flex items-start py-14 ml-[48rem]">
+                <button type="button" onclick="cancelEdit()" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
+                <button type="submit" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+
+    
+<!-- Edit Profile -->
+<!-- <div style="display: none;" id="editProfile">
+    <div class="mt-12 ml-96">
+        <p class="font-Inter font-bold text-3xl">Edit Profile</p>
+        <div class="flex items-start pt-9 py-5 ">
+            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
+
             <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
 
         </div>
 
       
-            <form class="font-Inter text-xl font-[600]">
+            <form class="font-Inter text-xl font-[600]" id="editProfileForm">
                 <div class="flex items-start">
                     <div class="ml-12">
                         <p>Lastname</p>
@@ -780,7 +1057,6 @@
                 <div class="flex items-center space-x-[22.7rem] pt-5">
                     <div class="ml-20">
                         <input type="text" id="datetimepicker" placeholder="Select Date and Time"> 
-                        <!-- bkt ba nandito to -->
                     </div>
 
                         <div  class="ml-12 w-96">
@@ -843,7 +1119,7 @@
                         type="text" placeholder="Other Affiliation" id="EditOtherAffiliation">
                     </div>
                 </div>   
-                
+                <input type="hidden" id="EditRFID" name="rfid">
                 <div class="flex items-start py-14 ml-[48rem]">
                     <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Cancel</button>
                     <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-white text-xl font-Inter font-[500]">Save</button>
@@ -851,9 +1127,45 @@
             </form>
 
     </div>
-</div>
+</div> -->
 
-
+<!-- <script>
+    function saveProfile() {
+        // Get the RFID value from the #RFID element
+        const rfid = document.getElementById('RFID').textContent.replace('ID#: ', '').trim();
+        
+        // Set the hidden input field value
+        document.getElementById('EditRFID').value = rfid;
+    
+        // Get the form element
+        const form = document.getElementById('editProfileForm');
+        
+        // Ensure the form element is correctly selected
+        if (!form) {
+            console.error('Form element not found');
+            return;
+        }
+    
+        const formData = new FormData(form);
+    
+        fetch('/updateProfile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Success:', data);
+            // Optionally, you can update the profile view with new data
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    
+    function cancelEdit() {
+        // Logic to cancel the edit, hide the edit form, etc.
+    }
+    </script> -->
     
 <!-- FORM HOW TO VOLUNTEER -->
     <div class="text-black font-Inter mt-24 ml-44" id="frmHtvolunteer" style="display: none;">

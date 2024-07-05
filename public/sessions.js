@@ -63,8 +63,8 @@
         });
     });
 
-
-    //new edit
+    
+//EDIT PROFILE
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/profile')
         .then(response => {

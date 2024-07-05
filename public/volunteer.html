@@ -17,7 +17,7 @@
             <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
     
         </div>
-        
+  
         <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
             <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
                 <li id="dashb" class="md:mt-12 "><a href="#" onclick="showDashboard()">Dashboard</a></li>
@@ -50,9 +50,10 @@
     
     <div class="relative w-full flex justify-end z-30">
         <div class="md:hidden w-1/2 h-[19rem] py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
-            <div class="ml-3 flex justify-center mr-3"  style="cursor: pointer;">
-                <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
+            <div class="ml-3 flex justify-start mr-3" onclick="myProfile()"  style="cursor: pointer;">
                 <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
+                <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
+               
             </div>
             
             <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
@@ -484,7 +485,7 @@
     </div>
 
 <!-- FORM MAIN PROFILE -->
-    <div id="frmMainProfile">
+    <div id="frmMainProfile" style="display: none;">
         <div class="w-full md:flex md:justify-center" >
             <div class="md:max-w-[90rem] w-full" >
                 <p class="text-black md:text-4xl font-bold font-Inter md:my-7" id="RFID"></p>
@@ -547,7 +548,7 @@
                             <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
     
                         <!-- FORM PROFILE -->
-                        <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  id="frmMyprofile" >
+                        <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  id="frmMyprofile">
                             <p class="text-[#9E9E9E] md:text-5xl text-2xl font-bold">Basic Information</p>
                     
                             <div class="text-xl md:text-4xl mt-5">
@@ -622,46 +623,45 @@
                                     
                         </div>
                         <!-- FORM RANKINGS -->
-                        <div class="pt-11 ml-16 font-Inter" id="frmRankings" style="display: none;">
-                                <div class="flex justify-center space-x-48">
-                                    <div class="text-5xl text-start mr-5">
+                        <div class="pt-11 md:ml-16 font-Inter md:mb-0 pb-14" id="frmRankings" style="display: none;">
+                                <div class="md:flex md:justify-center md:space-x-48">
+                                    <div class="md:text-5xl text-2xl md:text-start text-center md:mr-5">
                                         <p class="font-bold">Aspirant</p>
-                                        <p class="pt-5 text-3xl">100 duty Hours</p>
+                                        <p class="md:pt-5 md:text-3xl">100 duty Hours</p>
                                     </div>
     
-                                    <div class=" text-5xl text-start list-none">
+                                    <div class="md:text-5xl text-2xl md:text-start text-center mt-8 md:mt-0">
                                         <p class="font-bold">Echo 900</p>
-                                        <p class="pt-5 text-3xl">2000 duty hours</p>
-                                        <p class="text-3xl">20 fire response</p>
+                                        <p class="md:pt-5 md:text-3xl">2000 duty hours</p>
+                                        <p class="md:text-3xl">20 fire response</p>
                                     </div>
                                     
                                 </div>
     
-                                <div class="flex justify-center space-x-32 mt-16">
-                                    <div class="text-5xl text-start">
+                                <div class="md:flex md:justify-center md:space-x-32 md:mt-16">
+                                    <div class="md:text-5xl text-2xl md:text-start text-center md:mt-0 mt-8">
                                         <p class="font-bold">Probationary</p>
-                                        <p class="pt-5 text-3xl">1000 duty hours</p>
-                                        <p class="text-3xl">10 fire response</p>
+                                        <p class="md:pt-5 md:text-3xl">1000 duty hours</p>
+                                        <p class="md:text-3xl">10 fire response</p>
                                     </div>
     
-                                    <div class=" text-5xl text-start pr-5">
+                                    <div class="md:text-5xl md:text-start  text-center text-2xl md:pr-5 md:mt-0 mt-8">
                                         <p class="font-bold">Echo 800</p>
-                                        <p class="pt-5 text-3xl text-start">100 hours</p>
+                                        <p class="md:pt-5 md:text-3xl md:text-start">100 hours</p>
                                         
                                     </div>
                                     
                                 </div>
     
-                                <div class="flex justify-center mt-16">
-                                    <div class="text-5xl text-start list-none inline-block mx-20">
+                                <div class="md:flex md:justify-center mt-8 md:mt-16">
+                                    <div class="md:text-5xl text-2xl text-center md:mx-20">
                                         <p class="font-bold">Echo</p>
-                                        <p class="pt-5 text-3xl text-center">“ninong” or “ninang <br>from the Echo 900</p>
+                                        <p class="md:pt-5 md:text-3xl md:text-center">“ninong” or “ninang <br>from the Echo 900</p>
                                     </div>
-    
                                 </div>
                         </div>
                         <!-- FORM RECORDS  -->
-                        <div class="px-6" style="display: none;" id="frmRecord"  >        
+                        <div class="px-6"  id="frmRecord" style="display: none;" >        
                             <table class="mt-10 w-full  border-[1px] border-black">
                             <thead class="mt-10 h-16 text-base">
                                 <tr class="text-center text-black font-Inter font-[100] ">
@@ -669,7 +669,7 @@
                                     <th class="text-center border-2 border-black">Time Out</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-2xl text-center font-Inter">
+                            <tbody class="md:text-2xl text-lg text-center font-Inter">
                                 <tr class="border-2 border-b-[1px] h-16">
                                     <td class="text-center border-2 border-black">1/15/24 10:00 am</td>
                                     <td class="text-center border-2 border-black">1/16/24 08:30 pm</td>
@@ -685,11 +685,11 @@
         </div>
     </div>
 <!-- Edit Profile -->
-<div style="display: none;" id="editProfile">
+<div id="editProfile">
     <div class="mt-12 ml-96">
         <p class="font-Inter font-bold text-3xl">Edit Profile</p>
         <div class="flex items-start pt-9 py-5 ">
-            <div class="inline-block ml-12"> <img src="img/user.png" class="w-48"></div>
+            <div class="ml-12"> <img src="img/user.png" class="w-48"></div>
             <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg h-12 w-36 ml-5 mt-[59px] text-black text-xl font-Inter font-[500]">Change</button>
 
         </div>
@@ -699,7 +699,7 @@
                 <div class="flex items-start">
                     <div class="ml-12">
                         <p>Lastname</p>
-                        <input class="bg-white x;w-80 h-10 px-4 border border-black" 
+                        <input class="bg-white w-80 h-10 px-4 border border-black" 
                         type="text" placeholder="Last Name" id="EditLastName">
                     </div>
 

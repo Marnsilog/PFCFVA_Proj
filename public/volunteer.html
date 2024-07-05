@@ -701,7 +701,7 @@
                 <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg md:h-12 h-8 w-16 mt-7 ml-3 md:w-28 md:ml-5 md:mt-[59px] text-black text-sm md:text-xl font-Inter font-[500]">Change</button>
     
             </div>
-                <form class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5">
+                <form class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5" id="editProfileForm">
                     <input type="hidden" id="EditRFID">
                     <div class="w-full flex justify-center">
                         <div class="md:space-y-5 md:w-full space-y-3 md:space-x-0">
@@ -858,8 +858,8 @@
                             </div> 
 
                             <div class="flex justify-end pb-14 pt-12 space-x-5">
-                                <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Cancel</button>
-                                <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
+                                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]" onclick="cancelEdit()">Cancel</button>
+                                <button type="submit" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
                             </div>      
                         </div>
                     </div>

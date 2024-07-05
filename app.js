@@ -209,6 +209,11 @@ app.post('/login', (req, res) => {
                 req.session.rfid = user.rfid; //this 2
                 //basic info
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
+                //temp
+                req.session.lastName = user.lastName;
+                req.session.firstName = user.firstName;
+                req.session.middleName = user.middleName;
+                //basic info 2
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
                 req.session.gender = user.gender;
@@ -258,6 +263,11 @@ app.get('/profile', (req, res) => {
             rfid: req.session.rfid,// this 3
             //basic info
             fullName: req.session.fullName, 
+            //temp
+            lastName: req.session.lastName,
+            firstName: req.session.firstName,
+            middleName: req.session.middleName,
+            //basic info 2
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
             gender: req.session.gender,
@@ -291,293 +301,117 @@ app.get('/profile', (req, res) => {
 
 
 
-//new edit
+//update profile route (WITH BUGS),gender
 app.post('/updateProfile', (req, res) => {
     const {
-        rfid,
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        username,
-        emailAddress,
-        mobileNumber,
-        oldPassword,
-        newPassword,
-        confirmPassword,
-        civilStatus,
-        nationality,
-        bloodType,
-        gender,
-        currentAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation
+        rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
+        newPassword, confirmPassword
     } = req.body;
 
-    const updateFields = {
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        username,
-        emailAddress,
-        mobileNumber,
-        civilStatus,
-        nationality,
-        bloodType,
-        gender,
-        currentAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation
-    };
+    if (newPassword && newPassword !== confirmPassword) {
+        return res.status(400).send('New password and confirm password do not match');
+    }
 
-    // Filter out empty fields
-    const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
-        if (value !== undefined && value !== '') acc[key] = value;
-        return acc;
-    }, {});
+    const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
 
-    const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
-    const params = [...Object.values(fieldsToUpdate), rfid];
+        const hashedPassword = result[0].password;
 
-    let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
-
-    const handlePasswordUpdate = () => {
-        if (oldPassword && newPassword && confirmPassword) {
-            const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-            db.query(passwordQuery, [rfid], (err, results) => {
-                if (err) {
-                    console.error('Error fetching password:', err);
-                    return res.status(500).json({ success: false, message: 'Error fetching password' });
+        // If a new password is provided, validate the old password
+        if (newPassword) {
+            bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
+                if (compareErr || !compareResult) {
+                    return res.status(400).send('Incorrect old password');
                 }
 
-                const storedPassword = results[0].password;
-                bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
-                    if (compareErr || !isMatch) {
-                        return res.status(400).json({ success: false, message: 'Incorrect old password' });
+                bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                    if (hashErr) {
+                        console.error('Error hashing new password:', hashErr);
+                        return res.status(500).send('Error hashing new password');
                     }
 
-                    if (newPassword !== confirmPassword) {
-                        return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
-                    }
-
-                    bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-                        if (hashErr) {
-                            console.error('Error hashing new password:', hashErr);
-                            return res.status(500).json({ success: false, message: 'Error hashing new password' });
-                        }
-
-                        fieldsToUpdate.password = hashedNewPassword;
-                        updateDatabase();
-                    });
+                    // Call updateUserProfile with new password
+                    updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
                 });
             });
         } else {
-            updateDatabase();
+            // Call updateUserProfile without new password
+            updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
         }
-    };
-
-    const updateDatabase = () => {
-        db.query(sql, params, (err, result) => {
-            if (err) {
-                console.error('Error updating profile:', err);
-                return res.status(500).json({ success: false, message: 'Error updating profile' });
-            }
-            res.status(200).json({ success: true, message: 'Profile updated successfully' });
-        });
-    };
-
-    handlePasswordUpdate();
+    });
 });
 
+function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+    civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+    emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+    nameOfCompany, yearsInService, skillsTraining, otherAffiliation, newPassword, req, res) { // Added req to update session
+    
+    let updateUserQuery = `UPDATE tbl_accounts SET
+        lastName = ?, firstName = ?, middleName = ?, middleInitial = ?, username = ?, emailAddress = ?,
+        mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?,
+        gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?,
+        highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?,
+        otherAffiliation = ?`;
 
+    const updateValues = [
+        lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation
+    ];
 
+    if (newPassword) {
+        updateUserQuery += `, password = ?`;
+        updateValues.push(newPassword);
+    }
 
+    updateUserQuery += ` WHERE rfid = ?`;
+    updateValues.push(rfid);
 
-//for editing prpfile (working with bugs)
-// app.post('/updateProfile', (req, res) => {
-//     const {
-//         rfid,
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     } = req.body;
+    db.query(updateUserQuery, updateValues, (updateErr, updateResult) => {
+        if (updateErr) {
+            console.error('Error updating profile:', updateErr);
+            return res.status(500).send('Error updating profile');
+        }
+        
+        // Update session variables to reflect the changes
+        req.session.lastName = lastName; 
+        req.session.firstName = firstName; 
+        req.session.middleName = middleName; 
+        req.session.middleInitial = middleInitial; 
+        req.session.username = username; 
+        req.session.emailAddress = emailAddress; 
+        req.session.mobileNumber = mobileNumber; 
+        req.session.civilStatus = civilStatus; 
+        req.session.nationality = nationality; 
+        req.session.bloodType = bloodType; 
+        req.session.dateOfBirth = dateOfBirth; 
+        req.session.gender = gender; 
+        req.session.currentAddress = currentAddress; 
+        req.session.emergencyContactPerson = emergencyContactPerson; 
+        req.session.emergencyContactNumber = emergencyContactNumber; 
+        req.session.highestEducationalAttainment = highestEducationalAttainment; 
+        req.session.nameOfCompany = nameOfCompany; 
+        req.session.yearsInService = yearsInService; 
+        req.session.skillsTraining = skillsTraining; 
+        req.session.otherAffiliation = otherAffiliation; 
 
-//     const updateFields = {
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     };
-
-//     // Filter out empty fields
-//     const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
-//         if (value !== undefined && value !== '') acc[key] = value;
-//         return acc;
-//     }, {});
-
-//     const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
-//     const params = [...Object.values(fieldsToUpdate), rfid];
-
-//     let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
-
-//     const handlePasswordUpdate = () => {
-//         if (oldPassword && newPassword && confirmPassword) {
-//             const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-//             db.query(passwordQuery, [rfid], (err, results) => {
-//                 if (err) {
-//                     console.error('Error fetching password:', err);
-//                     return res.status(500).json({ success: false, message: 'Error fetching password' });
-//                 }
-
-//                 const storedPassword = results[0].password;
-//                 bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
-//                     if (compareErr || !isMatch) {
-//                         return res.status(400).json({ success: false, message: 'Incorrect old password' });
-//                     }
-
-//                     if (newPassword !== confirmPassword) {
-//                         return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
-//                     }
-
-//                     bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-//                         if (hashErr) {
-//                             console.error('Error hashing new password:', hashErr);
-//                             return res.status(500).json({ success: false, message: 'Error hashing new password' });
-//                         }
-
-//                         fieldsToUpdate.password = hashedNewPassword;
-//                         updateDatabase();
-//                     });
-//                 });
-//             });
-//         } else {
-//             updateDatabase();
-//         }
-//     };
-
-//     const updateDatabase = () => {
-//         db.query(sql, params, (err, result) => {
-//             if (err) {
-//                 console.error('Error updating profile:', err);
-//                 return res.status(500).json({ success: false, message: 'Error updating profile' });
-//             }
-//             res.status(200).json({ success: true, message: 'Profile updated successfully' });
-//         });
-//     };
-
-//     handlePasswordUpdate();
-// });
-
-
-//update profile (WORKING)
-// app.post('/updateProfile', (req, res) => {
-//     const {
-//         rfid,
-//         lastName,
-//         firstName,
-//         middleName,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     } = req.body;
-
-//     // Optional: Add validation for the inputs here
-
-//     // Update password only if provided and confirmed
-//     if (newPassword && newPassword === confirmPassword) {
-//         bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-//             if (hashErr) {
-//                 console.error('Error hashing new password:', hashErr);
-//                 res.status(500).send({ success: false, message: 'Error hashing new password' });
-//                 return;
-//             }
-//             updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
-//         });
-//     } else {
-//         // Update without password change
-//         updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, null, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
-//     }
-// });
-
-// function updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res) {
-//     const sql = hashedNewPassword
-//         ? `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, password = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`
-//         : `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`;
-
-//     const params = hashedNewPassword
-//         ? [lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid]
-//         : [lastName, firstName, middleName, username, emailAddress, mobileNumber, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid];
-
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             console.error('Error updating profile:', err);
-//             res.status(500).send({ success: false, message: 'Error updating profile' });
-//             return;
-//         }
-//         res.status(200).send({ success: true, message: 'Profile updated successfully' });
-//     });
-// }
-
+        res.status(200).send('Profile updated successfully');
+    });
+}
 
 
 //port

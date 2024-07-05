@@ -51,7 +51,11 @@
             document.getElementById('DashboardDutyHours').textContent = data.dutyHours;
             document.getElementById('DashboardFireResponse').textContent = data.fireResponsePoints;
             document.getElementById('DashboardInventoryPoints').textContent = data.inventoryPoints;
-            document.getElementById('DashboardActivityPoints').textContent = data.activityPoints;        
+            document.getElementById('DashboardActivityPoints').textContent = data.activityPoints;     
+            
+            //contactus
+            document.getElementById('ContactUsFullName').textContent = data.fullName;
+            document.getElementById('ContactUsAccountType').textContent = data.accountType;
 
             
             
@@ -64,6 +68,8 @@
     });
 
 
+
+    
 //EDIT PROFILE
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/profile')

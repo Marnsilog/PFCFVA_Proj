@@ -410,7 +410,10 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
         req.session.skillsTraining = skillsTraining; 
         req.session.otherAffiliation = otherAffiliation; 
 
-        res.status(200).send('Profile updated successfully');
+        // res.status(200).send('Profile updated successfully');
+        req.session.fullName = `${firstName} ${middleInitial}. ${lastName}`; // Corrected to update fullName
+
+        res.status(200).json(req.session); // Send updated session data to client
     });
 }
 

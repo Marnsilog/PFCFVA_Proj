@@ -292,6 +292,7 @@ app.get('/profile', (req, res) => {
             activityPoints: req.session.activityPoints,
             //etc
             accountType: req.session.accountType,
+            username: req.session.username
             
         });
     } else {

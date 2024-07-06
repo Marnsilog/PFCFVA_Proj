@@ -418,6 +418,63 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 }
 
 
+// Attendance profile route
+app.get('/attendanceProfile', (req, res) => {
+    const rfid = req.query.rfid;
+    if (!rfid) {
+        return res.status(400).send('RFID is required');
+    }
+
+    const getUserQuery = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const user = result[0];
+        res.json({
+            rfid: user.rfid,
+            fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
+            callSign: user.callSign,
+            dutyHours: user.dutyHours,
+            fireResponsePoints: user.fireResponsePoints,
+            inventoryPoints: user.inventoryPoints,
+            activityPoints: user.activityPoints,
+            emailAddress: user.emailAddress,
+            mobileNumber: user.mobileNumber,
+            dateOfBirth: user.dateOfBirth,
+            gender: user.gender,
+            civilStatus: user.civilStatus,
+            nationality: user.nationality,
+            bloodType: user.bloodType,
+            highestEducationalAttainment: user.highestEducationalAttainment,
+            nameOfCompany: user.nameOfCompany,
+            yearsInService: user.yearsInService,
+            skillsTraining: user.skillsTraining,
+            otherAffiliation: user.otherAffiliation,
+            currentAddress: user.currentAddress,
+            emergencyContactPerson: user.emergencyContactPerson,
+            emergencyContactNumber: user.emergencyContactNumber
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 //port
 const PORT = 3000;
 app.listen(PORT, () => {

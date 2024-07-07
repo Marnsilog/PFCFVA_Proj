@@ -223,6 +223,39 @@ function icsBack(){
    
   }
 
+  function passEye() {
+    var x = document.getElementById("passWord");
+    var seen = document.getElementById('seen');
+    var unseen = document.getElementById('unseen');
+    if (x.type === "password") {
+        x.type = "text";
+        unseen.classList.remove('hidden');
+        seen.classList.add('hidden');
+
+    } else {
+        x.type = "password";
+        seen.classList.remove('hidden');
+        unseen.classList.add('hidden');
+       
+    }
+    }      
+    function passEye2() {
+        var x = document.getElementById("confirmPassword");
+        var seen = document.getElementById('seen2');
+        var unseen = document.getElementById('unseen2');
+        if (x.type === "password") {
+            x.type = "text";
+            unseen.classList.remove('hidden');
+            seen.classList.add('hidden');
+    
+        } else {
+            x.type = "password";
+            seen.classList.remove('hidden');
+            unseen.classList.add('hidden');
+           
+        }
+        }        
+      
 
 
     //for calendar
@@ -232,4 +265,31 @@ function icsBack(){
         dateOfBirthInput.setAttribute('max', today);
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+    
+    
+        menuToggle.addEventListener('click', function () {
+            if (mobileMenu.style.display === 'block') {
+                mobileMenu.style.display = 'none';
+            } else {
+                mobileMenu.style.display = 'block';
+            }
+        });
+    
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                mobileMenu.style.display = 'none';
+            });
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.style.display = 'none';
+            }
+        });
+        
+    });
 

@@ -182,12 +182,11 @@
 
 <!-- FORM REGISTER -->
 <div id="frmRegister">
-    <div>
         <div class="w-full md:flex md:justify-center md:mt-10">
             <div class="md:max-w-[57rem] w-full text-inter">
-                <p class="md:text-4xl text-2xl font-bold ">Register</p>
+                <p class="md:text-4xl md:text-start text-center mt-3 md:mt-0 text-2xl font-bold ">Register</p>
                 <form class="mt-5 flex justify-center w-full" id="registerForm">
-                   <div class="bg-green-400">
+                   <div class="space-y-2 md:space-y-0 md:w-full">
                         <div class="flex justify-normal space-x-5">
                             <div >
                                 <input type="checkbox" id="cbBioData">
@@ -199,13 +198,13 @@
                             </div>
     
                         </div>
-                        <div class="">
+                        
                             <div>
                                 <p>RFID No.<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="rfid" pattern="[0-9]+" title="Please enter numbers only" required>
                             </div>
-                        </div>
-                        <div class="md:flex md:justify-between">
+                        
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Last Name <span class="text-red-500 font-bold mr-1">*</span></p>
                                 <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lastName" required>
@@ -220,7 +219,7 @@
                                 <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="middleName" required>
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
                                
@@ -233,8 +232,8 @@
                             </div>
                             <div >
                                 <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
-                                <div class="border-[1px] border-black w-[17rem] h-7 flex justify-start">
-                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-auto" name="" id="callSign" required>
+                                <div class="border-[1px] border-black w-[17rem] md:h-7 flex justify-start">
+                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-2 md:h-auto" name="" id="callSign" required>
                                         <option value="" disabled selected> </option>
                                         <option value="ASPIRANT">Aspirant</option>
                                         <option value="PROBATIONARY">Probi</option>
@@ -252,7 +251,7 @@
                                 <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateOfBirth" required>
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Civil Status<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <input  class="border-[1px] border-black w-[17rem] h-7"  type="text" id="civilStatus" required>
@@ -263,7 +262,7 @@
                                 
                             </div>
                             <div>
-                                <p>Gender<span class="text-red-500 font-bold mr-1">*</span></p>
+                                <p>Sex<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender" required> 
                                     <option value="" disabled selected> </option>
                                     <option value="male">Male</option>
@@ -277,7 +276,7 @@
                                 
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Username<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="username" required>
@@ -292,14 +291,29 @@
                                 
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
-                            <div>
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                            <div >
                                 <p>Password<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="password" id="password" required>
+                                <div class="flex justify-normal border-[1px] border-black md:w-[25rem] w-[17rem] h-7">
+                                    <input class="w-full" type="password" id="passWord" required>
+                                    <div id="eyeIcon" class="" style="cursor: pointer;" onclick="passEye()">
+                                        <svg id="seen" xmlns="http://www.w3.org/2000/svg" class="block w-5 h-5 mx-2 my-[2px]" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                        <svg id="unseen" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 mx-2 my-[2px]" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div>
                                 <p>Confirm Password<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="password" id="confirmPassword" required>
+                                <div class="flex justify-normal border-[1px] border-black md:w-[25rem] w-[17rem] h-7">
+                                    <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="password" id="confirmPassword" required>
+                                    <div id="eyeIcon2" class="" style="cursor: pointer;" onclick="passEye2()">
+                                        <svg id="seen2" xmlns="http://www.w3.org/2000/svg" class="block w-5 h-5 mx-2 my-[2px]" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                        <svg id="unseen2" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 mx-2 my-[2px]" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>
+                                    </div>
+                                </div>
+                              
+                                
                                 
                             </div>
                         </div>
@@ -307,7 +321,7 @@
                             <p>Current Address<span class="text-red-500 font-bold mr-1">*</span></p>
                             <input class="border-[1px] border-black md:w-full w-[17rem]  h-7" type="text" id="currentAddress" required>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Emergency Contact Person<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" id="emergencyContactPerson" required>
@@ -318,7 +332,7 @@
                                 
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Highest Educational Attainment</p>
                                 <input class="border-[1px] border-black md:w-[20rem] w-[17rem]  h-7" type="text" id="highestEducationalAttainment">
@@ -332,7 +346,7 @@
                                 <input class="border-[1px] border-black md:w-[8rem] w-[17rem]   h-7" type="text" id="yearsInService" pattern="[0-9]+" title="Please enter numbers only">
                             </div>
                         </div>
-                        <div class="md:flex md:justify-between">
+                        <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                             <div>
                                 <p>Skills/Training</p>
                                 <input class="border-[1px] border-black md:w-[25rem] w-[17rem]  h-7" type="text" id="skillsTraining">
@@ -342,61 +356,58 @@
                                 <input class="border-[1px] border-black md:w-[25rem] w-[17rem]  h-7" type="text" id="otherAffiliation">
                             </div>
                         </div>
-                        <div class="mb-4 mt-5">
-                            <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="file:bg-[#E1E1E1] md:file:rounded-full file:text-black md:file:w-36 file:h-10 file:border-[1px]">
+                        <div class="md:mb-4 md:mt-5 py-3">
+                            <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="md:w-96 w-10 file:bg-[#E1E1E1] md:file:rounded-full file:text-black md:file:w-36 file:h-10 file:border-[1px]">
                         </div>
                         <div class="mt-5 font-Inter">
-                            <p class="font-bold md:text-4xl">Points</p>
-                            <div class="md:flex md:justify-between ">
+                            <p class="font-bold text-2xl md:text-4xl">Points</p>
+                            <div class="flex justify-center md:block">
+                                <div class="md:flex md:justify-between ">
                                 
-                                <div>
-                                    <p>Duty Hours</p>
-                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours" pattern="[0-9]+" title="Please enter numbers only">
-                                </div>
-                                <div>
-                                    <p>Fire response</p>
-                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse" pattern="[0-9]+" title="Please enter numbers only">
-                                    
-                                </div>
-                                <div>
-                                    <p>Activity Points</p>
-                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints" pattern="[0-9]+" title="Please enter numbers only">
-                                </div>
-                                <div>
-                                    <p>Inventory points</p>
-                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints" pattern="[0-9]+" title="Please enter numbers only">
-                                </div>
-    
-                            
-    
-                            </div> 
+                                    <div>
+                                        <p>Duty Hours</p>
+                                        <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours" pattern="[0-9]+" title="Please enter numbers only">
+                                    </div>
+                                    <div>
+                                        <p>Fire response</p>
+                                        <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse" pattern="[0-9]+" title="Please enter numbers only">
+                                        
+                                    </div>
+                                    <div>
+                                        <p>Activity Points</p>
+                                        <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints" pattern="[0-9]+" title="Please enter numbers only">
+                                    </div>
+                                    <div>
+                                        <p>Inventory points</p>
+                                        <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints" pattern="[0-9]+" title="Please enter numbers only">
+                                    </div>
+        
+                                </div> 
+                            </div>
+                           
                         </div>
-                        <div class="pt-12 pb-24 w-full md:flex md:justify-end">
-                            <button class="md:mx-5 bg-[#930D0D] md:w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
-                            <button type="submit" class="mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
+                        <div class="pt-12 pb-24 w-full flex justify-center space-x-2 md:space-x-0 md:justify-end ">
+                            <button class="block md:mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
+                            <button type="submit" class="block md:mx-5 bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                         </div>
                   
                    </div>
                 </form>
-
-                
-                
             </div>
         </div>
-    </div>
 </div>
 
 <!-- FORM ATTENDANCE -->
 <div id="frmAttendance" style="display: none;">
     <div class="w-full flex justify-center mt-14">
-        <div class="max-w-[100rem] w-full">
+        <div class="md:max-w-[100rem] md:w-full">
            
             <div class="font-Inter">
-                <p class="text-4xl font-bold">Attendance</p>
-                <table class="w-full mt-14 text-center" >
-                    <thead class="text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+                <p class="md:text-4xl font-bold">Attendance</p>
+                <table class="md:w-full md:mt-14 md:text-center" >
+                    <thead class="text-sm md:text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
                         <tr>
-                            <th class="py-2">Name</th>
+                            <th class="md:py-2">Name</th>
                             <th>Ranks</th>
                             <th>Date of Time In</th>
                             <th>Time In</th>
@@ -408,7 +419,7 @@
                     </thead>
                     <tbody class="font-[500]">
                         <tr>
-                            <td class="py-3">Pedro Penduko</td>
+                            <td class="md:py-3">Pedro Penduko</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -418,7 +429,7 @@
                             <td>Volunteer</td>
                         </tr>
                         <tr>
-                            <td class="py-3">Hanna Manalo</td>
+                            <td class="md:py-3">Hanna Manalo</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -429,7 +440,7 @@
                         </tr>
 
                         <tr>
-                            <td class="py-3">Henry Polo</td>
+                            <td class="md:py-3">Henry Polo</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -589,11 +600,11 @@
 <!-- FORM INCIDENT -->
 <div id="frmIncident" style="display: none;">
     <div class="w-full h-full flex justify-center mt-10">
-    <div class="max-w-[80rem] w-full">
-        <div class="flex justify-between">
-        <input class="w-52 h-8 border-[1px] border-black" type="date">
+    <div class="md:max-w-[80rem] w-full">
+        <div class="md:flex md:justify-between">
+        <input class="md:w-52 md:h-8 border-[1px] border-black" type="date">
         <div class="flex justify-normal space-x-5">
-            <input class="w-80 h-10 border-[1px] border-black rounded-xl" type="text">
+            <input class="md:w-80 md:h-10 border-[1px] border-black rounded-xl" type="text">
             <button onclick="showICS()" class="h-10 w-24 bg-[#BC0000] font-inter text-white text-lg font-semibold rounded-xl flex justify-center pt-[5px]"><p>ICS</p> <svg class="w-5 h-5 mt-[5px] ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"> <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="white"/>
               </svg> 
               </button>

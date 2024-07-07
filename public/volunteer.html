@@ -110,8 +110,8 @@
             <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
 
                 <div class="text-black font-Inter pt-11 pl-10">
-                    <p class="text-2xl font-bold" id="DashboardFullName">Hev C. Abi</p>
-                    <p class="text-lg" id="DashboardAccountType">Volunteer</p>
+                    <p class="text-2xl font-bold" id="ContactUsFullName">Hev C. Abi</p>
+                    <p class="text-lg" id="ContactUsAccountType">Volunteer</p>
                 </div>
             </div>
                 <div class="h-full w-full">
@@ -701,7 +701,9 @@
                 <button class="bg-[#CACACA] hover:bg-gray-500 rounded-lg md:h-12 h-8 w-16 mt-7 ml-3 md:w-28 md:ml-5 md:mt-[59px] text-black text-sm md:text-xl font-Inter font-[500]">Change</button>
     
             </div>
-                <form class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5">
+                <form class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5" id="editProfileForm">
+                    <input type="hidden" id="EditRFID">
+                    <input type="hidden" id="HiddenUsername">
                     <div class="w-full flex justify-center">
                         <div class="md:space-y-5 md:w-full space-y-3 md:space-x-0">
                             <div class="md:flex md:justify-between w-full space-y-3 md:space-x-0">
@@ -787,7 +789,7 @@
                             <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
                                 <div>
                                         <label class="block" for="birthdaytime">Birthday (date and time):</label>
-                                        <input class="bg-white w-80 h-10 px-4 border border-black" type="date" id="birthdaytime" name="birthdaytime">
+                                        <input class="bg-white w-80 h-10 px-4 border border-black" type="date" id="EditBirthday" name="EditBirthday">
                                     
                                 </div>
             
@@ -857,8 +859,8 @@
                             </div> 
 
                             <div class="flex justify-end pb-14 pt-12 space-x-5">
-                                <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Cancel</button>
-                                <button class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
+                                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]" onclick="cancelEdit()">Cancel</button>
+                                <button type="submit" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
                             </div>      
                         </div>
                     </div>
@@ -935,7 +937,7 @@
 </div>
 
 
-<!-- <script src="sessions.js" defer></script> -->
+<script src="sessions.js" defer></script>
 <script src="volunteer.js" defer></script>
 
 

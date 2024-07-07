@@ -209,6 +209,11 @@ app.post('/login', (req, res) => {
                 req.session.rfid = user.rfid; //this 2
                 //basic info
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
+                //temp
+                req.session.lastName = user.lastName;
+                req.session.firstName = user.firstName;
+                req.session.middleName = user.middleName;
+                //basic info 2
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
                 req.session.gender = user.gender;
@@ -258,6 +263,11 @@ app.get('/profile', (req, res) => {
             rfid: req.session.rfid,// this 3
             //basic info
             fullName: req.session.fullName, 
+            //temp
+            lastName: req.session.lastName,
+            firstName: req.session.firstName,
+            middleName: req.session.middleName,
+            //basic info 2
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
             gender: req.session.gender,
@@ -282,6 +292,7 @@ app.get('/profile', (req, res) => {
             activityPoints: req.session.activityPoints,
             //etc
             accountType: req.session.accountType,
+            username: req.session.username
             
         });
     } else {
@@ -291,292 +302,507 @@ app.get('/profile', (req, res) => {
 
 
 
-//new edit
+//update profile route (WITH BUGS)
 app.post('/updateProfile', (req, res) => {
     const {
-        rfid,
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        username,
-        emailAddress,
-        mobileNumber,
-        oldPassword,
-        newPassword,
-        confirmPassword,
-        civilStatus,
-        nationality,
-        bloodType,
-        gender,
-        currentAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation
+        rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
+        newPassword, confirmPassword
     } = req.body;
 
-    const updateFields = {
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        username,
-        emailAddress,
-        mobileNumber,
-        civilStatus,
-        nationality,
-        bloodType,
-        gender,
-        currentAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation
-    };
+    if (newPassword && newPassword !== confirmPassword) {
+        return res.status(400).send('New password and confirm password do not match');
+    }
 
-    // Filter out empty fields
-    const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
-        if (value !== undefined && value !== '') acc[key] = value;
-        return acc;
-    }, {});
+    const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
 
-    const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
-    const params = [...Object.values(fieldsToUpdate), rfid];
+        const hashedPassword = result[0].password;
 
-    let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
-
-    const handlePasswordUpdate = () => {
-        if (oldPassword && newPassword && confirmPassword) {
-            const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-            db.query(passwordQuery, [rfid], (err, results) => {
-                if (err) {
-                    console.error('Error fetching password:', err);
-                    return res.status(500).json({ success: false, message: 'Error fetching password' });
+        // If a new password is provided, validate the old password
+        if (newPassword) {
+            bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
+                if (compareErr || !compareResult) {
+                    return res.status(400).send('Incorrect old password');
                 }
 
-                const storedPassword = results[0].password;
-                bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
-                    if (compareErr || !isMatch) {
-                        return res.status(400).json({ success: false, message: 'Incorrect old password' });
+                bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                    if (hashErr) {
+                        console.error('Error hashing new password:', hashErr);
+                        return res.status(500).send('Error hashing new password');
                     }
 
-                    if (newPassword !== confirmPassword) {
-                        return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
-                    }
-
-                    bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-                        if (hashErr) {
-                            console.error('Error hashing new password:', hashErr);
-                            return res.status(500).json({ success: false, message: 'Error hashing new password' });
-                        }
-
-                        fieldsToUpdate.password = hashedNewPassword;
-                        updateDatabase();
-                    });
+                    // Call updateUserProfile with new password
+                    updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
                 });
             });
         } else {
-            updateDatabase();
+            // Call updateUserProfile without new password
+            updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
         }
-    };
+    });
+});
 
-    const updateDatabase = () => {
-        db.query(sql, params, (err, result) => {
-            if (err) {
-                console.error('Error updating profile:', err);
-                return res.status(500).json({ success: false, message: 'Error updating profile' });
-            }
-            res.status(200).json({ success: true, message: 'Profile updated successfully' });
+function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+    civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+    emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+    nameOfCompany, yearsInService, skillsTraining, otherAffiliation, newPassword, req, res) { // Added req to update session
+    
+    let updateUserQuery = `UPDATE tbl_accounts SET
+        lastName = ?, firstName = ?, middleName = ?, middleInitial = ?, username = ?, emailAddress = ?,
+        mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?,
+        gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?,
+        highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?,
+        otherAffiliation = ?`;
+
+    const updateValues = [
+        lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation
+    ];
+
+    if (newPassword) {
+        updateUserQuery += `, password = ?`;
+        updateValues.push(newPassword);
+    }
+
+    updateUserQuery += ` WHERE rfid = ?`;
+    updateValues.push(rfid);
+
+    db.query(updateUserQuery, updateValues, (updateErr, updateResult) => {
+        if (updateErr) {
+            console.error('Error updating profile:', updateErr);
+            return res.status(500).send('Error updating profile');
+        }
+        
+        // Update session variables to reflect the changes
+        req.session.lastName = lastName; 
+        req.session.firstName = firstName; 
+        req.session.middleName = middleName; 
+        req.session.middleInitial = middleInitial; 
+        req.session.username = username; 
+        req.session.emailAddress = emailAddress; 
+        req.session.mobileNumber = mobileNumber; 
+        req.session.civilStatus = civilStatus; 
+        req.session.nationality = nationality; 
+        req.session.bloodType = bloodType; 
+        req.session.dateOfBirth = dateOfBirth; 
+        req.session.gender = gender; 
+        req.session.currentAddress = currentAddress; 
+        req.session.emergencyContactPerson = emergencyContactPerson; 
+        req.session.emergencyContactNumber = emergencyContactNumber; 
+        req.session.highestEducationalAttainment = highestEducationalAttainment; 
+        req.session.nameOfCompany = nameOfCompany; 
+        req.session.yearsInService = yearsInService; 
+        req.session.skillsTraining = skillsTraining; 
+        req.session.otherAffiliation = otherAffiliation; 
+
+        // res.status(200).send('Profile updated successfully');
+        req.session.fullName = `${firstName} ${middleInitial}. ${lastName}`; // Corrected to update fullName
+
+        res.status(200).json(req.session); // Send updated session data to client
+    });
+}
+
+
+
+
+
+
+
+// Attendance profile route
+app.get('/attendanceProfile', (req, res) => {
+    const rfid = req.query.rfid;
+    if (!rfid) {
+        return res.status(400).send('RFID is required');
+    }
+
+    const getUserQuery = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const user = result[0];
+        res.json({
+            rfid: user.rfid,
+            fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
+            callSign: user.callSign,
+            dutyHours: user.dutyHours,
+            fireResponsePoints: user.fireResponsePoints,
+            inventoryPoints: user.inventoryPoints,
+            activityPoints: user.activityPoints,
+            emailAddress: user.emailAddress,
+            mobileNumber: user.mobileNumber,
+            dateOfBirth: user.dateOfBirth,
+            gender: user.gender,
+            civilStatus: user.civilStatus,
+            nationality: user.nationality,
+            bloodType: user.bloodType,
+            highestEducationalAttainment: user.highestEducationalAttainment,
+            nameOfCompany: user.nameOfCompany,
+            yearsInService: user.yearsInService,
+            skillsTraining: user.skillsTraining,
+            otherAffiliation: user.otherAffiliation,
+            currentAddress: user.currentAddress,
+            emergencyContactPerson: user.emergencyContactPerson,
+            emergencyContactNumber: user.emergencyContactNumber
         });
-    };
+    });
+});
 
-    handlePasswordUpdate();
+// Record attendance route
+app.post('/recordAttendance', (req, res) => {
+    const { rfid } = req.body;
+    if (!rfid) {
+        return res.status(400).send('RFID is required');
+    }
+
+    // Get the user's account ID based on RFID
+    const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const accountID = result[0].accountID;
+        const currentDutyHours = result[0].dutyHours || 0;
+
+        // Check if the user already has an active attendance record (timeInStatus = 1)
+        const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
+        db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
+            if (checkErr) {
+                console.error('Error checking attendance:', checkErr);
+                return res.status(500).send('Error checking attendance');
+            }
+
+            const now = new Date();
+            const timeNow = now.toTimeString().split(' ')[0];
+            const dateNow = now.toISOString().split('T')[0];
+
+            if (checkResult.length === 0) {
+                // No active attendance record, insert a new time-in record
+                const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
+                                                VALUES (?, ?, ?, 1)`;
+                db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
+                    if (insertErr) {
+                        console.error('Error inserting attendance:', insertErr);
+                        return res.status(500).send('Error inserting attendance');
+                    }
+                    console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
+                    res.status(200).json({
+                        message: 'Time in recorded successfully',
+                        timeIn: timeNow,
+                        dateOfTimeIn: dateNow,
+                        timeInStatus: 1
+                    });
+                });
+            } else {
+                // Active attendance record exists, update with time out
+                const attendanceID = checkResult[0].attendanceID;
+                const timeIn = checkResult[0].timeIn;
+                const dateOfTimeIn = checkResult[0].dateOfTimeIn;
+
+                const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
+                                                WHERE attendanceID = ?`;
+                db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
+                    if (updateErr) {
+                        console.error('Error updating attendance:', updateErr);
+                        return res.status(500).send('Error updating attendance');
+                    }
+
+                    // Calculate the duty hours
+                    const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
+                    const newDutyHours = currentDutyHours + dutyHours;
+
+                    // Update the duty hours in tbl_accounts
+                    const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
+                    db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
+                        if (dutyErr) {
+                            console.error('Error updating duty hours:', dutyErr);
+                            return res.status(500).send('Error updating duty hours');
+                        }
+                        console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
+                        res.status(200).json({
+                            message: 'Time out recorded successfully',
+                            timeOut: timeNow,
+                            dateOfTimeOut: dateNow,
+                            timeInStatus: 0,
+                            dutyHours: newDutyHours
+                        });
+                    });
+                });
+            }
+        });
+    });
 });
 
 
 
 
 
-//for editing prpfile (working with bugs)
-// app.post('/updateProfile', (req, res) => {
-//     const {
-//         rfid,
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     } = req.body;
 
-//     const updateFields = {
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     };
 
-//     // Filter out empty fields
-//     const fieldsToUpdate = Object.entries(updateFields).reduce((acc, [key, value]) => {
-//         if (value !== undefined && value !== '') acc[key] = value;
-//         return acc;
-//     }, {});
 
-//     const setClause = Object.keys(fieldsToUpdate).map(field => `${field} = ?`).join(', ');
-//     const params = [...Object.values(fieldsToUpdate), rfid];
 
-//     let sql = `UPDATE tbl_accounts SET ${setClause} WHERE rfid = ?`;
 
-//     const handlePasswordUpdate = () => {
-//         if (oldPassword && newPassword && confirmPassword) {
-//             const passwordQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-//             db.query(passwordQuery, [rfid], (err, results) => {
-//                 if (err) {
-//                     console.error('Error fetching password:', err);
-//                     return res.status(500).json({ success: false, message: 'Error fetching password' });
-//                 }
 
-//                 const storedPassword = results[0].password;
-//                 bcrypt.compare(oldPassword, storedPassword, (compareErr, isMatch) => {
-//                     if (compareErr || !isMatch) {
-//                         return res.status(400).json({ success: false, message: 'Incorrect old password' });
+// // Attendance profile route (50%)
+// app.get('/attendanceProfile', (req, res) => {
+//     const rfid = req.query.rfid;
+//     if (!rfid) {
+//         return res.status(400).send('RFID is required');
+//     }
+
+//     const getUserQuery = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             console.error('Error fetching user:', err);
+//             return res.status(500).send('Error fetching user');
+//         }
+
+//         if (result.length === 0) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         const user = result[0];
+//         res.json({
+//             rfid: user.rfid,
+//             fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
+//             callSign: user.callSign,
+//             dutyHours: user.dutyHours,
+//             fireResponsePoints: user.fireResponsePoints,
+//             inventoryPoints: user.inventoryPoints,
+//             activityPoints: user.activityPoints,
+//             emailAddress: user.emailAddress,
+//             mobileNumber: user.mobileNumber,
+//             dateOfBirth: user.dateOfBirth,
+//             gender: user.gender,
+//             civilStatus: user.civilStatus,
+//             nationality: user.nationality,
+//             bloodType: user.bloodType,
+//             highestEducationalAttainment: user.highestEducationalAttainment,
+//             nameOfCompany: user.nameOfCompany,
+//             yearsInService: user.yearsInService,
+//             skillsTraining: user.skillsTraining,
+//             otherAffiliation: user.otherAffiliation,
+//             currentAddress: user.currentAddress,
+//             emergencyContactPerson: user.emergencyContactPerson,
+//             emergencyContactNumber: user.emergencyContactNumber
+//         });
+//     });
+// });
+
+
+
+// // Record attendance route
+// app.post('/recordAttendance', (req, res) => {
+//     const { rfid } = req.body;
+//     if (!rfid) {
+//         return res.status(400).send('RFID is required');
+//     }
+
+//     // Get the user's account ID based on RFID
+//     const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             console.error('Error fetching user:', err);
+//             return res.status(500).send('Error fetching user');
+//         }
+
+//         if (result.length === 0) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         const accountID = result[0].accountID;
+//         const currentDutyHours = result[0].dutyHours || 0;
+
+//         // Check if the user already has an active attendance record (timeInStatus = 1)
+//         const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
+//         db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
+//             if (checkErr) {
+//                 console.error('Error checking attendance:', checkErr);
+//                 return res.status(500).send('Error checking attendance');
+//             }
+
+//             const now = new Date();
+//             const timeNow = now.toTimeString().split(' ')[0];
+//             const dateNow = now.toISOString().split('T')[0];
+
+//             if (checkResult.length === 0) {
+//                 // No active attendance record, insert a new time in record
+//                 const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
+//                                                 VALUES (?, ?, ?, 1)`;
+//                 db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
+//                     if (insertErr) {
+//                         console.error('Error inserting attendance:', insertErr);
+//                         return res.status(500).send('Error inserting attendance');
 //                     }
-
-//                     if (newPassword !== confirmPassword) {
-//                         return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
-//                     }
-
-//                     bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-//                         if (hashErr) {
-//                             console.error('Error hashing new password:', hashErr);
-//                             return res.status(500).json({ success: false, message: 'Error hashing new password' });
-//                         }
-
-//                         fieldsToUpdate.password = hashedNewPassword;
-//                         updateDatabase();
+//                     console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
+//                     res.status(200).json({
+//                         message: 'Time in recorded successfully',
+//                         timeIn: timeNow,
+//                         dateOfTimeIn: dateNow,
+//                         timeInStatus: 1
 //                     });
 //                 });
-//             });
-//         } else {
-//             updateDatabase();
-//         }
-//     };
+//             } else {
+//                 // Active attendance record exists, update with time out
+//                 const attendanceID = checkResult[0].attendanceID;
+//                 const timeIn = checkResult[0].timeIn;
+//                 const dateOfTimeIn = checkResult[0].dateOfTimeIn;
 
-//     const updateDatabase = () => {
-//         db.query(sql, params, (err, result) => {
-//             if (err) {
-//                 console.error('Error updating profile:', err);
-//                 return res.status(500).json({ success: false, message: 'Error updating profile' });
+//                 const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
+//                                                 WHERE attendanceID = ?`;
+//                 db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
+//                     if (updateErr) {
+//                         console.error('Error updating attendance:', updateErr);
+//                         return res.status(500).send('Error updating attendance');
+//                     }
+
+//                     // Calculate the duty hours
+//                     const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
+//                     const newDutyHours = currentDutyHours + dutyHours;
+
+//                     // Update the duty hours in tbl_accounts
+//                     const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
+//                     db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
+//                         if (dutyErr) {
+//                             console.error('Error updating duty hours:', dutyErr);
+//                             return res.status(500).send('Error updating duty hours');
+//                         }
+//                         console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
+//                         res.status(200).json({
+//                             message: 'Time out recorded successfully',
+//                             timeOut: timeNow,
+//                             dateOfTimeOut: dateNow,
+//                             timeInStatus: 0,
+//                             dutyHours: newDutyHours
+//                         });
+//                     });
+//                 });
 //             }
-//             res.status(200).json({ success: true, message: 'Profile updated successfully' });
 //         });
-//     };
-
-//     handlePasswordUpdate();
-// });
-
-
-//update profile (WORKING)
-// app.post('/updateProfile', (req, res) => {
-//     const {
-//         rfid,
-//         lastName,
-//         firstName,
-//         middleName,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     } = req.body;
-
-//     // Optional: Add validation for the inputs here
-
-//     // Update password only if provided and confirmed
-//     if (newPassword && newPassword === confirmPassword) {
-//         bcrypt.hash(newPassword, 10, (hashErr, hashedNewPassword) => {
-//             if (hashErr) {
-//                 console.error('Error hashing new password:', hashErr);
-//                 res.status(500).send({ success: false, message: 'Error hashing new password' });
-//                 return;
-//             }
-//             updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
-//         });
-//     } else {
-//         // Update without password change
-//         updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, null, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res);
-//     }
-// });
-
-// function updateProfileInDatabase(rfid, lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, res) {
-//     const sql = hashedNewPassword
-//         ? `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, password = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`
-//         : `UPDATE tbl_accounts SET lastName = ?, firstName = ?, middleName = ?, username = ?, emailAddress = ?, mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?, otherAffiliation = ? WHERE rfid = ?`;
-
-//     const params = hashedNewPassword
-//         ? [lastName, firstName, middleName, username, emailAddress, mobileNumber, hashedNewPassword, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid]
-//         : [lastName, firstName, middleName, username, emailAddress, mobileNumber, civilStatus, nationality, bloodType, gender, currentAddress, emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining, otherAffiliation, rfid];
-
-//     db.query(sql, params, (err, result) => {
-//         if (err) {
-//             console.error('Error updating profile:', err);
-//             res.status(500).send({ success: false, message: 'Error updating profile' });
-//             return;
-//         }
-//         res.status(200).send({ success: true, message: 'Profile updated successfully' });
 //     });
-// }
+// });
+
+
+
+// // Record attendance route (bugged)
+// app.post('/recordAttendance', (req, res) => {
+//     const { rfid } = req.body;
+//     if (!rfid) {
+//         return res.status(400).send('RFID is required');
+//     }
+
+//     // Get the user's account ID based on RFID
+//     const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             console.error('Error fetching user:', err);
+//             return res.status(500).send('Error fetching user');
+//         }
+
+//         if (result.length === 0) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         const accountID = result[0].accountID;
+//         const currentDutyHours = result[0].dutyHours || 0;
+
+//         // Check if the user already has an active attendance record (timeInStatus = 1)
+//         const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
+//         db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
+//             if (checkErr) {
+//                 console.error('Error checking attendance:', checkErr);
+//                 return res.status(500).send('Error checking attendance');
+//             }
+
+//             const now = new Date();
+//             const timeNow = now.toTimeString().split(' ')[0];
+//             const dateNow = now.toISOString().split('T')[0];
+
+//             if (checkResult.length === 0) {
+//                 // No active attendance record, insert a new time in record
+//                 const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
+//                                                 VALUES (?, ?, ?, 1)`;
+//                 db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
+//                     if (insertErr) {
+//                         console.error('Error inserting attendance:', insertErr);
+//                         return res.status(500).send('Error inserting attendance');
+//                     }
+//                     console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
+//                     res.status(200).json({
+//                         message: 'Time in recorded successfully',
+//                         timeIn: timeNow,
+//                         dateOfTimeIn: dateNow,
+//                         timeInStatus: 1
+//                     });
+//                 });
+//             } else {
+//                 // Active attendance record exists, update with time out
+//                 const attendanceID = checkResult[0].attendanceID;
+//                 const timeIn = checkResult[0].timeIn;
+//                 const dateOfTimeIn = checkResult[0].dateOfTimeIn;
+
+//                 const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
+//                                                 WHERE attendanceID = ?`;
+//                 db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
+//                     if (updateErr) {
+//                         console.error('Error updating attendance:', updateErr);
+//                         return res.status(500).send('Error updating attendance');
+//                     }
+
+//                     // Calculate the duty hours
+//                     const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
+//                     const newDutyHours = currentDutyHours + dutyHours;
+
+//                     // Update the duty hours in tbl_accounts
+//                     const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
+//                     db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
+//                         if (dutyErr) {
+//                             console.error('Error updating duty hours:', dutyErr);
+//                             return res.status(500).send('Error updating duty hours');
+//                         }
+//                         console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
+//                         res.status(200).json({
+//                             message: 'Time out recorded successfully',
+//                             timeOut: timeNow,
+//                             dateOfTimeOut: dateNow,
+//                             timeInStatus: 0,
+//                             dutyHours: newDutyHours
+//                         });
+//                     });
+//                 });
+//             }
+//         });
+//     });
+// });
+
+
 
 
 

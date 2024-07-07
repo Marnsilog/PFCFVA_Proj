@@ -78,97 +78,63 @@
     <script src="admin.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const rfidInput = document.createElement('input');
-        rfidInput.style.position = 'absolute';
-        rfidInput.style.opacity = 0;
-        rfidInput.style.top = '-9999px';
-        document.body.appendChild(rfidInput);
-        rfidInput.focus();
-
-        function focusRFIDInput() {
+            const rfidInput = document.createElement('input');
+            rfidInput.style.position = 'absolute';
+            rfidInput.style.opacity = 0;
+            rfidInput.style.top = '-9999px';
+            document.body.appendChild(rfidInput);
             rfidInput.focus();
+
+            function focusRFIDInput() {
+                rfidInput.focus();
+            }
+
+            document.addEventListener('click', function() {
+                focusRFIDInput();
+            });
+
+            rfidInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const rfidValue = rfidInput.value.trim();
+                    rfidInput.value = '';
+                    console.log('RFID Scanned:', rfidValue);
+                    handleRFIDScan(rfidValue);
+                }
+            });
+
+            // Fetch profile data when page loads
+            fetchProfileData();
+        });
+
+        function handleRFIDScan(rfid) {
+            document.getElementById('rfidText').textContent = rfid;
+            console.log('Handling RFID scan:', rfid);
+
+            // Fetch the profile data based on the RFID
+            fetchProfileData(rfid);
         }
 
-        document.addEventListener('click', function() {
-            focusRFIDInput();
-        });
-
-        rfidInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const rfidValue = rfidInput.value.trim();
-                rfidInput.value = '';
-                console.log('RFID Scanned:', rfidValue);
-                handleRFIDScan(rfidValue);
-            }
-        });
-
-        // Fetch profile data when page loads
-        fetchProfileData();
-    });
-
-    function handleRFIDScan(rfid) {
-        document.getElementById('rfidText').textContent = rfid;
-        console.log('Handling RFID scan:', rfid);
-
-        // Record attendance based on the RFID
-        recordAttendance(rfid);
-    }
-
-    function recordAttendance(rfid) {
-        fetch('/recordAttendance', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ rfid: rfid })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Attendance recorded successfully:', data);
-            if (data.timeInStatus === 1) {
-                document.getElementById('TimeIn').textContent = data.timeIn;
-                document.getElementById('DateTimeIn').textContent = data.dateOfTimeIn;
-            } else {
-                document.getElementById('TimeOut').textContent = data.timeOut;
-                document.getElementById('DateTimeOut').textContent = data.dateOfTimeOut;
-                document.getElementById('DutyHours').textContent = data.dutyHours;
-            }
-
-            // Fetch updated profile data
-            fetchProfileData(rfid);
-        })
-        .catch(error => {
-            console.error('Error recording attendance:', error);
-        });
-    }
-
-    function fetchProfileData(rfid = '') {
-        fetch(`/attendanceProfile?rfid=${rfid}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('FullName').textContent = data.fullName;
-                document.getElementById('CallSign').textContent = data.callSign;
-                document.getElementById('DutyHours').textContent = data.dutyHours;
-                document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints;
-                document.getElementById('InventoryPoints').textContent = data.inventoryPoints;
-                document.getElementById('ActivityPoints').textContent = data.activityPoints;
-            })
-            .catch(error => {
-                console.error('Error fetching profile data:', error);
-            });
-    }
-
+        function fetchProfileData(rfid = '') {
+            fetch(`/attendanceProfile?rfid=${rfid}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('FullName').textContent = data.fullName;
+                    document.getElementById('CallSign').textContent = data.callSign;
+                    document.getElementById('DutyHours').textContent = data.dutyHours;
+                    document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints;
+                    document.getElementById('InventoryPoints').textContent = data.inventoryPoints;
+                    document.getElementById('ActivityPoints').textContent = data.activityPoints;
+                })
+                .catch(error => {
+                    console.error('Error fetching profile data:', error);
+                });
+        }
     </script>
 </body>
 </html>

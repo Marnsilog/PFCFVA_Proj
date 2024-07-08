@@ -420,142 +420,109 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 
 
 
+///////////////////////////////////////////////////////
 
 
 
-// Attendance profile route
+
+// Endpoint to get user profile data by RFID (working for profile)
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
-    if (!rfid) {
-        return res.status(400).send('RFID is required');
-    }
-
-    const getUserQuery = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
-    db.query(getUserQuery, [rfid], (err, result) => {
+    const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    db.query(sql, [rfid], (err, result) => {
         if (err) {
-            console.error('Error fetching user:', err);
-            return res.status(500).send('Error fetching user');
+            res.status(500).send('Error retrieving user data');
+            return;
         }
-
         if (result.length === 0) {
-            return res.status(404).send('User not found');
+            res.status(404).send('User not found');
+            return;
         }
-
         const user = result[0];
         res.json({
-            rfid: user.rfid,
             fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
             callSign: user.callSign,
             dutyHours: user.dutyHours,
             fireResponsePoints: user.fireResponsePoints,
             inventoryPoints: user.inventoryPoints,
-            activityPoints: user.activityPoints,
-            emailAddress: user.emailAddress,
-            mobileNumber: user.mobileNumber,
-            dateOfBirth: user.dateOfBirth,
-            gender: user.gender,
-            civilStatus: user.civilStatus,
-            nationality: user.nationality,
-            bloodType: user.bloodType,
-            highestEducationalAttainment: user.highestEducationalAttainment,
-            nameOfCompany: user.nameOfCompany,
-            yearsInService: user.yearsInService,
-            skillsTraining: user.skillsTraining,
-            otherAffiliation: user.otherAffiliation,
-            currentAddress: user.currentAddress,
-            emergencyContactPerson: user.emergencyContactPerson,
-            emergencyContactNumber: user.emergencyContactNumber
+            activityPoints: user.activityPoints
         });
     });
 });
 
-// Record attendance route
-app.post('/recordAttendance', (req, res) => {
-    const { rfid } = req.body;
-    if (!rfid) {
-        return res.status(400).send('RFID is required');
-    }
 
-    // Get the user's account ID based on RFID
-    const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
+// Endpoint to record Time In (working)
+app.post('/recordTimeIn', (req, res) => {
+    const rfid = req.body.rfid;
+    const currentTime = new Date();
+    const timeIn = currentTime.toTimeString().split(' ')[0]; // time in HH:MM:SS format
+    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; // date in YYYY-MM-DD format
+
+    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
         if (err) {
-            console.error('Error fetching user:', err);
-            return res.status(500).send('Error fetching user');
+            res.status(500).send('Error retrieving user data');
+            return;
         }
-
         if (result.length === 0) {
-            return res.status(404).send('User not found');
+            res.status(404).send('User not found');
+            return;
         }
-
         const accountID = result[0].accountID;
-        const currentDutyHours = result[0].dutyHours || 0;
-
-        // Check if the user already has an active attendance record (timeInStatus = 1)
-        const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
-        db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
-            if (checkErr) {
-                console.error('Error checking attendance:', checkErr);
-                return res.status(500).send('Error checking attendance');
+        const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
+        db.query(checkStatusQuery, [accountID], (err, result) => {
+            if (err) {
+                res.status(500).send('Error checking attendance status');
+                return;
             }
-
-            const now = new Date();
-            const timeNow = now.toTimeString().split(' ')[0];
-            const dateNow = now.toISOString().split('T')[0];
-
-            if (checkResult.length === 0) {
-                // No active attendance record, insert a new time-in record
-                const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
-                                                VALUES (?, ?, ?, 1)`;
-                db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
-                    if (insertErr) {
-                        console.error('Error inserting attendance:', insertErr);
-                        return res.status(500).send('Error inserting attendance');
+            if (result.length === 0 || result[0].timeInStatus === 0) {
+                const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus) 
+                                               VALUES (?, ?, ?, 1)`;
+                db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn], (err, result) => {
+                    if (err) {
+                        res.status(500).send('Error recording Time In');
+                        return;
                     }
-                    console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
-                    res.status(200).json({
-                        message: 'Time in recorded successfully',
-                        timeIn: timeNow,
-                        dateOfTimeIn: dateNow,
-                        timeInStatus: 1
-                    });
+                    res.json({ timeIn, dateOfTimeIn });
                 });
             } else {
-                // Active attendance record exists, update with time out
-                const attendanceID = checkResult[0].attendanceID;
-                const timeIn = checkResult[0].timeIn;
-                const dateOfTimeIn = checkResult[0].dateOfTimeIn;
-
-                const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
-                                                WHERE attendanceID = ?`;
-                db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
-                    if (updateErr) {
-                        console.error('Error updating attendance:', updateErr);
-                        return res.status(500).send('Error updating attendance');
-                    }
-
-                    // Calculate the duty hours
-                    const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
-                    const newDutyHours = currentDutyHours + dutyHours;
-
-                    // Update the duty hours in tbl_accounts
-                    const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
-                    db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
-                        if (dutyErr) {
-                            console.error('Error updating duty hours:', dutyErr);
-                            return res.status(500).send('Error updating duty hours');
-                        }
-                        console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
-                        res.status(200).json({
-                            message: 'Time out recorded successfully',
-                            timeOut: timeNow,
-                            dateOfTimeOut: dateNow,
-                            timeInStatus: 0,
-                            dutyHours: newDutyHours
-                        });
-                    });
-                });
+                res.status(400).send('User already has an active Time In record');
             }
+        });
+    });
+});
+
+// Endpoint to record Time Out (working)
+app.post('/recordTimeOut', (req, res) => {
+    const rfid = req.body.rfid;
+    const currentTime = new Date();
+    const timeOut = currentTime.toTimeString().split(' ')[0]; 
+    const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+
+    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            res.status(500).send('Error retrieving user data');
+            return;
+        }
+        if (result.length === 0) {
+            res.status(404).send('User not found');
+            return;
+        }
+        const accountID = result[0].accountID;
+        const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                       SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+                                       WHERE accountID = ? AND timeInStatus = 1 ORDER BY attendanceID DESC LIMIT 1`;
+        db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+            if (err) {
+                res.status(500).send('Error recording Time Out');
+                return;
+            }
+            if (result.affectedRows === 0) {
+                res.status(400).send('No active Time In record found');
+                return;
+            }
+            res.json({ timeOut, dateOfTimeOut });
         });
     });
 });
@@ -565,242 +532,6 @@ app.post('/recordAttendance', (req, res) => {
 
 
 
-
-
-
-
-
-// // Attendance profile route (50%)
-// app.get('/attendanceProfile', (req, res) => {
-//     const rfid = req.query.rfid;
-//     if (!rfid) {
-//         return res.status(400).send('RFID is required');
-//     }
-
-//     const getUserQuery = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
-//     db.query(getUserQuery, [rfid], (err, result) => {
-//         if (err) {
-//             console.error('Error fetching user:', err);
-//             return res.status(500).send('Error fetching user');
-//         }
-
-//         if (result.length === 0) {
-//             return res.status(404).send('User not found');
-//         }
-
-//         const user = result[0];
-//         res.json({
-//             rfid: user.rfid,
-//             fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
-//             callSign: user.callSign,
-//             dutyHours: user.dutyHours,
-//             fireResponsePoints: user.fireResponsePoints,
-//             inventoryPoints: user.inventoryPoints,
-//             activityPoints: user.activityPoints,
-//             emailAddress: user.emailAddress,
-//             mobileNumber: user.mobileNumber,
-//             dateOfBirth: user.dateOfBirth,
-//             gender: user.gender,
-//             civilStatus: user.civilStatus,
-//             nationality: user.nationality,
-//             bloodType: user.bloodType,
-//             highestEducationalAttainment: user.highestEducationalAttainment,
-//             nameOfCompany: user.nameOfCompany,
-//             yearsInService: user.yearsInService,
-//             skillsTraining: user.skillsTraining,
-//             otherAffiliation: user.otherAffiliation,
-//             currentAddress: user.currentAddress,
-//             emergencyContactPerson: user.emergencyContactPerson,
-//             emergencyContactNumber: user.emergencyContactNumber
-//         });
-//     });
-// });
-
-
-
-// // Record attendance route
-// app.post('/recordAttendance', (req, res) => {
-//     const { rfid } = req.body;
-//     if (!rfid) {
-//         return res.status(400).send('RFID is required');
-//     }
-
-//     // Get the user's account ID based on RFID
-//     const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
-//     db.query(getUserQuery, [rfid], (err, result) => {
-//         if (err) {
-//             console.error('Error fetching user:', err);
-//             return res.status(500).send('Error fetching user');
-//         }
-
-//         if (result.length === 0) {
-//             return res.status(404).send('User not found');
-//         }
-
-//         const accountID = result[0].accountID;
-//         const currentDutyHours = result[0].dutyHours || 0;
-
-//         // Check if the user already has an active attendance record (timeInStatus = 1)
-//         const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
-//         db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
-//             if (checkErr) {
-//                 console.error('Error checking attendance:', checkErr);
-//                 return res.status(500).send('Error checking attendance');
-//             }
-
-//             const now = new Date();
-//             const timeNow = now.toTimeString().split(' ')[0];
-//             const dateNow = now.toISOString().split('T')[0];
-
-//             if (checkResult.length === 0) {
-//                 // No active attendance record, insert a new time in record
-//                 const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
-//                                                 VALUES (?, ?, ?, 1)`;
-//                 db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
-//                     if (insertErr) {
-//                         console.error('Error inserting attendance:', insertErr);
-//                         return res.status(500).send('Error inserting attendance');
-//                     }
-//                     console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
-//                     res.status(200).json({
-//                         message: 'Time in recorded successfully',
-//                         timeIn: timeNow,
-//                         dateOfTimeIn: dateNow,
-//                         timeInStatus: 1
-//                     });
-//                 });
-//             } else {
-//                 // Active attendance record exists, update with time out
-//                 const attendanceID = checkResult[0].attendanceID;
-//                 const timeIn = checkResult[0].timeIn;
-//                 const dateOfTimeIn = checkResult[0].dateOfTimeIn;
-
-//                 const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
-//                                                 WHERE attendanceID = ?`;
-//                 db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
-//                     if (updateErr) {
-//                         console.error('Error updating attendance:', updateErr);
-//                         return res.status(500).send('Error updating attendance');
-//                     }
-
-//                     // Calculate the duty hours
-//                     const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
-//                     const newDutyHours = currentDutyHours + dutyHours;
-
-//                     // Update the duty hours in tbl_accounts
-//                     const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
-//                     db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
-//                         if (dutyErr) {
-//                             console.error('Error updating duty hours:', dutyErr);
-//                             return res.status(500).send('Error updating duty hours');
-//                         }
-//                         console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
-//                         res.status(200).json({
-//                             message: 'Time out recorded successfully',
-//                             timeOut: timeNow,
-//                             dateOfTimeOut: dateNow,
-//                             timeInStatus: 0,
-//                             dutyHours: newDutyHours
-//                         });
-//                     });
-//                 });
-//             }
-//         });
-//     });
-// });
-
-
-
-// // Record attendance route (bugged)
-// app.post('/recordAttendance', (req, res) => {
-//     const { rfid } = req.body;
-//     if (!rfid) {
-//         return res.status(400).send('RFID is required');
-//     }
-
-//     // Get the user's account ID based on RFID
-//     const getUserQuery = 'SELECT accountID, dutyHours FROM tbl_accounts WHERE rfid = ?';
-//     db.query(getUserQuery, [rfid], (err, result) => {
-//         if (err) {
-//             console.error('Error fetching user:', err);
-//             return res.status(500).send('Error fetching user');
-//         }
-
-//         if (result.length === 0) {
-//             return res.status(404).send('User not found');
-//         }
-
-//         const accountID = result[0].accountID;
-//         const currentDutyHours = result[0].dutyHours || 0;
-
-//         // Check if the user already has an active attendance record (timeInStatus = 1)
-//         const checkAttendanceQuery = 'SELECT * FROM tbl_attendance WHERE accountID = ? AND timeInStatus = 1';
-//         db.query(checkAttendanceQuery, [accountID], (checkErr, checkResult) => {
-//             if (checkErr) {
-//                 console.error('Error checking attendance:', checkErr);
-//                 return res.status(500).send('Error checking attendance');
-//             }
-
-//             const now = new Date();
-//             const timeNow = now.toTimeString().split(' ')[0];
-//             const dateNow = now.toISOString().split('T')[0];
-
-//             if (checkResult.length === 0) {
-//                 // No active attendance record, insert a new time in record
-//                 const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus)
-//                                                 VALUES (?, ?, ?, 1)`;
-//                 db.query(insertAttendanceQuery, [accountID, timeNow, dateNow], (insertErr, insertResult) => {
-//                     if (insertErr) {
-//                         console.error('Error inserting attendance:', insertErr);
-//                         return res.status(500).send('Error inserting attendance');
-//                     }
-//                     console.log('Time in recorded:', { timeIn: timeNow, dateOfTimeIn: dateNow });
-//                     res.status(200).json({
-//                         message: 'Time in recorded successfully',
-//                         timeIn: timeNow,
-//                         dateOfTimeIn: dateNow,
-//                         timeInStatus: 1
-//                     });
-//                 });
-//             } else {
-//                 // Active attendance record exists, update with time out
-//                 const attendanceID = checkResult[0].attendanceID;
-//                 const timeIn = checkResult[0].timeIn;
-//                 const dateOfTimeIn = checkResult[0].dateOfTimeIn;
-
-//                 const updateAttendanceQuery = `UPDATE tbl_attendance SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0
-//                                                 WHERE attendanceID = ?`;
-//                 db.query(updateAttendanceQuery, [timeNow, dateNow, attendanceID], (updateErr, updateResult) => {
-//                     if (updateErr) {
-//                         console.error('Error updating attendance:', updateErr);
-//                         return res.status(500).send('Error updating attendance');
-//                     }
-
-//                     // Calculate the duty hours
-//                     const dutyHours = (new Date(`${dateNow} ${timeNow}`) - new Date(`${dateOfTimeIn} ${timeIn}`)) / (1000 * 60 * 60);
-//                     const newDutyHours = currentDutyHours + dutyHours;
-
-//                     // Update the duty hours in tbl_accounts
-//                     const updateDutyHoursQuery = 'UPDATE tbl_accounts SET dutyHours = ? WHERE accountID = ?';
-//                     db.query(updateDutyHoursQuery, [newDutyHours, accountID], (dutyErr, dutyResult) => {
-//                         if (dutyErr) {
-//                             console.error('Error updating duty hours:', dutyErr);
-//                             return res.status(500).send('Error updating duty hours');
-//                         }
-//                         console.log('Time out recorded:', { timeOut: timeNow, dateOfTimeOut: dateNow, dutyHours: newDutyHours });
-//                         res.status(200).json({
-//                             message: 'Time out recorded successfully',
-//                             timeOut: timeNow,
-//                             dateOfTimeOut: dateNow,
-//                             timeInStatus: 0,
-//                             dutyHours: newDutyHours
-//                         });
-//                     });
-//                 });
-//             }
-//         });
-//     });
-// });
 
 
 

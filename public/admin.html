@@ -507,16 +507,51 @@
         <div class="max-w-[100rem] w-full" >
             <p class="ml-7 font-Inter text-5xl font-bold">Ranks</p>
             
-            <div class="flex justify-start mt-5 w-full h-[10rem] overflow-y-auto overflow-x-auto">
+            <div class="flex justify-start mt-5 w-full h-[13rem] overflow-y-auto overflow-x-auto">
                 <div id="container" class="w-full flex justify-start">
                     <div class="w-[280px] mx-5 my-5">
                         <div class="w-[280px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400">
-                            <button class="w-full text-center font-[600] text-4xl text-gray-500" onclick="addDiv()">+</button>
+                            <button class="w-full text-center font-[600] text-4xl text-gray-500" onclick="addRankDetail()">+</button>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <div class="flex justify-center" >
+                <div class="w-[40rem] h-[33rem] rounded-lg top-64 border-2 shadow-lg shadow-gray-500 bg-white absolute z-10 px-5"id="addRanks" style="display: none;">
+                    <div class="w-full flex justify-end" style="cursor: pointer;" onclick="cancelRank()"><p class="text-2xl font-semibold">X</p></div>
+                    <p class="text-2xl font-bold font-Inter">Edit Rank</p>
+                    <div class="w-full flex  justify-center space-x-5 mt-5">
+                      <div>
+                        <div class="w-40 h-[200px] border-2 border-black">
+                            <div class="shrink-0">
+                              <img id='preview_img' class="h-[155px] w-full object-cover" src="img/user.png" alt="Current profile photo" />
+                            </div>
+                            <label class="block">
+                              <span class="sr-only">Choose profile photo</span>
+                              <input type="file" onchange="loadFile(event)" class="block w-full text-sm text-slate-500
+                                file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700
+                                hover:file:bg-violet-100 "/>
+                            </label>
+                          </div>
+                      </div>
+                        <div class="mt-14">
+                            <p class="text-xl font-Inter">Name</p>
+                            <input class="px-2 border-2 border-black w-[22rem] h-10 bg-gray-200 rounded-lg" type="text" id="Rank Name">
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-center px-7 mt-5">
+                        <div class="w-full">
+                            <p class="text-xl font-Inter">Description</p>
+                            <textarea id="Description" class="h-32 px-2 border-2 border-black bg-gray-200 rounded-lg w-full text-wrap" type="text"></textarea>
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-end pr-7 mt-2">
+                        <button onclick="addRanking()" class="h-10 w-16 text-white font-Inter bg-red-600 rounded-lg">Save</button>
+                    </div>
+                   
+                </div>
+            </div>
             
 
             <div class=" mt-16 w-full h-[2px] bg-[#9C9C9C]"></div>
@@ -555,10 +590,6 @@
                     </tbody>
                 </table>   
             </div>
-
- 
-
-          
         </div>
     </div>
 </div>

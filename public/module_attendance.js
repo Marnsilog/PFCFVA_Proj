@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch profile data when page loads
     fetchProfileData();
+    fetchRecentAttendance(); 
 });
 
 function handleRFIDScan(rfid) {
@@ -66,6 +67,7 @@ function handleRFIDScan(rfid) {
                     document.getElementById('DateTimeOut').textContent = data.dateOfTimeOut; 
                     // Fetch updated profile data after recording attendance
                     fetchProfileData(rfid); // Fetch profile data after recording Time Out
+                    fetchRecentAttendance();
                 });
             } else {
                 throw new Error('Network response was not ok');
@@ -83,6 +85,7 @@ function handleRFIDScan(rfid) {
         }
         // Fetch updated profile data after recording attendance
         fetchProfileData(rfid); // Fetch profile data after recording Time In
+        fetchRecentAttendance(); 
     })
     .catch(error => {
         console.error('Error recording attendance:', error);
@@ -124,7 +127,37 @@ function fetchProfileData(rfid = '') {
 
 
 
-
+function fetchRecentAttendance() {
+    fetch('/recentAttendance')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const attendanceLogs = document.getElementById('attendanceLogs');
+            attendanceLogs.innerHTML = ''; // Clear existing logs
+            data.forEach(record => {
+                const row = document.createElement('tr');
+                const dateFormatted = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }); // Change: Format date to "Month Day, Year"
+                row.innerHTML = `
+                    <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                    <td class="py-2 px-4 border-b border-r">${record.timeIn}</td>
+                    <td class="py-2 px-4 border-b border-r">${record.timeOut || 'N/A'}</td>
+                    <td class="py-2 px-4 border-b border-r">${dateFormatted}</td>
+                `;
+                attendanceLogs.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching recent attendance logs:', error);
+        });
+}
 
 
 

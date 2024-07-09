@@ -529,6 +529,24 @@ app.post('/recordTimeOut', (req, res) => {
 
 
 
+// Endpoint to retrieve recent attendance records
+app.get('/recentAttendance', (req, res) => {
+    const sql = `
+        SELECT a.accountID, a.timeIn, a.dateOfTimeIn, a.timeOut, a.dateOfTimeOut, 
+               b.firstName, b.middleInitial, b.lastName
+        FROM tbl_attendance a
+        JOIN tbl_accounts b ON a.accountID = b.accountID
+        ORDER BY a.attendanceID DESC
+        LIMIT 10`; // pang limit kung ilan kukunin shit
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving recent attendance records');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 

@@ -203,25 +203,6 @@ function icsBack(){
     frmIncident.style.display = 'block';
     InciSys.style.display = 'none';
 }
-  function rankOpt(){
-    var rankhead1 = document.getElementById('rankhead1');
-    var rankOpt1 = document.getElementById('rankOpt1');
-    var buttonContainer = document.getElementById('buttonContainer');
-    var currentDisplayStyle = window.getComputedStyle(rankOpt1).display;
-
-    if (currentDisplayStyle === 'none') {
-        buttonContainer.classList.add('border-2','border-black','rounded-lg');
-        rankhead1.classList.add('border-b-[1px]','border-b-gray-300','rounded-b-none')
-        rankhead1.classList.remove('shadow-lg','shadow-gray-400','border-2')
-        rankOpt1.style.display = 'block';
-    } else {
-        buttonContainer.classList.remove('border-2','border-black','rounded-lg');
-        rankhead1.classList.remove('border-b-[1px]','border-b-gray-300','rounded-b-none')
-        rankhead1.classList.add('shadow-lg','shadow-gray-400','border-2')
-        rankOpt1.style.display = 'none';
-    }
-   
-  }
 
   function passEye() {
     var x = document.getElementById("passWord");
@@ -256,7 +237,46 @@ function icsBack(){
         }
         }        
       
-
+    //FOR RANKS
+    function addDiv() {
+        var container = document.getElementById('container');
+        var newDiv = document.createElement('div');
+        var newId = 'buttonContainer' + (container.children.length);
+    
+        newDiv.classList.add('w-[280px]', 'mx-5', 'my-5');
+        newDiv.id = newId;
+        newDiv.innerHTML = `
+            <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead${container.children.length}">
+                <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                    <p>Aspirants</p>
+                </div>
+                <button class="text-center h-full w-[15%]" onclick="rankOpt('${newId}', 'rankhead${container.children.length}', 'rankOpt${container.children.length}')">
+                    <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="bg-white w-full font-Inter hidden" id="rankOpt${container.children.length}">
+                <div class="my-5">
+                    <p class="mt-2 text-md font-semibold">Requirements:</p>
+                    <p class="mt-2 text-center">100 duty hours</p>
+                </div>
+            </div>
+        `;
+    
+        container.appendChild(newDiv);
+    
+        // Move the button to the end of the container
+        var addButton = container.querySelector('.w-[280px] .bg-white .text-center');
+        container.appendChild(addButton.parentElement.parentElement);
+    }
+    
+    function rankOpt(buttonContainerId, rankheadId, rankOptId) {
+        var rankOpt = document.getElementById(rankOptId);
+        rankOpt.classList.toggle('hidden');
+    }
+    
+    
 
     //for calendar
     document.addEventListener('DOMContentLoaded', (event) => {

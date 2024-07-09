@@ -238,20 +238,43 @@ function icsBack(){
         }        
       
     //FOR RANKS
-    function addDiv() {
+  
+    function  cancelRank(){
+        var addRanks = document.getElementById('addRanks');
+        if (addRanks.style.display === 'none') {
+     
+            addRanks.style.display = 'block';
+        } else {
+          
+            addRanks.style.display = 'none';
+        }
+    }
+    function addRankDetail(){
+        var addRanks = document.getElementById('addRanks');
+        if (addRanks.style.display === 'none') {
+     
+            addRanks.style.display = 'block';
+        } else {
+          
+            addRanks.style.display = 'none';
+        }
+    }
+    function addRanking() {
         var container = document.getElementById('container');
         var newDiv = document.createElement('div');
         var newId = 'buttonContainer' + (container.children.length);
-    
-        newDiv.classList.add('w-[280px]', 'mx-5', 'my-5');
+        var addRanks = document.getElementById('addRanks');
+        
+        newDiv.classList.add('w-[280px]', 'mx-3', 'my-5');
         newDiv.id = newId;
         newDiv.innerHTML = `
-            <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead${container.children.length}">
-                <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+            <div class="border-2 border-black rounded-lg w-full pr-5" id="rankTest${container.children.length}">
+            <div class="flex justify-start w-[280px] h-[45px]" id="rankhead${container.children.length}">
+                <div class="w-[80%] text-center font-[600] text-lg border-gray-400 pt-[6px]">
                     <p>Aspirants</p>
                 </div>
-                <button class="text-center h-full w-[15%]" onclick="rankOpt('${newId}', 'rankhead${container.children.length}', 'rankOpt${container.children.length}')">
-                    <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <button class="text-center h-full w-[10%]" onclick="rankOpt('${newId}','rankTest${container.children.length}', 'rankhead${container.children.length}', 'rankOpt${container.children.length}')">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/>
                     </svg>
                 </button>
@@ -262,19 +285,37 @@ function icsBack(){
                     <p class="mt-2 text-center">100 duty hours</p>
                 </div>
             </div>
+            </div>
         `;
-    
+        
         container.appendChild(newDiv);
-    
+        addRanks.style.display = 'none';
         // Move the button to the end of the container
         var addButton = container.querySelector('.w-[280px] .bg-white .text-center');
         container.appendChild(addButton.parentElement.parentElement);
+       
     }
-    
-    function rankOpt(buttonContainerId, rankheadId, rankOptId) {
+    function rankOpt(buttonContainerId,rankTest, rankheadId, rankOptId) {
         var rankOpt = document.getElementById(rankOptId);
+        var rankhead = document.getElementById(rankheadId);
+        var ranktest = document.getElementById(rankTest);
         rankOpt.classList.toggle('hidden');
+     
+    
     }
+ 
+    var loadFile = function(event) {
+        var input = event.target;
+        var file = input.files[0];
+        var type = file.type;
+    
+        var output = document.getElementById('preview_img');
+        output.src = URL.createObjectURL(file);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+    
     
     
 

@@ -278,8 +278,8 @@
                                 <p>Sex<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender" required> 
                                     <option value="" disabled selected> </option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
                                 </select>
                                 
                             </div>
@@ -308,7 +308,7 @@
                             <div >
                                 <p>Password<span class="text-red-500 font-bold mr-1">*</span></p>
                                 <div class="flex justify-normal border-[1px] border-black md:w-[25rem] w-[17rem] h-7">
-                                    <input class="w-full" type="password" id="password" required>
+                                    <input class="w-full" type="password" id="passWord" required>
                                     <div id="eyeIcon" class="" style="cursor: pointer;" onclick="passEye()">
                                         <svg id="seen" xmlns="http://www.w3.org/2000/svg" class="block w-5 h-5 mx-2 my-[2px]" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
                                         <svg id="unseen" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 mx-2 my-[2px]" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>
@@ -499,35 +499,33 @@
         </div>
     </div>
 </div>
-<!-- FORM VOLUNTEER -->
- <div>
-    
- </div>
+
 
 <!-- FORM RANKS -->
 <div id="frmRanks">
-    <div class="w-full h-full flex justify-center mt-3 md:mt-16">
-        <div class="md:max-w-[100rem] w-full" >
-            <p class="font-Inter w-full text-center font-semibold text-2xl || md:text-start md:ml-7  md:text-5xl md:font-bold">Ranks</p>
-            <div class="flex justify-start mt-5 w-full h-auto overflow-x-auto">
+    <div class="w-full h-full flex justify-center mt-16">
+        <div class="max-w-[100rem] w-full" >
+            <p class="ml-7 font-Inter text-5xl font-bold">Ranks</p>
+            
+            <div class="flex justify-start mt-5 w-full h-[13rem] overflow-y-auto overflow-x-auto">
                 <div id="container" class="w-full flex justify-start">
-                    <div class=" md:w-[280px] w-32 mx-5 my-5">
-                        <div class="md:w-full  w-32 bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400">
-                            <button class="md:w-full  w-32 h-[45px] text-center font-[600] text-4xl text-gray-500" onclick="addRankDetail()">+</button>
+                    <div class="w-[280px] mx-5 my-5">
+                        <div class="w-[280px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400">
+                            <button class="w-full text-center font-[600] text-4xl text-gray-500" onclick="addRankDetail()">+</button>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="flex justify-center" >
-                <div class="md:w-[40rem] md:h-[33rem] w-[23rem] h-[33rem] rounded-lg top-20 border-2 md:border-white border-black md:top-64 shadow-lg shadow-gray-500 bg-white absolute z-10 px-5"id="addRanks" style="display: none;">
-                    <div class="w-full flex justify-end" style="cursor: pointer;" onclick="cancelRank()"><p class="text-lg md:text-2xl font-semibold">X</p></div>
-                    <p class="md:text-2xl text-lg font-semibold md:font-bold font-Inter">Add Rank</p>
-                    <div class="w-full md:flex  md:justify-center md:space-x-5 md:mt-5">
-                      <div class="flex justify-center md:block">
-                        <div class="w-40 md:h-[200px] h-[180px] border-2 border-black">
+                <div class="w-[40rem] h-[33rem] rounded-lg top-64 border-2 shadow-lg shadow-gray-500 bg-white absolute z-10 px-5"id="addRanks" style="display: none;">
+                    <div class="w-full flex justify-end" style="cursor: pointer;" onclick="cancelRank()"><p class="text-2xl font-semibold">X</p></div>
+                    <p class="text-2xl font-bold font-Inter">Edit Rank</p>
+                    <div class="w-full flex  justify-center space-x-5 mt-5">
+                      <div>
+                        <div class="w-40 h-[200px] border-2 border-black">
                             <div class="shrink-0">
-                              <img id='preview_img' class="md:h-[155px] h-[140px] w-full object-cover scale-75" src="img/user.png" alt="Current profile photo" />
+                              <img id='preview_img' class="h-[155px] w-full object-cover" src="img/user.png" alt="Current profile photo" />
                             </div>
                             <label class="block">
                               <span class="sr-only">Choose profile photo</span>
@@ -537,18 +535,18 @@
                             </label>
                           </div>
                       </div>
-                        <div class="md:mt-14 mt-3">
-                            <p class="md:text-xl text-sm font-Inter">Name</p>
-                            <input class="px-2 border-2 border-black md:w-[22rem] w-full h-10 bg-gray-200 rounded-lg" type="text" id="Rank Name">
+                        <div class="mt-14">
+                            <p class="text-xl font-Inter">Name</p>
+                            <input class="px-2 border-2 border-black w-[22rem] h-10 bg-gray-200 rounded-lg" type="text" id="Rank Name">
                         </div>
                     </div>
-                    <div class="w-full flex justify-center md:px-7 md:mt-5 mt-3">
+                    <div class="w-full flex justify-center px-7 mt-5">
                         <div class="w-full">
-                            <p class="md:text-xl text-sm font-Inter">Description</p>
-                            <textarea id="Description" class="md:h-32 h-28 px-2 border-2 border-black bg-gray-200 rounded-lg w-full text-wrap" type="text"></textarea>
+                            <p class="text-xl font-Inter">Description</p>
+                            <textarea id="Description" class="h-32 px-2 border-2 border-black bg-gray-200 rounded-lg w-full text-wrap" type="text"></textarea>
                         </div>
                     </div>
-                    <div class="w-full flex justify-end md:pr-7 mt-3 md:mt-2">
+                    <div class="w-full flex justify-end pr-7 mt-2">
                         <button onclick="addRanking()" class="h-10 w-16 text-white font-Inter bg-red-600 rounded-lg">Save</button>
                     </div>
                    
@@ -556,20 +554,17 @@
             </div>
             
 
-            <div class="md:mt-16 mt-3 w-full h-[2px] bg-[#9C9C9C]"></div>
-            <div class="flex justify-start ">
-                <div class="flex justify-normal my-5 md:my-10 w-full md:mx-0 mx-3 md:w-[25rem] h-10 border-2 border-black rounded-lg">
-                    <svg class="w-7 h-7 my-[4px] mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                    <input class="bg-white w-full px-2 rounded-xl" type="text" placeholder="" id="Search">
-                </div>
-                
+            <div class=" mt-16 w-full h-[2px] bg-[#9C9C9C]"></div>
+            <div class=" flex justify-start my-10">
+                <input class="bg-white w-96 h-10 px-4 border border-black rounded-lg" 
+                type="text" placeholder="" id="Search">
             </div>
 
-            <div class="font-Inter w-full overflow-x-auto">
-                <table class="md:w-full w-[60rem] text-center " >
-                    <thead class="md:h-16 md:text-2xl text-lg  bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+            <div class="font-Inter">
+                <table class="w-full mt-14 text-center" >
+                    <thead class="text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
                         <tr>
-                            <th class="py-2 sticky-col bg-[#D6D6D6]">Name</th>
+                            <th class="py-2">Name</th>
                             <th>Ranks</th>
                             <th>Duty Hours</th>
                             <th>Fire Response</th>
@@ -578,18 +573,18 @@
                     </thead>
                     <tbody class="font-[500]">
                         <tr>
-                            <td class="sticky-col bg-white">James Aguirre</td>
+                            <td class="py-3">James Aguirre</td>
                             <td>Aspirants</td>
                             <td><div class="flex justify-center space-x-3"> <a href="#"><svg  class="2-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a><p>100 hours</p></div></td>
                             <td>-</td>
-                            <td class="py-2 flex justify-center"><div class="md:last:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter" >Pending</div></td>
+                            <td class="py-2 flex justify-center"><div class="h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter" >Pending</div></td>
                         </tr>
                         <tr class="border-t-2 border-b-2 border-black">
-                            <td class="md:py-3 sticky-col bg-white">Marniel Corsiga</td>
+                            <td class="py-3">Marniel Corsiga</td>
                             <td>Probitionary</td>
                             <td><div class="flex justify-center space-x-3"> <a href="#"><svg  class="2-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a><p>1000 hours</p></div></td>
                             <td><div class="flex justify-center space-x-3"> <a href="#"><svg  class="2-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a><p>10 fire Response</p></td>
-                            <td class="py-2 flex justify-center"><div class="md:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div></td>
+                            <td class="py-2 flex justify-center"><div class="h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div></td>
                         </tr>
      
                     </tbody>

@@ -1,7 +1,8 @@
 //for attendance
 
 
-
+const timeInAudio = document.getElementById('timeInAudio');
+const timeOutAudio = document.getElementById('timeOutAudio');
 
 document.addEventListener('DOMContentLoaded', function() {
     const rfidInput = document.createElement('input');
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('click', function() {
         focusRFIDInput();
+        
     });
 
     rfidInput.addEventListener('keypress', function(event) {
@@ -68,6 +70,7 @@ function handleRFIDScan(rfid) {
                     // Fetch updated profile data after recording attendance
                     fetchProfileData(rfid); // Fetch profile data after recording Time Out
                     fetchRecentAttendance();
+                    timeOutAudio.play();
                 });
             } else {
                 throw new Error('Network response was not ok');
@@ -76,6 +79,7 @@ function handleRFIDScan(rfid) {
         return response.json();
     })
     .then(data => {
+        
         if (data.timeIn) {
             document.getElementById('TimeIn').textContent = data.timeIn; 
             document.getElementById('DateTimeIn').textContent = data.dateOfTimeIn; 
@@ -86,6 +90,7 @@ function handleRFIDScan(rfid) {
         // Fetch updated profile data after recording attendance
         fetchProfileData(rfid); // Fetch profile data after recording Time In
         fetchRecentAttendance(); 
+        timeInAudio.play();
     })
     .catch(error => {
         console.error('Error recording attendance:', error);

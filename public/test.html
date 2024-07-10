@@ -7,80 +7,76 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div id="container">
-        <div class="w-[280px] mx-5 my-5" id="buttonContainer1">
-            <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead1">
-                <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+    <div class="w-[100rem]">
+        <div class="border-2 border-black rounded-lg w-full pr-5" id="rankTest${container.children.length}">
+            <div class="flex justify-start w-[280px] h-[45px]" id="rankhead${container.children.length}">
+                <div class="w-[80%] text-center font-[600] text-lg border-gray-400 pt-[6px]">
                     <p>Aspirants</p>
                 </div>
-                <button class="text-center h-full w-[15%]" onclick="rankOpt('buttonContainer1', 'rankhead1', 'rankOpt1')">
-                    <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <button class="text-center h-full w-[10%]" onclick="rankOpt('${newId}','rankTest${container.children.length}', 'rankhead${container.children.length}', 'rankOpt${container.children.length}')">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/>
                     </svg>
                 </button>
             </div>
-            <div class="bg-white w-full font-Inter hidden" id="rankOpt1">
+            <div class="bg-white w-full font-Inter hidden" id="rankOpt${container.children.length}">
                 <div class="my-5">
                     <p class="mt-2 text-md font-semibold">Requirements:</p>
                     <p class="mt-2 text-center">100 duty hours</p>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
-
-    <div class="w-[280px] mx-5 my-5">
-        <div class="w-[280px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400">
-            <button class="w-full text-center font-[600] text-4xl text-gray-500" onclick="addDiv()">+</button>
-        </div>
-    </div>
-
-    <script>
-        function rankOpt(buttonContainerId, rankheadId, rankOptId) {
-            var rankhead = document.getElementById(rankheadId);
-            var rankOpt = document.getElementById(rankOptId);
-            var buttonContainer = document.getElementById(buttonContainerId);
-            var currentDisplayStyle = window.getComputedStyle(rankOpt).display;
-
-            if (currentDisplayStyle === 'none') {
-                buttonContainer.classList.add('border-2', 'border-black', 'rounded-lg');
-                rankhead.classList.add('border-b-[1px]', 'border-b-gray-300', 'rounded-b-none');
-                rankhead.classList.remove('shadow-lg', 'shadow-gray-400', 'border-2');
-                rankOpt.style.display = 'block';
-            } else {
-                buttonContainer.classList.remove('border-2', 'border-black', 'rounded-lg');
-                rankhead.classList.remove('border-b-[1px]', 'border-b-gray-300', 'rounded-b-none');
-                rankhead.classList.add('shadow-lg', 'shadow-gray-400', 'border-2');
-                rankOpt.style.display = 'none';
-            }
-        }
-
-        function addDiv() {
-            var container = document.getElementById('container');
-            var newDiv = document.createElement('div');
-            var newId = 'buttonContainer' + (container.children.length + 1);
-
-            newDiv.classList.add('w-[280px]', 'mx-5', 'my-5');
-            newDiv.id = newId;
-            newDiv.innerHTML = `
-                <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead${container.children.length + 1}">
-                    <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
-                        <p>Aspirants</p>
-                    </div>
-                    <button class="text-center h-full w-[15%]" onclick="rankOpt('${newId}', 'rankhead${container.children.length + 1}', 'rankOpt${container.children.length + 1}')">
-                        <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                            <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="bg-white w-full font-Inter hidden" id="rankOpt${container.children.length + 1}">
-                    <div class="my-5">
-                        <p class="mt-2 text-md font-semibold">Requirements:</p>
-                        <p class="mt-2 text-center">100 duty hours</p>
-                    </div>
-                </div>
-            `;
-            container.appendChild(newDiv);
-        }
-    </script>
+    
 </body>
+
+
+<script>
+    function rankOpt(buttonContainerId, rankheadId, rankOptId) {
+        var rankhead = document.getElementById(rankheadId);
+        var rankOpt = document.getElementById(rankOptId);
+        var buttonContainer = document.getElementById(buttonContainerId);
+        var currentDisplayStyle = window.getComputedStyle(rankOpt).display;
+
+        if (currentDisplayStyle === 'none') {
+            buttonContainer.classList.add('border-2', 'border-black', 'rounded-lg');
+            rankhead.classList.add('border-b-[1px]', 'border-b-gray-300', 'rounded-b-none');
+            rankhead.classList.remove('shadow-lg', 'shadow-gray-400', 'border-2');
+            rankOpt.style.display = 'block';
+        } else {
+            buttonContainer.classList.remove('border-2', 'border-black', 'rounded-lg');
+            rankhead.classList.remove('border-b-[1px]', 'border-b-gray-300', 'rounded-b-none');
+            rankhead.classList.add('shadow-lg', 'shadow-gray-400', 'border-2');
+            rankOpt.style.display = 'none';
+        }
+    }
+
+    function addDiv() {
+        var container = document.getElementById('container');
+        var newDiv = document.createElement('div');
+        var newId = 'buttonContainer' + (container.children.length + 1);
+
+        newDiv.classList.add('w-[280px]', 'mx-5', 'my-5');
+        newDiv.id = newId;
+        newDiv.innerHTML = `
+            <div class="flex justify-start w-[280px] h-[45px] bg-white border-2 border-black rounded-lg shadow-lg shadow-gray-400" id="rankhead${container.children.length + 1}">
+                <div class="w-[85%] text-center font-[600] text-lg border-r-2 border-gray-400 pt-[6px]">
+                    <p>Aspirants</p>
+                </div>
+                <button class="text-center h-full w-[15%]" onclick="rankOpt('${newId}', 'rankhead${container.children.length + 1}', 'rankOpt${container.children.length + 1}')">
+                    <svg class="w-5 h-5 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 361.4 265.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-160 160zm160-352l-160 160c-12.5 12.5-32.8 12.5-45.3 0l-160-160c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 210.7 361.4 73.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="bg-white w-full font-Inter hidden" id="rankOpt${container.children.length + 1}">
+                <div class="my-5">
+                    <p class="mt-2 text-md font-semibold">Requirements:</p>
+                    <p class="mt-2 text-center">100 duty hours</p>
+                </div>
+            </div>
+        `;
+        container.appendChild(newDiv);
+    }
+</script>
 </html>

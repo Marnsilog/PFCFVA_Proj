@@ -24,7 +24,7 @@
                     <li id="dashb" class="md:mt-12"><a href="#" onclick="showDashboard()">Dashboard</a></li>
                     <li id="reg" class="md:mt-12"><a href="#" onclick="showRegister()">Register</a></li>
                     <li id="att" class="md:mt-12"><a href="#" onclick="showAttendance()">Attendance</a></li>
-                    <li id="Vol" class="md:mt-12"><a href="#" onclick="showVolunteer()">Volunteer</a></li>
+                    <li id="vol" class="md:mt-12"><a href="#" onclick="showVolunteer()">Volunteer</a></li>
                     <li id="ranks" class="md:mt-12"><a href="#" onclick="showRanks()">Ranks</a></li>
                     <li id="inc" class="md:mt-12"><a href="#" onclick="showIncident()">Incident</a></li>
                     <li id="inV" class="md:mt-12"><a href="#" onclick="showInventory()">Inventory</a></li>
@@ -430,18 +430,16 @@
             <div style="cursor: pointer;" onclick="filter()">
                 <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
             </div>
-           
         </div>
     </div>
     <div class="w-full flex justify-center ">
         <div class="max-w-[100rem] w-full md:overflow-x-hidden overflow-x-scroll">
-           
             
             <div class="font-Inter md:w-full w-[60rem] md:mt-5 mt-7">
                 <table class="w-full  text-center ">
                     <thead class="md:text-lg text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
                         <tr>
-                            <th class="sticky-col bg-[#D6D6D6]">Name</th>
+                            <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
                             <th>Ranks</th>
                             <th>Date of Time In</th>
                             <th>Time In</th>
@@ -455,7 +453,7 @@
                     </thead>
                     <tbody class="font-[500] md:text-base text-sm">
                         <tr>
-                            <td class="md:pt-3 pt-2 sticky-col bg-white">Pedro Penduko</td>
+                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Pedro Penduko</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -469,7 +467,7 @@
                             
                         </tr>
                         <tr>
-                            <td class="md:pt-3 pt-2 sticky-col bg-white">Hanna Manalo</td>
+                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Hanna Manalo</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -482,7 +480,7 @@
                             
                         </tr>
                         <tr>
-                            <td class="md:pt-3 pt-2 sticky-col bg-white">Henry Polo</td>
+                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Henry Polo</td>
                             <td>PROBI</td>
                             <td>03/20/24</td>
                             <td>09:00 am</td>
@@ -500,12 +498,92 @@
     </div>
 </div>
 <!-- FORM VOLUNTEER -->
- <div>
-    
+ <div class="flex justify-center w-full font-Inter" >
+    <div class="md:max-w-[90rem] w-full md:mt-14 md:space-y-7 space-y-3" id="SummaryVolunteer" style="display: none;" >
+            <div class="md:flex justify-between">
+                <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Summary</p>
+                <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
+                    <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                        <input class="w-full h-full" type="text">
+                        <div style="cursor: pointer;" onclick="summaryfilter()">
+                            <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 bg-[#E9E8E8] px-2 py-[5px] rounded-lg" style="cursor: pointer;" onclick="summarySorting()">
+                <p class="text-lg">Sort by</p>
+                <div>
+                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
+                </div>
+            </div>
+
+            <div class="w-full flex justify-center ">
+                <div class="max-w-[100rem] w-full md:overflow-x-hidden overflow-x-scroll">
+                    <div class="font-Inter md:w-full w-[60rem]">
+                        <table class="w-full  text-center ">
+                            <thead class="md:text-lg text-sm bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+                                <tr class="md:h-10 font-[500]">
+                                    <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
+                                    <th>Call Sign</th>
+                                    <th>Rank</th>
+                                    <th>Duty Hours</th>
+                                    <th class="leading-tight">Cumulative<br>Duty Hours</th>
+                                    <th>Fire Response</th>
+                                    <th>Inventory</th>
+                                    <th>Activity</th>
+                                    <th>Account Type</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-[500] md:text-base text-sm">
+                                <tr>
+                                    <td class="md:pt-3 pt-2 sticky-col bg-white">1. Pedro Penduko</td>
+                                    <td>PROBI76</td>
+                                    <td>Probitionary</td>
+                                    <td>1500 <span>hr</span></td>
+                                    <td>1500 <span>hr</span></td>
+                                    <td>40 <span>pts</span></td>
+                                    <td>3 <span>pts</span></td>
+                                    <td>1 <span>pts</span></td>
+                                    <td>Volunteer</td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="w-72 h-96 bg-white shadow-lg shadow-gray-600 rounded-lg absolute z-10 md:top-80 top-36" style="display: none;" id="summarySort">
+                    <div class="flex justify-between w-full px-5 mt-3">
+                        <p class="text-xl font-semibold">Sort By</p>
+                       <div style="cursor: pointer;" onclick="cancelSort()"><p class="text-2xl">X</p></div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="mt-4">
+                            <ul class="text-center space-y-5">
+                                <li>Name</li>
+                                <li>Rank</li>
+                                <li>Duty Hours</li>
+                                <li>Fire Response</li>
+                                <li>Inventory Points</li>
+                                <li>Activity Points</li>
+                                <li>Account Type</li>
+                            </ul>
+                    </div>
+                    </div>
+                    
+                </div>
+               
+            </div>
+          
+    </div>
  </div>
 
 <!-- FORM RANKS -->
-<div id="frmRanks">
+<div id="frmRanks" style="display: none;">
     <div class="w-full h-full flex justify-center mt-3 md:mt-16">
         <div class="md:max-w-[100rem] w-full" >
             <p class="font-Inter w-full text-center font-semibold text-2xl || md:text-start md:ml-7  md:text-5xl md:font-bold">Ranks</p>
@@ -604,53 +682,53 @@
     <div class="w-full h-full flex justify-center mt-10">
     <div class="md:max-w-[80rem] w-full">
         <div class="md:flex md:justify-between">
-        <input class="md:w-52 md:h-8 border-[1px] border-black" type="date">
-        <div class="flex justify-normal space-x-5">
-            <input class="md:w-80 md:h-10 border-[1px] border-black rounded-xl" type="text">
+            <div class="md:w-52 w-full flex justify-center">
+                <p class="md:hidden mx-3 my-2 font-inter text-sm">input date</p>
+                <input class=" md:w-full w-52 h-10 border-[1px] border-black rounded-lg" type="date">
+            </div>
+
+        <!-- FOR SEARCH AND FILTER AND SHOW ICS-->
+        <div class="flex md:justify-normal justify-between md:mx-0 mx-3 md:space-x-5 md:mt-0 mt-5">
+            <div class="md:w-[25rem] w-64 h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                <input class="w-full h-full" type="text">
+                <div style="cursor: pointer;" onclick="Incidentfilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+                </div>
+               
+            </div>
             <button onclick="showICS()" class="h-10 w-24 bg-[#BC0000] font-inter text-white text-lg font-semibold rounded-xl flex justify-center pt-[5px]"><p>ICS</p> <svg class="w-5 h-5 mt-[5px] ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"> <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="white"/>
               </svg> 
               </button>
         </div>
+
         </div>
         <div class="font-Inter">       
-            <table id="myTable" class="mt-10 w-full">
-                <thead class="bg-[#209AAD] text-white mt-10 h-14 rounded-t-full text-2xl ">
-                    <tr>
+            <table id="myTable" class="md:mt-10 mt-5 w-full">
+                <thead class="bg-[#209AAD] text-white h-14 rounded-t-full md:text-2xl text-lg">
+                    <tr class="h-10">
                         <th>Name</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody class="w-full text-center text-2xl">
-                    <tr class="border-t-2 border-b-2 border-black h-16">
+                <tbody class="w-full text-center md:text-2xl text-sm">
+                    <tr class="border-t-2 border-b-2 border-black md:h-16 h-8">
                         <td>Marc David Pardines</td>
                         <td>09/25/23</td>
                         <td>4hr:30min</td>
                         <td><a href="#" onclick="inciform()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
                           </td>
                     </tr>
-                    <tr class="border-t-2 border-b-2 border-black h-16">
+                    <tr class="border-t-2 border-b-2 border-black md:h-16 h-8">
                         <td>Art Vencent Golde</td>
                         <td>09/25/23</td>
                         <td>4hr:30min</td>
                         <td><a href="#"onclick="inciform()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
                           </td>
                     </tr>
-                    <tr class="border-t-2 border-b-2 border-black h-16">
-                        <td>Roberto Balaoro</td>
-                        <td>09/25/23</td>
-                        <td>4hr:30min</td>
-                        <td><a href="#"onclick="inciform()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
-                          </td>
-                    </tr>
-                    <tr class="border-t-2 border-b-2 border-black h-16">
-                        <td>Bernalie Evangelista</td>
-                        <td>09/25/23</td>
-                        <td>4hr:30min</td>
-                        <td><a href="#"onclick="inciform()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
-                          </td>
-                    </tr>
+
                    
                    
                     <!-- Add more rows as needed -->
@@ -726,35 +804,35 @@
 </div>
 <!-- INCIDENT COMMAND SYSTEM -->
 <div id="InciSys" style="display: none;">
-    <div class="w-full h-full flex justify-center pt-16 pb-32" >
+    <div class="w-full h-full flex justify-center pt-5 md:pt-16 md:pb-32" >
         <div class="max-w-[75rem] w-full">
             <div class="font-Inter text-black">
-                <p class="font-bold text-4xl">Incident Command System (ICS)</p>
-                <div class="mt-2 flex justify-start font-semibold text-base">
+                <p class="font-bold md:text-4xl text-xl md:text-start text-center">Incident Command System (ICS)</p>
+                <div class="md:mt-2 mt-7 flex justify-start font-semibold md:text-base text-sm">
                     <p class="mr-2">FIRE CHIEF:</p>
                     <p id="supervisorName"> STAG 11, Marniel C. Corsiga</p>
                 </div>
                 
             </div>
 
-                       <div class="flex justify-center mt-5"> 
-                            <div class="max-w-[70rem] w-full">
+                       <div class="flex justify-center md:mt-5 mt-2"> 
+                            <div class="max-w-[70rem] w-full mx-2 md:mx-0">
                                 <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" type="text" placeholder="Type message here..."></textarea>
                             </div>
                        </div>
-                       <div class="flex justify-end">
-                            <button class="bg-[#CBC9C2] px-7 py-3 mt-16 text-xl font-[500] rounded-md">SEND MESSAGE</button>
+                       <div class="flex justify-end md:pr-0 pr-5">
+                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md">SEND MESSAGE</button>
                        </div>
 
-                       <div class="w-full h-32 mt-16 ">
+                       <div class="w-full h-32 md:mt-16 mt-5 md:px-0 px-3 ">
                             <div class="flex justify-start">
                                 <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
                                 <!-- <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl"><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div> -->
                             </div>
                         
-                            <div  class="bg-[#F3F3F3] w-full pb-14">
-                                <div class="max-h-[38rem] overflow-y-auto"> 
-                                    <table class="text-center  pt-10 " >
+                            <div  class="bg-[#F3F3F3] w-full md:pb-14">
+                                <div class="md:max-h-[38rem] max-h-[30rem]  overflow-y-auto"> 
+                                    <table class="text-center pt-10 " >
                                     <thead class="mt-10">
                                         <tr>
                                             <th> </th>
@@ -762,43 +840,59 @@
                                            
                                         </tr>
                                     </thead>
-                                    <tbody class="w-auto text-lg  font-Inter font-bold">
+                                    <tbody class="w-auto md:text-lg text-sm font-Inter font-bold">
                                     
-                                        <tr class="h-16 ">
-                                            <td class="text-start pl-7 text-[#00A110] w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:55 AM</td>
+                                        <tr class="max-h-48 h-auto  text-[#00A110]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
                                         </tr>
-                                        <tr class="h-16 ">
-                                            <td class="text-start pl-7 text-[#202D9C] w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:54 AM</td>
+                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:45 AM</td>
+                                        <tr class="max-h-48 h-auto  text-black">
+                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
+                                        
+                                        <tr class="max-h-48 h-auto  text-[#00A110]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING TO FALLBACK DUE TO UNFORESEEN CIRCUMSTANCES.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
+                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING FOR MEDICAL ASSISTANCE.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 2:01 AM</td>
+                                        <tr class="max-h-48 h-auto  text-black">
+                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 w-3/4 ">PROBI 13 has been injured.</td>
-                                            <td class="text-end mx-14  pr-14">04/11/24 - 1:50 AM</td>
+            
+                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
                                         </tr>
-                                        <tr class="h-16">
-                                            <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS RESUPPLYING THE WATER TANK..</td>
-                                            <td class="text-end mx-14 pr-14">04/11/24 - 1:41 AM</td>
+                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
                                         </tr>
-
-        
-                    
+                                        <tr class="max-h-48 h-auto  text-black">
+                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
+                                        </tr>
+                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
+                                        </tr>
+                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
+                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
+                                        </tr>
+                                        <tr class="max-h-48 h-auto  text-black">
+                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
+                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
+                                        </tr>
+                                     
                                     </tbody>
                                 </table>
                             </div>
@@ -830,45 +924,7 @@
     </div>
 </div>
 <!--FORM INVENTORY-->
-<div class="pt-4" id="frmInventory" style="display: none;">
-    <div class="w-full h-full flex justify-center">
-        <div class="max-w-[90rem] w-full">
-            <p class="font-Inter text-4xl text-black font-bold mt-5">Inventory</p>
-            <div>
-                <div class="flex justify-between mt-10">
-                    <div class="max-w-[40rem] w-full">
-                        <div class="flex justify-start font-Inter text-sm text-center">
-                            <div class="cursor-pointer bg-gray-200 w-36 h-8 rounded-t-md border-2 border-b-0 border-black"><p class="px-5 mt-[5px]">Pumper 72</p></div>
-                            <div class="cursor-pointer bg-gray-400 [#beb9b9] w-36 h-8 rounded-t-md border-2 border-black"><p class="px-5 mt-[5px]">Engine 72</p></div>
-                            <div class="cursor-pointer bg-gray-400 w-36 h-8 rounded-t-md border-2 border-black"><p class="mt-[5px]">Water Tender 72</p></div>
-                            <div class="w-[35%] border-b-2 border-black"></div>
-                        </div>
-                        <div class="bg-gray-200 w-full h-[40rem] border-2 border-black border-t-0">
-                             
-                        </div>
-                    </div>
-
-                    <div class="max-w-[40rem] w-full">
-                        <div class="flex justify-start font-Inter text-sm text-center">
-                            <div class="cursor-pointer bg-gray-400 w-36 h-8 rounded-t-md border-2 border-black"><p class="px-5 mt-[5px]">Pumper 72</p></div>
-                            <div class="cursor-pointer bg-gray-400 [#beb9b9] w-36 h-8 rounded-t-md border-2 border-black"><p class="px-5 mt-[5px]">Engine 72</p></div>
-                            <div class="cursor-pointer bg-gray-200 w-36 h-8 rounded-t-md border-2 border-b-0 border-black"><p class="mt-[5px]">Water Tender 72</p></div>
-                            <div class="w-[35%] border-b-2 border-black"></div>
-                        </div>
-                        <div class="bg-gray-200 w-full h-[40rem] border-2 border-black border-t-0">
-                             
-                        </div>
-                    </div>
-    
-                    <div>
-    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</div>
+<div></div>
 
 
 <!-- FORM MAIN PROFILE -->

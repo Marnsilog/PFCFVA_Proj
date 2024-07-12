@@ -1,5 +1,5 @@
 //PROFILE CONFIG
-  function displaySection(sectionName) {
+function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
     sections.forEach(section => {
@@ -27,7 +27,7 @@ function Rankings() {
 }
 
 function addLine(LineId) {
-    const formIds = ['dashb', 'reg', 'att','vol','ranks','inc','inV','prof'];
+    const formIds = ['dashb', 'reg', 'att', 'ranks','inc','inV','prof'];
     
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -40,7 +40,7 @@ function addLine(LineId) {
     });
 }
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -52,7 +52,7 @@ function addLine(LineId) {
     });
 }
 
-//DASHBOARD CONFIG ------------------------------------------------------->
+//DASHBOARD CONFIG
 function showDashboard() {
     showElement('frmDashboard');
     addLine('dashb');
@@ -68,10 +68,6 @@ function showAttendance(){
 function showRanks(){
     showElement('frmRanks');
     addLine('ranks');
-}
-function showVolunteer(){
-    showElement('SummaryVolunteer');
-    addLine('vol');
 }
 function showIncident(){
     showElement('frmIncident');
@@ -171,7 +167,6 @@ function animateProgressBar(targetWidth) {
     }
   }
   
-  //FORM INCIDENT ----------------------------------->
   function inciform(){
     var incidentLog = document.getElementById('incidentLog');
     
@@ -240,32 +235,9 @@ function icsBack(){
             unseen.classList.add('hidden');
            
         }
-        }    
-        
-    // FORM VOLUNTEER ----------------------------------------------------->
-    function summarySorting(){
-        var summarySort = document.getElementById('summarySort');
-        if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
-         
-            summarySort.style.display = 'block';
-        } else {
-          
-            summarySort.style.display = 'none';
-        }
-      }
+        }        
       
-
-      function cancelSort(){
-        var summarySort = document.getElementById('summarySort');
-        if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
-         
-            summarySort.style.display = 'block';
-        } else {
-          
-            summarySort.style.display = 'none';
-        }
-      }
-    //FOR RANKS ----------------------------------------------------------->
+    //FOR RANKS
   
     function  cancelRank(){
         var addRanks = document.getElementById('addRanks');
@@ -356,13 +328,11 @@ function icsBack(){
         dateOfBirthInput.setAttribute('max', today);
     });
 
-    //FOR RESPONSIVE ---------------------------------->
     document.addEventListener('DOMContentLoaded', function () {
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
     
     
-
         menuToggle.addEventListener('click', function () {
             if (mobileMenu.style.display === 'block') {
                 mobileMenu.style.display = 'none';

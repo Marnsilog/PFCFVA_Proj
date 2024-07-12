@@ -1,5 +1,5 @@
 //PROFILE CONFIG
-  function displaySection(sectionName) {
+function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
     sections.forEach(section => {

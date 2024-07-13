@@ -209,6 +209,11 @@ app.post('/login', (req, res) => {
                 req.session.rfid = user.rfid; //this 2
                 //basic info
                 req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
+                //temp
+                req.session.lastName = user.lastName;
+                req.session.firstName = user.firstName;
+                req.session.middleName = user.middleName;
+                //basic info 2
                 req.session.callSign = user.callSign;
                 req.session.dateOfBirth = user.dateOfBirth; //need format fix
                 req.session.gender = user.gender;
@@ -258,6 +263,11 @@ app.get('/profile', (req, res) => {
             rfid: req.session.rfid,// this 3
             //basic info
             fullName: req.session.fullName, 
+            //temp
+            lastName: req.session.lastName,
+            firstName: req.session.firstName,
+            middleName: req.session.middleName,
+            //basic info 2
             callSign: req.session.callSign, 
             dateOfBirth: req.session.dateOfBirth, 
             gender: req.session.gender,
@@ -282,12 +292,265 @@ app.get('/profile', (req, res) => {
             activityPoints: req.session.activityPoints,
             //etc
             accountType: req.session.accountType,
+            username: req.session.username
             
         });
     } else {
         res.status(401).send('Not logged in');
     }
 });
+
+
+
+//update profile route (WITH BUGS)
+app.post('/updateProfile', (req, res) => {
+    const {
+        rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
+        newPassword, confirmPassword
+    } = req.body;
+
+    if (newPassword && newPassword !== confirmPassword) {
+        return res.status(400).send('New password and confirm password do not match');
+    }
+
+    const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            console.error('Error fetching user:', err);
+            return res.status(500).send('Error fetching user');
+        }
+
+        const hashedPassword = result[0].password;
+
+        // If a new password is provided, validate the old password
+        if (newPassword) {
+            bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
+                if (compareErr || !compareResult) {
+                    return res.status(400).send('Incorrect old password');
+                }
+
+                bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                    if (hashErr) {
+                        console.error('Error hashing new password:', hashErr);
+                        return res.status(500).send('Error hashing new password');
+                    }
+
+                    // Call updateUserProfile with new password
+                    updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
+                });
+            });
+        } else {
+            // Call updateUserProfile without new password
+            updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+                civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+                emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+                nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
+        }
+    });
+});
+
+function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+    civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+    emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+    nameOfCompany, yearsInService, skillsTraining, otherAffiliation, newPassword, req, res) { // Added req to update session
+    
+    let updateUserQuery = `UPDATE tbl_accounts SET
+        lastName = ?, firstName = ?, middleName = ?, middleInitial = ?, username = ?, emailAddress = ?,
+        mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?,
+        gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?,
+        highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?,
+        otherAffiliation = ?`;
+
+    const updateValues = [
+        lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+        nameOfCompany, yearsInService, skillsTraining, otherAffiliation
+    ];
+
+    if (newPassword) {
+        updateUserQuery += `, password = ?`;
+        updateValues.push(newPassword);
+    }
+
+    updateUserQuery += ` WHERE rfid = ?`;
+    updateValues.push(rfid);
+
+    db.query(updateUserQuery, updateValues, (updateErr, updateResult) => {
+        if (updateErr) {
+            console.error('Error updating profile:', updateErr);
+            return res.status(500).send('Error updating profile');
+        }
+        
+        // Update session variables to reflect the changes
+        req.session.lastName = lastName; 
+        req.session.firstName = firstName; 
+        req.session.middleName = middleName; 
+        req.session.middleInitial = middleInitial; 
+        req.session.username = username; 
+        req.session.emailAddress = emailAddress; 
+        req.session.mobileNumber = mobileNumber; 
+        req.session.civilStatus = civilStatus; 
+        req.session.nationality = nationality; 
+        req.session.bloodType = bloodType; 
+        req.session.dateOfBirth = dateOfBirth; 
+        req.session.gender = gender; 
+        req.session.currentAddress = currentAddress; 
+        req.session.emergencyContactPerson = emergencyContactPerson; 
+        req.session.emergencyContactNumber = emergencyContactNumber; 
+        req.session.highestEducationalAttainment = highestEducationalAttainment; 
+        req.session.nameOfCompany = nameOfCompany; 
+        req.session.yearsInService = yearsInService; 
+        req.session.skillsTraining = skillsTraining; 
+        req.session.otherAffiliation = otherAffiliation; 
+
+        // res.status(200).send('Profile updated successfully');
+        req.session.fullName = `${firstName} ${middleInitial}. ${lastName}`; // Corrected to update fullName
+
+        res.status(200).json(req.session); // Send updated session data to client
+    });
+}
+
+
+
+
+///////////////////////////////////////////////////////
+
+
+
+
+// Endpoint to get user profile data by RFID (working for profile)
+app.get('/attendanceProfile', (req, res) => {
+    const rfid = req.query.rfid;
+    const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    db.query(sql, [rfid], (err, result) => {
+        if (err) {
+            res.status(500).send('Error retrieving user data');
+            return;
+        }
+        if (result.length === 0) {
+            res.status(404).send('User not found');
+            return;
+        }
+        const user = result[0];
+        res.json({
+            fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
+            callSign: user.callSign,
+            dutyHours: user.dutyHours,
+            fireResponsePoints: user.fireResponsePoints,
+            inventoryPoints: user.inventoryPoints,
+            activityPoints: user.activityPoints
+        });
+    });
+});
+
+
+// Endpoint to record Time In (working)
+app.post('/recordTimeIn', (req, res) => {
+    const rfid = req.body.rfid;
+    const currentTime = new Date();
+    const timeIn = currentTime.toTimeString().split(' ')[0]; // time in HH:MM:SS format
+    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; // date in YYYY-MM-DD format
+
+    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            res.status(500).send('Error retrieving user data');
+            return;
+        }
+        if (result.length === 0) {
+            res.status(404).send('User not found');
+            return;
+        }
+        const accountID = result[0].accountID;
+        const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
+        db.query(checkStatusQuery, [accountID], (err, result) => {
+            if (err) {
+                res.status(500).send('Error checking attendance status');
+                return;
+            }
+            if (result.length === 0 || result[0].timeInStatus === 0) {
+                const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus) 
+                                               VALUES (?, ?, ?, 1)`;
+                db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn], (err, result) => {
+                    if (err) {
+                        res.status(500).send('Error recording Time In');
+                        return;
+                    }
+                    res.json({ timeIn, dateOfTimeIn });
+                });
+            } else {
+                res.status(400).send('User already has an active Time In record');
+            }
+        });
+    });
+});
+
+// Endpoint to record Time Out (working)
+app.post('/recordTimeOut', (req, res) => {
+    const rfid = req.body.rfid;
+    const currentTime = new Date();
+    const timeOut = currentTime.toTimeString().split(' ')[0]; 
+    const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+
+    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+    db.query(getUserQuery, [rfid], (err, result) => {
+        if (err) {
+            res.status(500).send('Error retrieving user data');
+            return;
+        }
+        if (result.length === 0) {
+            res.status(404).send('User not found');
+            return;
+        }
+        const accountID = result[0].accountID;
+        const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                       SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+                                       WHERE accountID = ? AND timeInStatus = 1 ORDER BY attendanceID DESC LIMIT 1`;
+        db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+            if (err) {
+                res.status(500).send('Error recording Time Out');
+                return;
+            }
+            if (result.affectedRows === 0) {
+                res.status(400).send('No active Time In record found');
+                return;
+            }
+            res.json({ timeOut, dateOfTimeOut });
+        });
+    });
+});
+
+
+
+// Endpoint to retrieve recent attendance records
+app.get('/recentAttendance', (req, res) => {
+    const sql = `
+        SELECT a.accountID, a.timeIn, a.dateOfTimeIn, a.timeOut, a.dateOfTimeOut, 
+               b.firstName, b.middleInitial, b.lastName
+        FROM tbl_attendance a
+        JOIN tbl_accounts b ON a.accountID = b.accountID
+        ORDER BY a.attendanceID DESC
+        LIMIT 10`; // pang limit kung ilan kukunin shit
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving recent attendance records');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
+
+
 
 
 

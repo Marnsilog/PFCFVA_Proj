@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <title>PFCFVA || ATTENDANCE</title>
+</head>
+<body class="bg-white">
+    <div class="bg-rosered2 h-28 font-Inter">
+        <nav class="flex items-center">
+            <img src="img/pfcfvalogo.png" class="mt-2 ml-10 w-24">
+            <p class="pt-4 pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+        </nav>
+    </div>
+
+    <!-- RFID -->
+    <div class="w-full flex justify-center h-full">
+        <div class="max-w-[80rem] w-full flex justify-start h-screen">
+            <div class="w-[25%] h-full bg-gray-200 pt-10">
+                <p class="mx-10 font-Inter font-semibold">Tap your ID to record your attendance.</p>
+            </div>
+    
+            <div class="w-[75%] bg-white flex justify-center">
+                <div class="w-full mx-44">
+                    <div class="mt-16 w-full flex justify-center">
+                        <img src="img/user.png" class="w-24 h-24">
+                        <div class="mt-5 ml-5">
+                            <p id="rfidText" class="text-black text-xl font-bold mb-2">RFID number here</p>
+                            <p class="text-black text-xl font-bold" id="FullName">FullName here</p>
+                            <p class="text-[#930D0D] text-base" id="CallSign">CallSign here</p> 
+                        </div>
+                    </div>
+    
+                    <div class="px-10 my-7">
+                        <p class="font-Inter text-xl">Duty Hours: <span id="DutyHours">100</span></p>
+                        <div class="bg-white border-black border-[1px] h-7 rounded-full overflow-hidden pt-[1.5px] px-3">
+                            <div id="progress" class="h-full"></div>
+                        </div>
+                    </div>
+    
+                    <div class="px-10 my-7">
+                        <p class="font-Inter text-xl">Fire Response: <span id="FireResponsePoints">200</span></p>
+                        <div class="bg-white border-black border-[1px] h-7 rounded-full overflow-hidden pt-[1.5px] px-3">
+                            <div id="progress2" class="h-full"></div>
+                        </div>
+                    </div>
+    
+                    <div class="px-10 my-7">
+                        <p class="font-Inter text-xl">Inventory: <span id="InventoryPoints">300</span></p>
+                    </div>
+    
+                    <div class="px-10 my-7">
+                        <p class="font-Inter text-xl">Activity: <span id="ActivityPoints">400</span></p>
+                    </div>
+    
+                    <div class="w-full flex justify-center">
+                        <div class="w-full mx-26 h-32 border-[1px] border-black flex justify-start">
+                            <div class="w-[50%] h-full border-r-[1px] border-black text-center font-Inter text-xl">
+                                <label class="pt-7">Time In (label only)</label>
+                                <p class="pt-2" id="TimeIn">Put TimeIn here</p>
+                                <p class="pt-2" id="DateTimeIn">DateTimeIn here</p>
+                            </div>
+                            <div class="w-[50%] h-full border-black text-center font-Inter text-xl">
+                                <label class="pt-7">Time Out (label only)</label>
+                                <p class="pt-2" id="TimeOut">Put TimeOut value here</p>
+                                <p class="pt-2" id="DateTimeOut">DateTimeOut here</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="px-10 my-10">
+                        <p class="font-Inter text-xl">Attendance Logs</p>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Name</th>
+                                        <th class="py-2 px-4 border-b border-r">Time In</th>
+                                        <th class="py-2 px-4 border-b border-r">Time Out</th>
+                                        <th class="py-2 px-4 border-b border-r">Date</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceLogs">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="module_attendance.js" defer></script>
+    <script src="admin.js" defer></script>
+</body>
+</html>

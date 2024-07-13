@@ -140,8 +140,7 @@ function showLeaderboards() {
 function showContactus() {
     showElement('frmContactus');
     addLine('conN');
-    const dashboard = document.getElementById('frmDashboard');
-    dashboard.style.display = 'block';
+   
 }
 function myProfile() {
     showElement('frmMainProfile');
@@ -216,3 +215,180 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
+
+//edit prof, working with bugs
+// // Function to populate edit form with current profile data
+// function populateEditForm(data) {
+//     document.getElementById('EditRFID').value = data.rfid;
+//     document.getElementById('EditLastName').value = data.lastName || '';
+//     document.getElementById('EditFirstName').value = data.firstName || '';
+//     document.getElementById('EditMiddleName').value = data.middleName || '';
+//     document.getElementById('EditUsername').value = data.username || '';
+//     document.getElementById('EditEmailAddress').value = data.emailAddress || '';
+//     document.getElementById('EditContactNumber').value = data.mobileNumber || '';
+//     document.getElementById('EditCivilStatus').value = data.civilStatus || '';
+//     document.getElementById('EditNationality').value = data.nationality || '';
+//     document.getElementById('EditBloodType').value = data.bloodType || '';
+//     document.getElementById('EditGender').value = data.gender || '';
+//     document.getElementById('EditCurrentAddress').value = data.currentAddress || '';
+//     document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson || '';
+//     document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber || '';
+//     document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment || '';
+//     document.getElementById('EditNameOfCompany').value = data.nameOfCompany || '';
+//     document.getElementById('EditYearsInService').value = data.yearsInService || '';
+//     document.getElementById('EditSkillsTraining').value = data.skillsTraining || '';
+//     document.getElementById('EditOtherAffiliation').value = data.otherAffiliation || '';
+// }
+
+// // Function to handle profile update
+// function saveProfile() {
+//     const rfid = document.getElementById('EditRFID').value;
+//     const lastName = document.getElementById('EditLastName').value;
+//     const firstName = document.getElementById('EditFirstName').value;
+//     const middleName = document.getElementById('EditMiddleName').value;
+//     const middleInitial = middleName.charAt(0).toUpperCase();
+//     const username = document.getElementById('EditUsername').value;
+//     const emailAddress = document.getElementById('EditEmailAddress').value;
+//     const mobileNumber = document.getElementById('EditContactNumber').value;
+//     const oldPassword = document.getElementById('EditOldPassword').value;
+//     const newPassword = document.getElementById('EditNewPassword').value;
+//     const confirmPassword = document.getElementById('EditConfirmPassword').value;
+//     const civilStatus = document.getElementById('EditCivilStatus').value;
+//     const nationality = document.getElementById('EditNationality').value;
+//     const bloodType = document.getElementById('EditBloodType').value;
+//     const gender = document.getElementById('EditGender').value;
+//     const currentAddress = document.getElementById('EditCurrentAddress').value;
+//     const emergencyContactPerson = document.getElementById('EditEmergencyContactPerson').value;
+//     const emergencyContactNumber = document.getElementById('EditEmergencyContactNumber').value;
+//     const highestEducationalAttainment = document.getElementById('EditHighestEducationalAttainment').value;
+//     const nameOfCompany = document.getElementById('EditNameOfCompany').value;
+//     const yearsInService = document.getElementById('EditYearsInService').value;
+//     const skillsTraining = document.getElementById('EditSkillsTraining').value;
+//     const otherAffiliation = document.getElementById('EditOtherAffiliation').value;
+
+//     const profileData = {
+//         rfid,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         username,
+//         emailAddress,
+//         mobileNumber,
+//         oldPassword,
+//         newPassword,
+//         confirmPassword,
+//         civilStatus,
+//         nationality,
+//         bloodType,
+//         gender,
+//         currentAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation
+//     };
+
+//     fetch('/updateProfile', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(profileData)
+//     })
+//     .then(response => response.json())
+//     .then(result => {
+//         if (result.success) {
+//             alert('Profile updated successfully');
+//             // Update the main profile display
+//             document.getElementById('FullName').textContent = `${firstName} ${middleInitial}. ${lastName}`;
+//             document.getElementById('CallSign').textContent = profileData.callSign;
+//             // other updates as needed
+//             showProfile(); // Switch back to profile view
+//         } else {
+//             alert('Failed to update profile: ' + result.message);
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error updating profile:', error);
+//         alert('An error occurred while updating the profile.');
+//     });
+// }
+
+// // Function to show the edit profile form
+// function showEdit() {
+//     fetch('/profile')
+//     .then(response => response.json())
+//     .then(data => {
+//         populateEditForm(data);
+//         document.getElementById('frmMainProfile').style.display = 'none';
+//         document.getElementById('editProfile').style.display = 'block';
+//     })
+//     .catch(error => {
+//         console.error('Error fetching profile for edit:', error);
+//     });
+// }
+
+// // Function to cancel the edit profile action
+// function cancelEdit() {
+//     document.getElementById('editProfile').style.display = 'none';
+//     document.getElementById('frmMainProfile').style.display = 'block';
+// }
+
+
+//edit profile (working)
+// document.addEventListener('DOMContentLoaded', () => {
+//     fetch('/profile') // Fetch profile from server
+//     .then(response => {
+//         if (response.status === 200) {
+//             return response.json();
+//         } else {
+//             throw new Error('Not logged in');
+//         }
+//     })
+//     .then(data => {
+//         document.getElementById('RFID').textContent = `ID#: ${data.rfid}`; // Display RFID
+//         // Set the hidden RFID field in the form
+//         document.getElementById('EditRFID').value = data.rfid;
+//         // Set other profile data...
+//     })
+//     .catch(error => {
+//         console.error('Error fetching profile:', error);
+//         window.location.href = '/';
+//     });
+    
+//     document.getElementById('editProfileForm').addEventListener('submit', function (event) {
+//         event.preventDefault(); // Prevent the default form submission
+
+//         const formData = new FormData(this);
+//         const data = {};
+//         formData.forEach((value, key) => {
+//             data[key] = value;
+//         });
+
+//         fetch('/updateProfile', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(data)
+//         })
+//         .then(response => response.json())
+//         .then(result => {
+//             if (result.success) {
+//                 alert('Profile updated successfully');
+//                 // Optionally, update the profile view with new data
+//             } else {
+//                 alert('Failed to update profile');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error updating profile:', error);
+//             alert('An error occurred while updating the profile');
+//         });
+//     });
+// });

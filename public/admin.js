@@ -112,9 +112,9 @@ function showEdit(){
 }
 
 
-    // window.onload = function() {
-    // showDashboard();
-    // };
+    window.onload = function() {
+    showDashboard();
+    };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);

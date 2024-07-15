@@ -44,6 +44,141 @@ app.use(bodyParser.json());
 
 
 //add rfid to database (done)
+// //register route (test-hash)
+// app.post('/register', (req, res) => {
+//     const {
+//         rfid,
+//         username,
+//         password,
+//         accountType,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         callSign,
+//         currentAddress,
+//         dateOfBirth,
+//         civilStatus,
+//         gender,
+//         nationality,
+//         bloodType,
+//         mobileNumber,
+//         emailAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation,
+//         bioDataChecked,
+//         interviewChecked,
+//         fireResponsePoints,
+//         activityPoints,
+//         inventoryPoints,
+//         dutyHours
+//     } = req.body;
+
+//     // Check if the username already exists in the database
+//     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
+//     db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
+//         if (checkErr) {
+//             console.error('Error checking username:', checkErr);
+//             res.status(500).send('Error checking username');
+//             return;
+//         }
+
+//         // If username already exists, send an error response
+//         if (checkResult[0].count > 0) {
+//             res.status(400).send('Username already exists');
+//             return;
+//         }
+
+//         // If username does not exist, proceed with registration
+//         bcrypt.hash(password, 10, (hashErr, hash) => {
+//             if (hashErr) {
+//                 console.error('Error hashing password:', hashErr);
+//                 res.status(500).send('Error hashing password');
+//                 return;
+//             }
+
+//             const sql = `INSERT INTO tbl_accounts (
+//                 rfid,
+//                 username,
+//                 password,
+//                 accountType,
+//                 lastName,
+//                 firstName,
+//                 middleName,
+//                 middleInitial,
+//                 callSign,
+//                 currentAddress,
+//                 dateOfBirth,
+//                 civilStatus,
+//                 gender,
+//                 nationality,
+//                 bloodType,
+//                 mobileNumber,
+//                 emailAddress,
+//                 emergencyContactPerson,
+//                 emergencyContactNumber,
+//                 highestEducationalAttainment,
+//                 nameOfCompany,
+//                 yearsInService,
+//                 skillsTraining,
+//                 otherAffiliation,
+//                 bioDataChecked,
+//                 interviewChecked,
+//                 fireResponsePoints,
+//                 activityPoints,
+//                 inventoryPoints,
+//                 dutyHours
+//             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//             db.query(sql, [
+//                 rfid,
+//                 username,
+//                 hash, // Store the hashed password 
+//                 accountType,
+//                 lastName,
+//                 firstName,
+//                 middleName,
+//                 middleInitial,
+//                 callSign,
+//                 currentAddress,
+//                 dateOfBirth,
+//                 civilStatus,
+//                 gender,
+//                 nationality,
+//                 bloodType,
+//                 mobileNumber,
+//                 emailAddress,
+//                 emergencyContactPerson,
+//                 emergencyContactNumber,
+//                 highestEducationalAttainment,
+//                 nameOfCompany,
+//                 yearsInService,
+//                 skillsTraining,
+//                 otherAffiliation,
+//                 bioDataChecked,
+//                 interviewChecked,
+//                 fireResponsePoints,
+//                 activityPoints,
+//                 inventoryPoints,
+//                 dutyHours
+//             ], (err, result) => {
+//                 if (err) {
+//                     console.error('Error registering user:', err);
+//                     res.status(500).send('Error registering user');
+//                     return;
+//                 }
+//                 res.status(200).send('User registered successfully');
+//             });
+//         });
+//     });
+// });
+
+
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {
@@ -81,104 +216,131 @@ app.post('/register', (req, res) => {
 
     // Check if the username already exists in the database
     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
-    db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
-        if (checkErr) {
-            console.error('Error checking username:', checkErr);
+    db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+        if (checkUsernameErr) {
+            console.error('Error checking username:', checkUsernameErr);
             res.status(500).send('Error checking username');
             return;
         }
 
-        // If username already exists, send an error response
-        if (checkResult[0].count > 0) {
+        if (checkUsernameResult[0].count > 0) {
             res.status(400).send('Username already exists');
             return;
         }
 
-        // If username does not exist, proceed with registration
-        bcrypt.hash(password, 10, (hashErr, hash) => {
-            if (hashErr) {
-                console.error('Error hashing password:', hashErr);
-                res.status(500).send('Error hashing password');
+        // Check if the RFID already exists in the database
+        const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
+        db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
+            if (checkRfidErr) {
+                console.error('Error checking RFID:', checkRfidErr);
+                res.status(500).send('Error checking RFID');
                 return;
             }
 
-            const sql = `INSERT INTO tbl_accounts (
-                rfid,
-                username,
-                password,
-                accountType,
-                lastName,
-                firstName,
-                middleName,
-                middleInitial,
-                callSign,
-                currentAddress,
-                dateOfBirth,
-                civilStatus,
-                gender,
-                nationality,
-                bloodType,
-                mobileNumber,
-                emailAddress,
-                emergencyContactPerson,
-                emergencyContactNumber,
-                highestEducationalAttainment,
-                nameOfCompany,
-                yearsInService,
-                skillsTraining,
-                otherAffiliation,
-                bioDataChecked,
-                interviewChecked,
-                fireResponsePoints,
-                activityPoints,
-                inventoryPoints,
-                dutyHours
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            if (checkRfidResult[0].count > 0) {
+                res.status(400).send('RFID already exists');
+                return;
+            }
 
-            db.query(sql, [
-                rfid,
-                username,
-                hash, // Store the hashed password 
-                accountType,
-                lastName,
-                firstName,
-                middleName,
-                middleInitial,
-                callSign,
-                currentAddress,
-                dateOfBirth,
-                civilStatus,
-                gender,
-                nationality,
-                bloodType,
-                mobileNumber,
-                emailAddress,
-                emergencyContactPerson,
-                emergencyContactNumber,
-                highestEducationalAttainment,
-                nameOfCompany,
-                yearsInService,
-                skillsTraining,
-                otherAffiliation,
-                bioDataChecked,
-                interviewChecked,
-                fireResponsePoints,
-                activityPoints,
-                inventoryPoints,
-                dutyHours
-            ], (err, result) => {
-                if (err) {
-                    console.error('Error registering user:', err);
-                    res.status(500).send('Error registering user');
+            // Check if the email already exists in the database
+            const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
+            db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
+                if (checkEmailErr) {
+                    console.error('Error checking email:', checkEmailErr);
+                    res.status(500).send('Error checking email');
                     return;
                 }
-                res.status(200).send('User registered successfully');
+
+                if (checkEmailResult[0].count > 0) {
+                    res.status(400).send('Email already exists');
+                    return;
+                }
+
+                // If all details are unique, proceed with registration
+                bcrypt.hash(password, 10, (hashErr, hash) => {
+                    if (hashErr) {
+                        console.error('Error hashing password:', hashErr);
+                        res.status(500).send('Error hashing password');
+                        return;
+                    }
+
+                    const sql = `INSERT INTO tbl_accounts (
+                        rfid,
+                        username,
+                        password,
+                        accountType,
+                        lastName,
+                        firstName,
+                        middleName,
+                        middleInitial,
+                        callSign,
+                        currentAddress,
+                        dateOfBirth,
+                        civilStatus,
+                        gender,
+                        nationality,
+                        bloodType,
+                        mobileNumber,
+                        emailAddress,
+                        emergencyContactPerson,
+                        emergencyContactNumber,
+                        highestEducationalAttainment,
+                        nameOfCompany,
+                        yearsInService,
+                        skillsTraining,
+                        otherAffiliation,
+                        bioDataChecked,
+                        interviewChecked,
+                        fireResponsePoints,
+                        activityPoints,
+                        inventoryPoints,
+                        dutyHours
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+                    db.query(sql, [
+                        rfid,
+                        username,
+                        hash, // Store the hashed password 
+                        accountType,
+                        lastName,
+                        firstName,
+                        middleName,
+                        middleInitial,
+                        callSign,
+                        currentAddress,
+                        dateOfBirth,
+                        civilStatus,
+                        gender,
+                        nationality,
+                        bloodType,
+                        mobileNumber,
+                        emailAddress,
+                        emergencyContactPerson,
+                        emergencyContactNumber,
+                        highestEducationalAttainment,
+                        nameOfCompany,
+                        yearsInService,
+                        skillsTraining,
+                        otherAffiliation,
+                        bioDataChecked,
+                        interviewChecked,
+                        fireResponsePoints,
+                        activityPoints,
+                        inventoryPoints,
+                        dutyHours
+                    ], (err, result) => {
+                        if (err) {
+                            console.error('Error registering user:', err);
+                            res.status(500).send('Error registering user');
+                            return;
+                        }
+                        res.status(200).send('User registered successfully');
+                    });
+                });
             });
         });
     });
 });
-
-
 
 
 

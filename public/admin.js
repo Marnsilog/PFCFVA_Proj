@@ -386,3 +386,44 @@ function icsBack(){
         
     });
 
+
+
+
+
+    //clear register form
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registerForm');
+        const clearButton = document.getElementById('clearButton');
+    
+        clearButton.addEventListener('click', function() {
+            clearForm(form);
+        });
+    
+        function clearForm(form) {
+            //wiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+            Array.from(form.elements).forEach(element => {
+                switch(element.type) {
+                    case 'text':
+                    case 'password':
+                    case 'textarea':
+                    case 'email':
+                    case 'number':
+                    case 'date':
+                    case 'tel':
+                        element.value = '';
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        element.checked = false;
+                        break;
+                    case 'select-one':
+                    case 'select-multiple':
+                        element.selectedIndex = -1;
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+    });
+    

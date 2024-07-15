@@ -445,4 +445,44 @@ function icsBack(){
         });
     });
     
+    //register, don't allow letters for specific fields
+    document.addEventListener('DOMContentLoaded', function() {
+        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
+
+        numberFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.addEventListener('keypress', function(event) {
+                if (/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+
+
+    //auto format
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
+    
+        // Function to capitalize the first letter of each word
+        function capitalizeWords(str) {
+            return str.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
+        }
+    
+        nameFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+    
+            // Format text as the user types
+            field.addEventListener('input', function() {
+                field.value = capitalizeWords(field.value);
+            });
+    
+            // Format text when the user leaves the input field
+            field.addEventListener('blur', function() {
+                field.value = capitalizeWords(field.value);
+            });
+        });
+    });
     

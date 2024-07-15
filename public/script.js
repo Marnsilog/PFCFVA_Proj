@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //         headers: {
     //             'Content-Type': 'application/json'
     //         },
-    //         body: JSON.stringify({ email: email })
+    //         body: JSON.stringify({ emailAddress: email })
     //     })
     //     .then(response => response.json())
     //     .then(data => {

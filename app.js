@@ -1,20 +1,22 @@
-const express = require('express'); //
-const mysql = require('mysql'); //
-const bcrypt = require('bcrypt'); //
-const session = require('express-session'); //
-const bodyParser = require('body-parser'); //
-const path = require('path'); //
+// const express = require('express'); //
+// const mysql = require('mysql'); //
+// const bcrypt = require('bcrypt'); //
+// const session = require('express-session'); //
+// const bodyParser = require('body-parser'); //
+// const path = require('path'); //
 
-// //bugged
-// const express = require('express');
-// const mysql = require('mysql');
-// const bcrypt = require('bcrypt');
-// const session = require('express-session');
-// const bodyParser = require('body-parser');
-// const nodemailer = require('nodemailer');
-// const crypto = require('crypto');
-// const { promisify } = require('util');
-// const path = require('path');
+//bugged
+const express = require('express');
+const mysql = require('mysql');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const { promisify } = require('util');
+const path = require('path');
+
+const randomBytesAsync = promisify(crypto.randomBytes);
 
 // Create connection
 const db = mysql.createConnection({
@@ -727,10 +729,10 @@ app.get('/recentAttendance', (req, res) => {
 
 // // Add forgot password route (bugged)
 // app.post('/forgot-password', async (req, res) => {
-//     const { email } = req.body;
+//     const { emailAddress } = req.body;
 
 //     // Check if email exists in the database
-//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [email], async (err, results) => {
+//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [emailAddress], async (err, results) => {
 //         if (err) {
 //             return res.status(500).json({ success: false, message: 'Database error' });
 //         }
@@ -744,7 +746,7 @@ app.get('/recentAttendance', (req, res) => {
 //         const tokenExpiry = Date.now() + 3600000; // 1 hour
 
 //         // Save the token and expiry to the user record
-//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE id = ?', [token, tokenExpiry, user.id], (err) => {
+//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE accountID = ?', [token, tokenExpiry, user.accountID], (err) => {
 //             if (err) {
 //                 return res.status(500).json({ success: false, message: 'Database error' });
 //             }
@@ -753,14 +755,14 @@ app.get('/recentAttendance', (req, res) => {
 //             const transporter = nodemailer.createTransport({
 //                 service: 'Gmail',
 //                 auth: {
-//                     user: 'your-email@gmail.com',
-//                     pass: 'your-email-password'
+//                     user: 'kulowtsss@gmail.com',
+//                     pass: 'KULOWTS12345'
 //                 }
 //             });
 
 //             const mailOptions = {
-//                 to: email,
-//                 from: 'your-email@gmail.com',
+//                 to: emailAddress,
+//                 from: 'kulowtsss@gmail.com',
 //                 subject: 'Password Reset',
 //                 text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
 //                       `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
@@ -803,7 +805,7 @@ app.get('/recentAttendance', (req, res) => {
 //             }
 
 //             // Update the user's password in the database
-//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE id = ?', [hash, user.id], (updateErr) => {
+//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID = ?', [hash, user.accountID], (updateErr) => {
 //                 if (updateErr) {
 //                     return res.status(500).json({ success: false, message: 'Database error' });
 //                 }

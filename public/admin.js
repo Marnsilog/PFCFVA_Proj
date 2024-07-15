@@ -352,8 +352,9 @@ function icsBack(){
     //for calendar
     document.addEventListener('DOMContentLoaded', (event) => {
         const dateOfBirthInput = document.getElementById('dateOfBirth');
-        const today = new Date().toISOString().split('T')[0];
-        dateOfBirthInput.setAttribute('max', today);
+        const today = new Date();
+        const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+        dateOfBirthInput.setAttribute('max', minDate);
     });
 
     //FOR RESPONSIVE ---------------------------------->
@@ -390,7 +391,7 @@ function icsBack(){
 
 
 
-    //clear register form
+    //register, clear form
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('registerForm');
         const clearButton = document.getElementById('clearButton');
@@ -426,4 +427,22 @@ function icsBack(){
             });
         }
     });
+    
+
+
+
+    //register, dont allow numbers
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson'];
+    
+        nameFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.addEventListener('keypress', function(event) {
+                if (/\d/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+    
     

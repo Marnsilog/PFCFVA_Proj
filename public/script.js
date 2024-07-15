@@ -116,3 +116,59 @@ document.addEventListener('DOMContentLoaded', function () {
 // setInterval(updateCountdown, 1000);
 
 // updateCountdown();
+
+
+
+
+
+
+
+
+// JavaScript to handle form toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const backToLoginLink = document.getElementById('backToLoginLink');
+
+    forgotPasswordLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        loginForm.style.display = 'none';
+        forgotPasswordForm.style.display = 'block';
+    });
+
+    backToLoginLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        forgotPasswordForm.style.display = 'none';
+        loginForm.style.display = 'block';
+    });
+
+    // forgotPasswordForm.addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     const email = document.getElementById('forgotPasswordEmail').value;
+
+    //     // Make an API call to your server to handle password reset
+    //     fetch('/forgot-password', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ email: email })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             alert('Password reset link has been sent to your email.');
+    //             forgotPasswordForm.style.display = 'none';
+    //             loginForm.style.display = 'block';
+    //         } else {
+    //             alert('Error: ' + data.message);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //         alert('An error occurred. Please try again later.');
+    //     });
+    // });
+});
+

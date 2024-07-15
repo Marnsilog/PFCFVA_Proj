@@ -1,9 +1,20 @@
-const express = require('express');
-const mysql = require('mysql');
-const bcrypt = require('bcrypt');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const path = require('path');
+const express = require('express'); //
+const mysql = require('mysql'); //
+const bcrypt = require('bcrypt'); //
+const session = require('express-session'); //
+const bodyParser = require('body-parser'); //
+const path = require('path'); //
+
+// //bugged
+// const express = require('express');
+// const mysql = require('mysql');
+// const bcrypt = require('bcrypt');
+// const session = require('express-session');
+// const bodyParser = require('body-parser');
+// const nodemailer = require('nodemailer');
+// const crypto = require('crypto');
+// const { promisify } = require('util');
+// const path = require('path');
 
 // Create connection
 const db = mysql.createConnection({
@@ -714,6 +725,94 @@ app.get('/recentAttendance', (req, res) => {
 
 
 
+// // Add forgot password route (bugged)
+// app.post('/forgot-password', async (req, res) => {
+//     const { email } = req.body;
+
+//     // Check if email exists in the database
+//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [email], async (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ success: false, message: 'Database error' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ success: false, message: 'Email not found' });
+//         }
+
+//         const user = results[0];
+//         const token = (await randomBytesAsync(20)).toString('hex');
+//         const tokenExpiry = Date.now() + 3600000; // 1 hour
+
+//         // Save the token and expiry to the user record
+//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE id = ?', [token, tokenExpiry, user.id], (err) => {
+//             if (err) {
+//                 return res.status(500).json({ success: false, message: 'Database error' });
+//             }
+
+//             // Send email with reset link
+//             const transporter = nodemailer.createTransport({
+//                 service: 'Gmail',
+//                 auth: {
+//                     user: 'your-email@gmail.com',
+//                     pass: 'your-email-password'
+//                 }
+//             });
+
+//             const mailOptions = {
+//                 to: email,
+//                 from: 'your-email@gmail.com',
+//                 subject: 'Password Reset',
+//                 text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+//                       `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+//                       `http://${req.headers.host}/reset/${token}\n\n` +
+//                       `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+//             };
+
+//             transporter.sendMail(mailOptions, (err) => {
+//                 if (err) {
+//                     return res.status(500).json({ success: false, message: 'Email sending error' });
+//                 }
+
+//                 res.status(200).json({ success: true, message: 'Password reset link has been sent to your email.' });
+//             });
+//         });
+//     });
+// });
+
+// // Add endpoint to handle password reset form submission
+// app.post('/reset/:token', (req, res) => {
+//     const { token } = req.params;
+//     const { newPassword } = req.body;
+
+//     // Find user with the matching token and ensure it hasn't expired
+//     db.query('SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?', [token, Date.now()], (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ success: false, message: 'Database error' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(400).json({ success: false, message: 'Password reset token is invalid or has expired.' });
+//         }
+
+//         const user = results[0];
+
+//         // Hash the new password
+//         bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+//             if (hashErr) {
+//                 return res.status(500).json({ success: false, message: 'Error hashing password' });
+//             }
+
+//             // Update the user's password in the database
+//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE id = ?', [hash, user.id], (updateErr) => {
+//                 if (updateErr) {
+//                     return res.status(500).json({ success: false, message: 'Database error' });
+//                 }
+
+//                 res.status(200).json({ success: true, message: 'Password has been reset successfully.' });
+//             });
+//         });
+//     });
+// });
 
 
 

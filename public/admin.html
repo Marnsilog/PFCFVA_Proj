@@ -240,14 +240,19 @@
                             <div >
                                 <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
                                 <div class="border-[1px] border-black w-[17rem] h-7 md:h-7 flex justify-start">
-                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required>
-                                        <option value="" disabled selected> </option>
-                                        <option value="ASPIRANT">Aspirant</option>
-                                        <option value="PROBATIONARY">Probationary</option>
-                                        <option value="ECHO">Echo</option>
-                                        <option value="ECHO800">Echo800</option>
-                                        <option value="ECHO900">Echo900</option>
-                                    </select>
+                                    
+                                        <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required disabled>
+                                            <option value="" disabled selected> </option>
+                                            <option value="ASPIRANT">Aspirant</option>
+                                            <option value="PROBATIONARY">Probationary</option>
+                                            <option value="ECHO">Echo</option>
+                                            <option value="ECHO800">Echo800</option>
+                                            <option value="ECHO900">Echo900</option>
+                                        </select>
+                                        <span class="tooltip-text absolute text-sm p-2 bg-green-500 text-white rounded hidden">
+                                            You have to choose an account type first
+                                        </span>
+                                    
                                     <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSignNum" >
                                 </div>
                                

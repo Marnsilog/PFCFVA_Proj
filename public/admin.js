@@ -395,13 +395,14 @@ function icsBack(){
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('registerForm');
         const clearButton = document.getElementById('clearButton');
-    
+        const callSignSelect = document.getElementById('callSign');
+        const tooltipText = callSignSelect.nextElementSibling;
+
         clearButton.addEventListener('click', function() {
             clearForm(form);
         });
-    
+
         function clearForm(form) {
-            //wiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
             Array.from(form.elements).forEach(element => {
                 switch(element.type) {
                     case 'text':
@@ -425,6 +426,10 @@ function icsBack(){
                         break;
                 }
             });
+
+            // reset callSign select to its initial state, may minor bug on clear, tool tip auto pops up
+            callSignSelect.disabled = true;
+            tooltipText.classList.remove('hidden');
         }
     });
     
@@ -486,3 +491,45 @@ function icsBack(){
         });
     });
     
+
+
+     //handle accountType/callSign
+     document.addEventListener('DOMContentLoaded', function() {
+        const accountTypeSelect = document.getElementById('accountType');
+        const callSignSelect = document.getElementById('callSign');
+        const optionsToDisable = ['ECHO', 'ECHO800', 'ECHO900'];
+        const tooltipText = callSignSelect.nextElementSibling;
+
+        accountTypeSelect.addEventListener('change', function() {
+            const selectedAccountType = accountTypeSelect.value;
+            if (selectedAccountType) {
+                callSignSelect.disabled = false;
+                tooltipText.classList.add('hidden');
+            } else {
+                callSignSelect.disabled = true;
+                tooltipText.classList.remove('hidden');
+            }
+
+            if (selectedAccountType === 'Volunteer') {
+                optionsToDisable.forEach(optionValue => {
+                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                    option.disabled = true;
+                });
+            } else {
+                optionsToDisable.forEach(optionValue => {
+                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                    option.disabled = false;
+                });
+            }
+        });
+
+        callSignSelect.addEventListener('mouseover', function() {
+            if (callSignSelect.disabled) {
+                tooltipText.classList.remove('hidden');
+            }
+        });
+
+        callSignSelect.addEventListener('mouseout', function() {
+            tooltipText.classList.add('hidden');
+        });
+    });

@@ -1,9 +1,22 @@
+// const express = require('express'); //
+// const mysql = require('mysql'); //
+// const bcrypt = require('bcrypt'); //
+// const session = require('express-session'); //
+// const bodyParser = require('body-parser'); //
+// const path = require('path'); //
+
+//bugged
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const { promisify } = require('util');
 const path = require('path');
+
+const randomBytesAsync = promisify(crypto.randomBytes);
 
 // Create connection
 const db = mysql.createConnection({
@@ -44,6 +57,141 @@ app.use(bodyParser.json());
 
 
 //add rfid to database (done)
+// //register route (test-hash)
+// app.post('/register', (req, res) => {
+//     const {
+//         rfid,
+//         username,
+//         password,
+//         accountType,
+//         lastName,
+//         firstName,
+//         middleName,
+//         middleInitial,
+//         callSign,
+//         currentAddress,
+//         dateOfBirth,
+//         civilStatus,
+//         gender,
+//         nationality,
+//         bloodType,
+//         mobileNumber,
+//         emailAddress,
+//         emergencyContactPerson,
+//         emergencyContactNumber,
+//         highestEducationalAttainment,
+//         nameOfCompany,
+//         yearsInService,
+//         skillsTraining,
+//         otherAffiliation,
+//         bioDataChecked,
+//         interviewChecked,
+//         fireResponsePoints,
+//         activityPoints,
+//         inventoryPoints,
+//         dutyHours
+//     } = req.body;
+
+//     // Check if the username already exists in the database
+//     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
+//     db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
+//         if (checkErr) {
+//             console.error('Error checking username:', checkErr);
+//             res.status(500).send('Error checking username');
+//             return;
+//         }
+
+//         // If username already exists, send an error response
+//         if (checkResult[0].count > 0) {
+//             res.status(400).send('Username already exists');
+//             return;
+//         }
+
+//         // If username does not exist, proceed with registration
+//         bcrypt.hash(password, 10, (hashErr, hash) => {
+//             if (hashErr) {
+//                 console.error('Error hashing password:', hashErr);
+//                 res.status(500).send('Error hashing password');
+//                 return;
+//             }
+
+//             const sql = `INSERT INTO tbl_accounts (
+//                 rfid,
+//                 username,
+//                 password,
+//                 accountType,
+//                 lastName,
+//                 firstName,
+//                 middleName,
+//                 middleInitial,
+//                 callSign,
+//                 currentAddress,
+//                 dateOfBirth,
+//                 civilStatus,
+//                 gender,
+//                 nationality,
+//                 bloodType,
+//                 mobileNumber,
+//                 emailAddress,
+//                 emergencyContactPerson,
+//                 emergencyContactNumber,
+//                 highestEducationalAttainment,
+//                 nameOfCompany,
+//                 yearsInService,
+//                 skillsTraining,
+//                 otherAffiliation,
+//                 bioDataChecked,
+//                 interviewChecked,
+//                 fireResponsePoints,
+//                 activityPoints,
+//                 inventoryPoints,
+//                 dutyHours
+//             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//             db.query(sql, [
+//                 rfid,
+//                 username,
+//                 hash, // Store the hashed password 
+//                 accountType,
+//                 lastName,
+//                 firstName,
+//                 middleName,
+//                 middleInitial,
+//                 callSign,
+//                 currentAddress,
+//                 dateOfBirth,
+//                 civilStatus,
+//                 gender,
+//                 nationality,
+//                 bloodType,
+//                 mobileNumber,
+//                 emailAddress,
+//                 emergencyContactPerson,
+//                 emergencyContactNumber,
+//                 highestEducationalAttainment,
+//                 nameOfCompany,
+//                 yearsInService,
+//                 skillsTraining,
+//                 otherAffiliation,
+//                 bioDataChecked,
+//                 interviewChecked,
+//                 fireResponsePoints,
+//                 activityPoints,
+//                 inventoryPoints,
+//                 dutyHours
+//             ], (err, result) => {
+//                 if (err) {
+//                     console.error('Error registering user:', err);
+//                     res.status(500).send('Error registering user');
+//                     return;
+//                 }
+//                 res.status(200).send('User registered successfully');
+//             });
+//         });
+//     });
+// });
+
+
 //register route (test-hash)
 app.post('/register', (req, res) => {
     const {
@@ -81,104 +229,131 @@ app.post('/register', (req, res) => {
 
     // Check if the username already exists in the database
     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
-    db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
-        if (checkErr) {
-            console.error('Error checking username:', checkErr);
+    db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+        if (checkUsernameErr) {
+            console.error('Error checking username:', checkUsernameErr);
             res.status(500).send('Error checking username');
             return;
         }
 
-        // If username already exists, send an error response
-        if (checkResult[0].count > 0) {
+        if (checkUsernameResult[0].count > 0) {
             res.status(400).send('Username already exists');
             return;
         }
 
-        // If username does not exist, proceed with registration
-        bcrypt.hash(password, 10, (hashErr, hash) => {
-            if (hashErr) {
-                console.error('Error hashing password:', hashErr);
-                res.status(500).send('Error hashing password');
+        // Check if the RFID already exists in the database
+        const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
+        db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
+            if (checkRfidErr) {
+                console.error('Error checking RFID:', checkRfidErr);
+                res.status(500).send('Error checking RFID');
                 return;
             }
 
-            const sql = `INSERT INTO tbl_accounts (
-                rfid,
-                username,
-                password,
-                accountType,
-                lastName,
-                firstName,
-                middleName,
-                middleInitial,
-                callSign,
-                currentAddress,
-                dateOfBirth,
-                civilStatus,
-                gender,
-                nationality,
-                bloodType,
-                mobileNumber,
-                emailAddress,
-                emergencyContactPerson,
-                emergencyContactNumber,
-                highestEducationalAttainment,
-                nameOfCompany,
-                yearsInService,
-                skillsTraining,
-                otherAffiliation,
-                bioDataChecked,
-                interviewChecked,
-                fireResponsePoints,
-                activityPoints,
-                inventoryPoints,
-                dutyHours
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            if (checkRfidResult[0].count > 0) {
+                res.status(400).send('RFID already exists');
+                return;
+            }
 
-            db.query(sql, [
-                rfid,
-                username,
-                hash, // Store the hashed password 
-                accountType,
-                lastName,
-                firstName,
-                middleName,
-                middleInitial,
-                callSign,
-                currentAddress,
-                dateOfBirth,
-                civilStatus,
-                gender,
-                nationality,
-                bloodType,
-                mobileNumber,
-                emailAddress,
-                emergencyContactPerson,
-                emergencyContactNumber,
-                highestEducationalAttainment,
-                nameOfCompany,
-                yearsInService,
-                skillsTraining,
-                otherAffiliation,
-                bioDataChecked,
-                interviewChecked,
-                fireResponsePoints,
-                activityPoints,
-                inventoryPoints,
-                dutyHours
-            ], (err, result) => {
-                if (err) {
-                    console.error('Error registering user:', err);
-                    res.status(500).send('Error registering user');
+            // Check if the email already exists in the database
+            const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
+            db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
+                if (checkEmailErr) {
+                    console.error('Error checking email:', checkEmailErr);
+                    res.status(500).send('Error checking email');
                     return;
                 }
-                res.status(200).send('User registered successfully');
+
+                if (checkEmailResult[0].count > 0) {
+                    res.status(400).send('Email already exists');
+                    return;
+                }
+
+                // If all details are unique, proceed with registration
+                bcrypt.hash(password, 10, (hashErr, hash) => {
+                    if (hashErr) {
+                        console.error('Error hashing password:', hashErr);
+                        res.status(500).send('Error hashing password');
+                        return;
+                    }
+
+                    const sql = `INSERT INTO tbl_accounts (
+                        rfid,
+                        username,
+                        password,
+                        accountType,
+                        lastName,
+                        firstName,
+                        middleName,
+                        middleInitial,
+                        callSign,
+                        currentAddress,
+                        dateOfBirth,
+                        civilStatus,
+                        gender,
+                        nationality,
+                        bloodType,
+                        mobileNumber,
+                        emailAddress,
+                        emergencyContactPerson,
+                        emergencyContactNumber,
+                        highestEducationalAttainment,
+                        nameOfCompany,
+                        yearsInService,
+                        skillsTraining,
+                        otherAffiliation,
+                        bioDataChecked,
+                        interviewChecked,
+                        fireResponsePoints,
+                        activityPoints,
+                        inventoryPoints,
+                        dutyHours
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+                    db.query(sql, [
+                        rfid,
+                        username,
+                        hash, // Store the hashed password 
+                        accountType,
+                        lastName,
+                        firstName,
+                        middleName,
+                        middleInitial,
+                        callSign,
+                        currentAddress,
+                        dateOfBirth,
+                        civilStatus,
+                        gender,
+                        nationality,
+                        bloodType,
+                        mobileNumber,
+                        emailAddress,
+                        emergencyContactPerson,
+                        emergencyContactNumber,
+                        highestEducationalAttainment,
+                        nameOfCompany,
+                        yearsInService,
+                        skillsTraining,
+                        otherAffiliation,
+                        bioDataChecked,
+                        interviewChecked,
+                        fireResponsePoints,
+                        activityPoints,
+                        inventoryPoints,
+                        dutyHours
+                    ], (err, result) => {
+                        if (err) {
+                            console.error('Error registering user:', err);
+                            res.status(500).send('Error registering user');
+                            return;
+                        }
+                        res.status(200).send('User registered successfully');
+                    });
+                });
             });
         });
     });
 });
-
-
 
 
 
@@ -425,7 +600,7 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 
 
 
-// Endpoint to get user profile data by RFID (working for profile)
+// endpoint to get user profile data by RFID (working for profile)
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
     const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
@@ -451,7 +626,7 @@ app.get('/attendanceProfile', (req, res) => {
 });
 
 
-// Endpoint to record Time In (working)
+// endpoint to record Time In (working)
 app.post('/recordTimeIn', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
@@ -492,7 +667,7 @@ app.post('/recordTimeIn', (req, res) => {
     });
 });
 
-// Endpoint to record Time Out (working)
+// endpoint to record Time Out (working)
 app.post('/recordTimeOut', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
@@ -529,7 +704,7 @@ app.post('/recordTimeOut', (req, res) => {
 
 
 
-// Endpoint to retrieve recent attendance records
+// endpoint to retrieve recent attendance records
 app.get('/recentAttendance', (req, res) => {
     const sql = `
         SELECT a.accountID, a.timeIn, a.dateOfTimeIn, a.timeOut, a.dateOfTimeOut, 
@@ -552,6 +727,160 @@ app.get('/recentAttendance', (req, res) => {
 
 
 
+
+//admin attendance shit
+// endpoint to retrieve attendance details
+app.get('/attendanceDetails', (req, res) => {
+    const sql = `
+        SELECT 
+            a.firstName,
+            a.middleInitial,
+            a.lastName,
+            a.callSign,
+            b.dateOfTimeIn,
+            b.timeIn,
+            b.dateOfTimeOut,
+            b.timeOut,
+            a.status,
+            a.accountType
+        FROM tbl_accounts a
+        JOIN tbl_attendance b ON a.accountID = b.accountID
+        ORDER BY b.dateOfTimeIn DESC, b.timeIn DESC `; // add LIMIT # if need
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving attendance details');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
+// endpoint to retrieve volunteer details
+// New endpoint to retrieve all account details
+app.get('/volunteerDetails', (req, res) => {
+    const sql = `
+        SELECT 
+            a.firstName,
+            a.middleInitial,
+            a.lastName,
+            a.callSign,
+            a.callSign AS rank, 
+            a.dutyHours,
+            a.cumulativeDutyHours,
+            a.fireResponsePoints,
+            a.inventoryPoints,
+            a.activityPoints,
+            a.accountType
+        FROM tbl_accounts a
+        ORDER BY a.lastName, a.firstName`;  
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving account details');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
+
+
+
+
+
+
+
+// // Add forgot password route (bugged)
+// app.post('/forgot-password', async (req, res) => {
+//     const { emailAddress } = req.body;
+
+//     // Check if email exists in the database
+//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [emailAddress], async (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ success: false, message: 'Database error' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ success: false, message: 'Email not found' });
+//         }
+
+//         const user = results[0];
+//         const token = (await randomBytesAsync(20)).toString('hex');
+//         const tokenExpiry = Date.now() + 3600000; // 1 hour
+
+//         // Save the token and expiry to the user record
+//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE accountID = ?', [token, tokenExpiry, user.accountID], (err) => {
+//             if (err) {
+//                 return res.status(500).json({ success: false, message: 'Database error' });
+//             }
+
+//             // Send email with reset link
+//             const transporter = nodemailer.createTransport({
+//                 service: 'Gmail',
+//                 auth: {
+//                     user: 'kulowtsss@gmail.com',
+//                     pass: 'KULOWTS12345'
+//                 }
+//             });
+
+//             const mailOptions = {
+//                 to: emailAddress,
+//                 from: 'kulowtsss@gmail.com',
+//                 subject: 'Password Reset',
+//                 text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+//                       `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+//                       `http://${req.headers.host}/reset/${token}\n\n` +
+//                       `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+//             };
+
+//             transporter.sendMail(mailOptions, (err) => {
+//                 if (err) {
+//                     return res.status(500).json({ success: false, message: 'Email sending error' });
+//                 }
+
+//                 res.status(200).json({ success: true, message: 'Password reset link has been sent to your email.' });
+//             });
+//         });
+//     });
+// });
+
+// // Add endpoint to handle password reset form submission
+// app.post('/reset/:token', (req, res) => {
+//     const { token } = req.params;
+//     const { newPassword } = req.body;
+
+//     // Find user with the matching token and ensure it hasn't expired
+//     db.query('SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?', [token, Date.now()], (err, results) => {
+//         if (err) {
+//             return res.status(500).json({ success: false, message: 'Database error' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(400).json({ success: false, message: 'Password reset token is invalid or has expired.' });
+//         }
+
+//         const user = results[0];
+
+//         // Hash the new password
+//         bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+//             if (hashErr) {
+//                 return res.status(500).json({ success: false, message: 'Error hashing password' });
+//             }
+
+//             // Update the user's password in the database
+//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID = ?', [hash, user.accountID], (updateErr) => {
+//                 if (updateErr) {
+//                     return res.status(500).json({ success: false, message: 'Database error' });
+//                 }
+
+//                 res.status(200).json({ success: true, message: 'Password has been reset successfully.' });
+//             });
+//         });
+//     });
+// });
 
 
 

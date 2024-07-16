@@ -141,7 +141,16 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const firstName = document.getElementById('firstName').value; 
     const middleName = document.getElementById('middleName').value;
     const middleInitial = middleName ? middleName.charAt(0) : ''; // Take the first character of middleName as middleInitial
-    const callSign = document.getElementById('callSign').value; 
+    let callSign = document.getElementById('callSign').value; 
+    const callSignNum = document.getElementById('callSignNum').value;
+    
+    //for callSign shit
+    if (callSign === "ECHO800" || callSign === "ECHO900") {
+        callSign = callSign.slice(0, 4) + callSignNum;
+    } else if (callSign === "ASPIRANT" || callSign === "PROBATIONARY" || callSign === "ECHO") {
+        callSign = callSign + callSignNum;
+    }
+
     const currentAddress = document.getElementById('currentAddress').value; 
     const dateOfBirth = document.getElementById('dateOfBirth').value; 
     const civilStatus = document.getElementById('civilStatus').value; 
@@ -190,6 +199,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             firstName, 
             middleName, 
             middleInitial, 
+            callSign,
             callSign, 
             currentAddress, 
             dateOfBirth, 

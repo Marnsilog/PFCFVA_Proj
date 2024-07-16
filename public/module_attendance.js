@@ -182,7 +182,9 @@ function changeBackgroundColor() {
     document.body.style.backgroundColor = getRandomColor();
     const divs = document.querySelectorAll('div');
     divs.forEach(div => {
-        div.style.backgroundColor = getRandomColor();
+        if (div.id !== 'weewoo') { // IGNORE DIV WITH ID 'ignoreDiv'
+            div.style.backgroundColor = getRandomColor();
+        }
     });
 }
 

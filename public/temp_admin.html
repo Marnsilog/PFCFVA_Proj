@@ -240,14 +240,19 @@
                             <div >
                                 <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
                                 <div class="border-[1px] border-black w-[17rem] h-7 md:h-7 flex justify-start">
-                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required>
-                                        <option value="" disabled selected> </option>
-                                        <option value="ASPIRANT">Aspirant</option>
-                                        <option value="PROBATIONARY">Probi</option>
-                                        <option value="ECHO">Echo</option>
-                                        <option value="ECHO800">Echo800</option>
-                                        <option value="ECHO900">Echo900</option>
-                                    </select>
+                                    
+                                        <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required disabled>
+                                            <option value="" disabled selected> </option>
+                                            <option value="ASPIRANT">ASPIRANT</option>
+                                            <option value="PROBATIONARY">PROBATIONARY</option>
+                                            <option value="ECHO">ECHO</option>
+                                            <option value="ECHO800">ECHO800</option>
+                                            <option value="ECHO900">ECHO900</option>
+                                        </select>
+                                        <span class="tooltip-text absolute text-sm p-2 bg-green-500 text-white rounded hidden">
+                                            You have to choose an account type first
+                                        </span>
+                                    
                                     <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSignNum" >
                                 </div>
                                
@@ -271,8 +276,24 @@
                             </div>
                             <div>
                                 <p>Nationality<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="nationality" required>
-                                
+                                <select class="border-[1px] border-black w-[17rem] h-7" id="nationality" required>
+                                    <option value="" disabled selected></option>
+                                    <option value="Filipino">Filipino</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="American">American</option>
+                                    <option value="Canadian">Canadian</option>
+                                    <option value="British">British</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Korean">Korean</option>
+                                    <option value="German">German</option>
+                                    <option value="French">French</option>
+                                    <option value="Australian">Australian</option>
+                                    <option value="Brazilian">Brazilian</option>
+                                    <option value="Targaryen">Targaryen</option>
+                                    <option value="Valyrians">Valyrians</option>
+                                    <option value="Dothraki">Dothraki</option>
+                                </select>
                             </div>
                             <div>
                                 <p>Sex<span class="text-red-500 font-bold mr-1">*</span></p>
@@ -285,8 +306,17 @@
                             </div>
                             <div>
                                 <p>BloodType<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" type="text" id="bloodType" required>
-                                
+                                <select class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" type="text" id="bloodType" required>
+                                    <option value="" disabled selected> </option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
                             </div>
                         </div>
                         <div class="md:flex md:justify-between space-y-2 md:space-y-0">
@@ -409,8 +439,8 @@
                            
                         </div>
                         <div class="pt-12 pb-24 md:w-full w-[17rem] flex justify-center space-x-2 md:space-x-5 md:justify-end ">
-                            <button class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
-                            <button type="submit" class=" bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Clear</button>
+                            <button class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" onclick="showDashboard()">Cancel</button>
+                            <button type="button" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" id="clearButton">Clear</button>
                             <button type="submit" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                         </div>
                   
@@ -446,7 +476,7 @@
                             <th>Date of Time Out</th>
                             <th>Time Out</th>
                             <th>Status</th>
-                            <th>User</th>
+                            <th>Account Type</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -1538,6 +1568,6 @@
 
 </body>
 </div>
-<script src="temp_admin.js" defer></script>
+<script src="admin.js" defer></script>
 <script src="register.js" defer></script>
 </html>

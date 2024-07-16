@@ -727,6 +727,45 @@ app.get('/recentAttendance', (req, res) => {
 
 
 
+
+//admin attendance shit
+// New endpoint to retrieve attendance details
+app.get('/attendanceDetails', (req, res) => {
+    const sql = `
+        SELECT 
+            a.firstName,
+            a.middleInitial,
+            a.lastName,
+            a.callSign,
+            b.dateOfTimeIn,
+            b.timeIn,
+            b.dateOfTimeOut,
+            b.timeOut,
+            a.status,
+            a.accountType
+        FROM tbl_accounts a
+        JOIN tbl_attendance b ON a.accountID = b.accountID
+        ORDER BY b.dateOfTimeIn DESC, b.timeIn DESC `; // add LIMIT # if need
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving attendance details');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
 // // Add forgot password route (bugged)
 // app.post('/forgot-password', async (req, res) => {
 //     const { emailAddress } = req.body;

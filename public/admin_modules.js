@@ -48,7 +48,40 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+//volunteers NAV
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/volunteerDetails')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const volunteerDetails = document.getElementById('volunteerDetails');
+        volunteerDetails.innerHTML = ''; // Clear existing data
 
+        data.forEach(record => {
+          const row = document.createElement('tr');
+          const rank = record.callSign.replace(/\d/g, ''); // remove numbers from callSign
+          row.innerHTML = `
+            <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+            <td>${record.callSign}</td>
+            <td>${rank}</td>
+            <td>${record.dutyHours}</td>
+            <td>${record.cumulativeDutyHours}</td>
+            <td>${record.fireResponsePoints}</td>
+            <td>${record.inventoryPoints}</td>
+            <td>${record.activityPoints}</td>
+            <td>${record.accountType}</td>
+          `;
+          volunteerDetails.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching volunteer details:', error);
+      });
+  });
 
 
 

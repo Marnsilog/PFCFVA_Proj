@@ -600,7 +600,7 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 
 
 
-// Endpoint to get user profile data by RFID (working for profile)
+// endpoint to get user profile data by RFID (working for profile)
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
     const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
@@ -626,7 +626,7 @@ app.get('/attendanceProfile', (req, res) => {
 });
 
 
-// Endpoint to record Time In (working)
+// endpoint to record Time In (working)
 app.post('/recordTimeIn', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
@@ -667,7 +667,7 @@ app.post('/recordTimeIn', (req, res) => {
     });
 });
 
-// Endpoint to record Time Out (working)
+// endpoint to record Time Out (working)
 app.post('/recordTimeOut', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
@@ -704,7 +704,7 @@ app.post('/recordTimeOut', (req, res) => {
 
 
 
-// Endpoint to retrieve recent attendance records
+// endpoint to retrieve recent attendance records
 app.get('/recentAttendance', (req, res) => {
     const sql = `
         SELECT a.accountID, a.timeIn, a.dateOfTimeIn, a.timeOut, a.dateOfTimeOut, 
@@ -729,7 +729,7 @@ app.get('/recentAttendance', (req, res) => {
 
 
 //admin attendance shit
-// New endpoint to retrieve attendance details
+// endpoint to retrieve attendance details
 app.get('/attendanceDetails', (req, res) => {
     const sql = `
         SELECT 
@@ -757,6 +757,33 @@ app.get('/attendanceDetails', (req, res) => {
 });
 
 
+// endpoint to retrieve volunteer details
+// New endpoint to retrieve all account details
+app.get('/volunteerDetails', (req, res) => {
+    const sql = `
+        SELECT 
+            a.firstName,
+            a.middleInitial,
+            a.lastName,
+            a.callSign,
+            a.callSign AS rank, 
+            a.dutyHours,
+            a.cumulativeDutyHours,
+            a.fireResponsePoints,
+            a.inventoryPoints,
+            a.activityPoints,
+            a.accountType
+        FROM tbl_accounts a
+        ORDER BY a.lastName, a.firstName`;  
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving account details');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 

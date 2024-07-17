@@ -352,8 +352,9 @@ function icsBack(){
     //for calendar
     document.addEventListener('DOMContentLoaded', (event) => {
         const dateOfBirthInput = document.getElementById('dateOfBirth');
-        const today = new Date().toISOString().split('T')[0];
-        dateOfBirthInput.setAttribute('max', today);
+        const today = new Date();
+        const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+        dateOfBirthInput.setAttribute('max', minDate);
     });
 
     //FOR RESPONSIVE ---------------------------------->
@@ -386,3 +387,149 @@ function icsBack(){
         
     });
 
+
+
+
+
+    //register, clear form
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registerForm');
+        const clearButton = document.getElementById('clearButton');
+        const callSignSelect = document.getElementById('callSign');
+        const tooltipText = callSignSelect.nextElementSibling;
+
+        clearButton.addEventListener('click', function() {
+            clearForm(form);
+        });
+
+        function clearForm(form) {
+            Array.from(form.elements).forEach(element => {
+                switch(element.type) {
+                    case 'text':
+                    case 'password':
+                    case 'textarea':
+                    case 'email':
+                    case 'number':
+                    case 'date':
+                    case 'tel':
+                        element.value = '';
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        element.checked = false;
+                        break;
+                    case 'select-one':
+                    case 'select-multiple':
+                        element.selectedIndex = -1;
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            // reset callSign select to its initial state, may minor bug on clear, tool tip auto pops up
+            callSignSelect.disabled = true;
+            tooltipText.classList.remove('hidden');
+        }
+    });
+    
+
+
+
+    //register, dont allow numbers
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson'];
+    
+        nameFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.addEventListener('keypress', function(event) {
+                if (/\d/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+    
+    //register, don't allow letters for specific fields
+    document.addEventListener('DOMContentLoaded', function() {
+        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
+
+        numberFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.addEventListener('keypress', function(event) {
+                if (/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+
+
+    //auto format
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
+    
+        // Function to capitalize the first letter of each word
+        function capitalizeWords(str) {
+            return str.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
+        }
+    
+        nameFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+    
+            // Format text as the user types
+            field.addEventListener('input', function() {
+                field.value = capitalizeWords(field.value);
+            });
+    
+            // Format text when the user leaves the input field
+            field.addEventListener('blur', function() {
+                field.value = capitalizeWords(field.value);
+            });
+        });
+    });
+    
+
+
+     //handle accountType/callSign
+     document.addEventListener('DOMContentLoaded', function() {
+        const accountTypeSelect = document.getElementById('accountType');
+        const callSignSelect = document.getElementById('callSign');
+        const optionsToDisable = ['ECHO', 'ECHO800', 'ECHO900'];
+        const tooltipText = callSignSelect.nextElementSibling;
+
+        accountTypeSelect.addEventListener('change', function() {
+            const selectedAccountType = accountTypeSelect.value;
+            if (selectedAccountType) {
+                callSignSelect.disabled = false;
+                tooltipText.classList.add('hidden');
+            } else {
+                callSignSelect.disabled = true;
+                tooltipText.classList.remove('hidden');
+            }
+
+            if (selectedAccountType === 'Volunteer') {
+                optionsToDisable.forEach(optionValue => {
+                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                    option.disabled = true;
+                });
+            } else {
+                optionsToDisable.forEach(optionValue => {
+                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                    option.disabled = false;
+                });
+            }
+        });
+
+        callSignSelect.addEventListener('mouseover', function() {
+            if (callSignSelect.disabled) {
+                tooltipText.classList.remove('hidden');
+            }
+        });
+
+        callSignSelect.addEventListener('mouseout', function() {
+            tooltipText.classList.add('hidden');
+        });
+    });

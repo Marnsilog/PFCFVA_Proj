@@ -240,14 +240,19 @@
                             <div >
                                 <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
                                 <div class="border-[1px] border-black w-[17rem] h-7 md:h-7 flex justify-start">
-                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required>
-                                        <option value="" disabled selected> </option>
-                                        <option value="ASPIRANT">Aspirant</option>
-                                        <option value="PROBATIONARY">Probi</option>
-                                        <option value="ECHO">Echo</option>
-                                        <option value="ECHO800">Echo800</option>
-                                        <option value="ECHO900">Echo900</option>
-                                    </select>
+                                    
+                                        <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required disabled>
+                                            <option value="" disabled selected> </option>
+                                            <option value="ASPIRANT">ASPIRANT</option>
+                                            <option value="PROBATIONARY">PROBATIONARY</option>
+                                            <option value="ECHO">ECHO</option>
+                                            <option value="ECHO800">ECHO800</option>
+                                            <option value="ECHO900">ECHO900</option>
+                                        </select>
+                                        <span class="tooltip-text absolute text-sm p-2 bg-green-500 text-white rounded hidden">
+                                            You have to choose an account type first
+                                        </span>
+                                    
                                     <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSignNum" >
                                 </div>
                                
@@ -271,8 +276,24 @@
                             </div>
                             <div>
                                 <p>Nationality<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="nationality" required>
-                                
+                                <select class="border-[1px] border-black w-[17rem] h-7" id="nationality" required>
+                                    <option value="" disabled selected></option>
+                                    <option value="Filipino">Filipino</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="American">American</option>
+                                    <option value="Canadian">Canadian</option>
+                                    <option value="British">British</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Korean">Korean</option>
+                                    <option value="German">German</option>
+                                    <option value="French">French</option>
+                                    <option value="Australian">Australian</option>
+                                    <option value="Brazilian">Brazilian</option>
+                                    <option value="Targaryen">Targaryen</option>
+                                    <option value="Valyrians">Valyrians</option>
+                                    <option value="Dothraki">Dothraki</option>
+                                </select>
                             </div>
                             <div>
                                 <p>Sex<span class="text-red-500 font-bold mr-1">*</span></p>
@@ -285,8 +306,17 @@
                             </div>
                             <div>
                                 <p>BloodType<span class="text-red-500 font-bold mr-1">*</span></p>
-                                <input class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" type="text" id="bloodType" required>
-                                
+                                <select class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" type="text" id="bloodType" required>
+                                    <option value="" disabled selected> </option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
                             </div>
                         </div>
                         <div class="md:flex md:justify-between space-y-2 md:space-y-0">
@@ -409,8 +439,8 @@
                            
                         </div>
                         <div class="pt-12 pb-24 md:w-full w-[17rem] flex justify-center space-x-2 md:space-x-5 md:justify-end ">
-                            <button class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Cancel</button>
-                            <button type="submit" class=" bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Clear</button>
+                            <button class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" onclick="showDashboard()">Cancel</button>
+                            <button type="button" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" id="clearButton">Clear</button>
                             <button type="submit" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
                         </div>
                   
@@ -426,7 +456,7 @@
     <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
         <div class="md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-            <input class="w-full h-full" type="text">
+            <input class="w-full h-full" id="attendanceSearchBox" type="text">
             <div style="cursor: pointer;" onclick="filter()">
                 <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
             </div>
@@ -446,52 +476,14 @@
                             <th>Date of Time Out</th>
                             <th>Time Out</th>
                             <th>Status</th>
-                            <th>User</th>
+                            <th>Account Type</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody class="font-[500] md:text-base text-sm">
-                        <tr>
-                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Pedro Penduko</td>
-                            <td>PROBI</td>
-                            <td>03/20/24</td>
-                            <td>09:00 am</td>
-                            <td>03/20/24</td>
-                            <td>-</td>
-                            <td>Active</td>
-                            <!-- FOR BACKEND: THERES GREEN RED YELLOW INDICATOR I PUT THE ICON ON SPAN JUST PUT ID ON IT THEN CHANGE THE "FILL" TO CHANGE ITS COLOR -->
-                            <td class="flex justify-center mt-[5px]">Volunteer <span><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-[5px]" viewBox="0 0 320 512"><path fill="limegreen" d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z"/></svg></span></td>
-                            <td><svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><path fill="black" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112v25.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V208c0-61.9 50.1-112 112-112zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/></svg></td>
-                            <td><svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 128 512"><path fill="black" d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/></svg></td>
-                            
-                        </tr>
-                        <tr>
-                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Hanna Manalo</td>
-                            <td>PROBI</td>
-                            <td>03/20/24</td>
-                            <td>09:00 am</td>
-                            <td>03/20/24</td>
-                            <td>-</td>
-                            <td>Active</td>
-                            <td class="flex justify-center mt-[5px]">Volunteer <span><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-[5px]" viewBox="0 0 320 512"><path fill="limegreen" d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z"/></svg></span></td>
-                            <td><svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><path fill="black" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112v25.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V208c0-61.9 50.1-112 112-112zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/></svg></td>
-                            <td><svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 128 512"><path fill="black" d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/></svg></td>
-                            
-                        </tr>
-                        <tr>
-                            <td class="md:static md:pt-3 pt-2 sticky-col bg-white">Henry Polo</td>
-                            <td>PROBI</td>
-                            <td>03/20/24</td>
-                            <td>09:00 am</td>
-                            <td>03/20/24</td>
-                            <td>-</td>
-                            <td>Active</td>
-                            <td  class="flex justify-center mt-[5px]">Volunteer <span><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-[5px]" viewBox="0 0 320 512"><path fill="limegreen" d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z"/></svg></span></td>
-                            <td><svg style="cursor: pointer;" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><path fill="black" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112v25.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V208c0-61.9 50.1-112 112-112zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/></svg></td>
-                            <td><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 128 512"><path fill="black" d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/></svg></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="attendanceLogs" class="font-[500] md:text-base text-sm">
+                        
+                      </tbody>
                 </table>
             </div>
         </div>
@@ -505,7 +497,8 @@
                 <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
                     <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                        <input class="w-full h-full" type="text">
+                        <input class="w-full h-full" id="volunteerSearchBox" type="text"> 
+                        <!-- search box ./. -->
                         <div style="cursor: pointer;" onclick="summaryfilter()">
                             <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
                         </div>
@@ -536,20 +529,9 @@
                                     <th>Account Type</th>
                                 </tr>
                             </thead>
-                            <tbody class="font-[500] md:text-base text-sm">
-                                <tr>
-                                    <td class="md:pt-3 pt-2 sticky-col bg-white">1. Pedro Penduko</td>
-                                    <td>PROBI76</td>
-                                    <td>Probitionary</td>
-                                    <td>1500 <span>hr</span></td>
-                                    <td>1500 <span>hr</span></td>
-                                    <td>40 <span>pts</span></td>
-                                    <td>3 <span>pts</span></td>
-                                    <td>1 <span>pts</span></td>
-                                    <td>Volunteer</td>
-                                </tr>
-                               
-                            </tbody>
+                            <tbody id="volunteerDetails" class="font-[500] md:text-base text-sm">
+                                <!-- aaaaaaaaaaaaaaaaaaa -->
+                              </tbody>
                         </table>
                     </div>
                 </div>
@@ -1539,5 +1521,6 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
+<script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
 </html>

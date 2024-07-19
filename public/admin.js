@@ -26,8 +26,24 @@ function Rankings() {
     displaySection('frmRankings');
 }
 
+// //old
+// function addLine(LineId) {
+//     const formIds = ['dashb', 'reg', 'att','vol','ranks','inc','inV','prof'];
+    
+//     formIds.forEach(id => {
+//         const element = document.getElementById(id);
+//         if (id === LineId) {
+//             element.classList.add('underline', 'underline-offset-8');
+//         }
+//         else {
+//             element.classList.remove('underline', 'underline-offset-8');
+//         }
+//     });
+// }
+
+//new
 function addLine(LineId) {
-    const formIds = ['dashb', 'reg', 'att','vol','ranks','inc','inV','prof'];
+    const formIds = ['dashb','att','vol','ranks','inc','inV','prof'];
     
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -39,8 +55,10 @@ function addLine(LineId) {
         }
     });
 }
+
+
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile'];
+    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile', 'accountsConfiguration'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -72,6 +90,10 @@ function showRanks(){
 function showVolunteer(){
     showElement('SummaryVolunteer');
     addLine('vol');
+}
+function showAccountsConfiguration(){
+    showElement('accountsConfiguration');
+    
 }
 function showIncident(){
     showElement('frmIncident');

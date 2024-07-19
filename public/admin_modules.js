@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
               <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
               <td>${record.callSign}</td>
               <td>${rank}</td>
-              <td>${record.dutyHours}</td>
               <td>${record.cumulativeDutyHours}</td>
+              <td>${record.dutyHours}</td>
               <td>${record.fireResponsePoints}</td>
               <td>${record.inventoryPoints}</td>
               <td>${record.activityPoints}</td>

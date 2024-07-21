@@ -1,12 +1,12 @@
 let slideIndex = 1;
 showSlides(slideIndex);
 
-// Next/previous controls
+
 function plusSlides(n) {
   showSlides(slideIndex += n);
 }
 
-// Thumbnail image controls
+
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }
@@ -25,4 +25,20 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " bg-gray-700";
+}
+
+
+function animateProgressBar(targetWidth) {
+  
+  const progressBar = document.getElementById('progress');
+  if (progressBar) {
+    progressBar.style.width = targetWidth + '%';
+  }
+}
+
+function animateProgressBar2(targetWidth) {
+  const progressBar2 = document.getElementById('progress2');
+  if (progressBar2) {
+    progressBar2.style.width = targetWidth + '%';
+  }
 }

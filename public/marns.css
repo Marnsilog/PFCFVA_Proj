@@ -3,7 +3,7 @@
   height: 25px;
   background-color: #930D0D;
   transition: width 2s ease;
-  border-radius: 20px; /* Half of the height to make it perfectly rounded */
+  border-radius: 20px; 
 }
 
 #progress2 {
@@ -11,7 +11,7 @@
     height: 25px;
     background-color: #930D0D;
     transition: width 2s ease;
-    border-radius: 20px; /* Half of the height to make it perfectly rounded */
+    border-radius: 20px;
   }
 
   #progress3 {
@@ -19,7 +19,7 @@
     height: 20px;
     background-color: #930D0D;
     transition: width 2s ease;
-    border-radius: 20px; /* Half of the height to make it perfectly rounded */
+    border-radius: 20px;
   }
 
   #progress4 {

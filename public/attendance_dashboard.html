@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <title>PFCFVA || ATTENDANCE DASHBOARD</title>
+</head>
+<body class="w-full h-full bg-white">
+    <div class="bg-rosered2 font-Inter h-[4rem] w-full || md:h-28 md:w-full">
+        <div class="flex justify-normal space-x-5 ml-10 pt-3">
+            <img src="img/pfcfvalogo.png" class="w-[5rem] h-[5rem]">
+            <p class="font-Inter text-2xl text-white font-semibold mt-2">Paranaque Filipino Chinese<br>Fire Volunteer Association</p> 
+        </div>
+    </div>
+    <div class="w-full h-full flex justify-normal">
+        <div class="w-1/2 font-Inter">
+
+            <div class="ml-56 mt-24">
+                <p class="font-bold text-2xl">INSTRUCTION</p>
+                <p class="text-xl font-semibold ml-3">Tap your ID to record your<br> attendance.</p>
+            </div>
+          
+           
+            <div class="flex justify-center w-full mt-52">
+                <div class="w-[32rem] h-36 border-[1px] border-black flex justify-normal font-Inter">
+                    <div class="w-1/2 border-r-[1px] border-black pt-8">
+                        <p class="text-center font-bold text-2xl"> TIME IN</p>
+                        <p class="text-center">09:12 AM</p>
+                    </div>
+                    <div class="w-1/2 pt-8">
+                        <p class="text-center font-bold text-2xl"> TIME OUT</p>
+                        <p class="text-center">  12:12 AM</p>
+                    </div>
+                </div>
+                
+            </div>
+           
+        </div>
+
+
+        <div class="w-1/2">
+            <div class="w-full h-full flex justify-start">
+                <div class="w-full mt-20">
+                    <p class="font-Inter text-3xl text-black font-bold text-center">RFID</p>
+                    <div class="pt-5 w-full flex justify-center">
+                        <img src="img/user.png" class="w-28 h-28">
+                        <div class="ml-5 mt-5">
+                            <p class="text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
+                            <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
+                           
+                        </div>
+                    </div>
+              
+                    <div class="pt-3 px-36">
+                        <p class="font-Inter text-xl">Duty Hours</p>
+                        <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
+                            <div id="progress" class="h-full"></div>
+                        </div>
+                        <p class="text-end text-base text-[#4B4B4B]">1200 duty Hours</p>
+                    </div>
+            
+                    <div class="px-36">
+                        <p class="font-Inter text-xl">Fire Response</p>
+                        <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
+                            <div id="progress2" class="h-full"></div>
+                        </div>
+                        <p class="text-end text-base text-[#4B4B4B]">12 fire Response</p>
+                    </div>
+                
+                    
+                    <div class="mt-6 flex justify-center space-x-10 text-2xl">
+                        <div class="text-center font-Inter ">
+                            <p class="font-semibold">1</p>
+                            <p >Inventory</p>
+                        </div>
+            
+                        <div class="text-center font-Inter">
+                            <p class="font-semibold">4</p>
+                            <p>Activity</p>
+                        </div>
+                        
+                    </div>
+                        
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+<script src="attendance.js" defer></script>
+</html>

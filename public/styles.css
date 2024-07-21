@@ -1224,6 +1224,10 @@ video {
   margin-top: 9px;
 }
 
+.mt-20{
+  margin-top: 5rem;
+}
+
 .block{
   display: block;
 }
@@ -2219,6 +2223,11 @@ video {
   padding-right: 1.25rem;
 }
 
+.px-56{
+  padding-left: 14rem;
+  padding-right: 14rem;
+}
+
 .px-6{
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -2277,6 +2286,16 @@ video {
 .py-\[5px\]{
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.px-32{
+  padding-left: 8rem;
+  padding-right: 8rem;
+}
+
+.px-36{
+  padding-left: 9rem;
+  padding-right: 9rem;
 }
 
 .pb-14{

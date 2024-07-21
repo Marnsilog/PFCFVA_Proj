@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <title>PFCFVA || ATTENDANCE</title>
+</head>
+<body class="w-full">
+
+    <div class="w-full h-screen flex justify-normal">
+    <div class="w-1/2  bg-rosered bg-opacity-90 relative">
+        <div class="w-full h-full mx-auto slideshow-container">
+            <div class="mySlides fade hidden  w-full h-full opacity-90">
+                <img src="/public/img/backround.jpg" class="w-full h-full object-cover">
+            </div>
+            
+            <div class="mySlides fade hidden w-full h-full opacity-80">
+                <img src="/public/img/ex2.jpg" class="w-full h-full object-cover">
+            </div>
+            
+            <div class="mySlides fade hidden w-full h-full opacity-80">
+                <img src="/public/img/ex3.jpg" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute top-5">
+                <div class="flex justify-normal space-x-5 ml-10">
+                    <img src="img/pfcfvalogo.png" class="w-16 h-16">
+                    <p class="font-Inter text-2xl text-white font-semibold ">Paranaque Filipino Chinese<br>Fire Volunteer Association</p> 
+                </div>
+            </div>
+            <div class="w-full flex justify-center">
+                <div class="text-center absolute bottom-5">
+                    <span class="dot h-4 w-4 mx-1 bg-[#CFCFCF] rounded-full inline-block cursor-pointer transition duration-600 ease-in-out" onclick="currentSlide(1)"></span>
+                    <span class="dot h-4 w-4 mx-1 bg-[#CFCFCF] rounded-full inline-block cursor-pointer transition duration-600 ease-in-out" onclick="currentSlide(2)"></span>
+                    <span class="dot h-4 w-4 mx-1 bg-[#CFCFCF] rounded-full inline-block cursor-pointer transition duration-600 ease-in-out" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="w-1/2">
+        <div class="w-full flex justify-center items-center">
+            <div class="font-Inter text-black w-full mt-32 space-y-5">
+                <p class="text-4xl font-[1000] text-center">Login</p>
+                <p class="text-xl text-center">An admin account is required to start attendance <br> module, ask your OIC for assistance.</p>
+                <div class="w-full flex justify-center items-center">
+                    <div class="space-y-2">
+                        <div class="h-14 w-[23rem] bg-white border-[1px] border-black rounded-lg px-2 py-1 flex justify-normal"> 
+                            <svg class="w-7 h-7 mt-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="darkgray" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/></svg>
+                            <input type="username" class="w-full h-full px-2" placeholder="username" required>
+                        </div>
+
+                        <div class="h-14 w-[23rem] bg-white border-[1px] border-black rounded-lg px-2 py-1 flex justify-normal"> 
+                            <svg class="w-7 h-7 mt-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="darkgray" d="M144 144l0 48 160 0 0-48c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192l0-48C80 64.5 144.5 0 224 0s144 64.5 144 144l0 48 16 0c35.3 0 64 28.7 64 64l0 192c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 256c0-35.3 28.7-64 64-64l16 0z"/></svg>
+                            <input type="password" class="w-full h-full px-2" placeholder="password" required>
+                        </div>
+                        <div class="w-full flex justify-end">
+                            <p class="font-Istok text-[#818181] text-sm">Forgot Password?</p>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full text-white font0inter text-xl font-semibold rounded-lg h-12 bg-[#930D0D]">Login</button>
+                            <div class="flex justify-center">
+                               <a href="#" class="text-[#818181] text-sm underline underline-offset-3">Cancel</a>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+                
+               
+            </div>
+        </div>
+       
+    </div>
+    </div>
+        
+
+
+</body>
+<script src="attendance.js" defer></script>
+</html>

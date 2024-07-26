@@ -484,15 +484,11 @@
                     <thead class="md:text-lg text-base bg-[#D6D6D6] border-t-2 border-b-2 border-black">
                         <tr>
                             <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
-                            <th>Ranks</th>
+                            <th>Call Sign</th>
                             <th>Date of Time In</th>
                             <th>Time In</th>
                             <th>Date of Time Out</th>
                             <th>Time Out</th>
-                            <th>Status</th>
-                            <th>Account Type</th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody id="attendanceLogs" class="font-[500] md:text-base text-sm">
@@ -519,11 +515,24 @@
                     </div>
                 </div>
             </div>
-            <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 bg-[#E9E8E8] px-2 py-[5px] rounded-lg" style="cursor: pointer;" onclick="summarySorting()">
-                <p class="text-lg">Sort by</p>
-                <div>
+            <!-- <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 bg-[#E9E8E8] px-2 py-[5px] rounded-lg" style="cursor: pointer;" onclick="summarySorting()"> -->
+            <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 px-2 py-[5px]">
+                <!-- <p class="text-lg">Sort by</p> -->
+                <select class="border-[1px] border-black w-[17rem] h-7 rounded-lg" id="sortByMeritTracking" required>
+                    <option value="" disabled selected>Sort By:</option>
+                    <option value="">Name</option>
+                    <option value="">Call Sign</option>
+                    <option value="">Rank</option>
+                    <option value="">Duty Hours</option>
+                    <option value="">Cumulative Duty Hours</option>
+                    <option value="">Fire Response</option>
+                    <option value="">Inventory</option>
+                    <option value="">Activity</option>
+
+                </select>
+                <!-- <div>
                     <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
-                </div>
+                </div> -->
             </div>
 
             <div class="w-full flex justify-center ">
@@ -535,12 +544,11 @@
                                     <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
                                     <th>Call Sign</th>
                                     <th>Rank</th>
-                                    <th class="leading-tight">Cumulative<br>Duty Hours</th>
                                     <th>Duty Hours</th>
+                                    <th class="leading-tight">Cumulative<br>Duty Hours</th>
                                     <th>Fire Response</th>
                                     <th>Inventory</th>
                                     <th>Activity</th>
-                                    <th>Account Type</th>
                                 </tr>
                             </thead>
                             <tbody id="volunteerDetails" class="font-[500] md:text-base text-sm">
@@ -754,7 +762,7 @@
 <div id="frmRanksConfiguration" style="display: none;">
     <div class="w-full h-full flex justify-center mt-3 md:mt-16">
         <div class="md:max-w-[100rem] w-full" >
-            <p class="font-Inter w-full text-center font-semibold text-2xl || md:text-start md:ml-7  md:text-5xl md:font-bold">Rank Up</p>
+            <p class="font-Inter w-full text-center font-semibold text-2xl || md:text-start md:ml-7  md:text-5xl md:font-bold">Ranks Configuration</p>
             <div class="flex justify-start mt-5 w-full h-auto overflow-x-auto">
                 <div id="container" class="w-full flex justify-start">
                     <div class=" md:w-[280px] w-32 mx-5 my-5">

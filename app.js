@@ -40,7 +40,7 @@ const app = express();
 //INVENTORY requirements
 // Set storage engine
 const storage = multer.diskStorage({
-    destination: './public/vehicles/',
+    destination: './public/uploads/',
     filename: function(req, file, cb){
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
@@ -49,7 +49,7 @@ const storage = multer.diskStorage({
 // Init upload
 const upload = multer({
     storage: storage,
-    limits: {fileSize: 10 * 1024 * 1024}, // 10MB limit
+    limits: {fileSize: 50 * 1024 * 1024}, // 10MB limit
     fileFilter: function(req, file, cb){
         checkFileType(file, cb);
     }

@@ -724,6 +724,59 @@ app.get('/recentAttendance', (req, res) => {
 });
 
 
+//SELECT tbl_accounts (REFINED)
+app.get('/accountsAll', (req, res) => {
+    const sql = `
+        SELECT
+            accountID,
+            rfid,
+            username,
+            password,
+            accountType,
+            lastName,
+            firstName,
+            middleName,
+            middleInitial,
+            callSign,
+            currentAddress,
+            dateOfBirth,
+            civilStatus,
+            gender,
+            nationality,
+            bloodType,
+            mobileNumber,
+            emailAddress,
+            emergencyContactPerson,
+            emergencyContactNumber,
+            highestEducationalAttainment,
+            nameOfCompany,
+            yearsInService,
+            skillsTraining,
+            otherAffiliation,
+            idPicture,
+            bioDataChecked,
+            interviewChecked,
+            fireResponsePoints,
+            activityPoints,
+            inventoryPoints,
+            dutyHours,
+            cumulativeDutyHours,
+            rank,
+            resetPasswordToken,
+            resetPasswordExpires,
+            status
+        FROM tbl_accounts
+        ORDER BY lastName ASC, firstName ASC, middleInitial ASC
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).send('Error retrieving accounts');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 

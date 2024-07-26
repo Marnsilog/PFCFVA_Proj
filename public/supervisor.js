@@ -1,27 +1,29 @@
-function showDutyHours(){
+function DutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('FireResponse');
-    var frmDutyhours = document.getElementById('frmDutyhours');
-    frmDutyhours.style.display = 'block';
-    frmFireResponse.style.display = 'none';
+    var frmFireResponse1 = document.getElementById('frmFireResponse1');
+    var frmDutyhours1 = document.getElementById('frmDutyhours1');
+    frmDutyhours1.style.display = 'block';
+    frmFireResponse1.style.display = 'none';
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-black');
     
   }
-function FireRes(){
+
+  function FireResponse(){
+    
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse = document.getElementById('FireResponse');
-    var frmDutyhours = document.getElementById('frmDutyhours');
-    frmFireResponse.style.display = 'block';
-    frmDutyhours.style.display = 'none';
+    var frmFireResponse1 = document.getElementById('frmFireResponse1');
+    var frmDutyhours1 = document.getElementById('frmDutyhours1');
+    frmFireResponse1.style.display = 'block';
+    frmDutyhours1.style.display = 'none';
     FireR.classList.add('bg-red-700','text-white');
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
 
-}
+  }
 
 function addthis(){
     var addPer = document.getElementById('addPer');
@@ -58,6 +60,12 @@ function fireclose(){
 }
 
 
+function icsSubmit(){
+    var fireresponseform = document.getElementById('fireresponseform');
+    var frmFireResponse = document.getElementById('frmFireResponse');
+    frmFireResponse.style.display = 'block';
+    fireresponseform.style.display = 'none';
+}
 
 function AddFireResponse(){
     var AddResponse = document.getElementById('AddResponse');
@@ -173,9 +181,9 @@ function showEdit(){
 }
 
 
-window.onload = function() {
-  showDashboard();
-};
+// window.onload = function() {
+//   showDashboard();
+// };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
@@ -222,8 +230,39 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth' // Display the calendar in month view
+        initialView: 'dayGridMonth' 
     });
 
     calendar.render();
+});
+
+//FOR RESPONSIVE
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+
+
+    menuToggle.addEventListener('click', function () {
+        if (mobileMenu.style.display === 'block') {
+            mobileMenu.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'block';
+        }
+    });
+
+    const mobileMenuItems = mobileMenu.querySelectorAll('a');
+    mobileMenuItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            mobileMenu.style.display = 'none';
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+            mobileMenu.style.display = 'none';
+        }
+    });
+    
 });

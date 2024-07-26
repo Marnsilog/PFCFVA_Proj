@@ -15,6 +15,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { promisify } = require('util');
 const path = require('path');
+const multer = require('multer');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -36,6 +37,41 @@ db.connect((err) => {
 
 const app = express();
 
+//INVENTORY requirements
+// Set storage engine
+const storage = multer.diskStorage({
+    destination: './public/vehicles/',
+    filename: function(req, file, cb){
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+// Init upload
+const upload = multer({
+    storage: storage,
+    limits: {fileSize: 10 * 1024 * 1024}, // 10MB limit
+    fileFilter: function(req, file, cb){
+        checkFileType(file, cb);
+    }
+}).single('itemImage');
+
+// Check File Type
+function checkFileType(file, cb){
+    // Allowed ext
+    const filetypes = /jpeg|jpg|png|gif/;
+    // Check ext
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    // Check mime
+    const mimetype = filetypes.test(file.mimetype);
+
+    if(mimetype && extname){
+        return cb(null, true);
+    } else {
+        cb('Error: Images Only!');
+    }
+}
+
+
 
 
 // Middleware to parse JSON bodies
@@ -56,140 +92,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
-//add rfid to database (done)
-// //register route (test-hash)
-// app.post('/register', (req, res) => {
-//     const {
-//         rfid,
-//         username,
-//         password,
-//         accountType,
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         callSign,
-//         currentAddress,
-//         dateOfBirth,
-//         civilStatus,
-//         gender,
-//         nationality,
-//         bloodType,
-//         mobileNumber,
-//         emailAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation,
-//         bioDataChecked,
-//         interviewChecked,
-//         fireResponsePoints,
-//         activityPoints,
-//         inventoryPoints,
-//         dutyHours
-//     } = req.body;
-
-//     // Check if the username already exists in the database
-//     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
-//     db.query(checkUsernameQuery, [username], (checkErr, checkResult) => {
-//         if (checkErr) {
-//             console.error('Error checking username:', checkErr);
-//             res.status(500).send('Error checking username');
-//             return;
-//         }
-
-//         // If username already exists, send an error response
-//         if (checkResult[0].count > 0) {
-//             res.status(400).send('Username already exists');
-//             return;
-//         }
-
-//         // If username does not exist, proceed with registration
-//         bcrypt.hash(password, 10, (hashErr, hash) => {
-//             if (hashErr) {
-//                 console.error('Error hashing password:', hashErr);
-//                 res.status(500).send('Error hashing password');
-//                 return;
-//             }
-
-//             const sql = `INSERT INTO tbl_accounts (
-//                 rfid,
-//                 username,
-//                 password,
-//                 accountType,
-//                 lastName,
-//                 firstName,
-//                 middleName,
-//                 middleInitial,
-//                 callSign,
-//                 currentAddress,
-//                 dateOfBirth,
-//                 civilStatus,
-//                 gender,
-//                 nationality,
-//                 bloodType,
-//                 mobileNumber,
-//                 emailAddress,
-//                 emergencyContactPerson,
-//                 emergencyContactNumber,
-//                 highestEducationalAttainment,
-//                 nameOfCompany,
-//                 yearsInService,
-//                 skillsTraining,
-//                 otherAffiliation,
-//                 bioDataChecked,
-//                 interviewChecked,
-//                 fireResponsePoints,
-//                 activityPoints,
-//                 inventoryPoints,
-//                 dutyHours
-//             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-//             db.query(sql, [
-//                 rfid,
-//                 username,
-//                 hash, // Store the hashed password 
-//                 accountType,
-//                 lastName,
-//                 firstName,
-//                 middleName,
-//                 middleInitial,
-//                 callSign,
-//                 currentAddress,
-//                 dateOfBirth,
-//                 civilStatus,
-//                 gender,
-//                 nationality,
-//                 bloodType,
-//                 mobileNumber,
-//                 emailAddress,
-//                 emergencyContactPerson,
-//                 emergencyContactNumber,
-//                 highestEducationalAttainment,
-//                 nameOfCompany,
-//                 yearsInService,
-//                 skillsTraining,
-//                 otherAffiliation,
-//                 bioDataChecked,
-//                 interviewChecked,
-//                 fireResponsePoints,
-//                 activityPoints,
-//                 inventoryPoints,
-//                 dutyHours
-//             ], (err, result) => {
-//                 if (err) {
-//                     console.error('Error registering user:', err);
-//                     res.status(500).send('Error registering user');
-//                     return;
-//                 }
-//                 res.status(200).send('User registered successfully');
-//             });
-//         });
-//     });
-// });
 
 
 //register route (test-hash)
@@ -842,6 +744,50 @@ app.get('/volunteerDetails', (req, res) => {
 
 
 
+// equipment route (bugged)
+app.post('/uploadEquipment', upload, async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    // Extract text fields from the request body
+    const { itemName, vehicleAssignment, dateAcquired } = req.body;
+
+    // Validate the input fields (basic validation)
+    if (!itemName || !vehicleAssignment || !dateAcquired) {
+        return res.status(400).send('All fields are required.');
+    }
+
+    try {
+        // Construct SQL query to insert the new equipment data into the database
+        const sql = `
+            INSERT INTO tbl_inventory (itemName, itemImage, itemStatus, vehicleAssignment, dateAcquired)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
+        // Assuming 'itemStatus' is set to a default value, e.g., 'Available'
+        const itemStatus = 'Available';
+        const itemImagePath = req.file.path; // Path where the image is stored
+
+        // Execute the SQL query
+        const result = await db.promise().query(sql, [itemName, itemImagePath, itemStatus, vehicleAssignment, dateAcquired]);
+
+        // Send a successful response back with some info
+        res.status(201).send({
+            message: 'Equipment added successfully!',
+            data: {
+                itemName,
+                itemImagePath,
+                itemStatus,
+                vehicleAssignment,
+                dateAcquired
+            }
+        });
+    } catch (error) {
+        console.error('Failed to add equipment:', error);
+        res.status(500).send('Failed to add equipment due to internal server error.');
+    }
+});
 
 
 

@@ -40,7 +40,7 @@ const app = express();
 //INVENTORY requirements
 // Set storage engine
 const storage = multer.diskStorage({
-    destination: './public/uploads/',
+    destination: '/public/uploads/',
     filename: function(req, file, cb){
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
@@ -747,47 +747,33 @@ app.get('/volunteerDetails', (req, res) => {
 // equipment route (bugged)
 app.post('/uploadEquipment', upload, async (req, res) => {
     if (!req.file) {
-        return res.status(400).send('No file uploaded.');
+        console.error("No file uploaded");
+        return res.status(400).json({ error: 'No file uploaded.' });
     }
 
-    // Extract text fields from the request body
     const { itemName, vehicleAssignment, dateAcquired } = req.body;
-
-    // Validate the input fields (basic validation)
     if (!itemName || !vehicleAssignment || !dateAcquired) {
-        return res.status(400).send('All fields are required.');
+        console.error("Missing fields");
+        return res.status(400).json({ error: 'All fields are required.' });
     }
 
     try {
-        // Construct SQL query to insert the new equipment data into the database
         const sql = `
-            INSERT INTO tbl_inventory (itemName, itemImage, itemStatus, vehicleAssignment, dateAcquired)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+            VALUES (?, ?, ?, ?)
         `;
-
-        // Assuming 'itemStatus' is set to a default value, e.g., 'Available'
-        const itemStatus = 'Available';
-        const itemImagePath = req.file.path; // Path where the image is stored
-
-        // Execute the SQL query
-        const result = await db.promise().query(sql, [itemName, itemImagePath, itemStatus, vehicleAssignment, dateAcquired]);
-
-        // Send a successful response back with some info
-        res.status(201).send({
+        const itemImagePath = req.file.path;
+        await db.promise().query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired]);
+        res.status(201).json({
             message: 'Equipment added successfully!',
-            data: {
-                itemName,
-                itemImagePath,
-                itemStatus,
-                vehicleAssignment,
-                dateAcquired
-            }
+            data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
         });
     } catch (error) {
         console.error('Failed to add equipment:', error);
-        res.status(500).send('Failed to add equipment due to internal server error.');
+        res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
     }
 });
+
 
 
 

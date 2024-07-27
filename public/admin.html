@@ -1348,18 +1348,24 @@
                 
                 // Perform the AJAX request
                 fetch('/uploadEquipment', {
-                    method: 'POST',
-                    body: formData  // No need to set Content-Type header
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Success: ' + data.message);  // Display success message
-                    toggleAddEquipmentForm(); // Close the form after submission
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error submitting the form');
-                });
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        const contentType = response.headers.get('content-type');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        if (contentType.includes('application/json')) {
+                            return response.json();
+                        }
+                        throw new TypeError("Oops, we haven't got JSON!");
+                    }).then(data => {
+                        console.log('Success:', data);
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        alert('Error submitting the form: ' + error.message);
+                    });
+
             });
             </script>
             

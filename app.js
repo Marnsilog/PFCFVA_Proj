@@ -37,7 +37,7 @@ db.connect((err) => {
 
 const app = express();
 
-//INVENTORY requirements
+//INVENTORY requirements (multer)
 // Set storage engine
 const storage = multer.diskStorage({
     destination: '/public/uploads/',
@@ -747,32 +747,39 @@ app.get('/volunteerDetails', (req, res) => {
 // equipment route (bugged)
 app.post('/uploadEquipment', upload, async (req, res) => {
     if (!req.file) {
-        console.error("No file uploaded");
         return res.status(400).json({ error: 'No file uploaded.' });
     }
 
     const { itemName, vehicleAssignment, dateAcquired } = req.body;
     if (!itemName || !vehicleAssignment || !dateAcquired) {
-        console.error("Missing fields");
         return res.status(400).json({ error: 'All fields are required.' });
     }
 
     try {
+        // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
+        const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
+
         const sql = `
             INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
             VALUES (?, ?, ?, ?)
         `;
-        const itemImagePath = req.file.path;
+
         await db.promise().query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired]);
         res.status(201).json({
             message: 'Equipment added successfully!',
-            data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
+            data: {
+                itemName,
+                itemImagePath, // This is now a path or URL
+                vehicleAssignment,
+                dateAcquired
+            }
         });
     } catch (error) {
         console.error('Failed to add equipment:', error);
         res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
     }
 });
+
 
 
 

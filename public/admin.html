@@ -1305,7 +1305,8 @@
         <!-- Hidden Form for Adding New Equipment -->
         <div id="addEquipmentForm" style="display: none; background: white; padding: 20px; border: 2px solid #000; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
             <h2>Add New Equipment</h2>
-            <form>
+            <!-- Added enctype attribute for file upload -->
+            <form enctype="multipart/form-data">
                 <label for="itemName">Item Name:</label>
                 <input type="text" id="itemName" name="itemName" required><br><br>
 
@@ -1342,32 +1343,29 @@
             // Handling form submission
             document.querySelector('#addEquipmentForm form').addEventListener('submit', function(event) {
                 event.preventDefault();
-            
-                // Create a FormData object, passing the form as a parameter
                 var formData = new FormData(this);
                 
-                // Perform the AJAX request
                 fetch('/uploadEquipment', {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => {
-                        const contentType = response.headers.get('content-type');
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        if (contentType.includes('application/json')) {
-                            return response.json();
-                        }
-                        throw new TypeError("Oops, we haven't got JSON!");
-                    }).then(data => {
-                        console.log('Success:', data);
-                    }).catch(error => {
-                        console.error('Error:', error);
-                        alert('Error submitting the form: ' + error.message);
-                    });
-
+                    method: 'POST',
+                    body: formData  // No need to set Content-Type header because FormData takes care of it
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Success: ' + data.message);
+                    toggleAddEquipmentForm(); // Close the form after submission
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting the form: ' + error.message);
+                });
             });
-            </script>
+        </script>
+
             
 
         

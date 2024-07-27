@@ -1107,11 +1107,12 @@
         </div>
     </div>
 </div>
-<!--FORM INVENTORY-->
+
+<!--FORM INVENTORY NEW-->
 <div  id="frmInventory" style="display: none;"><div class="w-full flex justify-center">
     <div class="max-w-[80rem] w-full space-y-5" >
         <div class="md:flex justify-between mt-7">
-            <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Summary</p>
+            <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Equipment</p>
             <div class="md:flex justify-end mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
                 <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
@@ -1132,145 +1133,82 @@
             </select>
             </div>
             <div class="flex justify-start space-x-2">
-                <button class="w-24 h-10 bg-black text-white text-xl rounded-lg font-bold">+ADD</button>
+                <button class="w-24 h-10 bg-black text-white text-xl rounded-lg font-bold" id="btnAddEquip">+ADD</button>
                 <div style="cursor: pointer;"><svg class="mt-[5px] w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg></div>
             </div>
         </div>
+
+        <!-- Hidden Form for Adding New Equipment -->
+        <div id="addEquipmentForm" style="display: none; background: white; padding: 20px; border: 2px solid #000; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+            <h2>Add New Equipment</h2>
+            <!-- Added enctype attribute for file upload -->
+            <form enctype="multipart/form-data">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" name="itemName" required><br><br>
+
+                <label for="vehicleAssignment">Vehicle Assignment:</label>
+                <select id="vehicleAssignment" name="vehicleAssignment">
+                    <option value="Engine 72">Engine 72</option>
+                    <option value="Water Tender 72">Water Tender 72</option>
+                    <option value="Pumper 72">Pumper 72</option>
+                </select><br><br>
+
+                <label for="dateAcquired">Date Acquired:</label>
+                <input type="date" id="dateAcquired" name="dateAcquired" required><br><br>
+
+                <label for="itemImage">Upload Image:</label>
+                <input type="file" id="itemImage" name="itemImage" accept="image/*"><br><br>
+
+                <button type="submit">Submit</button>
+                <button type="button" onclick="toggleAddEquipmentForm()">Close</button>
+            </form>
+        </div>
         
-        <div class="w-full flex justify-center md:h-full h-screen overflow-y-auto ">
-            <div  class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1 ">
-                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5 ">
     
-                    <div class="w-52 h-64 border-2 border-black">
-                        <div class="mt-2 w-full flex justify-end">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                            </svg>
-                        </div>
-                        <div class="w-full flex justify-center">
-                            <div class="w-[170px] h-[170px] border-2 border-black">
-                                <img src="/public/img/ex1.JPG" class="w-full h-full object-fill" alt="Example Image">
-                            </div>
-                        </div>
-                        <p class="text-base font-Inter text-center">Name</p>
-                        <div class="w-full flex justify-end space-x-2 pr-2">
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                            </div>
-    
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
-                            </div>
-                     
-                        </div>
-                    </div>
-    
-                    <div class="w-52 h-64 border-2 border-black">
-                        <div class="mt-2 w-full flex justify-end">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                            </svg>
-                        </div>
-                        <div class="w-full flex justify-center">
-                            <div class="w-[170px] h-[170px] border-2 border-black">
-                                <img src="/public/img/ex3.JPG" class="w-full h-full object-fill" alt="Example Image">
-                            </div>
-                        </div>
-                        <p class="text-base font-Inter text-center">Name</p>
-                        <div class="w-full flex justify-end space-x-2 pr-2">
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                            </div>
-    
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
-                            </div>
-                     
-                        </div>
-                    </div>
-    
-                    <div class="w-52 h-64 border-2 border-black">
-                        <div class="mt-2 w-full flex justify-end">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                            </svg>
-                        </div>
-                        <div class="w-full flex justify-center">
-                            <div class="w-[170px] h-[170px] border-2 border-black">
-                                <img src="/public/img/ex1.JPG" class="w-full h-full object-fill" alt="Example Image">
-                            </div>
-                        </div>
-                        <p class="text-base font-Inter text-center">Name</p>
-                        <div class="w-full flex justify-end space-x-2 pr-2">
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="limegreen" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                            </div>
-    
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
-                            </div>
-                     
-                        </div>
-                    </div>
-    
-                    <div class="w-52 h-64 border-2 border-black">
-                        <div class="mt-2 w-full flex justify-end">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                            </svg>
-                        </div>
-                        <div class="w-full flex justify-center">
-                            <div class="w-[170px] h-[170px] border-2 border-black">
-                                <img src="/public/img/ex2.JPG" class="w-full h-full object-fill" alt="Example Image">
-                            </div>
-                        </div>
-                        <p class="text-base font-Inter text-center">Name</p>
-                        <div class="w-full flex justify-end space-x-2 pr-2">
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="limegreen" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                            </div>
-    
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
-                            </div>
-                     
-                        </div>
-                    </div>
-    
-                    <div class="w-52 h-64 border-2 border-black">
-                        <div class="mt-2 w-full flex justify-end">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
-                            </svg>
-                        </div>
-                        <div class="w-full flex justify-center">
-                            <div class="w-[170px] h-[170px] border-2 border-black">
-                                <img src="/public/img/ex3.JPG" class="w-full h-full object-fill" alt="Example Image">
-                            </div>
-                        </div>
-                        <p class="text-base font-Inter text-center">Name</p>
-                        <div class="w-full flex justify-end space-x-2 pr-2">
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="limegreen" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                            </div>
-    
-                            <div style="cursor: pointer;">
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
-                            </div>
-                     
-                        </div>
-                    </div>
-    
-                    
-    
+        
+        <div id="equipmentContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto">
+            <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
+                <div id="equipmentGrid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5">
+                    <!-- Equipment items will be added here dynamically -->
                 </div>
-                
             </div>
-        </div>   
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('/getEquipment')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('equipmentGrid');
+                        data.forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'w-52 h-64 border-2 border-black';
+                            div.innerHTML = `
+                                <div class="mt-2 w-full flex justify-end">
+                                    <!-- Additional control icons can go here -->
+                                </div>
+                                <div class="w-full flex justify-center">
+                                    <div class="w-[170px] h-[170px] border-2 border-black">
+                                        <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
+                                    </div>
+                                </div>
+                                <p class="text-base font-Inter text-center">${item.itemName}</p>
+                            `;
+                            container.appendChild(div);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading equipment:', error);
+                    });
+            });
+        </script>
+        
     </div>
 
 </div>
 </div>
+
+
 
 <!-- FORM MAIN PROFILE -->
 <div id="frmMainProfile" style="display: none;">

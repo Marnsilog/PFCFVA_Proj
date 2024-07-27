@@ -745,7 +745,7 @@ app.get('/volunteerDetails', (req, res) => {
 
 
 // equipment route (bugged)
-app.post('/uploadEquipment', upload, async (req, res) => {
+app.post('/uploadEquipment', upload, (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded.' });
     }
@@ -755,32 +755,30 @@ app.post('/uploadEquipment', upload, async (req, res) => {
         return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    try {
-        // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
-        const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
+    // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
+    const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
 
-        const sql = `
-            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-            VALUES (?, ?, ?, ?)
-        `;
+    const sql = `
+        INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+        VALUES (?, ?, ?, ?)
+    `;
 
-        await db.promise().query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired]);
+    db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+        if (err) {
+            console.error('Failed to add equipment:', err);
+            return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+        }
         res.status(201).json({
             message: 'Equipment added successfully!',
             data: {
                 itemName,
-                itemImagePath, // This is now a path or URL
+                itemImagePath,
                 vehicleAssignment,
                 dateAcquired
             }
         });
-    } catch (error) {
-        console.error('Failed to add equipment:', error);
-        res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-    }
+    });
 });
-
-
 
 
 

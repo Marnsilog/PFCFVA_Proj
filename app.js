@@ -780,6 +780,18 @@ app.post('/uploadEquipment', upload, (req, res) => {
     });
 });
 
+//select equip route
+app.get('/getEquipment', (req, res) => {
+    const sql = 'SELECT itemName, itemImage FROM tbl_inventory';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Failed to retrieve equipment:', err);
+            res.status(500).json({ error: 'Failed to retrieve equipment' });
+        } else {
+            res.json(results);
+        }
+    });
+});
 
 
 

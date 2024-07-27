@@ -350,3 +350,46 @@ document.addEventListener('DOMContentLoaded', function() {
 //         });
 //       });
 //   });
+
+
+
+
+
+
+
+
+// Function to toggle the visibility of the add equipment form
+function toggleAddEquipmentForm() {
+    var form = document.getElementById('addEquipmentForm');
+    form.style.display = (form.style.display === 'none' ? 'block' : 'none');
+}
+
+// Event listener for the ADD button
+document.getElementById('btnAddEquip').addEventListener('click', function() {
+    toggleAddEquipmentForm(); // Show the form
+});
+
+// Handling form submission
+document.querySelector('#addEquipmentForm form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    
+    fetch('/uploadEquipment', {
+        method: 'POST',
+        body: formData  // No need to set Content-Type header because FormData takes care of it
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Success: ' + data.message);
+        toggleAddEquipmentForm(); // Close the form after submission
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting the form: ' + error.message);
+    });
+});

@@ -111,8 +111,45 @@ function addLine(LineId) {
         }
     });
 }
+//INVENTORY
+function remarks(){
+    var remarkstag = document.getElementById('remarkstag');
+    if (remarkstag.style.display === 'none' || remarkstag.style.display === '') {
+       
+        remarkstag.style.display = 'block';
+    } else {
+      
+        remarkstag.style.display = 'none';
+    }
+}
+
+function exitremarks(){
+    var remarkstag = document.getElementById('remarkstag');
+
+        remarkstag.style.display = 'none';
+ 
+}
+
+function seeinventory(){
+    var inventorydetail = document.getElementById('inventorydetail');
+    if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
+       
+        inventorydetail.style.display = 'block';
+    } else {
+      
+        inventorydetail.style.display = 'none';
+    }
+}
+function exitinventorydetail(){
+    var inventorydetail = document.getElementById('inventorydetail');
+
+    inventorydetail.style.display = 'none';
+ 
+}
+
+//
   function showElement(elementId) {
-    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'frmInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','addInventory'];
+    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'addInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','frmInventory',];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -125,12 +162,13 @@ function addLine(LineId) {
 }
 
 
+
 function showDashboard() {
     showElement('frmDashboard');
     addLine('dashb');
 }
 function showInventory() {
-    showElement('frmInventory');
+    showElement('addInventory');
     addLine('inV');
 }
 function showLeaderboards() {
@@ -157,6 +195,7 @@ function showEdit(){
 }
 function AddInventory(){
     showElement('addInventory');
+    
 }
 
 // window.onload = function() {
@@ -177,17 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    const circles = document.querySelectorAll('.colorCircle');
-    circles.forEach(circle => {
-        circle.addEventListener('click', function () {
-            circle.classList.toggle('bg-red-500');
-            circle.classList.toggle('bg-green-500');
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -213,6 +241,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+// document.addEventListener('DOMContentLoaded', function () {
+   
+// });
 
 
 

@@ -43,7 +43,7 @@ function Rankings() {
 
 //new
 function addLine(LineId) {
-    const formIds = ['dashb','att','vol','ranks','inc','inV','prof'];
+    const formIds = ['dashb','att','vol','inc','inV','prof'];
     
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -58,7 +58,7 @@ function addLine(LineId) {
 
 
   function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile', 'accountsConfiguration'];
+    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile', 'accountsConfiguration', 'frmRanksConfiguration'];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -95,6 +95,12 @@ function showAccountsConfiguration(){
     showElement('accountsConfiguration');
     
 }
+
+function showRanksConfiguration(){
+    showElement('frmRanksConfiguration');
+    
+}
+
 function showIncident(){
     showElement('frmIncident');
     addLine('inc');

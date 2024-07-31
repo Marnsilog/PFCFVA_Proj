@@ -40,7 +40,7 @@ function handleRFIDScan(rfid) {
     document.getElementById('rfidText').textContent = rfid;
     console.log('Handling RFID scan:', rfid);
 
-    changeBackgroundColor(); //hehe
+    // changeBackgroundColor();
 
     fetch('/recordTimeIn', {
         method: 'POST',

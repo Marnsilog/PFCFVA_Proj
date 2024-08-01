@@ -1,82 +1,118 @@
-function DutyHours(){
+    
+    
+   //LEADERBOARDS
+  function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse1 = document.getElementById('frmFireResponse1');
-    var frmDutyhours1 = document.getElementById('frmDutyhours1');
-    frmDutyhours1.style.display = 'block';
-    frmFireResponse1.style.display = 'none';
+    var frmFireResponse = document.getElementById('frmFireResponse');
+    var frmDutyhours = document.getElementById('frmDutyhours');
+    frmDutyhours.style.display = 'block';
+    frmFireResponse.style.display = 'none';
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-black');
-    
-  }
+    }
 
-  function FireResponse(){
-    
+  function showFireRes(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
-    var frmFireResponse1 = document.getElementById('frmFireResponse1');
-    var frmDutyhours1 = document.getElementById('frmDutyhours1');
-    frmFireResponse1.style.display = 'block';
-    frmDutyhours1.style.display = 'none';
+    var frmFireResponse = document.getElementById('frmFireResponse');
+    var frmDutyhours = document.getElementById('frmDutyhours');
+    frmFireResponse.style.display = 'block';
+    frmDutyhours.style.display = 'none';
     FireR.classList.add('bg-red-700','text-white');
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
+    }
 
-  }
+    function dutyhoursdetail(){
+        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
+        if (dutyhoursdetail.style.display === 'none' || dutyhoursdetail.style.display === '') {
+           
+            dutyhoursdetail.style.display = 'block';
+        } else {
+          
+            dutyhoursdetail.style.display = 'none';
+        }
+    }
 
-function addthis(){
-    var addPer = document.getElementById('addPer');
-    addPer.style.display = 'block';
-}
-function canaddPerson(){
-    var canAdd = document.getElementById('addPer');
-    canAdd.style.display = 'none';
-}
-function ConfirmAdd(){
-    var AddResponse = document.getElementById('AddResponse');
-    var InciSys = document.getElementById('InciSys');
-    InciSys.style.display = 'block';
-    AddResponse.style.display = 'none';
-}
-function icsDone(){
-    var fireresponseform = document.getElementById('fireresponseform');
-    var InciSys = document.getElementById('InciSys');
-    fireresponseform.style.display = 'block';
-    InciSys.style.display = 'none';
+    function exitdtdetail(){
+        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
+            dutyhoursdetail.style.display = 'none';
+       
+    }
+
+    function fireresponsedetai(){
+        var fireresponsedetail = document.getElementById('fireresponsedetail');
+        if (fireresponsedetail.style.display === 'none' || fireresponsedetail.style.display === '') {
+           
+            fireresponsedetail.style.display = 'block';
+        } else {
+          
+            fireresponsedetail.style.display = 'none';
+        }
+    }
+
+    function exitfrdetail(){
+        var fireresponsedetail = document.getElementById('fireresponsedetail');
+        fireresponsedetail.style.display = 'none';
+       
+    }
+
+
+// FIRE RESPONSE ICS
+// function addthis(){
+//     var addPer = document.getElementById('addPer');
+//     addPer.style.display = 'block';
+// }
+// function canaddPerson(){
+//     var canAdd = document.getElementById('addPer');
+//     canAdd.style.display = 'none';
+// }
+// function ConfirmAdd(){
+//     var AddResponse = document.getElementById('AddResponse');
+//     var InciSys = document.getElementById('InciSys');
+//     InciSys.style.display = 'block';
+//     AddResponse.style.display = 'none';
+// }
+// function icsDone(){
+//     var fireresponseform = document.getElementById('fireresponseform');
+//     var InciSys = document.getElementById('InciSys');
+//     fireresponseform.style.display = 'block';
+//     InciSys.style.display = 'none';
     
-}
-function addthis1(){
-    var addPer = document.getElementById('addPer1');
-    addPer.style.display = 'block';
-}
-function canaddPerson1(){
-    var canAdd = document.getElementById('addPer1');
-    canAdd.style.display = 'none';
-}
-function fireclose(){
-    var firelog = document.getElementById('firelog');
-    firelog.style.display = 'none';
-}
+// }
+// function addthis1(){
+//     var addPer = document.getElementById('addPer1');
+//     addPer.style.display = 'block';
+// }
+// function canaddPerson1(){
+//     var canAdd = document.getElementById('addPer1');
+//     canAdd.style.display = 'none';
+// }
+// function fireclose(){
+//     var firelog = document.getElementById('firelog');
+//     firelog.style.display = 'none';
+// }
 
 
-function icsSubmit(){
-    var fireresponseform = document.getElementById('fireresponseform');
-    var frmFireResponse = document.getElementById('frmFireResponse');
-    frmFireResponse.style.display = 'block';
-    fireresponseform.style.display = 'none';
-}
+// function icsSubmit(){
+//     var fireresponseform = document.getElementById('fireresponseform');
+//     var frmFireResponse = document.getElementById('frmFireResponse');
+//     frmFireResponse.style.display = 'block';
+//     fireresponseform.style.display = 'none';
+// }
 
-function AddFireResponse(){
-    var AddResponse = document.getElementById('AddResponse');
-    var frmFireResponse = document.getElementById('frmFireResponse');
-    AddResponse.style.display = 'block';
-    frmFireResponse.style.display = 'none';
-}
-function seedetails(){
-    var firelog = document.getElementById('firelog');
-    firelog.style.display = 'block';
-}
+// function AddFireResponse(){
+//     var AddResponse = document.getElementById('AddResponse');
+//     var frmFireResponse = document.getElementById('frmFireResponse');
+//     AddResponse.style.display = 'block';
+//     frmFireResponse.style.display = 'none';
+// }
+// function seedetails(){
+//     var firelog = document.getElementById('firelog');
+//     firelog.style.display = 'block';
+// }
 
 //PROFILE CONFIG
   function displaySection(sectionName) {
@@ -119,38 +155,38 @@ function addLine(LineId) {
         }
     });
 }
-  function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse','fireresponseform'];
+//   function showElement(elementId) {
+//     const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse','fireresponseform'];
 
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === elementId) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    });
-}
+//     formIds.forEach(id => {
+//         const element = document.getElementById(id);
+//         if (id === elementId) {
+//             element.style.display = 'block';
+//         } else {
+//             element.style.display = 'none';
+//         }
+//     });
+// }
 
-//DASHBOARD CONFIG
-function showDashboard() {
-    showElement('frmDashboard');
-    addLine('dashb');
-}
-function showFireRes() {
-    showElement('frmFireResponse');
-    addLine('fireS');
-    // const dashboard = document.getElementById('frmDashboard');
-    // dashboard.style.display = 'block';
-}
-function showInventory() {
-    showElement('frmInventory');
-    addLine('inV');
-}
-function showLeaderboards() {
-  showElement('frmLeaderboards');
-  addLine('leadB');
-}
+// //DASHBOARD CONFIG
+// function showDashboard() {
+//     showElement('frmDashboard');
+//     addLine('dashb');
+// }
+// function showFireRes() {
+//     showElement('frmFireResponse');
+//     addLine('fireS');
+//     // const dashboard = document.getElementById('frmDashboard');
+//     // dashboard.style.display = 'block';
+// }
+// function showInventory() {
+//     showElement('frmInventory');
+//     addLine('inV');
+// }
+// function showLeaderboards() {
+//   showElement('frmLeaderboards');
+//   addLine('leadB');
+// }
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');

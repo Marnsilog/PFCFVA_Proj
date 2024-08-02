@@ -153,25 +153,35 @@
                 </div>
 
                 <div class="flex justify-center">
-                    <div class="absolute top-32 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter hidden" id="inventorydetail">
+                    <div class="absolute top-32 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail">
                         <p class="text-2xl font-bold mx-10 my-5">Pumper 72</p>
-                        <div class="text-lg">
-                            <div class="flex justify-between px-12"> 
-                                <p>Banker set (Blue) - 2 sets</p>
-                                <p>Complete</p>
-                            </div>
-                            <div class="flex justify-between px-12"> 
-                                <p>Banker set (Yellow) - 1  set</p>
-                                <p>Complete</p>
-                            </div>
-                            <div class="flex justify-between px-12"> 
-                                <p>Fire Hydrant Key </p>
-                                <p>Missing</p>
-                            </div>
-                            <div class="flex justify-between px-12"> 
-                                <p>Hydrant Wrench</p>
-                                <p>Damaged</p>
-                            </div>
+                        <div>
+                            <table class="w-full font-Inter">
+                                <thead class="h-14 border-y-[1px] border-black">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center h-10">
+                                        <td>Banker set (Blue)</td>
+                                        <td>1</td>
+                                        <td>Damaged</td>
+                                    </tr>
+                                    <tr class="text-center h-10">
+                                        <td>Banker set (Yellow)</td>
+                                        <td>2</td>
+                                        <td>Missing</td>
+                                    </tr>
+                                    <tr class="text-center h-10">
+                                        <td>Fire Hydrant Key</td>
+                                        <td>2</td>
+                                        <td>Missing</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div class="flex justify-center underline underline-offset-2"> <a href="#" onclick="exitinventorydetail()">close</a></div>
                            
                         </div>
@@ -192,7 +202,7 @@
             <div class="md:mt-5 font-Inter w-full" >
                 <p class="text-center md:text-start font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
                 <div class="mt-5 w-full md:flex md:justify-between md:mt-16">
-                    <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                    <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-[1px] rounded-lg border-black flex justify-normal md:mx-0 ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                         <input class="w-full h-full px-2 focus:outline-none" type="text" placeholder="Search">
                         <div style="cursor: pointer;" onclick="summaryfilter()">
@@ -214,35 +224,54 @@
              <div class="w-full mt-2 md:mt-7">        
                                 <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600 ">
                                     <div class="bg-black">
-                                        <tbody class="md:text-2xl text-lg text-start font-Inter">
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
-                                                <td><div class="flex justify-start space-x-5 ml-4">
-                                                    <img src="./img/ex3.jpg" class="w-8 h-8" id="" alt=""> <p>Item 1</p>
-                                                </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5 pt-2">
+                                        <thead class="h-14 bg-gray-300">
+                                            <tr class="font-semibold">
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Quantity</th>
+                                                <th >Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="md:text-2xl text-lg font-Inter">
+                                            <tr class="border-t-[1px] border-b-[1px] border-gray-500 md:h-28">
+                                                <td><div class="justify-center flex"><img src="./img/ex3.jpg" class="w-14 h-14 object-fill" id="" alt=""></div></td>
+                                                <td><p class="text-center">Item 1</p></td>
+                                               
+                                                <td class="flex justify-center pr-5 h-full pt-10">
                                                     <select class="border-[1px] border-black text-lg w-32" id="itemstat" onchange="itemstatus(this)">
                                                         <option value="text" disabled selected></option>
                                                         <option value="Damaged">Damaged</option>
                                                         <option value="Missing">Missing</option>
                                                         <option value="Good">Good</option>
                                                     </select>
-                                                    <a href="#" class="text-lg underline underline-offset-4" onclick="remarks()">+Remarks</a>
+                                                  
+                                                </td>
+                                                <td><div class="flex justify-center"><input class="w-16 h-7 border-2 border-black" type="number" name="" id=""></div></td>
+                                                <td>
+                                                   <div class="flex justify-center pr-5"> <textarea name="" class="min-h-[6rem] max-h-[7rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3  bg-white" id=""></textarea></div>
                                                 </td>
                                             </tr>
-                                            <tr class="border-t-2 border-b-[1px] border-gray-500 md:h-12">
-                                                <td><div class="flex justify-start space-x-5 ml-4">
-                                                    <img src="./img/ex1.jpg" class="w-8 h-8" id="" alt=""> <p>Item 2</p>
-                                                </div></td>
-                                                <td class="flex justify-end pr-5 space-x-5 pt-2">
+                                            <tr class="border-t-[1px] border-b-[1px] border-gray-500 md:h-28">
+                                                <td><div class="justify-center flex"><img src="./img/ex3.jpg" class="w-14 h-14 object-fill" id="" alt=""></div></td>
+                                                <td><p class="text-center">Item 1</p></td>
+                                               
+                                                <td class="flex justify-center pr-5 h-full pt-10">
                                                     <select class="border-[1px] border-black text-lg w-32" id="itemstat" onchange="itemstatus(this)">
                                                         <option value="text" disabled selected></option>
                                                         <option value="Damaged">Damaged</option>
                                                         <option value="Missing">Missing</option>
                                                         <option value="Good">Good</option>
                                                     </select>
-                                                    <a href="#" class="text-lg underline underline-offset-4" onclick="remarks()">+Remarks</a>
+                                                  
+                                                </td>
+                                                <td><div class="flex justify-center"><input class="w-16 h-7 border-2 border-black" type="number" name="" id=""></div></td>
+                                                <td>
+                                                   <div class="flex justify-center pr-5"> <textarea name="" class="min-h-[6rem] max-h-[7rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3  bg-white" id=""></textarea></div>
                                                 </td>
                                             </tr>
+                       
+                       
                                             
                                         </tbody>
                                     </div>
@@ -287,7 +316,7 @@
 </div>
 
 
-<script src="sessions.js" defer></script>
+<!-- <script src="sessions.js" defer></script> -->
 <script src="volunteer.js" defer></script>
 
 

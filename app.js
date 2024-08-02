@@ -737,7 +737,7 @@ app.get('/volunteerDetails', (req, res) => {
             return;
         }
         res.json(results);
-    });
+    }); 
 });
 
 

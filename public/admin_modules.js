@@ -433,7 +433,13 @@ function loadEquipment() {
             container.innerHTML = ''; // Clear the container
 
             const selectedVehicle = document.getElementById('sortVehicleAssignment').value;
-            const filteredData = selectedVehicle ? data.filter(item => item.vehicleAssignment === selectedVehicle) : data; // Marked change: Filter data based on selected vehicle
+            const searchQuery = document.getElementById('inventorySearchBox').value.toLowerCase(); // Marked change: Get search query
+
+            const filteredData = data.filter(item => {
+                const matchesVehicle = selectedVehicle ? item.vehicleAssignment === selectedVehicle : true;
+                const matchesSearch = item.itemName.toLowerCase().includes(searchQuery);
+                return matchesVehicle && matchesSearch; // Marked change: Filter based on search query and selected vehicle
+            });
 
             filteredData.forEach(item => {
                 const div = document.createElement('div');
@@ -448,7 +454,7 @@ function loadEquipment() {
                         </div>
                     </div>
                     <p class="text-base font-Inter text-center">${item.itemName}</p>
-                    <p class="text-sm font-Inter text-center">${item.vehicleAssignment}</p> <!-- Marked change: Display vehicle assignment -->
+                    <p class="text-sm font-Inter text-center">${item.vehicleAssignment}</p>
                 `;
                 container.appendChild(div);
             });
@@ -463,4 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener to sort select
     document.getElementById('sortVehicleAssignment').addEventListener('change', loadEquipment); // Marked change: Event listener for sort select
+
+    // Add event listener to search box
+    document.getElementById('inventorySearchBox').addEventListener('input', loadEquipment); // Marked change: Event listener for search box
 });

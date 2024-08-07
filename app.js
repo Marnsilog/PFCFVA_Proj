@@ -831,7 +831,7 @@ app.post('/uploadEquipment', (req, res) => {
 
 //select equip route
 app.get('/getEquipment', (req, res) => {
-    const sql = 'SELECT itemName, itemImage FROM tbl_inventory';
+    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Failed to retrieve equipment:', err);

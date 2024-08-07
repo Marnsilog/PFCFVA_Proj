@@ -387,6 +387,7 @@ document.querySelector('#addEquipmentForm form').addEventListener('submit', func
     .then(data => {
         alert('Success: ' + data.message);
         toggleAddEquipmentForm(); // Close the form after submission
+        window.location.reload();
     })
     .catch(error => {
         console.error('Error:', error);
@@ -395,12 +396,46 @@ document.querySelector('#addEquipmentForm form').addEventListener('submit', func
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
+//     fetch('/getEquipment')
+//         .then(response => response.json())
+//         .then(data => {
+//             const container = document.getElementById('equipmentGrid');
+//             data.forEach(item => {
+//                 const div = document.createElement('div');
+//                 div.className = 'w-52 h-64 border-2 border-black';
+//                 div.innerHTML = `
+//                     <div class="mt-2 w-full flex justify-end">
+//                         <!-- Additional control icons can go here -->
+//                     </div>
+//                     <div class="w-full flex justify-center">
+//                         <div class="w-[170px] h-[170px] border-2 border-black">
+//                             <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
+//                         </div>
+//                     </div>
+//                     <p class="text-base font-Inter text-center">${item.itemName}</p>
+//                 `;
+//                 container.appendChild(div);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error loading equipment:', error);
+//         });
+// });
+
+
+// Function to load and display equipment
+function loadEquipment() {
     fetch('/getEquipment')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('equipmentGrid');
-            data.forEach(item => {
+            container.innerHTML = ''; // Clear the container
+
+            const selectedVehicle = document.getElementById('sortVehicleAssignment').value;
+            const filteredData = selectedVehicle ? data.filter(item => item.vehicleAssignment === selectedVehicle) : data; // Marked change: Filter data based on selected vehicle
+
+            filteredData.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'w-52 h-64 border-2 border-black';
                 div.innerHTML = `
@@ -413,6 +448,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                     <p class="text-base font-Inter text-center">${item.itemName}</p>
+                    <p class="text-sm font-Inter text-center">${item.vehicleAssignment}</p> <!-- Marked change: Display vehicle assignment -->
                 `;
                 container.appendChild(div);
             });
@@ -420,4 +456,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error loading equipment:', error);
         });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadEquipment();
+
+    // Add event listener to sort select
+    document.getElementById('sortVehicleAssignment').addEventListener('change', loadEquipment); // Marked change: Event listener for sort select
 });

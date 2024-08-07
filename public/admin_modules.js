@@ -393,3 +393,31 @@ document.querySelector('#addEquipmentForm form').addEventListener('submit', func
         alert('Error submitting the form: ' + error.message);
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/getEquipment')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('equipmentGrid');
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'w-52 h-64 border-2 border-black';
+                div.innerHTML = `
+                    <div class="mt-2 w-full flex justify-end">
+                        <!-- Additional control icons can go here -->
+                    </div>
+                    <div class="w-full flex justify-center">
+                        <div class="w-[170px] h-[170px] border-2 border-black">
+                            <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
+                        </div>
+                    </div>
+                    <p class="text-base font-Inter text-center">${item.itemName}</p>
+                `;
+                container.appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading equipment:', error);
+        });
+});

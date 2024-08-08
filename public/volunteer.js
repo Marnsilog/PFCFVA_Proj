@@ -14,7 +14,7 @@ function animateProgressBar(targetWidth) {
   }
   
 
-
+//LEADERBOARDS
   function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
@@ -25,11 +25,9 @@ function animateProgressBar(targetWidth) {
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-black');
-    
-  }
+    }
 
   function showFireRes(){
-    
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
     var frmFireResponse = document.getElementById('frmFireResponse');
@@ -39,9 +37,64 @@ function animateProgressBar(targetWidth) {
     FireR.classList.add('bg-red-700','text-white');
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
+    }
 
-  }
-  function displaySection(sectionName) {
+    function dutyhoursdetail(){
+        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
+        if (dutyhoursdetail.style.display === 'none' || dutyhoursdetail.style.display === '') {
+           
+            dutyhoursdetail.style.display = 'block';
+        } else {
+          
+            dutyhoursdetail.style.display = 'none';
+        }
+    }
+
+    function exitdtdetail(){
+        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
+            dutyhoursdetail.style.display = 'none';
+       
+    }
+
+    function fireresponsedetai(){
+        var fireresponsedetail = document.getElementById('fireresponsedetail');
+        if (fireresponsedetail.style.display === 'none' || fireresponsedetail.style.display === '') {
+           
+            fireresponsedetail.style.display = 'block';
+        } else {
+          
+            fireresponsedetail.style.display = 'none';
+        }
+    }
+
+    function exitfrdetail(){
+        var fireresponsedetail = document.getElementById('fireresponsedetail');
+        fireresponsedetail.style.display = 'none';
+       
+    }
+
+    function itemstatus(selectElement) {
+
+        const selectedValue = selectElement.value;
+        selectElement.classList.remove('bg-red-500', 'bg-yellow-300', 'bg-green-400');
+        if (selectedValue === 'Damaged') {
+            selectElement.classList.add('bg-red-500');
+        } else if (selectedValue === 'Missing') {
+            selectElement.classList.add('bg-yellow-300');
+        } else if (selectedValue === 'Good') {
+            selectElement.classList.add('bg-green-400');
+        }else {
+            selectElement.classList.add('bg-white');
+        }
+    }
+    
+    
+  
+
+
+//FOR MENU
+
+function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
     sections.forEach(section => {
@@ -54,8 +107,7 @@ function animateProgressBar(targetWidth) {
         }
 
     });
-}
-
+    }
 function Records() {
     displaySection('frmRecord');
 }
@@ -74,14 +126,7 @@ function Rankings() {
 }
 
 
-function CancelInv(){
-    var addinv = document.getElementById('addInventory');
-    var inv = document.getElementById('frmInventory');
-    addinv.style.display = 'none';
-    inv.style.display = 'block';
-    
 
-}
     function toggleSetting() {
       addLine('prof');
       var profileForm = document.getElementById('Setting');
@@ -111,8 +156,54 @@ function addLine(LineId) {
         }
     });
 }
+//INVENTORY
+function remarks(){
+    var remarkstag = document.getElementById('remarkstag');
+    if (remarkstag.style.display === 'none' || remarkstag.style.display === '') {
+       
+        remarkstag.style.display = 'block';
+    } else {
+      
+        remarkstag.style.display = 'none';
+    }
+}
+
+function exitremarks(){
+    var remarkstag = document.getElementById('remarkstag');
+
+        remarkstag.style.display = 'none';
+ 
+}
+
+function CancelInv(){
+    var addinv = document.getElementById('addInventory');
+    var inv = document.getElementById('frmInventory');
+    addinv.style.display = 'none';
+    inv.style.display = 'block';
+    
+
+}
+
+function seeinventory(){
+    var inventorydetail = document.getElementById('inventorydetail');
+    if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
+       
+        inventorydetail.style.display = 'block';
+    } else {
+      
+        inventorydetail.style.display = 'none';
+    }
+}
+function exitinventorydetail(){
+    var inventorydetail = document.getElementById('inventorydetail');
+
+    inventorydetail.style.display = 'none';
+ 
+}
+
+//
   function showElement(elementId) {
-    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'frmHtvolunteer', 'frmInventory', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','addInventory'];
+    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'addInventory', 'frmMainProfile', 'Setting','editProfile','frmInventory',];
 
     formIds.forEach(id => {
         const element = document.getElementById(id);
@@ -125,12 +216,13 @@ function addLine(LineId) {
 }
 
 
+
 function showDashboard() {
     showElement('frmDashboard');
     addLine('dashb');
 }
 function showInventory() {
-    showElement('frmInventory');
+    showElement('addInventory');
     addLine('inV');
 }
 function showLeaderboards() {
@@ -146,17 +238,12 @@ function myProfile() {
     showElement('frmMainProfile');
     
 }
-function showAboutUs() {
-    showElement('frmaboutus');
-}
-function showHwVolunteer() {
-    showElement('frmHtvolunteer');
-}
 function showEdit(){
     showElement('editProfile');
 }
 function AddInventory(){
     showElement('addInventory');
+    
 }
 
 // window.onload = function() {
@@ -177,17 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    const circles = document.querySelectorAll('.colorCircle');
-    circles.forEach(circle => {
-        circle.addEventListener('click', function () {
-            circle.classList.toggle('bg-red-500');
-            circle.classList.toggle('bg-green-500');
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -213,6 +289,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+// document.addEventListener('DOMContentLoaded', function () {
+   
+// });
 
 
 

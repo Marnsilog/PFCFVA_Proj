@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="./styles.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFCFVA || Admin Dashboard</title>
+</head>
+<div>
+    <body class="bg-white w-full h-full">
+        <div class="bg-rosered2 font-Inter h-[4rem] w-full || md:h-28 md:w-full">
+            <div class="flex justify-between md:h-full md:w-full">
+                <div class="flex justify-between md:h-full">
+                    <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
+                    <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+            
+                </div>
+                <!-- NAV -->
+                <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
+                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
+                    
+                        <li id="dashb" class="md:mt-12"><a href="admin_dashboard.html">Dashboard</a></li>
+                        <li id="att" class="md:mt-12"><a href="admin_attendance_logs.html">Attendance Logs</a></li>
+                        <li id="vol" class="md:mt-12"><a href="admin_merit_tracking.html">Merit Tracking</a></li>
+                        <li id="inc" class="md:mt-12"><a href="admin_fire_response.html">Fire Response</a></li>
+                        <li id="inV" class="md:mt-12"><a href="admin_inventory.html">Inventory</a></li>
+                        <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                        <li class="md:mt-6">
+                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                        </li>
+                    </ul>
+                </nav>
+        <div class="flex justify-start space-x-3 mr-2">
+            <div>
+                <!-- FOR NOTIFICATION -->
+                <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                    <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+                  </i></a>
+            </div>
+    
+         
+                <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mt-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+        </div>
+    
+        </div>
+        
+        <!-- CELLPHONE! -->
+        <div class="w-full flex justify-end sticky-col relative z-50">
+            <div class="md:hidden w-1/2 py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
+                <div class="ml-3 flex justify-start mr-3" onclick="myProfile()"  style="cursor: pointer;">
+                    <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
+                    <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
+                   
+                </div>
+                
+                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
+    
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showDashboard()">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 576 512" class="mt-[9px] w-5 h-5"> <path fill="white" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+                    <p class="ml-2 block py-2" >Dashboard</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRegister()">
+                    <svg xmlns="http://www.w3.org/2000/svg "  class="mt-[10px] w-5 h-5" viewBox="0 0 448 512"><path fill="white" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <p class="ml-2 block py-2" >Register</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showAccountsConfiguration()">
+                    <svg xmlns="http://www.w3.org/2000/svg "  class="mt-[10px] w-5 h-5" viewBox="0 0 448 512"><path fill="white" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <p class="ml-2 block py-2" >Volunteer Accounts Configuration</p>
+                </div>
+                
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showAttendance()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
+                    <p class="ml-2 block py-2">Attendance Logs</p>
+                </div>
+
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showVolunteer()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
+                    <p class="ml-2 block py-2">Merit Tracking</p>
+                </div>
+              
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRanks()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                    <p class="ml-2 block py-2">Rank Up</p>
+                </div>
+
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRanksConfiguration()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                    <p class="ml-2 block py-2">Ranks Configuration</p>
+                </div>
+                
+                
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="showIncident()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 512 512"><path fill="white" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                    <p class="ml-2 block py-2" >Incident</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="showInventory()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path  fill="white" d="M465.4 409.4l87.1-150.2-32-.3-55.1 95L259.2 0 23 407.4l32 .3L259.2 55.6zm-355.3-44.1h32.1l117.4-202.5L463 511.9l32.5 .1-235.8-404.6z"/></svg>
+                    <p class="ml-2 block py-2" >Inventory</p>
+                </div>
+    
+                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
+    
+                <div class="ml-3 flex justify-normal" id="logoutLink" style="cursor: pointer;"><svg class="mt-[5px] w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
+                <p class="ml-2 block">Log Out</p>
+            </div>
+                
+            </div>
+        </div>
+            
+    
+       
+    </div>
+<!-- SETTINGS -->
+<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='admin_main_profile.html'"><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_register.html'"><p>Register</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_up.html'"><p>Rank Up</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_configuration.html'"><p>Ranks Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_volunteer_configuration.html'"><p>Volunteer Accounts Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
+    </div>
+</div>
+<!-- FORM REGISTER -->
+<div id="frmRegister">
+    <div class="w-full md:flex md:justify-center md:mt-10" >
+        <div class="md:max-w-[57rem] w-full text-inter">
+            <p class="md:text-4xl md:text-start text-center mt-3 md:mt-0 text-2xl font-bold ">Register</p>
+            <form class="mt-5 flex justify-center w-full" id="registerForm">
+               <div class="space-y-2 md:space-y-3 md:w-full">
+                    <div class="flex justify-normal space-x-5">
+                        <div >
+                            <input type="checkbox" id="cbBioData">
+                            <label for="checkbox1">Bio Data</label>
+                        </div>
+                        <div >
+                            <input type="checkbox" id="cbInterview">
+                            <label for="checkbox2">Interview</label>
+                        </div>
+
+                    </div>
+                    
+                        <div>
+                            <p>RFID No.<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="rfid" pattern="[0-9]+" title="Please enter numbers only" required>
+                        </div>
+                    
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Last Name <span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lastName" required>
+                        </div>
+                        <div>
+                            <p>First Name<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="firstName" required>
+                            
+                        </div>
+                        <div>
+                            <p>Middle Name</p>
+                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="middleName" required>
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
+                           
+                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType" required>
+                                <option value="" disabled selected> </option>
+                                <option value="Volunteer">Volunteer</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div >
+                            <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
+                            <div class="border-[1px] border-black w-[17rem] h-7 md:h-7 flex justify-start">
+                                
+                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required disabled>
+                                        <option value="" disabled selected> </option>
+                                        <option value="ASPIRANT">ASPIRANT</option>
+                                        <option value="PROBATIONARY">PROBATIONARY</option>
+                                        <option value="ECHO">ECHO</option>
+                                        <option value="ECHO800">ECHO800</option>
+                                        <option value="ECHO900">ECHO900</option>
+                                    </select>
+                                    <span class="tooltip-text absolute text-sm p-2 bg-green-500 text-white rounded hidden">
+                                        You have to choose an account type first
+                                    </span>
+                                
+                                <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSignNum" >
+                            </div>
+                           
+                            
+                        </div>
+                        <div>
+                            <p>Date of Birth<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateOfBirth" required>
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Civil Status<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black w-[17rem] md:w-[10rem] h-7" name="" id="civilStatus" required> 
+                                <option value="" disabled selected> </option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Separated">Separated</option>
+                                <option value="Divorced">Divorced</option>
+                            </select>
+                        </div>
+                        <div>
+                            <p>Nationality<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black w-[17rem] h-7" id="nationality" required>
+                                <option value="" disabled selected></option>
+                                <option value="Filipino">Filipino</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="American">American</option>
+                                <option value="Canadian">Canadian</option>
+                                <option value="British">British</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Korean">Korean</option>
+                                <option value="German">German</option>
+                                <option value="French">French</option>
+                                <option value="Australian">Australian</option>
+                                <option value="Brazilian">Brazilian</option>
+                                <option value="Targaryen">Targaryen</option>
+                                <option value="Valyrians">Valyrians</option>
+                                <option value="Dothraki">Dothraki</option>
+                            </select>
+                        </div>
+                        <div>
+                            <p>Sex<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black w-[7rem] h-7" name="" id="gender" required> 
+                                <option value="" disabled selected> </option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            
+                        </div>
+                        <div>
+                            <p>BloodType<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" type="text" id="bloodType" required>
+                                <option value="" disabled selected> </option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Username (REMOVE)<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black h-7 w-[17rem]"  type="text" id="username" disabled>
+                        </div>
+                        <div>
+                            <p>Email Address<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="emailAddress" required>
+                        </div>
+                        <div>
+                            <p>Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="contactNumber" required pattern="[0-9]+" title="Please enter numbers only">
+                            
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div >
+                            <p>Password (REMOVE)<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <div class="flex justify-normal border-[1px] border-black md:w-[25rem] w-[17rem] h-7">
+                                <input class="w-full" type="password" id="password" disabled>
+                                <div id="eyeIcon" class="" style="cursor: pointer;" onclick="passEye()">
+                                    <svg id="seen" xmlns="http://www.w3.org/2000/svg" class="block w-5 h-5 mx-2 my-[2px]" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                    <svg id="unseen" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 mx-2 my-[2px]" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>
+                                </div>
+                            </div>
+                            <p class="hidden text-red-500 text-sm md:w-full w-[17rem]">* The password must be at least 8-12 characters long and include at 
+                                least one capital letter, one special character, and one number.</p>
+                            
+                        </div>
+                        <div>
+                            <p>Confirm Password (REMOVE)<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <div class="flex justify-normal border-[1px] border-black md:w-[25rem] w-[17rem] h-7">
+                                <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="password" id="confirmPassword" disabled>
+                                <div id="eyeIcon2" class="" style="cursor: pointer;" onclick="passEye2()">
+                                    <svg id="seen2" xmlns="http://www.w3.org/2000/svg" class="block w-5 h-5 mx-2 my-[2px]" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                    <svg id="unseen2" xmlns="http://www.w3.org/2000/svg" class="hidden w-5 h-5 mx-2 my-[2px]" viewBox="0 0 640 512"><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/></svg>
+                                </div>
+                            </div>
+                          
+                            
+                            
+                        </div>
+                    </div>
+                    <div>
+                        <p>Current Address<span class="text-red-500 font-bold mr-1">*</span></p>
+                        <input class="border-[1px] border-black md:w-full w-[17rem]  h-7" type="text" id="currentAddress" required>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Emergency Contact Person<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" id="emergencyContactPerson" required>
+                        </div>
+                        <div>
+                            <p>Emergency Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" id="emergencyContactNumber" required pattern="[0-9]+" title="Please enter numbers only">
+                            
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div> 
+                            <p>Highest Educational Attainment<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <select class="border-[1px] border-black w-[17rem] md:w-[20rem] h-7" name="" id="highestEducationalAttainment" required> 
+                                <option value="" disabled selected> </option>
+                                <option value="Elementary Graduate">Elementary Graduate</option>
+                                <option value="Junior High School Graduate">Junior High School Graduate</option>
+                                <option value="Senior High School Graduate">Senior High School Graduate</option>
+                                <option value="College Graduate">College Graduate</option>
+                            </select>
+                          
+                        </div>
+                        <div>
+                            <p>Name of the Company</p>
+                            <input class="border-[1px] border-black md:w-[20rem] w-[17rem]  h-7" type="text" id="nameOfCompany">
+                        </div>
+                        <div>
+                            <p>Years in service</p>
+                            <input class="border-[1px] border-black md:w-[8rem] w-[17rem]   h-7" type="text" id="yearsInService" pattern="[0-9]+" title="Please enter numbers only">
+                        </div>
+                    </div>
+                    <div class="md:flex md:justify-between space-y-2 md:space-y-0">
+                        <div>
+                            <p>Skills/Training</p>
+                            <textarea id="skillsTraining" class="rounded-lg rounded-black w-[17rem] h-12 md:w-[25rem] border-[.2px] border-black pt-2 text-wrap" type="text"></textarea>
+                        </div>
+                        <div>
+                            <p>Other Affiliation</p>
+                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem]  h-7" type="text" id="otherAffiliation">
+                        </div>
+                    </div>
+                    <div class="md:mb-4 md:mt-5 py-3">
+                        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" class="md:w-96 w-10 file:bg-[#E1E1E1] md:file:rounded-full file:text-black md:file:w-36 file:h-10 file:border-[1px]">
+                    </div>
+                    <div class="mt-5 font-Inter">
+                        <p class="font-bold text-2xl md:text-4xl">Points</p>
+                        <div class="flex justify-center md:block">
+                            <div class="md:flex md:justify-between ">
+                                
+                                <div>
+                                    <p>Duty Hours <span class="text-red-500 font-bold mr-1">*</span></p>
+                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="dutyHours" pattern="[0-9]+" title="Please enter numbers only" required>
+                                </div>
+                                <div>
+                                    <p>Fire response <span class="text-red-500 font-bold mr-1">*</span></p>
+                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="fireResponse" pattern="[0-9]+" title="Please enter numbers only" required>
+                                    
+                                </div>
+                                <div>
+                                    <p>Activity Points <span class="text-red-500 font-bold mr-1">*</span></p>
+                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="activityPoints" pattern="[0-9]+" title="Please enter numbers only" required>
+                                </div>
+                                <div>
+                                    <p>Inventory points <span class="text-red-500 font-bold mr-1">*</span></p>
+                                    <input class="border-[1px] border-black w-[9rem] h-7" type="text" id="inventoryPoints" pattern="[0-9]+" title="Please enter numbers only" required>
+                                </div>
+    
+                            </div> 
+                        </div>
+                       
+                    </div>
+                    <div class="pt-12 pb-24 md:w-full w-[17rem] flex justify-center space-x-2 md:space-x-5 md:justify-end ">
+                        <button class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" onclick="showDashboard()">Cancel</button>
+                        <button type="button" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full" id="clearButton">Clear</button>
+                        <button type="submit" class="bg-[#930D0D] w-28 h-10 text-white font-[400] rounded-full">Register</button>
+                    </div>
+              
+               </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</div>
+<script src="admin.js" defer></script>
+<script src="admin_modules.js" defer></script>
+<script src="register.js" defer></script>
+</html>

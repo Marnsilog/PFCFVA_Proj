@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="./styles.css" rel="stylesheet">
+    <link href="marns.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFCFVA || Admin Dashboard</title>
+</head>
+<div>
+    <body class="bg-white w-full h-full">
+        <div class="bg-rosered2 font-Inter h-[4rem] w-full || md:h-28 md:w-full">
+            <div class="flex justify-between md:h-full md:w-full">
+                <div class="flex justify-between md:h-full">
+                    <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
+                    <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+            
+                </div>
+                <!-- NAV -->
+                <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
+                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
+                    
+                        <li id="dashb" class="md:mt-12"><a href="admin_dashboard.html">Dashboard</a></li>
+                        <li id="att" class="md:mt-12"><a href="admin_attendance_logs.html">Attendance Logs</a></li>
+                        <li id="vol" class="md:mt-12"><a href="admin_merit_tracking.html">Merit Tracking</a></li>
+                        <li id="inc" class="md:mt-12"><a href="admin_fire_response.html">Fire Response</a></li>
+                        <li id="inV" class="md:mt-12"><a href="admin_inventory.html">Inventory</a></li>
+                        <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                        <li class="md:mt-6">
+                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                        </li>
+                    </ul>
+                </nav>
+        <div class="flex justify-start space-x-3 mr-2">
+            <div>
+                <!-- FOR NOTIFICATION -->
+                <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                    <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+                  </i></a>
+            </div>
+    
+         
+                <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mt-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+        </div>
+    
+        </div>
+        
+        <!-- CELLPHONE! -->
+        <div class="w-full flex justify-end sticky-col relative z-50">
+            <div class="md:hidden w-1/2 py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
+                <div class="ml-3 flex justify-start mr-3" onclick="myProfile()"  style="cursor: pointer;">
+                    <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
+                    <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
+                   
+                </div>
+                
+                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
+    
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showDashboard()">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 576 512" class="mt-[9px] w-5 h-5"> <path fill="white" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+                    <p class="ml-2 block py-2" >Dashboard</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRegister()">
+                    <svg xmlns="http://www.w3.org/2000/svg "  class="mt-[10px] w-5 h-5" viewBox="0 0 448 512"><path fill="white" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <p class="ml-2 block py-2" >Register</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showAccountsConfiguration()">
+                    <svg xmlns="http://www.w3.org/2000/svg "  class="mt-[10px] w-5 h-5" viewBox="0 0 448 512"><path fill="white" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                    <p class="ml-2 block py-2" >Volunteer Accounts Configuration</p>
+                </div>
+                
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showAttendance()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
+                    <p class="ml-2 block py-2">Attendance Logs</p>
+                </div>
+
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showVolunteer()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
+                    <p class="ml-2 block py-2">Merit Tracking</p>
+                </div>
+              
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRanks()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                    <p class="ml-2 block py-2">Rank Up</p>
+                </div>
+
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showRanksConfiguration()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                    <p class="ml-2 block py-2">Ranks Configuration</p>
+                </div>
+                
+                
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="showIncident()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 512 512"><path fill="white" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                    <p class="ml-2 block py-2" >Incident</p>
+                </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="showInventory()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path  fill="white" d="M465.4 409.4l87.1-150.2-32-.3-55.1 95L259.2 0 23 407.4l32 .3L259.2 55.6zm-355.3-44.1h32.1l117.4-202.5L463 511.9l32.5 .1-235.8-404.6z"/></svg>
+                    <p class="ml-2 block py-2" >Inventory</p>
+                </div>
+    
+                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
+    
+                <div class="ml-3 flex justify-normal" id="logoutLink" style="cursor: pointer;"><svg class="mt-[5px] w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
+                <p class="ml-2 block">Log Out</p>
+            </div>
+                
+            </div>
+        </div>
+            
+    
+       
+    </div>
+<!-- SETTINGS -->
+<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='admin_main_profile.html'"><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_register.html'"><p>Register</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_up.html'"><p>Rank Up</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_configuration.html'"><p>Ranks Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_volunteer_configuration.html'"><p>Volunteer Accounts Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
+    </div>
+</div>
+ <!-- FORM VOLUNTEER ACCOUNTS CONFIGURATION -->
+ <div class="flex justify-center w-full font-Inter" >
+    <div class="md:max-w-[90rem] w-full md:mt-14 md:space-y-7 space-y-3" id="accountsConfiguration" >
+            <div class="md:flex justify-between">
+                <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Volunteer Accounts Configuration</p>
+                <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
+                    <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                        <input class="w-full h-full" id="volunteerAccountsSearchBox" type="text"> 
+                        <!-- search box ./. -->
+                        <div style="cursor: pointer;" onclick="summaryfilter()">
+                            <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 px-2 py-[5px]">
+                <!-- <p class="text-lg">Sort by</p> -->
+                <select class="border-[1px] border-black w-[17rem] h-7 rounded-lg" id="sortByMeritTracking" required>
+                    <option value="" disabled selected>Sort By:</option>
+                    <option value="">Name</option>
+                    <option value="">Call Sign</option>
+                    <option value="">Rank</option>
+                    <option value="">Account Type</option>
+                    <option value="">Status</option>
+                </select>
+                <!-- <div>
+                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
+                </div> -->
+            </div>
+
+            <div class="w-full flex justify-center ">
+                <div class="max-w-[100rem] w-full md:overflow-x-hidden overflow-x-scroll">
+                    <div class="font-Inter md:w-full w-[60rem]">
+                        <table class="w-full  text-center ">
+                            <thead class="md:text-lg text-sm bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+                                <tr class="md:h-10 font-[500]">
+                                    <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
+                                    <th>Call Sign</th>
+                                    <th>Rank</th>
+                                    <th>Account Type</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="volunteerAccountsDetails" class="font-[500] md:text-base text-sm">
+                                <!-- aaaaaaaaaaaaaaaaaaa -->
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="flex justify-center">
+                <div class="w-72 h-96 bg-white shadow-lg shadow-gray-600 rounded-lg absolute z-10 md:top-80 top-36" style="display: none;" id="summarySort">
+                    <div class="flex justify-between w-full px-5 mt-3">
+                        <p class="text-xl font-semibold">Sort By</p>
+                       <div style="cursor: pointer;" onclick="cancelSort()"><p class="text-2xl">X</p></div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="mt-4">
+                            <ul class="text-center space-y-5">
+                                <li>Name</li>
+                                <li>Rank</li>
+                                <li>Duty Hours</li>
+                                <li>Fire Response</li>
+                                <li>Inventory Points</li>
+                                <li>Activity Points</li>
+                                <li>Account Type</li>
+                            </ul>
+                    </div>
+                    </div>
+                    
+                </div> -->
+               
+            </div>
+          
+    </div>
+ </div>
+
+</body>
+</div>
+<script src="admin.js" defer></script>
+<script src="admin_modules.js" defer></script>
+<script src="register.js" defer></script>
+</html>

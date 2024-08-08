@@ -39,9 +39,15 @@ const app = express();
 
 //INVENTORY requirements (multer)
 // Set storage engine
+// const storage = multer.diskStorage({
+//     destination: '/public/uploads/',
+//     filename: function(req, file, cb){
+//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//     }
+// });
 const storage = multer.diskStorage({
-    destination: '/public/uploads/',
-    filename: function(req, file, cb){
+    destination: path.join(__dirname, 'public/uploads/'),
+    filename: function(req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
@@ -78,7 +84,8 @@ function checkFileType(file, cb){
 app.use(express.json());
 
 // Serve static files from the "public" directory
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //session
 app.use(session({
@@ -737,7 +744,7 @@ app.get('/volunteerDetails', (req, res) => {
             return;
         }
         res.json(results);
-    });
+    }); 
 });
 
 
@@ -745,44 +752,86 @@ app.get('/volunteerDetails', (req, res) => {
 
 
 // equipment route (bugged)
-app.post('/uploadEquipment', upload, (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded.' });
-    }
+// app.post('/uploadEquipment', upload, (req, res) => {
+//     if (!req.file) {
+//         return res.status(400).json({ error: 'No file uploaded.' });
+//     }
 
-    const { itemName, vehicleAssignment, dateAcquired } = req.body;
-    if (!itemName || !vehicleAssignment || !dateAcquired) {
-        return res.status(400).json({ error: 'All fields are required.' });
-    }
+//     const { itemName, vehicleAssignment, dateAcquired } = req.body;
+//     if (!itemName || !vehicleAssignment || !dateAcquired) {
+//         return res.status(400).json({ error: 'All fields are required.' });
+//     }
 
-    // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
-    const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
+//     // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
+//     const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
 
-    const sql = `
-        INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-        VALUES (?, ?, ?, ?)
-    `;
+//     const sql = `
+//         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+//         VALUES (?, ?, ?, ?)
+//     `;
 
-    db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+//     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+//         if (err) {
+//             console.error('Failed to add equipment:', err);
+//             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+//         }
+//         res.status(201).json({
+//             message: 'Equipment added successfully!',
+//             data: {
+//                 itemName,
+//                 itemImagePath,
+//                 vehicleAssignment,
+//                 dateAcquired
+//             }
+//         });
+//     });
+// });
+
+app.post('/uploadEquipment', (req, res) => {
+    upload(req, res, function(err) {
         if (err) {
-            console.error('Failed to add equipment:', err);
-            return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+            return res.status(400).json({ error: err.message });
         }
-        res.status(201).json({
-            message: 'Equipment added successfully!',
-            data: {
-                itemName,
-                itemImagePath,
-                vehicleAssignment,
-                dateAcquired
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded.' });
+        }
+
+        const { itemName, vehicleAssignment, dateAcquired } = req.body;
+        if (!itemName || !vehicleAssignment || !dateAcquired) {
+            return res.status(400).json({ error: 'All fields are required.' });
+        }
+
+        const itemImagePath = `/uploads/${req.file.filename}`;
+
+        const sql = `
+            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+            if (err) {
+                console.error('Failed to add equipment:', err);
+                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
             }
+            res.status(201).json({
+                message: 'Equipment added successfully!',
+                data: {
+                    itemName,
+                    itemImagePath,
+                    vehicleAssignment,
+                    dateAcquired
+                }
+            });
         });
     });
 });
 
+
+
 //select equip route
 app.get('/getEquipment', (req, res) => {
-    const sql = 'SELECT itemName, itemImage FROM tbl_inventory';
+    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Failed to retrieve equipment:', err);

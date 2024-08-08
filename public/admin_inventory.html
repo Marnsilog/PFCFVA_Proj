@@ -112,108 +112,86 @@
                 
             </div>
         </div>
-         <!--FORM INVENTORY NEW-->
-<div  id="frmInventory"><div class="w-full flex justify-center">
-    <div class="max-w-[80rem] w-full space-y-5" >
-        <div class="md:flex justify-between mt-7">
-            <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Equipment</p>
-            <div class="md:flex justify-end mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
-                <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                    <input class="w-full h-full" type="text">
-                    <div style="cursor: pointer;" onclick="summaryfilter()">
-                        <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+
+<!--FORM INVENTORY NEW-->
+<div id="frmInventory">
+    <div class="w-full flex justify-center">
+        <div class="max-w-[80rem] w-full space-y-5">
+            <div class="md:flex justify-between mt-7">
+                <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Equipment</p>
+                <div class="md:flex justify-end mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
+                    <div class="md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512">
+                            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+                        </svg>
+                        <input class="w-full h-full" type="text" id="inventorySearchBox">
+                        <div style="cursor: pointer;" onclick="summaryfilter()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512">
+                                <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="md:text-2xl text-lg md:text-start text-center font-Inter">Engine 72</p>
+            <div class="flex justify-between md:mx-0 mx-3">
+                <div>
+                    <select class="h-9 pr-20 rounded-lg md:border-[2px] border-[1px] border-black text-start" id="sortVehicleAssignment"> <!-- Marked change: Added sort select element -->
+                        <option value="">All Vehicles</option> <!-- Marked change: Corrected values -->
+                        <option value="Engine 72">Engine 72</option>
+                        <option value="Water Tender 72">Water Tender 72</option>
+                        <option value="Pumper 72">Pumper 72</option>
+                    </select>
+                </div>
+                <div class="flex justify-start space-x-2">
+                    <button class="w-24 h-10 bg-black text-white text-xl rounded-lg font-bold" id="btnAddEquip">+ADD</button>
+                    <div style="cursor: pointer;">
+                        <svg class="mt-[5px] w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Form for Adding New Equipment -->
+            <div id="addEquipmentForm" style="display: none; background: white; padding: 20px; border: 2px solid #000; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+                <h2>Add New Equipment</h2>
+                
+                <form enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" id="itemName" name="itemName" required><br><br>
+
+                    <label for="vehicleAssignment">Vehicle Assignment:</label>
+                    <select id="vehicleAssignment" name="vehicleAssignment">
+                        <option value="Engine 72">Engine 72</option>
+                        <option value="Water Tender 72">Water Tender 72</option>
+                        <option value="Pumper 72">Pumper 72</option>
+                    </select><br><br>
+
+                    <label for="dateAcquired">Date Acquired:</label>
+                    <input type="date" id="dateAcquired" name="dateAcquired" required><br><br>
+
+                    <label for="itemImage">Upload Image:</label>
+                    <input type="file" id="itemImage" name="itemImage" accept="image/*"><br><br>
+
+                    <button type="submit">Submit</button>
+                    <button type="button" onclick="toggleAddEquipmentForm()">Close</button>
+                </form>
+            </div>
+
+            <div id="equipmentContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto">
+                <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
+                    <div id="equipmentGrid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5">
+                        <!-- reserved for dynamic html asdasdsdasad -->
                     </div>
                 </div>
             </div>
         </div>
-        <p class="md:text-2xl text-lg md:text-start text-center font-Inter">Engine 72</p>
-        <div class="flex justify-between md:mx-0 mx-3">
-            <div> <select class="h-9 pr-20 rounded-lg md:border-[2px] border-[1px] border-black text-start" id="truckId">
-                <option value="text">Vehicle</option>
-                <option value="text">Engine 72</option>
-                <option value="text">Water Tender 72</option>
-                <option value="text">Pumber 72</option>
-            </select>
-            </div>
-            <div class="flex justify-start space-x-2">
-                <button class="w-24 h-10 bg-black text-white text-xl rounded-lg font-bold" id="btnAddEquip">+ADD</button>
-                <div style="cursor: pointer;"><svg class="mt-[5px] w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg></div>
-            </div>
-        </div>
-
-        <!-- Hidden Form for Adding New Equipment -->
-        <div id="addEquipmentForm" style="display: none; background: white; padding: 20px; border: 2px solid #000; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-            <h2>Add New Equipment</h2>
-            <!-- Added enctype attribute for file upload -->
-            <form enctype="multipart/form-data">
-                <label for="itemName">Item Name:</label>
-                <input type="text" id="itemName" name="itemName" required><br><br>
-
-                <label for="vehicleAssignment">Vehicle Assignment:</label>
-                <select id="vehicleAssignment" name="vehicleAssignment">
-                    <option value="Engine 72">Engine 72</option>
-                    <option value="Water Tender 72">Water Tender 72</option>
-                    <option value="Pumper 72">Pumper 72</option>
-                </select><br><br>
-
-                <label for="dateAcquired">Date Acquired:</label>
-                <input type="date" id="dateAcquired" name="dateAcquired" required><br><br>
-
-                <label for="itemImage">Upload Image:</label>
-                <input type="file" id="itemImage" name="itemImage" accept="image/*"><br><br>
-
-                <button type="submit">Submit</button>
-                <button type="button" onclick="toggleAddEquipmentForm()">Close</button>
-            </form>
-        </div>
-        
-    
-        
-        <div id="equipmentContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto">
-            <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
-                <div id="equipmentGrid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5">
-                    <!-- Equipment items will be added here dynamically -->
-                </div>
-            </div>
-        </div>
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetch('/getEquipment')
-                    .then(response => response.json())
-                    .then(data => {
-                        const container = document.getElementById('equipmentGrid');
-                        data.forEach(item => {
-                            const div = document.createElement('div');
-                            div.className = 'w-52 h-64 border-2 border-black';
-                            div.innerHTML = `
-                                <div class="mt-2 w-full flex justify-end">
-                                    <!-- Additional control icons can go here -->
-                                </div>
-                                <div class="w-full flex justify-center">
-                                    <div class="w-[170px] h-[170px] border-2 border-black">
-                                        <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
-                                    </div>
-                                </div>
-                                <p class="text-base font-Inter text-center">${item.itemName}</p>
-                            `;
-                            container.appendChild(div);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error loading equipment:', error);
-                    });
-            });
-        </script>
-        
     </div>
-
 </div>
-</div>   
-    
-       
-    </div>
+
+
+
 <!-- SETTINGS -->
 <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
     <div class="bg-white rounded-lg border-[1px] border-black w-64">
@@ -231,6 +209,6 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
-<!-- <script src="admin_modules.js" defer></script>
-<script src="register.js" defer></script> -->
+<script src="admin_modules.js" defer></script>
+<script src="register.js" defer></script>
 </html>

@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.editdel-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const editDeleteElement = this.parentElement.querySelector('.editdelete');
+            if (editDeleteElement.style.display === "none") {
+                editDeleteElement.style.display = "block";
+            } else {
+                editDeleteElement.style.display = "none";
+            }
+        });
+    });
+});
 //PROFILE CONFIG
   function displaySection(sectionName) {
     const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];

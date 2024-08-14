@@ -112,6 +112,21 @@
                 
             </div>
         </div>
+        <!-- SETTINGS -->
+<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+    <div class="bg-white rounded-lg border-[1px] border-black w-64">
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='admin_main_profile.html'"><p>My Profile</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_register.html'"><p>Register</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_up.html'"><p>Rank Up</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_configuration.html'"><p>Ranks Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_volunteer_configuration.html'"><p>Volunteer Accounts Configuration</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_inventory_status_logs.html'"><p>Inventory Logs</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_volunteer_configuration.html'"><p>Add Vehicle</p></div>
+        <div class="bg-black h-[2px]"></div>
+        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
+    </div>
+</div>
 
 <!--FORM INVENTORY NEW-->
 <div id="frmInventory">
@@ -124,7 +139,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512">
                             <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                         </svg>
-                        <input class="w-full h-full" type="text" id="inventorySearchBox">
+                        <input class="w-full h-full focus:outline-none px-2" type="text" id="inventorySearchBox" placeholder="Search">
                         <div style="cursor: pointer;" onclick="summaryfilter()">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512">
                                 <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/>
@@ -143,45 +158,107 @@
                         <option value="Pumper 72">Pumper 72</option>
                     </select>
                 </div>
-                <div class="flex justify-start space-x-2">
-                    <button class="w-24 h-10 bg-black text-white text-xl rounded-lg font-bold" id="btnAddEquip">+ADD</button>
-                    <div style="cursor: pointer;">
-                        <svg class="mt-[5px] w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path fill="red" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
-                        </svg>
-                    </div>
-                </div>
+                <button class="w-24 h-10 bg-[#930D0D] text-white text-xl rounded-lg font-bold" id="btnAddEquip">+ADD</button>
             </div>
 
             <!-- Hidden Form for Adding New Equipment -->
-            <div id="addEquipmentForm" style="display: none; background: white; padding: 20px; border: 2px solid #000; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-                <h2>Add New Equipment</h2>
+            <div  class="flex justify-center w-full font-Inter">
+                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                    <h2 class="text-2xl text-center font-bold">Add New Equipment</h2>
+                    <div class="flex justify-start pl-10">
+                        <p  class="font-semibold text-md mr-2">Item Name:</p>
+                        <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="itemName" name="itemName" required>
+                    </div>
+                   
+                    <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
+                        <select class="border-[1px] border-black rounded-md" id="vehicleAssignment" name="vehicleAssignment">
+                            <option value="Engine 72">Engine 72</option>
+                            <option value="Water Tender 72">Water Tender 72</option>
+                            <option value="Pumper 72">Pumper 72</option>
+                        </select>
+                    </div>
+                  
+                    <div class="flex justify-start pl-10">
+                        <p class="font-semibold text-md">Date Acquired:</p>
+                        <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                    </div>
                 
-                <form enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
-                    <label for="itemName">Item Name:</label>
-                    <input type="text" id="itemName" name="itemName" required><br><br>
-
-                    <label for="vehicleAssignment">Vehicle Assignment:</label>
-                    <select id="vehicleAssignment" name="vehicleAssignment">
-                        <option value="Engine 72">Engine 72</option>
-                        <option value="Water Tender 72">Water Tender 72</option>
-                        <option value="Pumper 72">Pumper 72</option>
-                    </select><br><br>
-
-                    <label for="dateAcquired">Date Acquired:</label>
-                    <input type="date" id="dateAcquired" name="dateAcquired" required><br><br>
-
-                    <label for="itemImage">Upload Image:</label>
-                    <input type="file" id="itemImage" name="itemImage" accept="image/*"><br><br>
-
-                    <button type="submit">Submit</button>
-                    <button type="button" onclick="toggleAddEquipmentForm()">Close</button>
+                    <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Upload Image:</p>
+                        <input type="file" id="itemImage" name="itemImage" accept="image/*">
+                    </div>
+                    <div class="flex justify-center space-x-10">
+                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="toggleAddEquipmentForm()">Close</button>
+                    </div>
+                   
                 </form>
             </div>
 
             <div id="equipmentContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto">
                 <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
                     <div id="equipmentGrid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-5">
+
+                        <div class="w-56 h-72 bg-white border-black border-2">
+                            <div class="flex justify-end pt-2 editdel-btn" style="cursor: pointer;">
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                                    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
+                                </svg>
+                            </div>
+                            <div class="relative w-full flex justify-end">
+                                <div  class="editdelete hidden">
+                                    <div class="h-16 w-32 absolute top-0 left-40">
+                                        <button class="grid border-black border-2 bg-white w-full hover:bg-gray-500 hover:text-white">Edit</button>
+                                        <button class="grid border-black border-2 bg-white border-t-0 w-full hover:bg-gray-500 hover:text-white">Delete</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <p class="text-center font-Inter text-md">Name</p>
+                            <div class="flex justify-center">
+                                <img src="/public/img/ex2.jpg" class="object-fill w-48 h-44 border-2 border-black" alt="">
+                            </div>
+                            <div class="mt-2 flex justify-end pr-4 space-x-2">
+                                <p class="text-md underline underline-offset-4 text-red-700">Damaged</p>
+                                <svg class="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M64 0C28.7 0 0 28.7 0 64L0 352c0 35.3 28.7 64 64 64l96 0 0 80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416 448 416c35.3 0 64-28.7 64-64l0-288c0-35.3-28.7-64-64-64L64 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="w-56 h-72 bg-white border-black border-2">
+                            <div class="flex justify-end pt-2 editdel-btn" style="cursor: pointer;">
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                                    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
+                                </svg>
+                            </div>
+                            <div class="relative w-full flex justify-end">
+                                <div  class="editdelete hidden">
+                                    <div class="h-16 w-32 absolute top-0 left-40">
+                                        <button class="grid border-black border-2 bg-white w-full hover:bg-gray-500 hover:text-white">Edit</button>
+                                        <button class="grid border-black border-2 bg-white border-t-0 w-full hover:bg-gray-500 hover:text-white">Delete</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <p class="text-center font-Inter text-md">Name</p>
+                            <div class="flex justify-center">
+                                <img src="/public/img/ex2.jpg" class="object-fill w-48 h-44 border-2 border-black" alt="">
+                            </div>
+                            <div class="mt-2 flex justify-end pr-4 space-x-2">
+                                <p class="text-md underline underline-offset-4 text-red-700">Damaged</p>
+                                <svg class="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M64 0C28.7 0 0 28.7 0 64L0 352c0 35.3 28.7 64 64 64l96 0 0 80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416 448 416c35.3 0 64-28.7 64-64l0-288c0-35.3-28.7-64-64-64L64 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        
+                        
+
+
+                       
                         <!-- reserved for dynamic html asdasdsdasad -->
                     </div>
                 </div>
@@ -192,18 +269,7 @@
 
 
 
-<!-- SETTINGS -->
-<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
-    <div class="bg-white rounded-lg border-[1px] border-black w-64">
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='admin_main_profile.html'"><p>My Profile</p></div>
-        <div class="bg-black h-[2px]"></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_register.html'"><p>Register</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_up.html'"><p>Rank Up</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_rank_configuration.html'"><p>Ranks Configuration</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='admin_volunteer_configuration.html'"><p>Volunteer Accounts Configuration</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
-    </div>
-</div>
+
 
 
 </body>

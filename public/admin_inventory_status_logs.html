@@ -21,7 +21,7 @@
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                     <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
                     
-                        <li id="dashb" class="md:mt-12 underline underline-offset-8"><a href="admin_dashboard.html">Dashboard</a></li>
+                        <li id="dashb" class="md:mt-12"><a href="admin_dashboard.html">Dashboard</a></li>
                         <li id="att" class="md:mt-12"><a href="admin_attendance_logs.html">Attendance Logs</a></li>
                         <li id="vol" class="md:mt-12"><a href="admin_merit_tracking.html">Merit Tracking</a></li>
                         <li id="inc" class="md:mt-12"><a href="admin_fire_response.html">Fire Response</a></li>
@@ -131,131 +131,69 @@
         <div class="pl-12 py-3 hover:bg-gray-500" id="logoutLink" style="cursor: pointer;"><p>Log Out</p></div>
     </div>
 </div>
-<!-- INCIDENT COMMAND SYSTEM -->
-<div id="InciSys">
-    <div class="w-full h-full flex justify-center pt-5 md:pt-16 md:pb-32" >
-        <div class="max-w-[75rem] w-full">
-            <div class="font-Inter text-black">
-                <p class="font-bold md:text-4xl text-xl md:text-start text-center">Incident Command System (ICS)</p>
-                <div class="md:mt-2 mt-7 flex justify-start font-semibold md:text-base text-sm">
-                    <p class="mr-2">FIRE CHIEF:</p>
-                    <p id="supervisorName"> STAG 11, Marniel C. Corsiga</p>
+
+<!-- NEW INVENTORY LOGS -->
+ <div class="w-full flex justify-center h-full">
+    <div class="max-w-[90rem] w-full h-auto">
+        <div class="flex justify-between w-full px-20 font-Inter pt-14">
+            <div>
+                <p class="text-4xl font-bold">Inventory Logs</p>
+                <p>Total Item: <span>0000</span> </p>
+            </div>
+            <div class="md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512">
+                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+                </svg>
+                <input class="w-full h-full focus:outline-none px-2" type="text" id="inventorySearchBox" placeholder="Search">
+                <div style="cursor: pointer;" onclick="summaryfilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512">
+                        <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/>
+                    </svg>
                 </div>
-                
             </div>
-
-                       <div class="flex justify-center md:mt-5 mt-2"> 
-                            <div class="max-w-[70rem] w-full mx-2 md:mx-0">
-                                <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" type="text" placeholder="Type message here..."></textarea>
-                            </div>
-                       </div>
-                       <div class="flex justify-end md:pr-0 pr-5">
-                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md">SEND MESSAGE</button>
-                       </div>
-
-                       <div class="w-full h-32 md:mt-16 mt-5 md:px-0 px-3 ">
-                            <div class="flex justify-start">
-                                <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
-                                <!-- <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl"><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div> -->
-                            </div>
-                        
-                            <div  class="bg-[#F3F3F3] w-full md:pb-14">
-                                <div class="md:max-h-[38rem] max-h-[30rem]  overflow-y-auto"> 
-                                    <table class="text-center pt-10 " >
-                                    <thead class="mt-10">
-                                        <tr>
-                                            <th> </th>
-                                            <th> </th>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody class="w-auto md:text-lg text-sm font-Inter font-bold">
-                                    
-                                        <tr class="max-h-48 h-auto  text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                        
-                                        <tr class="max-h-48 h-auto  text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-            
-                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                     
-                                    </tbody>
-                                </table>
-                            </div>
-                               
-                            </div>
-                            <div class="w-full flex justify-end py-10">
-                                <button class="bg-[#494848] px-7 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='admin_fire_response.html'">Back</button>
-                            </div>
-                           
-
-                       </div>
-                       
-                    </div>
-                </div>
-            <div id="addPer1" style="display: none;" class="mx-16">
-                <div class="w-full h-full flex justify-center" >
-                  
-                    <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
-                        <div class="flex justify-end mr-3 font-bold text-2xl">
-                            <a href="#" onclick="canaddPerson1()">X</a>
-                        </div>
-    
-                    </div>
-            </div>
-            </div>
-          
-              
         </div>
+
+        <div class="w-[370px] h-8 border-[1px] border-black flex justify-center font-Inter mt-8 ml-10 rounded-md">
+            <div class="w-[70%] h-full bg-[#930D0D] rounded-l-md"><p class="text-center text-white text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs.html'">Status logs</p></div>
+            <div class="w-full bg-white rounded-r-md"><p class="text-center text-black text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass.html'">Vehicle Assignment Logs</p></div>
+        </div>
+
+        <table class="md:w-full w-[60rem] text-center mt-5" >
+            <thead class="md:h-12 md:text-2xl text-md  bg-[#D6D6D6] border-t-2 border-b-2 border-black">
+                <tr class="text-lg">
+                    <th> </th>
+                    <th class="py-2 sticky-col bg-[#D6D6D6]">Item</th>
+                    <th>Volunteer Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Quantity</th>
+                    <th>Vehicle</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody class="font-[500]">
+                <tr>
+                   <td><div class="flex justify-center"><img src="img/ex2.jpg" class="w-10 h-10 object-fill mt-2" alt="" srcset=""></div></td>
+                   <td>Name</td>
+                   <td>Marniel Corsiga</td>
+                   <td>12/01/24</td>
+                   <td>12:30</td>
+                   <td>2</td>
+                   <td>Engine 72</td>
+                   <td>Missing</td>
+                   <td>Comments</td>
+                </tr>
+               
+            </tbody>
+        </table>   
     </div>
-</div>
+
+ </div>
 
 </body>
 </div>
 <script src="admin.js" defer></script>
-<script src="admin_modules.js" defer></script>
-<script src="register.js" defer></script>
+<!-- <script src="admin_modules.js" defer></script>
+<script src="register.js" defer></script> -->
 </html>

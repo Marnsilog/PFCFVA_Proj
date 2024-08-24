@@ -4,7 +4,7 @@
 // const session = require('express-session'); //
 // const bodyParser = require('body-parser'); //
 // const path = require('path'); //
-
+//push test
 //bugged
 const express = require('express');
 const mysql = require('mysql');
@@ -333,7 +333,7 @@ app.post('/login', (req, res) => {
 
 app.get('/volunteer', (req, res) => {
     if (req.session.loggedin) {
-        res.sendFile(path.join(__dirname, 'public', 'volunteer.html'));
+        res.sendFile(path.join(__dirname, 'public', 'volunteer_dashboard.html'));
     } else {
         res.redirect('/');
     }

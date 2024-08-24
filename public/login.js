@@ -102,13 +102,13 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         const accountType = data.accountType;
         switch (accountType) {
             case 'Admin':
-                window.location.href = 'admin.html';
+                window.location.href = 'admin_dashboard.html';
                 break;
             case 'Volunteer':
-                window.location.href = 'volunteer.html';
+                window.location.href = 'volunteer_dashboard.html';
                 break;
             case 'Supervisor':
-                window.location.href = 'supervisor.html';
+                window.location.href = 'supervisor_dashboard.html';
                 break;
             default:
                 alert('Unknown account type');

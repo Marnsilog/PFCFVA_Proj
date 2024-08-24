@@ -19,7 +19,7 @@ const multer = require('multer');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
-// Create connection
+// Create connections
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',

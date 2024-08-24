@@ -333,7 +333,7 @@ app.post('/login', (req, res) => {
 
 app.get('/volunteer', (req, res) => {
     if (req.session.loggedin) {
-        res.sendFile(path.join(__dirname, 'public', 'volunteer.html'));
+        res.sendFile(path.join(__dirname, 'public', 'volunteer_dashboard.html'));
     } else {
         res.redirect('/');
     }

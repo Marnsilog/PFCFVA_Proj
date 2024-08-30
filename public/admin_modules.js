@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+//past working code 000000000000000000000000000000000000000000000000000000000000
 // Function to toggle the visibility of the add equipment form
 function toggleAddEquipmentForm() {
     var form = document.getElementById('addEquipmentForm');
@@ -473,3 +473,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to search box
     document.getElementById('inventorySearchBox').addEventListener('input', loadEquipment); // Marked change: Event listener for search box
 });
+
+
+

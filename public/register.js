@@ -132,52 +132,50 @@
 
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
+
+    // Get RFID, last name, and date of birth values
     const rfid = document.getElementById('rfid').value; 
-    const username = document.getElementById('username').value; 
-    const password = document.getElementById('password').value; 
-    const confirmPassword = document.getElementById('confirmPassword').value;        
-    const accountType = document.getElementById('accountType').value; 
-    const lastName = document.getElementById('lastName').value; 
-    const firstName = document.getElementById('firstName').value; 
+    const lastName = document.getElementById('lastName').value.trim(); //keep last name as is for database
+    const dateOfBirth = document.getElementById('dateOfBirth').value;
+
+    // Generate the username and password based on the provided data
+    const username = rfid; // set RFID as the username
+    const password = generatePassword(lastName.toLowerCase(), dateOfBirth); // use lowercase version of last name for password
+
+    const accountType = document.getElementById('accountType').value;
+    const firstName = document.getElementById('firstName').value;
     const middleName = document.getElementById('middleName').value;
     const middleInitial = middleName ? middleName.charAt(0) : ''; // Take the first character of middleName as middleInitial
-    let callSign = document.getElementById('callSign').value; 
+    let callSign = document.getElementById('callSign').value;
     const callSignNum = document.getElementById('callSignNum').value;
-    
-    //for callSign shit
+
+    // Adjust callSign based on its value
     if (callSign === "ECHO800" || callSign === "ECHO900") {
         callSign = callSign.slice(0, 4) + callSignNum;
     } else if (callSign === "ASPIRANT" || callSign === "PROBATIONARY" || callSign === "ECHO") {
         callSign = callSign + callSignNum;
     }
 
-    const currentAddress = document.getElementById('currentAddress').value; 
-    const dateOfBirth = document.getElementById('dateOfBirth').value; 
-    const civilStatus = document.getElementById('civilStatus').value; 
-    const gender = document.getElementById('gender').value; 
-    const nationality = document.getElementById('nationality').value; 
-    const bloodType = document.getElementById('bloodType').value; 
-    const mobileNumber = document.getElementById('contactNumber').value; 
-    const emailAddress = document.getElementById('emailAddress').value; 
-    const emergencyContactPerson = document.getElementById('emergencyContactPerson').value; 
-    const emergencyContactNumber = document.getElementById('emergencyContactNumber').value; 
-    const highestEducationalAttainment = document.getElementById('highestEducationalAttainment').value; 
-    const nameOfCompany = document.getElementById('nameOfCompany').value; 
-    const yearsInService = document.getElementById('yearsInService').value; 
-    const skillsTraining = document.getElementById('skillsTraining').value; 
+    const currentAddress = document.getElementById('currentAddress').value;
+    const civilStatus = document.getElementById('civilStatus').value;
+    const gender = document.getElementById('gender').value;
+    const nationality = document.getElementById('nationality').value;
+    const bloodType = document.getElementById('bloodType').value;
+    const mobileNumber = document.getElementById('contactNumber').value;
+    const emailAddress = document.getElementById('emailAddress').value;
+    const emergencyContactPerson = document.getElementById('emergencyContactPerson').value;
+    const emergencyContactNumber = document.getElementById('emergencyContactNumber').value;
+    const highestEducationalAttainment = document.getElementById('highestEducationalAttainment').value;
+    const nameOfCompany = document.getElementById('nameOfCompany').value;
+    const yearsInService = document.getElementById('yearsInService').value;
+    const skillsTraining = document.getElementById('skillsTraining').value;
     const otherAffiliation = document.getElementById('otherAffiliation').value;
     const bioDataChecked = document.getElementById('cbBioData').checked ? 1 : 0;
     const interviewChecked = document.getElementById('cbInterview').checked ? 1 : 0;
-    const fireResponsePoints = document.getElementById('fireResponse').value; 
-    const activityPoints = document.getElementById('activityPoints').value; 
-    const inventoryPoints = document.getElementById('inventoryPoints').value; 
-    const dutyHours = document.getElementById('dutyHours').value; 
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return;
-    }
+    const fireResponsePoints = document.getElementById('fireResponse').value;
+    const activityPoints = document.getElementById('activityPoints').value;
+    const inventoryPoints = document.getElementById('inventoryPoints').value;
+    const dutyHours = document.getElementById('dutyHours').value;
 
     // Validate email format
     if (!validateEmail(emailAddress)) {
@@ -185,6 +183,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         return;
     }
 
+    // Post the data
     fetch('/register', {
         method: 'POST',
         headers: {
@@ -192,35 +191,34 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         },
         body: JSON.stringify({ 
             rfid,
-            username, 
-            password, 
-            accountType, 
+            username, // send default generated username
+            password, // send default generated password
+            accountType,
             lastName, 
-            firstName, 
-            middleName, 
-            middleInitial, 
+            firstName,
+            middleName,
+            middleInitial,
             callSign,
-            callSign, 
-            currentAddress, 
-            dateOfBirth, 
-            civilStatus, 
-            gender, 
-            nationality, 
-            bloodType, 
-            mobileNumber, 
-            emailAddress, 
-            emergencyContactPerson, 
-            emergencyContactNumber, 
-            highestEducationalAttainment, 
-            nameOfCompany, 
-            yearsInService, 
-            skillsTraining, 
-            otherAffiliation, 
-            bioDataChecked, 
-            interviewChecked, 
-            fireResponsePoints, 
-            activityPoints, 
-            inventoryPoints, 
+            currentAddress,
+            dateOfBirth,
+            civilStatus,
+            gender,
+            nationality,
+            bloodType,
+            mobileNumber,
+            emailAddress,
+            emergencyContactPerson,
+            emergencyContactNumber,
+            highestEducationalAttainment,
+            nameOfCompany,
+            yearsInService,
+            skillsTraining,
+            otherAffiliation,
+            bioDataChecked,
+            interviewChecked,
+            fireResponsePoints,
+            activityPoints,
+            inventoryPoints,
             dutyHours
         })
     })
@@ -245,17 +243,18 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     });
 });
 
+// Function to generate password
+function generatePassword(lowercaseLastName, dateOfBirth) {
+    // Change 7: Format dateOfBirth as YYYYMMDD and combine with lowercase last name
+    const formattedDate = dateOfBirth.replace(/-/g, ''); 
+    return `${lowercaseLastName}${formattedDate}`;
+}
 
-
-//functions
+// Email validation function
 function validateEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
-
-
-
-
 
 
 

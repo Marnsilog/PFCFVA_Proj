@@ -151,11 +151,15 @@ function fetchRecentAttendance() {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                }); // Change: Format date to "Month Day, Year"
+                }); // Format date to "Month Day, Year"
+
+                const timeInFormatted = record.timeIn.substring(0, 5); // Remove seconds from timeIn
+                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : 'N/A'; // Remove seconds from timeOut
+
                 row.innerHTML = `
                     <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                    <td class="py-2 px-4 border-b border-r">${record.timeIn}</td>
-                    <td class="py-2 px-4 border-b border-r">${record.timeOut || 'N/A'}</td>
+                    <td class="py-2 px-4 border-b border-r">${timeInFormatted}</td>
+                    <td class="py-2 px-4 border-b border-r">${timeOutFormatted}</td>
                     <td class="py-2 px-4 border-b border-r">${dateFormatted}</td>
                 `;
                 attendanceLogs.appendChild(row);
@@ -168,25 +172,26 @@ function fetchRecentAttendance() {
 
 
 
-//colors
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
 
-function changeBackgroundColor() {
-    document.body.style.backgroundColor = getRandomColor();
-    const divs = document.querySelectorAll('div');
-    divs.forEach(div => {
-        if (div.id !== 'weewoo') { // IGNORE DIV WITH ID 'ignoreDiv'
-            div.style.backgroundColor = getRandomColor();
-        }
-    });
-}
+// //colors
+// function getRandomColor() {
+//     const letters = '0123456789ABCDEF';
+//     let color = '#';
+//     for (let i = 0; i < 6; i++) {
+//         color += letters[Math.floor(Math.random() * 16)];
+//     }
+//     return color;
+// }
+
+// function changeBackgroundColor() {
+//     document.body.style.backgroundColor = getRandomColor();
+//     const divs = document.querySelectorAll('div');
+//     divs.forEach(div => {
+//         if (div.id !== 'weewoo') { // IGNORE DIV WITH ID 'ignoreDiv'
+//             div.style.backgroundColor = getRandomColor();
+//         }
+//     });
+// }
 
 
 // //working for retrieving profile

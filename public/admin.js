@@ -122,6 +122,23 @@ function showInventory() {
     addLine('inV');
 }
 
+function edit() {
+
+    var invedit = document.getElementById('invedit');
+    
+    if (invedit.style.display === 'none' || invedit.style.display === '') {
+     
+        invedit.style.display = 'block';
+    } else {
+      
+        invedit.style.display = 'none';
+    }
+}
+function exitinvedit(){
+    var invedit = document.getElementById('invedit');
+    invedit.style.display = 'none';
+
+}
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');

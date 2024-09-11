@@ -18,13 +18,13 @@
     <div class="w-full h-full flex justify-normal">
         <div class="w-1/2 font-Inter">
 
-            <div class="ml-56 mt-24">
+            <div class="ml-56 mt-14">
                 <p class="font-bold text-2xl">INSTRUCTION</p>
                 <p class="text-xl font-semibold ml-3">Tap your ID to record your<br> attendance.</p>
             </div>
           
            
-            <div class="flex justify-center w-full mt-52">
+            <div class="flex justify-center w-full mt-20">
                 <div class="w-[32rem] h-36 border-[1px] border-black flex justify-normal font-Inter">
                     <div class="w-1/2 border-r-[1px] border-black pt-8">
                         <p class="text-center font-bold text-2xl"> TIME IN</p>
@@ -37,6 +37,25 @@
                 </div>
                 
             </div>
+            <div class="px-36 my-10">
+                <p class="font-Inter text-xl">Attendance Logs</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b">Name</th>
+                                <th class="py-2 px-4 border-b border-r">Time In</th>
+                                <th class="py-2 px-4 border-b border-r">Time Out</th>
+                                <th class="py-2 px-4 border-b border-r">Date</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceLogs">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
            
         </div>
 
@@ -44,7 +63,7 @@
         <div class="w-1/2">
             <div class="w-full h-full flex justify-start">
                 <div class="w-full mt-20">
-                    <p class="font-Inter text-3xl text-black font-bold text-center">RFID</p>
+                    <p class="font-Inter text-3xl text-black font-bold text-start md:text-center">RFID</p>
                     <div class="pt-5 w-full flex justify-center">
                         <img src="img/user.png" class="w-28 h-28">
                         <div class="ml-5 mt-5">
@@ -83,6 +102,7 @@
                         </div>
                         
                     </div>
+                    
                         
             </div>
         </div>

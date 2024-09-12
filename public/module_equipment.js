@@ -1,95 +1,93 @@
-//for equipment
-
-
-//past working code 000000000000000000000000000000000000000000000000000000000000
 // Function to toggle the visibility of the add equipment form
 function toggleAddEquipmentForm() {
     var form = document.getElementById('addEquipmentForm');
     form.style.display = (form.style.display === 'none' ? 'block' : 'none');
 }
 
-// Event listener for the ADD button
-document.getElementById('btnAddEquip').addEventListener('click', function() {
-    toggleAddEquipmentForm(); // Show the form
+// Ensure DOM is fully loaded before adding event listeners
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Add event listener to the ADD EQUIPMENT button
+    const btnAddEquip = document.getElementById('btnAddEquip');
+    if (btnAddEquip) {
+        btnAddEquip.addEventListener('click', function() {
+            toggleAddEquipmentForm(); // Show the form
+        });
+    }
+
+    // Add event listener to the form submit button
+    const addEquipmentForm = document.getElementById('addEquipmentForm'); // Changed from querySelector to getElementById
+    if (addEquipmentForm) {
+        addEquipmentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            // Fetch request to upload equipment
+            fetch('/uploadEquipment', {
+                method: 'POST',
+                body: formData  // No need to set Content-Type header because FormData handles it
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Success: ' + data.message);
+                toggleAddEquipmentForm(); // Close the form after submission
+                window.location.reload(); // Reload to show the updated equipment list
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting the form: ' + error.message);
+            });
+        });
+    }
+
+    // Load the equipment list
+    loadEquipment(); // Call to load equipment data when the page loads
+
+    // Add event listener to the sort select dropdown
+    const sortVehicleAssignment = document.getElementById('sortVehicleAssignment');
+    if (sortVehicleAssignment) {
+        sortVehicleAssignment.addEventListener('change', loadEquipment); // Trigger loadEquipment on change
+    }
+
+    // Add event listener to the search box
+    const inventorySearchBox = document.getElementById('inventorySearchBox');
+    if (inventorySearchBox) {
+        inventorySearchBox.addEventListener('input', loadEquipment); // Trigger loadEquipment on input
+    }
 });
-
-// Handling form submission
-document.querySelector('#addEquipmentForm form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var formData = new FormData(this);
-    
-    fetch('/uploadEquipment', {
-        method: 'POST',
-        body: formData  // No need to set Content-Type header because FormData takes care of it
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert('Success: ' + data.message);
-        toggleAddEquipmentForm(); // Close the form after submission
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error submitting the form: ' + error.message);
-    });
-});
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     fetch('/getEquipment')
-//         .then(response => response.json())
-//         .then(data => {
-//             const container = document.getElementById('equipmentGrid');
-//             data.forEach(item => {
-//                 const div = document.createElement('div');
-//                 div.className = 'w-52 h-64 border-2 border-black';
-//                 div.innerHTML = `
-//                     <div class="mt-2 w-full flex justify-end">
-//                         <!-- Additional control icons can go here -->
-//                     </div>
-//                     <div class="w-full flex justify-center">
-//                         <div class="w-[170px] h-[170px] border-2 border-black">
-//                             <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
-//                         </div>
-//                     </div>
-//                     <p class="text-base font-Inter text-center">${item.itemName}</p>
-//                 `;
-//                 container.appendChild(div);
-//             });
-//         })
-//         .catch(error => {
-//             console.error('Error loading equipment:', error);
-//         });
-// });
-
 
 // Function to load and display equipment
 function loadEquipment() {
-    fetch('/getEquipment')
+    fetch('/getEquipment') // Fetch request to get equipment data from the backend
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('equipmentGrid');
+            if (!container) return; // Ensure container exists
+
             container.innerHTML = ''; // Clear the container
 
-            const selectedVehicle = document.getElementById('sortVehicleAssignment').value;
-            const searchQuery = document.getElementById('inventorySearchBox').value.toLowerCase(); // Get search query
+            const selectedVehicle = document.getElementById('sortVehicleAssignment') ? document.getElementById('sortVehicleAssignment').value : ''; // Retrieve selected vehicle
+            const searchQuery = document.getElementById('inventorySearchBox') ? document.getElementById('inventorySearchBox').value.toLowerCase() : ''; // Retrieve search query
 
+            // Filter equipment data based on vehicle and search query
             const filteredData = data.filter(item => {
                 const matchesVehicle = selectedVehicle ? item.vehicleAssignment === selectedVehicle : true;
                 const matchesSearch = item.itemName.toLowerCase().includes(searchQuery);
-                return matchesVehicle && matchesSearch; // Filter based on search query and selected vehicle
+                return matchesVehicle && matchesSearch; // Filtering logic
             });
 
-            filteredData.forEach(item => {
+            // Loop through filtered data and dynamically create HTML
+            filteredData.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = 'w-full bg-gray-300 h-28 mx-3 rounded-xl flex justify-between'; // Class name for layout
+                div.className = 'w-full bg-gray-300 h-28 mx-3 rounded-xl flex justify-between'; // Updated layout class name
                 div.innerHTML = `
                     <div class="flex justify-normal space-x-5 py-2">
+                        <p class="py-8 ml-5 text-3xl">${index + 1}</p> <!-- Sequential numbering based on the index -->
                         <img src="${item.itemImage}" class="object-fill w-24 h-24 rounded-md" alt="Equipment Image"> <!-- Image for equipment -->
                         <p class="py-8 ml-5 text-2xl font-bold">${item.itemName}</p> <!-- Equipment name -->
                         <p class="py-8 ml-5 text-xl font-[300] pl-6">${item.vehicleAssignment}</p> <!-- Vehicle assignment -->
@@ -102,20 +100,10 @@ function loadEquipment() {
                         <!-- Edit icon -->
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(div); // Append dynamically created equipment to the container
             });
         })
         .catch(error => {
-            console.error('Error loading equipment:', error);
+            console.error('Error loading equipment:', error); // Error handling
         });
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    loadEquipment();
-
-    // Add event listener to sort select
-    document.getElementById('sortVehicleAssignment').addEventListener('change', loadEquipment); // Event listener for sort select
-
-    // Add event listener to search box
-    document.getElementById('inventorySearchBox').addEventListener('input', loadEquipment); // Event listener for search box
-});

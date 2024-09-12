@@ -1,11 +1,4 @@
-// const express = require('express'); //
-// const mysql = require('mysql'); //
-// const bcrypt = require('bcrypt'); //
-// const session = require('express-session'); //
-// const bodyParser = require('body-parser'); //
-// const path = require('path'); //
-//push test
-//bugged
+
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
@@ -16,6 +9,8 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const path = require('path');
 const multer = require('multer');
+const sharp = require('sharp');
+const fs = require('fs');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -787,9 +782,13 @@ app.get('/volunteerDetails', (req, res) => {
 //     });
 // });
 
+
+console.log('Sharp version:', sharp.version);  // Log sharp version to check installation
+
 app.post('/uploadEquipment', (req, res) => {
-    upload(req, res, function(err) {
+    upload(req, res, function (err) {
         if (err) {
+            console.error('Upload Error:', err);
             return res.status(400).json({ error: err.message });
         }
 
@@ -802,30 +801,103 @@ app.post('/uploadEquipment', (req, res) => {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
-        const itemImagePath = `/uploads/${req.file.filename}`;
+        // Set paths for the original and compressed image
+        const originalImagePath = path.join(__dirname, 'uploads', req.file.filename);
+        const compressedImagePath = path.join(__dirname, 'uploads', `compressed_${req.file.filename}.jpg`);
 
-        const sql = `
-            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-            VALUES (?, ?, ?, ?)
-        `;
+        // Verify if the original file exists
+        if (!fs.existsSync(originalImagePath)) {
+            console.error('Original image file does not exist:', originalImagePath);
+            return res.status(500).json({ error: 'Uploaded file not found on server.' });
+        }
 
-        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-            if (err) {
-                console.error('Failed to add equipment:', err);
-                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-            }
-            res.status(201).json({
-                message: 'Equipment added successfully!',
-                data: {
-                    itemName,
-                    itemImagePath,
-                    vehicleAssignment,
-                    dateAcquired
+        console.log('Compressing image:', originalImagePath);
+
+        // Compress and resize the image using sharp
+        sharp(originalImagePath)
+            .resize({ width: 1280, height: 720, fit: 'inside' })  // Resize to 1280x720 (max)
+            .jpeg({ quality: 80 })  // Convert to JPEG with 80% quality
+            .toFile(compressedImagePath, (err, info) => {
+                if (err) {
+                    console.error('Error compressing image:', err);
+                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
                 }
+
+                console.log('Image compressed successfully:', info);
+
+                // Delete the original image after compression
+                fs.unlink(originalImagePath, (err) => {
+                    if (err) {
+                        console.error('Failed to delete original image:', err);
+                    }
+                });
+
+                // Save the compressed image path to the database
+                const itemImagePath = `/uploads/compressed_${req.file.filename}.jpg`;
+
+                const sql = `
+                    INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+                    VALUES (?, ?, ?, ?)
+                `;
+
+                db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+                    if (err) {
+                        console.error('Failed to add equipment:', err);
+                        return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+                    }
+                    res.status(201).json({
+                        message: 'Equipment added successfully!',
+                        data: {
+                            itemName,
+                            itemImagePath,
+                            vehicleAssignment,
+                            dateAcquired
+                        }
+                    });
+                });
             });
-        });
     });
 });
+
+// app.post('/uploadEquipment', (req, res) => {
+//     upload(req, res, function(err) {
+//         if (err) {
+//             return res.status(400).json({ error: err.message });
+//         }
+
+//         if (!req.file) {
+//             return res.status(400).json({ error: 'No file uploaded.' });
+//         }
+
+//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
+//         if (!itemName || !vehicleAssignment || !dateAcquired) {
+//             return res.status(400).json({ error: 'All fields are required.' });
+//         }
+
+//         const itemImagePath = `/uploads/${req.file.filename}`;
+
+//         const sql = `
+//             INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+//             VALUES (?, ?, ?, ?)
+//         `;
+
+//         db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+//             if (err) {
+//                 console.error('Failed to add equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+//             }
+//             res.status(201).json({
+//                 message: 'Equipment added successfully!',
+//                 data: {
+//                     itemName,
+//                     itemImagePath,
+//                     vehicleAssignment,
+//                     dateAcquired
+//                 }
+//             });
+//         });
+//     });
+// });
 
 
 

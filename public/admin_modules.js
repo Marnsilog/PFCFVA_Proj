@@ -357,51 +357,91 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-//past working code 000000000000000000000000000000000000000000000000000000000000
-// Function to toggle the visibility of the add equipment form
-function toggleAddEquipmentForm() {
-    var form = document.getElementById('addEquipmentForm');
-    form.style.display = (form.style.display === 'none' ? 'block' : 'none');
-}
+// //past working code 000000000000000000000000000000000000000000000000000000000000
+// // Function to toggle the visibility of the add equipment form
+// function toggleAddEquipmentForm() {
+//     var form = document.getElementById('addEquipmentForm');
+//     form.style.display = (form.style.display === 'none' ? 'block' : 'none');
+// }
 
-// Event listener for the ADD button
-document.getElementById('btnAddEquip').addEventListener('click', function() {
-    toggleAddEquipmentForm(); // Show the form
-});
+// // Event listener for the ADD button
+// document.getElementById('btnAddEquip').addEventListener('click', function() {
+//     toggleAddEquipmentForm(); // Show the form
+// });
 
-// Handling form submission
-document.querySelector('#addEquipmentForm form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var formData = new FormData(this);
+// // Handling form submission
+// document.querySelector('#addEquipmentForm form').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     var formData = new FormData(this);
     
-    fetch('/uploadEquipment', {
-        method: 'POST',
-        body: formData  // No need to set Content-Type header because FormData takes care of it
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
-        }
-        return response.json();
-    })
-    .then(data => {
-        alert('Success: ' + data.message);
-        toggleAddEquipmentForm(); // Close the form after submission
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error submitting the form: ' + error.message);
-    });
-});
+//     fetch('/uploadEquipment', {
+//         method: 'POST',
+//         body: formData  // No need to set Content-Type header because FormData takes care of it
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         alert('Success: ' + data.message);
+//         toggleAddEquipmentForm(); // Close the form after submission
+//         window.location.reload();
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('Error submitting the form: ' + error.message);
+//     });
+// });
 
 
-// document.addEventListener('DOMContentLoaded', function() {
+// // document.addEventListener('DOMContentLoaded', function() {
+// //     fetch('/getEquipment')
+// //         .then(response => response.json())
+// //         .then(data => {
+// //             const container = document.getElementById('equipmentGrid');
+// //             data.forEach(item => {
+// //                 const div = document.createElement('div');
+// //                 div.className = 'w-52 h-64 border-2 border-black';
+// //                 div.innerHTML = `
+// //                     <div class="mt-2 w-full flex justify-end">
+// //                         <!-- Additional control icons can go here -->
+// //                     </div>
+// //                     <div class="w-full flex justify-center">
+// //                         <div class="w-[170px] h-[170px] border-2 border-black">
+// //                             <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
+// //                         </div>
+// //                     </div>
+// //                     <p class="text-base font-Inter text-center">${item.itemName}</p>
+// //                 `;
+// //                 container.appendChild(div);
+// //             });
+// //         })
+// //         .catch(error => {
+// //             console.error('Error loading equipment:', error);
+// //         });
+// // });
+
+
+// // Function to load and display equipment
+// function loadEquipment() {
 //     fetch('/getEquipment')
 //         .then(response => response.json())
 //         .then(data => {
 //             const container = document.getElementById('equipmentGrid');
-//             data.forEach(item => {
+//             container.innerHTML = ''; // Clear the container
+
+//             const selectedVehicle = document.getElementById('sortVehicleAssignment').value;
+//             const searchQuery = document.getElementById('inventorySearchBox').value.toLowerCase(); // Marked change: Get search query
+
+//             const filteredData = data.filter(item => {
+//                 const matchesVehicle = selectedVehicle ? item.vehicleAssignment === selectedVehicle : true;
+//                 const matchesSearch = item.itemName.toLowerCase().includes(searchQuery);
+//                 return matchesVehicle && matchesSearch; // Marked change: Filter based on search query and selected vehicle
+//             });
+
+//             filteredData.forEach(item => {
 //                 const div = document.createElement('div');
 //                 div.className = 'w-52 h-64 border-2 border-black';
 //                 div.innerHTML = `
@@ -414,6 +454,7 @@ document.querySelector('#addEquipmentForm form').addEventListener('submit', func
 //                         </div>
 //                     </div>
 //                     <p class="text-base font-Inter text-center">${item.itemName}</p>
+//                     <p class="text-sm font-Inter text-center">${item.vehicleAssignment}</p>
 //                 `;
 //                 container.appendChild(div);
 //             });
@@ -421,58 +462,17 @@ document.querySelector('#addEquipmentForm form').addEventListener('submit', func
 //         .catch(error => {
 //             console.error('Error loading equipment:', error);
 //         });
+// }
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     loadEquipment();
+
+//     // Add event listener to sort select
+//     document.getElementById('sortVehicleAssignment').addEventListener('change', loadEquipment); // Marked change: Event listener for sort select
+
+//     // Add event listener to search box
+//     document.getElementById('inventorySearchBox').addEventListener('input', loadEquipment); // Marked change: Event listener for search box
 // });
-
-
-// Function to load and display equipment
-function loadEquipment() {
-    fetch('/getEquipment')
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('equipmentGrid');
-            container.innerHTML = ''; // Clear the container
-
-            const selectedVehicle = document.getElementById('sortVehicleAssignment').value;
-            const searchQuery = document.getElementById('inventorySearchBox').value.toLowerCase(); // Marked change: Get search query
-
-            const filteredData = data.filter(item => {
-                const matchesVehicle = selectedVehicle ? item.vehicleAssignment === selectedVehicle : true;
-                const matchesSearch = item.itemName.toLowerCase().includes(searchQuery);
-                return matchesVehicle && matchesSearch; // Marked change: Filter based on search query and selected vehicle
-            });
-
-            filteredData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'w-52 h-64 border-2 border-black';
-                div.innerHTML = `
-                    <div class="mt-2 w-full flex justify-end">
-                        <!-- Additional control icons can go here -->
-                    </div>
-                    <div class="w-full flex justify-center">
-                        <div class="w-[170px] h-[170px] border-2 border-black">
-                            <img src="${item.itemImage}" class="w-full h-full object-fill" alt="Equipment Image">
-                        </div>
-                    </div>
-                    <p class="text-base font-Inter text-center">${item.itemName}</p>
-                    <p class="text-sm font-Inter text-center">${item.vehicleAssignment}</p>
-                `;
-                container.appendChild(div);
-            });
-        })
-        .catch(error => {
-            console.error('Error loading equipment:', error);
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    loadEquipment();
-
-    // Add event listener to sort select
-    document.getElementById('sortVehicleAssignment').addEventListener('change', loadEquipment); // Marked change: Event listener for sort select
-
-    // Add event listener to search box
-    document.getElementById('inventorySearchBox').addEventListener('input', loadEquipment); // Marked change: Event listener for search box
-});
 
 
 

@@ -1,22 +1,24 @@
 // Function to toggle the visibility of the add equipment form
-function toggleAddEquipmentForm() {
+function toggleEquipmentForm() {
     var form = document.getElementById('addEquipmentForm');
-    form.style.display = (form.style.display === 'none' ? 'block' : 'none');
+    if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden'); // Show the form
+    } else {
+        form.classList.add('hidden'); // Hide the form
+    }
+}
+
+// Function to close the form
+function closeForm() {
+    var form = document.getElementById('addEquipmentForm');
+    form.classList.add('hidden'); // Hide the form when close is clicked
 }
 
 // Ensure DOM is fully loaded before adding event listeners
 document.addEventListener('DOMContentLoaded', function() {
-
-    // Add event listener to the ADD EQUIPMENT button
-    const btnAddEquip = document.getElementById('btnAddEquip');
-    if (btnAddEquip) {
-        btnAddEquip.addEventListener('click', function() {
-            toggleAddEquipmentForm(); // Show the form
-        });
-    }
-
+    
     // Add event listener to the form submit button
-    const addEquipmentForm = document.getElementById('addEquipmentForm'); // Changed from querySelector to getElementById
+    const addEquipmentForm = document.getElementById('addEquipmentForm');
     if (addEquipmentForm) {
         addEquipmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 alert('Success: ' + data.message);
-                toggleAddEquipmentForm(); // Close the form after submission
+                closeForm(); // Close the form after submission
                 window.location.reload(); // Reload to show the updated equipment list
             })
             .catch(error => {

@@ -12,6 +12,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
 
+
 const randomBytesAsync = promisify(crypto.randomBytes);
 
 // Create connections
@@ -783,10 +784,10 @@ app.get('/volunteerDetails', (req, res) => {
 // });
 
 
-console.log('Sharp version:', sharp.version);  // Log sharp version to check installation
 
+// working with compression
 app.post('/uploadEquipment', (req, res) => {
-    upload(req, res, function (err) {
+    upload(req, res, function(err) {
         if (err) {
             console.error('Upload Error:', err);
             return res.status(400).json({ error: err.message });
@@ -801,64 +802,64 @@ app.post('/uploadEquipment', (req, res) => {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
-        // Set paths for the original and compressed image
-        const originalImagePath = path.join(__dirname, 'uploads', req.file.filename);
-        const compressedImagePath = path.join(__dirname, 'uploads', `compressed_${req.file.filename}.jpg`);
+        const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename); // Ensure correct path
 
-        // Verify if the original file exists
-        if (!fs.existsSync(originalImagePath)) {
-            console.error('Original image file does not exist:', originalImagePath);
-            return res.status(500).json({ error: 'Uploaded file not found on server.' });
-        }
-
-        console.log('Compressing image:', originalImagePath);
-
-        // Compress and resize the image using sharp
+        // Step 1: Get image metadata to calculate the new size (30%)
         sharp(originalImagePath)
-            .resize({ width: 1280, height: 720, fit: 'inside' })  // Resize to 1280x720 (max)
-            .jpeg({ quality: 80 })  // Convert to JPEG with 80% quality
-            .toFile(compressedImagePath, (err, info) => {
-                if (err) {
-                    console.error('Error compressing image:', err);
-                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-                }
+            .metadata()
+            .then(metadata => {
+                const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
+                const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
 
-                console.log('Image compressed successfully:', info);
-
-                // Delete the original image after compression
-                fs.unlink(originalImagePath, (err) => {
-                    if (err) {
-                        console.error('Failed to delete original image:', err);
+                // Compress and resize the image using sharp and return it as a buffer
+                return sharp(originalImagePath)
+                    .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
+                    .toBuffer();
+            })
+            .then(compressedBuffer => {
+                // Step 2: Write the compressed image buffer back to the original file path
+                fs.writeFile(originalImagePath, compressedBuffer, (writeErr) => {
+                    if (writeErr) {
+                        console.error('Error writing compressed image:', writeErr);
+                        return res.status(500).json({ error: 'Failed to write compressed image. Please try again later.' });
                     }
-                });
 
-                // Save the compressed image path to the database
-                const itemImagePath = `/uploads/compressed_${req.file.filename}.jpg`;
+                    console.log('Image compressed and overwritten successfully');
 
-                const sql = `
-                    INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                    VALUES (?, ?, ?, ?)
-                `;
+                    // Save the path of the compressed image to the database
+                    const itemImagePath = `/uploads/${req.file.filename}`;  // Use the original filename
 
-                db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-                    if (err) {
-                        console.error('Failed to add equipment:', err);
-                        return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-                    }
-                    res.status(201).json({
-                        message: 'Equipment added successfully!',
-                        data: {
-                            itemName,
-                            itemImagePath,
-                            vehicleAssignment,
-                            dateAcquired
+                    const sql = `
+                        INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+                        VALUES (?, ?, ?, ?)
+                    `;
+
+                    db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+                        if (err) {
+                            console.error('Failed to add equipment:', err);
+                            return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
                         }
+                        res.status(201).json({
+                            message: 'Equipment added successfully!',
+                            data: {
+                                itemName,
+                                itemImagePath,
+                                vehicleAssignment,
+                                dateAcquired
+                            }
+                        });
                     });
                 });
+            })
+            .catch(err => {
+                console.error('Error compressing image:', err);
+                return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
             });
     });
 });
 
+
+// //working upload
 // app.post('/uploadEquipment', (req, res) => {
 //     upload(req, res, function(err) {
 //         if (err) {

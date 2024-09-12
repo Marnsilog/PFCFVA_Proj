@@ -786,10 +786,82 @@ app.get('/volunteerDetails', (req, res) => {
 
 
 // working with compression
+// app.post('/uploadEquipment', (req, res) => {
+//     upload(req, res, function(err) {
+//         if (err) {
+//             console.error('Upload Error:', err);
+//             return res.status(400).json({ error: err.message });
+//         }
+
+//         if (!req.file) {
+//             return res.status(400).json({ error: 'No file uploaded.' });
+//         }
+
+//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
+//         if (!itemName || !vehicleAssignment || !dateAcquired) {
+//             return res.status(400).json({ error: 'All fields are required.' });
+//         }
+
+//         const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename); // Ensure correct path
+
+//         // Step 1: Get image metadata to calculate the new size (30%)
+//         sharp(originalImagePath)
+//             .metadata()
+//             .then(metadata => {
+//                 const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
+//                 const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
+
+//                 // Compress and resize the image using sharp and return it as a buffer
+//                 return sharp(originalImagePath)
+//                     .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
+//                     .toBuffer();
+//             })
+//             .then(compressedBuffer => {
+//                 // Step 2: Write the compressed image buffer back to the original file path
+//                 fs.writeFile(originalImagePath, compressedBuffer, (writeErr) => {
+//                     if (writeErr) {
+//                         console.error('Error writing compressed image:', writeErr);
+//                         return res.status(500).json({ error: 'Failed to write compressed image. Please try again later.' });
+//                     }
+
+//                     console.log('Image compressed and overwritten successfully');
+
+//                     // Save the path of the compressed image to the database
+//                     const itemImagePath = `/uploads/${req.file.filename}`;  // Use the original filename
+
+//                     const sql = `
+//                         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+//                         VALUES (?, ?, ?, ?)
+//                     `;
+
+//                     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+//                         if (err) {
+//                             console.error('Failed to add equipment:', err);
+//                             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+//                         }
+//                         res.status(201).json({
+//                             message: 'Equipment added successfully!',
+//                             data: {
+//                                 itemName,
+//                                 itemImagePath,
+//                                 vehicleAssignment,
+//                                 dateAcquired
+//                             }
+//                         });
+//                     });
+//                 });
+//             })
+//             .catch(err => {
+//                 console.error('Error compressing image:', err);
+//                 return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
+//             });
+//     });
+// });
+
+// working with compression and anti dupe
 app.post('/uploadEquipment', (req, res) => {
     upload(req, res, function(err) {
         if (err) {
-            console.error('Upload Error:', err);
             return res.status(400).json({ error: err.message });
         }
 
@@ -802,61 +874,60 @@ app.post('/uploadEquipment', (req, res) => {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
-        const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename); // Ensure correct path
+        // MARKED CHANGE: Check if itemName already exists
+        const checkItemNameQuery = 'SELECT COUNT(*) AS count FROM tbl_inventory WHERE itemName = ?';
+        db.query(checkItemNameQuery, [itemName], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Failed to check item name uniqueness' });
+            }
 
-        // Step 1: Get image metadata to calculate the new size (30%)
-        sharp(originalImagePath)
-            .metadata()
-            .then(metadata => {
-                const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
-                const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
+            // MARKED CHANGE: Prevent duplicate itemName registration
+            if (result[0].count > 0) {
+                return res.status(400).json({ error: 'Item name already exists. Please choose a different name.' });
+            }
 
-                // Compress and resize the image using sharp and return it as a buffer
-                return sharp(originalImagePath)
-                    .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
-                    .toBuffer();
-            })
-            .then(compressedBuffer => {
-                // Step 2: Write the compressed image buffer back to the original file path
-                fs.writeFile(originalImagePath, compressedBuffer, (writeErr) => {
-                    if (writeErr) {
-                        console.error('Error writing compressed image:', writeErr);
-                        return res.status(500).json({ error: 'Failed to write compressed image. Please try again later.' });
-                    }
+            const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename);  // Fixing path to the public directory
 
-                    console.log('Image compressed and overwritten successfully');
-
-                    // Save the path of the compressed image to the database
-                    const itemImagePath = `/uploads/${req.file.filename}`;  // Use the original filename
-
-                    const sql = `
-                        INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                        VALUES (?, ?, ?, ?)
-                    `;
-
-                    db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+            // Compress and resize the image using sharp
+            sharp(originalImagePath)
+                .resize({ width: Math.round(1920 * 0.3), height: Math.round(1080 * 0.3) })  // Resize by 30%
+                .toBuffer()  // Compress the image to a buffer
+                .then(data => {
+                    // Overwrite the original image with the compressed one
+                    fs.writeFile(originalImagePath, data, (err) => {
                         if (err) {
-                            console.error('Failed to add equipment:', err);
-                            return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+                            return res.status(500).json({ error: 'Failed to save compressed image.' });
                         }
-                        res.status(201).json({
-                            message: 'Equipment added successfully!',
-                            data: {
-                                itemName,
-                                itemImagePath,
-                                vehicleAssignment,
-                                dateAcquired
+
+                        const itemImagePath = `/uploads/${req.file.filename}`;  // Path to the compressed image
+
+                        const sql = `
+                            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+                            VALUES (?, ?, ?, ?)
+                        `;
+
+                        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+                            if (err) {
+                                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
                             }
+                            res.status(201).json({
+                                message: 'Equipment added successfully!',
+                                data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
+                            });
                         });
                     });
+                })
+                .catch(err => {
+                    console.error('Error compressing image:', err);
+                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
                 });
-            })
-            .catch(err => {
-                console.error('Error compressing image:', err);
-                return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-            });
+        });
     });
 });
+
+
+
+
 
 
 // //working upload
@@ -912,6 +983,25 @@ app.get('/getEquipment', (req, res) => {
         } else {
             res.json(results);
         }
+    });
+});
+
+//delete equip route
+app.delete('/deleteEquipment/:itemName', (req, res) => {
+    const itemName = req.params.itemName;
+
+    const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+    db.query(sql, [itemName], (err, result) => {
+        if (err) {
+            console.error('Error deleting equipment:', err);
+            return res.status(500).json({ error: 'Failed to delete equipment.' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Equipment not found.' });
+        }
+
+        res.status(200).json({ message: 'Equipment deleted successfully.' });
     });
 });
 

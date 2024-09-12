@@ -858,7 +858,7 @@ app.get('/volunteerDetails', (req, res) => {
 //     });
 // });
 
-// working with compression and anti dupe
+// working with compression and anti
 app.post('/uploadEquipment', (req, res) => {
     upload(req, res, function(err) {
         if (err) {
@@ -889,38 +889,45 @@ app.post('/uploadEquipment', (req, res) => {
             const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename);  // Fixing path to the public directory
 
             // Compress and resize the image using sharp
-            sharp(originalImagePath)
-                .resize({ width: Math.round(1920 * 0.3), height: Math.round(1080 * 0.3) })  // Resize by 30%
-                .toBuffer()  // Compress the image to a buffer
-                .then(data => {
-                    // Overwrite the original image with the compressed one
-                    fs.writeFile(originalImagePath, data, (err) => {
-                        if (err) {
-                            return res.status(500).json({ error: 'Failed to save compressed image.' });
-                        }
+                sharp(originalImagePath)
+                    .metadata()
+                    .then(metadata => {
+                        const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
+                        const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
 
-                        const itemImagePath = `/uploads/${req.file.filename}`;  // Path to the compressed image
-
-                        const sql = `
-                            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                            VALUES (?, ?, ?, ?)
-                        `;
-
-                        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+                        return sharp(originalImagePath)
+                            .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
+                            .toBuffer();  // Compress the image to a buffer
+                    })
+                    .then(data => {
+                        // Overwrite the original image with the compressed one
+                        fs.writeFile(originalImagePath, data, (err) => {
                             if (err) {
-                                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+                                return res.status(500).json({ error: 'Failed to save compressed image.' });
                             }
-                            res.status(201).json({
-                                message: 'Equipment added successfully!',
-                                data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
+
+                            const itemImagePath = `/uploads/${req.file.filename}`;  // Path to the compressed image
+
+                            const sql = `
+                                INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
+                                VALUES (?, ?, ?, ?)
+                            `;
+
+                            db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+                                if (err) {
+                                    return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+                                }
+                                res.status(201).json({
+                                    message: 'Equipment added successfully!',
+                                    data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
+                                });
                             });
                         });
+                    })
+                    .catch(err => {
+                        console.error('Error compressing image:', err);
+                        return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
                     });
-                })
-                .catch(err => {
-                    console.error('Error compressing image:', err);
-                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-                });
         });
     });
 });

@@ -23,20 +23,19 @@
                 <p class="text-xl font-semibold ml-3">Tap your ID to record your<br> attendance.</p>
             </div>
           
-           
             <div class="flex justify-center w-full mt-20">
                 <div class="w-[32rem] h-36 border-[1px] border-black flex justify-normal font-Inter">
                     <div class="w-1/2 border-r-[1px] border-black pt-8">
                         <p class="text-center font-bold text-2xl"> TIME IN</p>
-                        <p class="text-center">09:12 AM</p>
+                        <p class="text-center" id="TimeIn">--:--</p>
                     </div>
                     <div class="w-1/2 pt-8">
                         <p class="text-center font-bold text-2xl"> TIME OUT</p>
-                        <p class="text-center">  12:12 AM</p>
+                        <p class="text-center" id="TimeOut">--:--</p>
                     </div>
                 </div>
-                
             </div>
+            
             <div class="px-36 my-10">
                 <p class="font-Inter text-xl">Attendance Logs</p>
                 <div class="overflow-x-auto">
@@ -47,18 +46,16 @@
                                 <th class="py-2 px-4 border-b border-r">Time In</th>
                                 <th class="py-2 px-4 border-b border-r">Time Out</th>
                                 <th class="py-2 px-4 border-b border-r">Date</th>
-                                
                             </tr>
                         </thead>
                         <tbody id="attendanceLogs">
-                            
+                            <!-- Attendance logs will be appended here by JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
            
         </div>
-
 
         <div class="w-1/2">
             <div class="w-full h-full flex justify-start">
@@ -67,9 +64,8 @@
                     <div class="pt-5 w-full flex justify-center">
                         <img src="img/user.png" class="w-28 h-28">
                         <div class="ml-5 mt-5">
-                            <p class="text-black text-4xl font-bold" id="Name">Marniel C. Corsiga</p>
-                            <p class="text-[#930D0D] text-xl" id="Name">ECHO 817</p>
-                           
+                            <p class="text-black text-4xl font-bold" id="FullName">[Name]</p>
+                            <p class="text-[#930D0D] text-xl" id="CallSign">[CallSign]</p>
                         </div>
                     </div>
               
@@ -78,7 +74,7 @@
                         <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                             <div id="progress" class="h-full"></div>
                         </div>
-                        <p class="text-end text-base text-[#4B4B4B]">1200 duty Hours</p>
+                        <p class="text-end text-base text-[#4B4B4B]" id="DutyHours">0 duty hours</p>
                     </div>
             
                     <div class="px-36">
@@ -86,29 +82,29 @@
                         <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                             <div id="progress2" class="h-full"></div>
                         </div>
-                        <p class="text-end text-base text-[#4B4B4B]">12 fire Response</p>
+                        <p class="text-end text-base text-[#4B4B4B]" id="FireResponsePoints">0 fire responses</p>
                     </div>
                 
-                    
                     <div class="mt-6 flex justify-center space-x-10 text-2xl">
                         <div class="text-center font-Inter ">
-                            <p class="font-semibold">1</p>
-                            <p >Inventory</p>
+                            <p class="font-semibold" id="InventoryPoints">0</p>
+                            <p>Inventory</p>
                         </div>
-            
                         <div class="text-center font-Inter">
-                            <p class="font-semibold">4</p>
+                            <p class="font-semibold" id="ActivityPoints">0</p>
                             <p>Activity</p>
                         </div>
-                        
                     </div>
                     
-                        
+                </div>
             </div>
         </div>
-
     </div>
-    
+
+    <audio id="timeInAudio" src="audio/timein.mp3"></audio>
+    <audio id="timeOutAudio" src="audio/timeout.mp3"></audio>
+
 </body>
-<script src="attendance.js" defer></script>
+<script src="module_attendance.js" defer></script>
+<script src="admin.js" defer></script>
 </html>

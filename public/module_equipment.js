@@ -150,3 +150,179 @@ function deleteEquipment(itemName) {
         });
     }
 }
+
+
+
+
+// function editEquipment(itemName) {
+//     // Get the item from the displayed list
+//     const equipmentItems = document.querySelectorAll('#equipmentGrid > div'); // Assuming each equipment entry is a child div
+//     let currentItem;
+
+//     // Loop through the items to find the one matching the clicked itemName
+//     equipmentItems.forEach(item => {
+//         const itemNameElement = item.querySelector('p:nth-child(3)'); // Adjust this selector based on your structure
+//         const vehicleAssignmentElement = item.querySelector('p:nth-child(4)'); // Adjust based on the structure
+        
+//         if (itemNameElement && itemNameElement.textContent === itemName) {
+//             currentItem = {
+//                 itemName: itemNameElement.textContent,
+//                 vehicleAssignment: vehicleAssignmentElement.textContent
+//             };
+//         }
+//     });
+
+//     if (!currentItem) {
+//         alert('Error: Item not found.');
+//         return;
+//     }
+
+//     // Show the form and populate it with the current item details
+//     const inveditForm = document.getElementById('invedit');
+//     inveditForm.style.display = 'block';
+
+//     // Populate the form with the selected equipment details
+//     const itemNameInput = inveditForm.querySelector('input[type="text"]');
+//     const vehicleAssignmentSelect = inveditForm.querySelector('select[name="vehicleAssignment"]');
+
+//     // Set the values from the selected equipment
+//     itemNameInput.value = currentItem.itemName;
+//     vehicleAssignmentSelect.value = currentItem.vehicleAssignment;
+// }
+
+
+// function editEquipment(itemName) {
+
+//     // Scroll to the top of the page when edit is clicked
+//     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+//     // Get the item from the displayed list in the frontend
+//     const equipmentItems = document.querySelectorAll('#equipmentGrid > div'); // Assuming each equipment entry is a child div
+//     let currentItem;
+
+//     // Loop through the items to find the one matching the clicked itemName
+//     equipmentItems.forEach(item => {
+//         const itemNameElement = item.querySelector('p:nth-child(3)'); // Adjust this selector based on your structure
+//         const vehicleAssignmentElement = item.querySelector('p:nth-child(4)'); // Adjust based on the structure
+//         const itemImageElement = item.querySelector('img'); // Get the image element
+
+//         if (itemNameElement && itemNameElement.textContent === itemName) {
+//             currentItem = {
+//                 itemName: itemNameElement.textContent,
+//                 vehicleAssignment: vehicleAssignmentElement.textContent,
+//                 itemImage: itemImageElement ? itemImageElement.src : null // Get the image source
+//             };
+//         }
+//     });
+
+//     if (!currentItem) {
+//         alert('Error: Item not found.');
+//         return;
+//     }
+
+//     // Show the form and populate it with the current item details
+//     const inveditForm = document.getElementById('invedit');
+//     inveditForm.style.display = 'block';
+
+//     // Populate the form with the selected equipment details
+//     const itemNameInput = inveditForm.querySelector('input[type="text"]');
+//     const vehicleAssignmentSelect = inveditForm.querySelector('select[name="vehicleAssignment"]');
+//     const itemImageElement = inveditForm.querySelector('img'); // Image element in the form
+
+//     // Set the values from the selected equipment
+//     itemNameInput.value = currentItem.itemName;
+//     vehicleAssignmentSelect.value = currentItem.vehicleAssignment;
+//     if (itemImageElement && currentItem.itemImage) {
+//         itemImageElement.src = currentItem.itemImage; // Set the image source in the form
+//     }
+// }
+
+function editEquipment(itemName) {
+    // Scroll to the top of the page when edit is clicked
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Get the item from the displayed list in the frontend
+    const equipmentItems = document.querySelectorAll('#equipmentGrid > div'); // Assuming each equipment entry is a child div
+    let currentItem;
+
+    // Loop through the items to find the one matching the clicked itemName
+    equipmentItems.forEach(item => {
+        const itemNameElement = item.querySelector('p:nth-child(3)'); // Adjust this selector based on your structure
+        const vehicleAssignmentElement = item.querySelector('p:nth-child(4)'); // Adjust based on the structure
+        const itemImageElement = item.querySelector('img'); // Get the image element
+
+        if (itemNameElement && itemNameElement.textContent === itemName) {
+            currentItem = {
+                itemName: itemNameElement.textContent,
+                vehicleAssignment: vehicleAssignmentElement.textContent,
+                itemImage: itemImageElement ? itemImageElement.src : null // Get the image source
+            };
+        }
+    });
+
+    if (!currentItem) {
+        alert('Error: Item not found.');
+        return;
+    }
+
+    // Show the form and populate it with the current item details
+    const inveditForm = document.getElementById('invedit');
+    inveditForm.style.display = 'block';
+
+    // Populate the form with the selected equipment details
+    const itemNameInput = inveditForm.querySelector('input[type="text"]');
+    const vehicleAssignmentSelect = inveditForm.querySelector('select[name="vehicleAssignment"]');
+    const itemImageElement = inveditForm.querySelector('img'); // Image element in the form
+
+    // Set the values from the selected equipment
+    itemNameInput.value = currentItem.itemName;
+    vehicleAssignmentSelect.value = currentItem.vehicleAssignment;
+    if (itemImageElement && currentItem.itemImage) {
+        itemImageElement.src = currentItem.itemImage; // Set the image source in the form
+    }
+
+    // Add event listener to the save button
+    const saveButton = inveditForm.querySelector('button');
+    saveButton.onclick = function() {
+        // Get updated values from the form
+        const updatedItemName = itemNameInput.value;
+        const updatedVehicleAssignment = vehicleAssignmentSelect.value;
+
+        // Prepare the data to be sent to the backend
+        const updatedData = {
+            originalItemName: currentItem.itemName, // To identify the item being edited
+            updatedItemName: updatedItemName,
+            updatedVehicleAssignment: updatedVehicleAssignment
+        };
+
+        // Send the updated data to the backend via a PUT request
+        fetch(`/updateEquipment`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text || 'Failed to update equipment'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Equipment updated successfully');
+            inveditForm.style.display = 'none'; // Hide the form after saving
+            loadEquipment(); // Reload the equipment list to reflect the changes
+        })
+        .catch(error => {
+            console.error('Error updating equipment:', error);
+            alert('Error updating equipment: ' + error.message);
+        });
+    };
+}
+
+
+
+
+
+// Call this function when the edit icon is clicked, passing in the itemName of the equipment

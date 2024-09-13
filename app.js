@@ -1012,6 +1012,36 @@ app.delete('/deleteEquipment/:itemName', (req, res) => {
     });
 });
 
+//edit equip route
+// app.put('/editEquipment/:itemName', (req, res) => {
+//     const { itemName } = req.params;
+//     const { newName, newVehicleAssignment } = req.body;
+
+//     const sql = `UPDATE tbl_inventory SET itemName = ?, vehicleAssignment = ? WHERE itemName = ?`;
+//     db.query(sql, [newName, newVehicleAssignment, itemName], (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ error: 'Failed to edit equipment' });
+//         }
+//         res.status(200).json({ message: 'Equipment updated successfully!' });
+//     });
+// });
+
+app.put('/updateEquipment', (req, res) => {
+    const { originalItemName, updatedItemName, updatedVehicleAssignment } = req.body;
+
+    const sql = `
+        UPDATE tbl_inventory
+        SET itemName = ?, vehicleAssignment = ?
+        WHERE itemName = ?
+    `;
+    
+    db.query(sql, [updatedItemName, updatedVehicleAssignment, originalItemName], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to update equipment' });
+        }
+        res.status(200).json({ message: 'Equipment updated successfully' });
+    });
+});
 
 
 // // Add forgot password route (bugged)

@@ -23,7 +23,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         // Check if account type is 'Admin'
         const accountType = data.accountType;
         if (accountType === 'Admin') {
-            window.location.href = 'temp_attendance.html';
+            // Redirect to attendance_dashboard.html
+            window.location.href = 'attendance_dashboard.html';
         } else {
             alert('Only Admin accounts are allowed to log in');
         }

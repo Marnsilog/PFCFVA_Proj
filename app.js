@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
@@ -11,16 +10,18 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+require('dotenv').config({ path: './.env' });
 
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
 // Create connections
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'pfcfva'
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
 // Connect
@@ -1124,7 +1125,7 @@ app.put('/updateEquipment', (req, res) => {
 
 
 //port
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

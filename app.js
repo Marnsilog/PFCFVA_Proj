@@ -892,8 +892,8 @@ app.post('/uploadEquipment', (req, res) => {
                 sharp(originalImagePath)
                     .metadata()
                     .then(metadata => {
-                        const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
-                        const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
+                        const newWidth = Math.round(metadata.width * 0.5);  // 30% of original width
+                        const newHeight = Math.round(metadata.height * 0.5); // 30% of original height
 
                         return sharp(originalImagePath)
                             .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size

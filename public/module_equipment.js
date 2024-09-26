@@ -1,33 +1,33 @@
-// Function to toggle the visibility of the add equipment form
+
 function toggleEquipmentForm() {
     var form = document.getElementById('addEquipmentForm');
     if (form.classList.contains('hidden')) {
-        form.classList.remove('hidden'); // Show the form
+        form.classList.remove('hidden'); 
     } else {
-        form.classList.add('hidden'); // Hide the form
+        form.classList.add('hidden'); 
     }
 }
 
-// Function to close the form
+
 function closeForm() {
     var form = document.getElementById('addEquipmentForm');
-    form.classList.add('hidden'); // Hide the form when close is clicked
+    form.classList.add('hidden'); 
 }
 
-// Ensure DOM is fully loaded before adding event listeners
+
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Add event listener to the form submit button
+  
     const addEquipmentForm = document.getElementById('addEquipmentForm');
     if (addEquipmentForm) {
         addEquipmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
             var formData = new FormData(this);
 
-            // Fetch request to upload equipment
+            
             fetch('/uploadEquipment', {
                 method: 'POST',
-                body: formData  // No need to set Content-Type header because FormData handles it
+                body: formData 
             })
             .then(response => {
                 if (!response.ok) {
@@ -37,53 +37,53 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 alert('Success: ' + data.message);
-                closeForm(); // Close the form after submission
-                window.location.reload(); // Reload to show the updated equipment list
+                closeForm(); 
+                window.location.reload(); 
             })
-            .catch(error => {
+            .catch(error => {2
                 console.error('Error:', error);
                 alert('Error submitting the form: ' + error.message);
             });
         });
     }
 
-    // Load the equipment list
-    loadEquipment(); // Call to load equipment data when the page loads
+   
+    loadEquipment(); 
 
-    // Add event listener to the sort select dropdown
+    
     const sortVehicleAssignment = document.getElementById('sortVehicleAssignment');
     if (sortVehicleAssignment) {
-        sortVehicleAssignment.addEventListener('change', loadEquipment); // Trigger loadEquipment on change
+        sortVehicleAssignment.addEventListener('change', loadEquipment); 
     }
 
-    // Add event listener to the search box
+  
     const inventorySearchBox = document.getElementById('inventorySearchBox');
     if (inventorySearchBox) {
-        inventorySearchBox.addEventListener('input', loadEquipment); // Trigger loadEquipment on input
+        inventorySearchBox.addEventListener('input', loadEquipment); 
     }
 });
 
-// Function to load and display equipment
+
 function loadEquipment() {
-    fetch('/getEquipment') // Fetch request to get equipment data from the backend
+    fetch('/getEquipment') 
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('equipmentGrid');
-            if (!container) return; // Ensure container exists
+            if (!container) return;
 
-            container.innerHTML = ''; // Clear the container
+            container.innerHTML = ''; 
 
             const selectedVehicle = document.getElementById('sortVehicleAssignment') ? document.getElementById('sortVehicleAssignment').value : ''; // Retrieve selected vehicle
             const searchQuery = document.getElementById('inventorySearchBox') ? document.getElementById('inventorySearchBox').value.toLowerCase() : ''; // Retrieve search query
 
-            // Filter equipment data based on vehicle and search query
+            
             const filteredData = data.filter(item => {
                 const matchesVehicle = selectedVehicle ? item.vehicleAssignment === selectedVehicle : true;
                 const matchesSearch = item.itemName.toLowerCase().includes(searchQuery);
-                return matchesVehicle && matchesSearch; // Filtering logic
+                return matchesVehicle && matchesSearch; 
             });
 
-            // Loop through filtered data and dynamically create HTML
+           
             filteredData.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'w-full bg-gray-300 h-28 mx-3 rounded-xl flex justify-between'; // Updated layout class name
@@ -118,11 +118,11 @@ function loadEquipment() {
                 `;
 
 
-                container.appendChild(div); // Append dynamically created equipment to the container
+                container.appendChild(div); 
             });
         })
         .catch(error => {
-            console.error('Error loading equipment:', error); // Error handling
+            console.error('Error loading equipment:', error);
         });
 }
 

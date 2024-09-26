@@ -4,6 +4,14 @@ const path = require('path'); // Required for serving the HTML file
 const router = express.Router();
 
 module.exports = (db) => {
+    // Middleware to check if user is logged in and a volunteer
+    const ensureVolunteerAuthenticated = (req, res, next) => {
+        if (req.session.loggedin && req.session.accountType === 'Volunteer') {
+            return next(); // User is authenticated and a volunteer
+        } else {
+            res.redirect('/index.html'); // Redirect to index.html if not authenticated
+        }
+    };
 
     // Register route
     router.post('/register', (req, res) => {
@@ -137,46 +145,33 @@ module.exports = (db) => {
         });
     });
 
-    // Volunteer route (e.g., dashboard access)
-    router.get('/volunteer', (req, res) => {
-        if (req.session.loggedin && req.session.accountType === 'Volunteer') {
-            res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html')); // Adjust path as needed
-        } else {
-            res.redirect('/');
-        }
+    // Routes for volunteer-related HTMLs
+    router.get('/volunteer/dashboard', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html'));
+    });
+
+    router.get('/volunteer/main_profile', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_main_profile.html'));
+    });
+
+    router.get('/volunteer/contactus', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_contactus.html'));
+    });
+
+    router.get('/volunteer/edit_profile', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_edit_profile.html'));
+    });
+
+    router.get('/volunteer/inventory', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_inventory.html'));
+    });
+
+    router.get('/volunteer/leaderboards', ensureVolunteerAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'volunteer_leaderboards.html'));
     });
 
     // Profile route: fetch user data based on accountID
-    router.get('/profile', (req, res) => {
-        if (req.session.loggedin) {
-            const sql = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
-            db.query(sql, [req.session.accountID], (err, result) => {
-                if (err) {
-                    res.status(500).send('Error fetching profile data');
-                    return;
-                }
-                if (result.length === 0) {
-                    res.status(404).send('Profile not found');
-                    return;
-                }
-                const user = result[0];
-                res.json({
-                    fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
-                    callSign: user.callSign,
-                    emailAddress: user.emailAddress,
-                    mobileNumber: user.mobileNumber,
-                    accountType: user.accountType,
-                    // Add other fields here as needed
-                });
-            });
-        } else {
-            res.status(401).send('Not logged in');
-        }
-    });
-
- // Fetch volunteer profile data
-router.get('/volunteer/profile', (req, res) => {
-    if (req.session.loggedin && req.session.accountType === 'Volunteer') {
+    router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {
         const sql = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
         db.query(sql, [req.session.accountID], (err, result) => {
             if (err) {
@@ -221,12 +216,18 @@ router.get('/volunteer/profile', (req, res) => {
                 accountType: user.accountType
             });
         });
-    } else {
-        res.status(401).send('Unauthorized');
-    }
-});
+    });
 
-
+    // Logout route
+    router.get('/logout', (req, res) => {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Error during logout:', err);
+                return res.status(500).send('Unable to log out');
+            }
+            res.redirect('/index.html'); // Redirect to index.html after logout
+        });
+    });
 
     return router;
 };

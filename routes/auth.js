@@ -1,42 +1,19 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const path = require('path'); // Required for serving the HTML file
 const router = express.Router();
 
-// Pass db object from app.js to auth.js
 module.exports = (db) => {
-    // Register Route
+
+    // Register route
     router.post('/register', (req, res) => {
         const {
-            rfid,
-            username,
-            password,
-            accountType,
-            lastName,
-            firstName,
-            middleName,
-            middleInitial,
-            callSign,
-            currentAddress,
-            dateOfBirth,
-            civilStatus,
-            gender,
-            nationality,
-            bloodType,
-            mobileNumber,
-            emailAddress,
-            emergencyContactPerson,
-            emergencyContactNumber,
-            highestEducationalAttainment,
-            nameOfCompany,
-            yearsInService,
-            skillsTraining,
-            otherAffiliation,
-            bioDataChecked,
-            interviewChecked,
-            fireResponsePoints,
-            activityPoints,
-            inventoryPoints,
-            dutyHours
+            rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,
+            callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
+            mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
+            highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
+            otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
+            inventoryPoints, dutyHours
         } = req.body;
 
         // Check if the username already exists in the database
@@ -81,7 +58,7 @@ module.exports = (db) => {
                         return;
                     }
 
-                    // If all details are unique, proceed with registration
+                    // Hash the password and register the user
                     bcrypt.hash(password, 10, (hashErr, hash) => {
                         if (hashErr) {
                             console.error('Error hashing password:', hashErr);
@@ -89,70 +66,24 @@ module.exports = (db) => {
                             return;
                         }
 
-                        const sql = `INSERT INTO tbl_accounts (
-                            rfid,
-                            username,
-                            password,
-                            accountType,
-                            lastName,
-                            firstName,
-                            middleName,
-                            middleInitial,
-                            callSign,
-                            currentAddress,
-                            dateOfBirth,
-                            civilStatus,
-                            gender,
-                            nationality,
-                            bloodType,
-                            mobileNumber,
-                            emailAddress,
-                            emergencyContactPerson,
-                            emergencyContactNumber,
-                            highestEducationalAttainment,
-                            nameOfCompany,
-                            yearsInService,
-                            skillsTraining,
-                            otherAffiliation,
-                            bioDataChecked,
-                            interviewChecked,
-                            fireResponsePoints,
-                            activityPoints,
-                            inventoryPoints,
-                            dutyHours
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                        const sql = `
+                            INSERT INTO tbl_accounts (
+                                rfid, username, password, accountType, lastName, firstName, middleName,
+                                middleInitial, callSign, currentAddress, dateOfBirth, civilStatus, gender,
+                                nationality, bloodType, mobileNumber, emailAddress, emergencyContactPerson,
+                                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                                yearsInService, skillsTraining, otherAffiliation, bioDataChecked, interviewChecked,
+                                fireResponsePoints, activityPoints, inventoryPoints, dutyHours
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        `;
 
                         db.query(sql, [
-                            rfid,
-                            username,
-                            hash, // Store the hashed password 
-                            accountType,
-                            lastName,
-                            firstName,
-                            middleName,
-                            middleInitial,
-                            callSign,
-                            currentAddress,
-                            dateOfBirth,
-                            civilStatus,
-                            gender,
-                            nationality,
-                            bloodType,
-                            mobileNumber,
-                            emailAddress,
-                            emergencyContactPerson,
-                            emergencyContactNumber,
-                            highestEducationalAttainment,
-                            nameOfCompany,
-                            yearsInService,
-                            skillsTraining,
-                            otherAffiliation,
-                            bioDataChecked,
-                            interviewChecked,
-                            fireResponsePoints,
-                            activityPoints,
-                            inventoryPoints,
-                            dutyHours
+                            rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
+                            callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
+                            mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
+                            highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
+                            otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
+                            inventoryPoints, dutyHours
                         ], (err, result) => {
                             if (err) {
                                 console.error('Error registering user:', err);
@@ -167,7 +98,7 @@ module.exports = (db) => {
         });
     });
 
-    // Login Route
+    // Login route
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
         const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
@@ -191,16 +122,32 @@ module.exports = (db) => {
                     req.session.loggedin = true;
                     req.session.username = user.username;
                     req.session.rfid = user.rfid;
+
+                    // Store user info in the session
                     req.session.fullName = `${user.firstName} ${user.middleInitial} ${user.lastName}`;
+                    req.session.lastName = user.lastName;
+                    req.session.firstName = user.firstName;
+                    req.session.middleName = user.middleName;
                     req.session.callSign = user.callSign;
                     req.session.dateOfBirth = user.dateOfBirth;
                     req.session.gender = user.gender;
                     req.session.civilStatus = user.civilStatus;
                     req.session.nationality = user.nationality;
                     req.session.bloodType = user.bloodType;
+                    req.session.highestEducationalAttainment = user.highestEducationalAttainment;
+                    req.session.nameOfCompany = user.nameOfCompany;
+                    req.session.yearsInService = user.yearsInService;
+                    req.session.skillsTraining = user.skillsTraining;
+                    req.session.otherAffiliation = user.otherAffiliation;
                     req.session.emailAddress = user.emailAddress;
                     req.session.mobileNumber = user.mobileNumber;
                     req.session.currentAddress = user.currentAddress;
+                    req.session.emergencyContactPerson = user.emergencyContactPerson;
+                    req.session.emergencyContactNumber = user.emergencyContactNumber;
+                    req.session.dutyHours = user.dutyHours;
+                    req.session.fireResponsePoints = user.fireResponsePoints;
+                    req.session.inventoryPoints = user.inventoryPoints;
+                    req.session.activityPoints = user.activityPoints;
                     req.session.accountType = user.accountType;
 
                     res.status(200).json({ message: 'Login successful', accountType: user.accountType });
@@ -211,7 +158,16 @@ module.exports = (db) => {
         });
     });
 
-    // Profile Route
+    // Volunteer route
+    router.get('/volunteer', (req, res) => {
+        if (req.session.loggedin) {
+            res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html')); // Adjust path as needed
+        } else {
+            res.redirect('/');
+        }
+    });
+
+    // Profile route
     router.get('/profile', (req, res) => {
         if (req.session.loggedin) {
             res.json({
@@ -226,11 +182,20 @@ module.exports = (db) => {
                 civilStatus: req.session.civilStatus,
                 nationality: req.session.nationality,
                 bloodType: req.session.bloodType,
+                highestEducationalAttainment: req.session.highestEducationalAttainment,
+                nameOfCompany: req.session.nameOfCompany,
+                yearsInService: req.session.yearsInService,
+                skillsTraining: req.session.skillsTraining,
+                otherAffiliation: req.session.otherAffiliation,
                 emailAddress: req.session.emailAddress,
                 mobileNumber: req.session.mobileNumber,
                 currentAddress: req.session.currentAddress,
                 emergencyContactPerson: req.session.emergencyContactPerson,
                 emergencyContactNumber: req.session.emergencyContactNumber,
+                dutyHours: req.session.dutyHours,
+                fireResponsePoints: req.session.fireResponsePoints,
+                inventoryPoints: req.session.inventoryPoints,
+                activityPoints: req.session.activityPoints,
                 accountType: req.session.accountType,
                 username: req.session.username
             });
@@ -239,5 +204,6 @@ module.exports = (db) => {
         }
     });
 
+    // Return the router to be used in app.js
     return router;
 };

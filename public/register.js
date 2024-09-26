@@ -184,7 +184,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     }
 
     // Post the data
-    fetch('/register', {
+    fetch('/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -21,6 +21,10 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         }
     })
     .then(data => {
+        
+        // Log the session data to the console
+        console.log('Login successful. Session data:', data);
+
         // Redirect based on account type
         const accountType = data.accountType;
         switch (accountType) {

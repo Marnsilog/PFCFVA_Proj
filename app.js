@@ -20,7 +20,7 @@ const randomBytesAsync = promisify(crypto.randomBytes);
 // Create connections
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'pfcf_pfcfva',
+    user: 'pfcf_marns',
     password: 'Superfire@143',
     database: 'pfcf_pfcfva'
 });

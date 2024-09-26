@@ -33,14 +33,7 @@ db.connect((err) => {
 
 const app = express();
 
-//INVENTORY requirements (multer)
-// Set storage engine
-// const storage = multer.diskStorage({
-//     destination: '/public/uploads/',
-//     filename: function(req, file, cb){
-//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-//     }
-// });
+
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/'),
     filename: function(req, file, cb) {
@@ -76,23 +69,26 @@ function checkFileType(file, cb){
 
 
 
-// Middleware to parse JSON bodies
+// middleware
 app.use(express.json());
-
-// Serve static files from the "public" directory
-// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 //session
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } 
 }));
 
-//url body
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+
+const authRoutes = require('./routes/auth')(db); //zzz
+app.use('/auth', authRoutes); //zzz
+
+
+
 
 
 
@@ -745,119 +741,6 @@ app.get('/volunteerDetails', (req, res) => {
 
 
 
-
-
-// equipment route (bugged)
-// app.post('/uploadEquipment', upload, (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ error: 'No file uploaded.' });
-//     }
-
-//     const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//     if (!itemName || !vehicleAssignment || !dateAcquired) {
-//         return res.status(400).json({ error: 'All fields are required.' });
-//     }
-
-//     // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
-//     const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
-
-//     const sql = `
-//         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//         VALUES (?, ?, ?, ?)
-//     `;
-
-//     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-//         if (err) {
-//             console.error('Failed to add equipment:', err);
-//             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-//         }
-//         res.status(201).json({
-//             message: 'Equipment added successfully!',
-//             data: {
-//                 itemName,
-//                 itemImagePath,
-//                 vehicleAssignment,
-//                 dateAcquired
-//             }
-//         });
-//     });
-// });
-
-
-
-// working with compression
-// app.post('/uploadEquipment', (req, res) => {
-//     upload(req, res, function(err) {
-//         if (err) {
-//             console.error('Upload Error:', err);
-//             return res.status(400).json({ error: err.message });
-//         }
-
-//         if (!req.file) {
-//             return res.status(400).json({ error: 'No file uploaded.' });
-//         }
-
-//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//         if (!itemName || !vehicleAssignment || !dateAcquired) {
-//             return res.status(400).json({ error: 'All fields are required.' });
-//         }
-
-//         const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename); // Ensure correct path
-
-//         // Step 1: Get image metadata to calculate the new size (30%)
-//         sharp(originalImagePath)
-//             .metadata()
-//             .then(metadata => {
-//                 const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
-//                 const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
-
-//                 // Compress and resize the image using sharp and return it as a buffer
-//                 return sharp(originalImagePath)
-//                     .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
-//                     .toBuffer();
-//             })
-//             .then(compressedBuffer => {
-//                 // Step 2: Write the compressed image buffer back to the original file path
-//                 fs.writeFile(originalImagePath, compressedBuffer, (writeErr) => {
-//                     if (writeErr) {
-//                         console.error('Error writing compressed image:', writeErr);
-//                         return res.status(500).json({ error: 'Failed to write compressed image. Please try again later.' });
-//                     }
-
-//                     console.log('Image compressed and overwritten successfully');
-
-//                     // Save the path of the compressed image to the database
-//                     const itemImagePath = `/uploads/${req.file.filename}`;  // Use the original filename
-
-//                     const sql = `
-//                         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//                         VALUES (?, ?, ?, ?)
-//                     `;
-
-//                     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-//                         if (err) {
-//                             console.error('Failed to add equipment:', err);
-//                             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-//                         }
-//                         res.status(201).json({
-//                             message: 'Equipment added successfully!',
-//                             data: {
-//                                 itemName,
-//                                 itemImagePath,
-//                                 vehicleAssignment,
-//                                 dateAcquired
-//                             }
-//                         });
-//                     });
-//                 });
-//             })
-//             .catch(err => {
-//                 console.error('Error compressing image:', err);
-//                 return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-//             });
-//     });
-// });
-
 // working with compression and anti
 app.post('/uploadEquipment', (req, res) => {
     upload(req, res, function(err) {
@@ -932,51 +815,6 @@ app.post('/uploadEquipment', (req, res) => {
     });
 });
 
-
-
-
-
-
-// //working upload
-// app.post('/uploadEquipment', (req, res) => {
-//     upload(req, res, function(err) {
-//         if (err) {
-//             return res.status(400).json({ error: err.message });
-//         }
-
-//         if (!req.file) {
-//             return res.status(400).json({ error: 'No file uploaded.' });
-//         }
-
-//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//         if (!itemName || !vehicleAssignment || !dateAcquired) {
-//             return res.status(400).json({ error: 'All fields are required.' });
-//         }
-
-//         const itemImagePath = `/uploads/${req.file.filename}`;
-
-//         const sql = `
-//             INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//             VALUES (?, ?, ?, ?)
-//         `;
-
-//         db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-//             if (err) {
-//                 console.error('Failed to add equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-//             }
-//             res.status(201).json({
-//                 message: 'Equipment added successfully!',
-//                 data: {
-//                     itemName,
-//                     itemImagePath,
-//                     vehicleAssignment,
-//                     dateAcquired
-//                 }
-//             });
-//         });
-//     });
-// });
 
 
 
@@ -1056,95 +894,6 @@ app.put('/updateEquipment', (req, res) => {
     });
 });
 
-
-// // Add forgot password route (bugged)
-// app.post('/forgot-password', async (req, res) => {
-//     const { emailAddress } = req.body;
-
-//     // Check if email exists in the database
-//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [emailAddress], async (err, results) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, message: 'Database error' });
-//         }
-
-//         if (results.length === 0) {
-//             return res.status(404).json({ success: false, message: 'Email not found' });
-//         }
-
-//         const user = results[0];
-//         const token = (await randomBytesAsync(20)).toString('hex');
-//         const tokenExpiry = Date.now() + 3600000; // 1 hour
-
-//         // Save the token and expiry to the user record
-//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE accountID = ?', [token, tokenExpiry, user.accountID], (err) => {
-//             if (err) {
-//                 return res.status(500).json({ success: false, message: 'Database error' });
-//             }
-
-//             // Send email with reset link
-//             const transporter = nodemailer.createTransport({
-//                 service: 'Gmail',
-//                 auth: {
-//                     user: 'kulowtsss@gmail.com',
-//                     pass: 'KULOWTS12345'
-//                 }
-//             });
-
-//             const mailOptions = {
-//                 to: emailAddress,
-//                 from: 'kulowtsss@gmail.com',
-//                 subject: 'Password Reset',
-//                 text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-//                       `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-//                       `http://${req.headers.host}/reset/${token}\n\n` +
-//                       `If you did not request this, please ignore this email and your password will remain unchanged.\n`
-//             };
-
-//             transporter.sendMail(mailOptions, (err) => {
-//                 if (err) {
-//                     return res.status(500).json({ success: false, message: 'Email sending error' });
-//                 }
-
-//                 res.status(200).json({ success: true, message: 'Password reset link has been sent to your email.' });
-//             });
-//         });
-//     });
-// });
-
-// // Add endpoint to handle password reset form submission
-// app.post('/reset/:token', (req, res) => {
-//     const { token } = req.params;
-//     const { newPassword } = req.body;
-
-//     // Find user with the matching token and ensure it hasn't expired
-//     db.query('SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?', [token, Date.now()], (err, results) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, message: 'Database error' });
-//         }
-
-//         if (results.length === 0) {
-//             return res.status(400).json({ success: false, message: 'Password reset token is invalid or has expired.' });
-//         }
-
-//         const user = results[0];
-
-//         // Hash the new password
-//         bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-//             if (hashErr) {
-//                 return res.status(500).json({ success: false, message: 'Error hashing password' });
-//             }
-
-//             // Update the user's password in the database
-//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID = ?', [hash, user.accountID], (updateErr) => {
-//                 if (updateErr) {
-//                     return res.status(500).json({ success: false, message: 'Database error' });
-//                 }
-
-//                 res.status(200).json({ success: true, message: 'Password has been reset successfully.' });
-//             });
-//         });
-//     });
-// });
 
 
 

@@ -75,15 +75,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+
 //session
 app.use(session({
     secret: 'secret',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 1000 * 60 * 60 * 24 } 
 }));
 
 
+//routes etc
 const authRoutes = require('./routes/auth')(db); //zzz
 app.use('/auth', authRoutes); //zzz
 

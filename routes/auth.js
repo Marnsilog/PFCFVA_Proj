@@ -152,7 +152,7 @@ module.exports = (db) => {
         }
     });
 
-    router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {
+    router.get('/profile', ensureVolunteerAuthenticated, (req, res) => {
         const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
         db.query(sql, [req.session.username], (err, result) => {
             if (err) {

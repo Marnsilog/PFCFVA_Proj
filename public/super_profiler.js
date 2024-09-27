@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch the volunteer profile data from the backend
-    fetch('/auth/volunteer/profile')
+    fetch('/auth/profile')
         .then(response => {
             if (response.status === 200) {
                 return response.json();

@@ -128,7 +128,7 @@ module.exports = (db) => {
                 if (isMatch) {
                     // Set the user in the session
                     req.session.user = { 
-                        username: user.username,  
+                        username: user.username, 
                         accountType: user.accountType 
                     };
     
@@ -153,8 +153,8 @@ module.exports = (db) => {
     });
 
     router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {
-        const sql = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
-        db.query(sql, [req.session.accountID], (err, result) => {
+        const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+        db.query(sql, [req.session.username], (err, result) => {
             if (err) {
                 res.status(500).send('Error fetching profile data');
                 return;
@@ -196,17 +196,6 @@ module.exports = (db) => {
                 activityPoints: user.activityPoints,
                 accountType: user.accountType
             });
-        });
-    });
-
-    // Logout route
-    router.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Error during logout:', err);
-                return res.status(500).send('Unable to log out');
-            }
-            res.redirect('/index.html'); // Redirect to index.html after logout
         });
     });
 

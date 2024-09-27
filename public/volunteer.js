@@ -254,16 +254,16 @@ document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
     animateProgressBar2(40);
 
-    const logoutLink = document.getElementById('logoutLink');
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                window.location.href = 'index.html';
-            }
-        });
-    }
+    // const logoutLink = document.getElementById('logoutLink');
+    // if (logoutLink) {
+    //     logoutLink.addEventListener('click', function(event) {
+    //         event.preventDefault();
+    //         const confirmLogout = confirm("Are you sure you want to log out?");
+    //         if (confirmLogout) {
+    //             window.location.href = 'index.html';
+    //         }
+    //     });
+    // }
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -290,9 +290,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// document.addEventListener('DOMContentLoaded', function () {
-   
-// });
+
+
+document.getElementById('logoutLink').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default link behavior
+
+    fetch('/auth/logout', {
+        method: 'GET',
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/'; // Redirect to login page after logout
+        } else {
+            alert('Logout failed!');
+        }
+    })
+    .catch(error => console.error('Error during logout:', error));
+});
 
 
 

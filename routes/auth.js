@@ -6,14 +6,7 @@ const router = express.Router();
 
 
 module.exports = (db) => {
-    // Middleware to check if user is logged in and a volunteer
-    const ensureVolunteerAuthenticated = (req, res, next) => {
-        if (req.session.loggedin && req.session.accountType === 'Volunteer') {
-            return next(); // User is authenticated and a volunteer
-        } else {
-            res.redirect('/index.html'); // Redirect to index.html if not authenticated
-        }
-    };
+
 
     // Register route
     router.post('/register', (req, res) => {
@@ -129,7 +122,7 @@ module.exports = (db) => {
                     // Set the user in the session
                     req.session.user = { 
                         username: user.username, 
-                        accountType: user.accountType 
+                        userId: user.accountID
                     };
     
                     //let redirectUrl = '/supervisor_dashboard'; // Default redirect
@@ -152,53 +145,66 @@ module.exports = (db) => {
         }
     });
 
-    router.get('/profile', ensureVolunteerAuthenticated, (req, res) => {
-        const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-        db.query(sql, [req.session.username], (err, result) => {
-            if (err) {
-                res.status(500).send('Error fetching profile data');
-                return;
+    router.get('/profile', (req, res) => {
+        const username = req.session.user?.username;
+    
+        console.log('Logged in username:', username); 
+    
+        if (!username) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+    
+        const query = `
+            SELECT 
+                rfid, 
+                CONCAT(firstname, ' ', lastname) AS fullName, 
+                callSign, 
+                dateOfBirth, 
+                gender, 
+                civilStatus, 
+                nationality, 
+                bloodType, 
+                highestEducationalAttainment, 
+                nameOfCompany, 
+                yearsInService, 
+                skillsTraining, 
+                otherAffiliation, 
+                emailAddress, 
+                mobileNumber, 
+                currentAddress, 
+                emergencyContactPerson, 
+                emergencyContactNumber, 
+                dutyHours, 
+                fireResponsePoints, 
+                inventoryPoints, 
+                activityPoints 
+            FROM tbl_accounts 
+            WHERE username = ?`;
+    
+        console.log('Executing query for username:', username); // Log before executing query
+    
+        db.query(query, [username], (error, results) => {
+            if (error) {
+                console.error('Error fetching profile data:', error);
+                return res.status(500).json({ success: false, message: 'Server error' });
             }
-            if (result.length === 0) {
-                res.status(404).send('Profile not found');
-                return;
+    
+            //console.log('Query Results:', results); // Log the results of the query
+    
+            if (results.length === 0) {
+                return res.status(404).json({ success: false, message: 'Profile not found' });
             }
-            const user = result[0];
-            const fullName = `${user.lastName}, ${user.firstName} ${user.middleName || ''}`;
-            const formattedDate = new Date(user.dateOfBirth).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            res.json({
-                rfid: user.rfid,
-                fullName: fullName.trim(),
-                callSign: user.callSign,
-                dateOfBirth: formattedDate,
-                gender: user.gender,
-                civilStatus: user.civilStatus,
-                nationality: user.nationality,
-                bloodType: user.bloodType,
-                highestEducationalAttainment: user.highestEducationalAttainment,
-                nameOfCompany: user.nameOfCompany,
-                yearsInService: user.yearsInService,
-                skillsTraining: user.skillsTraining,
-                otherAffiliation: user.otherAffiliation,
-                emailAddress: user.emailAddress,
-                mobileNumber: user.mobileNumber,
-                currentAddress: user.currentAddress,
-                emergencyContactPerson: user.emergencyContactPerson,
-                emergencyContactNumber: user.emergencyContactNumber,
-                dutyHours: user.dutyHours,
-                fireResponsePoints: user.fireResponsePoints,
-                inventoryPoints: user.inventoryPoints,
-                activityPoints: user.activityPoints,
-                accountType: user.accountType
-            });
+    
+            // Print the result of the database query
+            //console.log('Profile data:', results[0]);
+    
+            res.json({ success: true, data: results[0] });
         });
     });
-
+    
+    
+    return router;
+    
     return router;
 };
 

@@ -110,13 +110,13 @@
                             </div>
                             
                             <div class="w-full text-center">
-                            
-                                <p class="text-black text-4xl font-bold" id="FullName">Hev C. Abi</p>
-                                <p class="text-[#930D0D] text-xl" id="CallSign">Aspirant</p>
-                            
+                             
+                                <p class="text-black text-4xl font-bold" data-field="FullName">Hev C. Abi</p>
+                                <p class="text-[#930D0D] text-xl" data-field="CallSign">Aspirant</p>
+                               
                             </div>
                             <div class="mt-5 w-full flex justify-center">
-                                <button onclick="location.href='supervisor_edit_profile.html'" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
+                                <button onclick="location.href='volunteer_edit_profile.html'" class="bg-red-900 hover:bg-red-400 rounded-lg h-12 w-32 text-white text-xl font-Inter font-semibold">Edit</button>
                             </div>
                             <div class="bg-[#9C9C9C] h-[3px] mt-3 mx-3"></div>
                             <div class="pt-3 px-10">
@@ -124,7 +124,7 @@
                                 <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                                     <div id="progress" class="h-full"></div>
                                 </div>
-                                <p class="text-end text-base text-[#4B4B4B]" id="DutyHours">100 hrs</p>
+                                <p class="text-end text-base text-[#4B4B4B]" data-field="DutyHours">100 hrs</p>
                             </div>
                     
                             <div class="px-10">
@@ -132,18 +132,18 @@
                                 <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                                     <div id="progress2" class="h-full"></div>
                                 </div>
-                                <p class="text-end text-base text-[#4B4B4B]" id="FireResponse">200 points</p>
+                                <p class="text-end text-base text-[#4B4B4B]" data-field="FireResponse">200 points</p>
                             </div>
                             <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
                             
                             <div class="mt-6 flex justify-center space-x-10 text-2xl">
                                 <div class="text-center font-Inter ">
-                                    <p class="font-semibold" id="InventoryPoints">300</p>
+                                    <p class="font-semibold" data-field="InventoryPoints">300</p>
                                     <p >Inventory</p>
                                 </div>
                     
                                 <div class="text-center font-Inter">
-                                    <p class="font-semibold" id="ActivityPoints">400</p>
+                                    <p class="font-semibold" data-field="ActivityPoints">400</p>
                                     <p>Activity</p>
                                 </div>
                                 
@@ -162,48 +162,48 @@
                                 <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
         
                             <!-- FORM PROFILE -->
-                            <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  id="frmMyprofile">
+                            <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  data-field="frmMyprofile">
                                 <p class="text-[#9E9E9E] md:text-5xl text-2xl font-bold">Basic Information</p>
                         
                                 <div class="text-xl md:text-4xl mt-5">
                         
                                                     <div class="flex items-start pt-5 md:pt-14 md:my-5">
                                                         <p class="font-semibold md:mr-[8rem] mr-[4rem]">Birthday: </p> 
-                                                        <p id="Birthday">July 99, 1999</p>
+                                                        <p data-field="Birthday">July 99, 1999</p>
                                                     </div>
                                         
                                                     <div class="flex items-start md:my-5 my-2">
                                                         <p class="font-semibold md:mr-[9rem] mr-[4.6rem]">Gender: </p> 
-                                                        <p id="Gender">Trans</p>
+                                                        <p data-field="Gender">Trans</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2 ">
                                                         <p class="font-semibold md:mr-[4.5rem] mr-[2.2rem]">Civil Status: </p> 
-                                                        <p id="CivilStatus">Divorced</p>
+                                                        <p data-field="CivilStatus">Divorced</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2">
                                                         <p class="font-semibold md:mr-[5rem] mr-[2.5rem]">Nationality: </p> 
-                                                        <p  id="Nationality">Spy</p>
+                                                        <p  data-field="Nationality">Spy</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2">
                                                         <p class="font-semibold md:mr-[4.5rem] mr-[2.2rem]">Blood Type: </p> 
-                                                        <p id="BloodType">ABC</p>
+                                                        <p data-field="BloodType">ABC</p>
                                                     </div>
                                                         <p class="font-semibold md:my-5 my-2">Highest Educational <br>Attainment: <span class="md:ml-[17rem] ml-[6rem] font-[400]" id="HighestEducationalAttainment">Mafia</span></p> 
                                                     <div class="flex items-start md:py-5 ">
                                                         <p class=" font-semibold md:mr-[5.5rem] mr-[2rem]">Name of the Company: </p> 
-                                                        <p  id="NameOfCompany">Google</p>
+                                                        <p  data-field="NameOfCompany">Google</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2 ">
                                                         <p class="font-semibold md:mr-[12rem] mr-[3rem]">Years in Service: </p> 
-                                                        <p id="YearsInService">5 Years</p>
+                                                        <p data-field="YearsInService">5 Years</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2">
                                                         <p class="font-semibold md:mr-[14rem] mr-[2.3rem]">Skills/Training: </p> 
-                                                        <p  id="SkillsTraining">Yoyo Champion</p>
+                                                        <p  data-field="SkillsTraining">Yoyo Champion</p>
                                                     </div>
                                                     <div class="flex items-start md:my-5 my-2">
                                                         <p class="font-semibold md:mr-[12.3rem] mr-[20px]">Other Affiliation: </p> 
-                                                        <p  id="OtherAffiliation">Tambay</p>
+                                                        <p  data-field="OtherAffiliation">Tambay</p>
                                                     </div>
                                                 
                                             </div>
@@ -213,22 +213,22 @@
                                             <div class="md:text-4xl text-lg pb-14" >
                                                 <div class="flex items-start md:pt-14 md:my-5 my-2">
                                                     <p class=" font-semibold md:mr-[6rem] mr-[2rem]">Email Address: </p> 
-                                                    <p class="break-all" id="EmailAddress">corsigamarniel14@gmail.com</p>
+                                                    <p class="break-all" data-field="EmailAddress">corsigamarniel14@gmail.com</p>
                                                 </div>
                                     
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class=" font-semibold md:mr-[8.6rem] mr-[2.2rem]">Contact No.: </p> 
-                                                    <p  class="break-all" id="ContactNumber">091919111</p>
+                                                    <p  class="break-all" data-field="ContactNumber">091919111</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[14rem] mr-[5rem]">Adress: </p> 
-                                                    <p  id="CurrentAddress">Paranaque Taguig</p>
+                                                    <p  data-field="CurrentAddress">Paranaque Taguig</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
-                                                    <p class="font-semibold">Emergency <br>Contact Person: <span class="md:ml-[4rem] ml-[2rem] break-words font-[400]" id="EmergencyContactPerson">Hades Grey</span></p> 
+                                                    <p class="font-semibold">Emergency <br>Contact Person: <span class="md:ml-[4rem] ml-[2rem] break-words font-[400]" data-field="EmergencyContactPerson">Hades Grey</span></p> 
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
-                                                    <p class="font-semibold">Emergency <br> Contact Number: <span class="md:ml-[3rem] ml-[1.5rem] brea-all font-[400]" id="EmergencyContactNumber">09123456789</span></p> 
+                                                    <p class="font-semibold">Emergency <br> Contact Number: <span class="md:ml-[3rem] ml-[1.5rem] brea-all font-[400]" data-field="EmergencyContactNumber">09123456789</span></p> 
                                                 </div>
                                             
                                             </div>
@@ -291,8 +291,8 @@
             
                                 
                                     </tbody>
-                                </table>
-                            </div>
+                                 </table>
+                             </div>
                         </div>
                     </div>        
                 </div>
@@ -300,5 +300,6 @@
         </div>
 </body>
 </div>
+<script src="super_profiler.js" defer></script>
 <script src="supervisor.js" defer></script>
 </html>

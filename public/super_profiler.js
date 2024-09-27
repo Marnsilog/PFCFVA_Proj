@@ -15,15 +15,13 @@ async function fetchProfileData() {
 
         if (result.success) {
             const data = result.data;
-
-            // Populate HTML elements with the fetched data
             document.querySelector('[data-field="FullName"]').innerText = data.fullName;
             document.querySelector('[data-field="CallSign"]').innerText = data.callSign;
             document.querySelector('[data-field="DutyHours"]').innerText = `${data.dutyHours} hrs`;
             document.querySelector('[data-field="FireResponse"]').innerText = `${data.fireResponsePoints} points`;
             document.querySelector('[data-field="InventoryPoints"]').innerText = data.inventoryPoints;
             document.querySelector('[data-field="ActivityPoints"]').innerText = data.activityPoints;
-            document.querySelector('[data-field="Birthday"]').innerText = new Date(data.dateOfBirth).toLocaleDateString(); // Format date if needed
+            document.querySelector('[data-field="Birthday"]').innerText = new Date(data.dateOfBirth).toLocaleDateString();
             document.querySelector('[data-field="Gender"]').innerText = data.gender;
             document.querySelector('[data-field="CivilStatus"]').innerText = data.civilStatus;
             document.querySelector('[data-field="Nationality"]').innerText = data.nationality;
@@ -39,7 +37,6 @@ async function fetchProfileData() {
             document.querySelector('[data-field="EmergencyContactPerson"]').innerText = data.emergencyContactPerson;
             document.querySelector('[data-field="EmergencyContactNumber"]').innerText = data.emergencyContactNumber;
 
-            // Additional formatting can be done if needed
         } else {
             console.error('Profile not found or other error:', result.message);
         }
@@ -48,5 +45,4 @@ async function fetchProfileData() {
     }
 }
 
-// Call the function to fetch and populate data on page load
 window.onload = fetchProfileData;

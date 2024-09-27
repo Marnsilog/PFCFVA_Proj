@@ -181,7 +181,7 @@ module.exports = (db) => {
             FROM tbl_accounts 
             WHERE username = ?`;
     
-        console.log('Executing query for username:', username); // Log before executing query
+        //console.log('Executing query for username:', username); // Log before executing query
     
         db.query(query, [username], (error, results) => {
             if (error) {
@@ -202,8 +202,6 @@ module.exports = (db) => {
         });
     });
     
-    
-    return router;
     
     return router;
 };

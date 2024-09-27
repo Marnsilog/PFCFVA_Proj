@@ -1,16 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const path = require('path'); // Required for serving the HTML file
-const mysql = require('mysql');
 require('dotenv').config({ path: './.env' });
 const router = express.Router();
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    //port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
-});
+
 
 
 module.exports = (db) => {
@@ -136,7 +128,7 @@ module.exports = (db) => {
                 if (isMatch) {
                     // Set the user in the session
                     req.session.user = { 
-                        username: user.username,  
+                        username: user.username, 
                         accountType: user.accountType 
                     };
     
@@ -160,74 +152,9 @@ module.exports = (db) => {
         }
     });
 
-    // Login route
-    // router.post('/login', (req, res) => {
-    //     const { username, password } = req.body;
-    //     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-    //     db.query(sql, [username], (err, result) => {
-    //         if (err) {
-    //             res.status(500).send('Error logging in');
-    //             return;
-    //         }
-    //         if (result.length === 0) {
-    //             res.status(401).send('Invalid username or password');
-    //             return;
-    //         }
-    //         const user = result[0];
-    //         const hashedPassword = user.password;
-
-    //         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
-    //             if (compareErr) {
-    //                 res.status(500).send('Error comparing passwords');
-    //                 return;
-    //             }
-    //             if (compareResult) {
-    //                 // Store only essential information in the session
-    //                 req.session.loggedin = true;
-    //                 req.session.accountID = user.accountID;
-    //                 req.session.username = user.username;
-    //                 req.session.accountType = user.accountType;
-
-    //                 // Log session data to the console to confirm it's working
-    //                 console.log('Session data:', req.session);
-
-    //                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
-    //             } else {
-    //                 res.status(401).send('Invalid username or password');
-    //             }
-    //         });
-    //     });
-    // });
-
-    // // Routes for volunteer-related HTMLs
-    // router.get('/volunteer/dashboard', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html'));
-    // });
-
-    // router.get('/volunteer/main_profile', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_main_profile.html'));
-    // });
-
-    // router.get('/volunteer/contactus', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_contactus.html'));
-    // });
-
-    // router.get('/volunteer/edit_profile', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_edit_profile.html'));
-    // });
-
-    // router.get('/volunteer/inventory', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_inventory.html'));
-    // });
-
-    // router.get('/volunteer/leaderboards', ensureVolunteerAuthenticated, (req, res) => {
-    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_leaderboards.html'));
-    // });
-
-    // Profile route: fetch user data based on accountID
-    router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {
-        const sql = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
-        db.query(sql, [req.session.accountID], (err, result) => {
+    router.get('/profile', ensureVolunteerAuthenticated, (req, res) => {
+        const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+        db.query(sql, [req.session.username], (err, result) => {
             if (err) {
                 res.status(500).send('Error fetching profile data');
                 return;
@@ -269,17 +196,6 @@ module.exports = (db) => {
                 activityPoints: user.activityPoints,
                 accountType: user.accountType
             });
-        });
-    });
-
-    // Logout route
-    router.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Error during logout:', err);
-                return res.status(500).send('Unable to log out');
-            }
-            res.redirect('/index.html'); // Redirect to index.html after logout
         });
     });
 

@@ -158,7 +158,9 @@
                         <option value="Pumper 72">Pumper 72</option>
                     </select>
                 </div>
+                <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
                 <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
+                
             </div>
 
             <!-- Hidden Form for Adding New Equipment -->
@@ -191,6 +193,42 @@
                     <div class="flex justify-center space-x-10">
                         <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
                         <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeForm()">Close</button>
+                    </div>
+                   
+                </form>
+            </div>
+
+
+            <!-- Hidden Form for Adding New Vechicle -->
+            <div  class="flex justify-center w-full font-Inter">
+                <form id="addVehicleForm" class="hidden absolute top-80 w-76 h-64 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                    <h2 class="text-2xl text-center font-bold">Add New Vechicle</h2>
+                    <div class="flex justify-start mx-5">
+                        <p  class="font-semibold text-md mr-2">Vehicle Name:</p>
+                        <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="vehicleName" name="vehicleName" required>
+                    </div>
+                   
+                    <!-- <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
+                        <select class="border-[1px] border-black rounded-md" id="vehicleAssignment" name="vehicleAssignment">
+                            <option value="Engine 72">Engine 72</option>
+                            <option value="Water Tender 72">Water Tender 72</option>
+                            <option value="Pumper 72">Pumper 72</option>
+                        </select>
+                    </div>
+                  
+                    <div class="flex justify-start pl-10">
+                        <p class="font-semibold text-md">Date Acquired:</p>
+                        <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                    </div>
+                
+                    <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Upload Image:</p>
+                        <input type="file" id="itemImage" name="itemImage" accept="image/*">
+                    </div> -->
+                    <div class="flex justify-center space-x-10">
+                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeVehicleForm()">Close</button>
                     </div>
                    
                 </form>

@@ -1,7 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const path = require('path'); // Required for serving the HTML file
+const mysql = require('mysql');
+require('dotenv').config({ path: './.env' });
 const router = express.Router();
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    //port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
+
 
 module.exports = (db) => {
     // Middleware to check if user is logged in and a volunteer
@@ -105,70 +115,114 @@ module.exports = (db) => {
             });
         });
     });
-
-    // Login route
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
-        const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-        db.query(sql, [username], (err, result) => {
-            if (err) {
-                res.status(500).send('Error logging in');
-                return;
-            }
-            if (result.length === 0) {
-                res.status(401).send('Invalid username or password');
-                return;
-            }
-            const user = result[0];
-            const hashedPassword = user.password;
-
-            bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
-                if (compareErr) {
-                    res.status(500).send('Error comparing passwords');
-                    return;
+    
+        try {
+            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(sql, [username], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching user:', error);
+                    return res.status(500).json({ message: 'Internal Server Error' });
                 }
-                if (compareResult) {
-                    // Store only essential information in the session
-                    req.session.loggedin = true;
-                    req.session.accountID = user.accountID;
-                    req.session.username = user.username;
-                    req.session.accountType = user.accountType;
-
-                    // Log session data to the console to confirm it's working
-                    console.log('Session data:', req.session);
-
-                    res.status(200).json({ message: 'Login successful', accountType: user.accountType });
+    
+                if (results.length === 0) {
+                    return res.status(401).json({ message: 'Invalid username or password' });
+                }
+    
+                const user = results[0];
+                const isMatch = await bcrypt.compare(password, user.password);
+    
+                if (isMatch) {
+                    // Set the user in the session
+                    req.session.user = { 
+                        username: user.username, 
+                        accountType: user.accountType 
+                    };
+    
+                    let redirectUrl = '/supervisor_dashboard'; // Default redirect
+                    if (user.accountType === 'admin') {
+                        redirectUrl = '/admin_dashboard';
+                    } else if (user.accountType === 'supervisor') {
+                        redirectUrl = '/supervisor_dashboard';
+                    } else if (user.accountType === 'volunteer') {
+                        redirectUrl = '/volunteer_dashboard';
+                    }
+    
+                    res.status(200).json({ message: 'Login successful!', redirectUrl });
                 } else {
-                    res.status(401).send('Invalid username or password');
+                    res.status(401).json({ message: 'Invalid username or password' });
                 }
             });
-        });
+        } catch (err) {
+            console.error('Error processing login:', err);
+            res.status(500).json({ message: 'Error processing login' });
+        }
     });
 
-    // Routes for volunteer-related HTMLs
-    router.get('/volunteer/dashboard', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html'));
-    });
+    // Login route
+    // router.post('/login', (req, res) => {
+    //     const { username, password } = req.body;
+    //     const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+    //     db.query(sql, [username], (err, result) => {
+    //         if (err) {
+    //             res.status(500).send('Error logging in');
+    //             return;
+    //         }
+    //         if (result.length === 0) {
+    //             res.status(401).send('Invalid username or password');
+    //             return;
+    //         }
+    //         const user = result[0];
+    //         const hashedPassword = user.password;
 
-    router.get('/volunteer/main_profile', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_main_profile.html'));
-    });
+    //         bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
+    //             if (compareErr) {
+    //                 res.status(500).send('Error comparing passwords');
+    //                 return;
+    //             }
+    //             if (compareResult) {
+    //                 // Store only essential information in the session
+    //                 req.session.loggedin = true;
+    //                 req.session.accountID = user.accountID;
+    //                 req.session.username = user.username;
+    //                 req.session.accountType = user.accountType;
 
-    router.get('/volunteer/contactus', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_contactus.html'));
-    });
+    //                 // Log session data to the console to confirm it's working
+    //                 console.log('Session data:', req.session);
 
-    router.get('/volunteer/edit_profile', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_edit_profile.html'));
-    });
+    //                 res.status(200).json({ message: 'Login successful', accountType: user.accountType });
+    //             } else {
+    //                 res.status(401).send('Invalid username or password');
+    //             }
+    //         });
+    //     });
+    // });
 
-    router.get('/volunteer/inventory', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_inventory.html'));
-    });
+    // // Routes for volunteer-related HTMLs
+    // router.get('/volunteer/dashboard', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html'));
+    // });
 
-    router.get('/volunteer/leaderboards', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_leaderboards.html'));
-    });
+    // router.get('/volunteer/main_profile', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_main_profile.html'));
+    // });
+
+    // router.get('/volunteer/contactus', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_contactus.html'));
+    // });
+
+    // router.get('/volunteer/edit_profile', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_edit_profile.html'));
+    // });
+
+    // router.get('/volunteer/inventory', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_inventory.html'));
+    // });
+
+    // router.get('/volunteer/leaderboards', ensureVolunteerAuthenticated, (req, res) => {
+    //     res.sendFile(path.join(__dirname, '../public', 'volunteer_leaderboards.html'));
+    // });
 
     // Profile route: fetch user data based on accountID
     router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {

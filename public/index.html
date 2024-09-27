@@ -57,10 +57,10 @@
                         <form id="loginForm">
                             <div class="space-y-2 font-Istok text-xs">
                                 <div>
-                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="text" placeholder="username" id="username">
+                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="text" placeholder="username" id="username" name="username">
                                 </div>
                                 <div class="pt-2 md:pt-0">
-                                    <input class="px-14 py-3 border rounded-xl focus:outline-none focus:border-black md:w-80 md:h-10 md:px-4 md:py-5 md:rounded-md" type="password" placeholder="Password" id="password">
+                                    <input class="px-14 py-3 border rounded-xl focus:outline-none focus:border-black md:w-80 md:h-10 md:px-4 md:py-5 md:rounded-md" type="password" placeholder="Password" id="password" name="password">
                                 </div>
                                 <div class="pl-[110px] || md:text-right md:px-16">
                                     <a class="text-xs text-gray-400" href="#" id="forgotPasswordLink">Forgot Password?</a>
@@ -69,7 +69,9 @@
                             <div class="mt-5 md:mt-0">
                                 <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Log In</button>
                             </div>
+                            <div id="error-message" style="display:none; color: red;"></div>
                         </form>
+                        
                         <form id="forgotPasswordForm" style="display: none;">
                             <div class="space-y-2 font-Istok text-xs">
                                 <div>

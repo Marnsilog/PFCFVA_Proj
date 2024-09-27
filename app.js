@@ -80,12 +80,18 @@ app.use(bodyParser.json());
 
 
 //session
+// app.use(session({
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { maxAge: 1000 * 60 * 60 * 24 } 
+// }));
 app.use(session({
-    secret: 'secret',
+    secret: 'ampotangina',
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } 
-}));
+    cookie: { secure: false },
+    saveUninitialized: true
+}));;
 
 
 
@@ -95,8 +101,8 @@ app.use(session({
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //routes etc
-const authRoutes = require('./routes/auth')(db); //zzz
-app.use('/auth', authRoutes); //zzz
+const authRoutes = require('./routes/auth')(db); // Pass the `db` connection
+app.use('/auth', authRoutes);
 
 
 
@@ -406,8 +412,6 @@ app.get('/accountsAll', (req, res) => {
 });
 
 
-
-
 //admin attendance shit
 // endpoint to retrieve attendance details
 app.get('/attendanceDetails', (req, res) => {
@@ -627,8 +631,8 @@ app.put('/updateEquipment', (req, res) => {
 });
 
 
-
-
+const pages = require('./routes/pages');
+app.use('/', pages);
 //port
 const PORT = 3000;
 app.listen(PORT, () => {

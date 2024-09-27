@@ -11,6 +11,7 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+require('dotenv').config({ path: './.env' });
 // const session = require('express-session');
 // const MySQLStore = require('express-mysql-session')(session);
 

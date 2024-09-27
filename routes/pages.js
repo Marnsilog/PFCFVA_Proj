@@ -83,7 +83,8 @@ const volunteer = [
     'volunteer_contactus',
     'volunteer_edit_profile',
     'volunteer_leaderboards',
-    'volunteer_main_profile'
+    'volunteer_main_profile',
+    'volunteer_inventory'
 ];
 
 volunteer.forEach(route => {

@@ -136,16 +136,16 @@ module.exports = (db) => {
                 if (isMatch) {
                     // Set the user in the session
                     req.session.user = { 
-                        username: user.username, 
+                        username: user.username,  
                         accountType: user.accountType 
                     };
     
-                    let redirectUrl = '/supervisor_dashboard'; // Default redirect
-                    if (user.accountType === 'admin') {
+                    //let redirectUrl = '/supervisor_dashboard'; // Default redirect
+                    if (user.accountType === 'Admin') {
                         redirectUrl = '/admin_dashboard';
-                    } else if (user.accountType === 'supervisor') {
+                    } else if (user.accountType === 'Supervisor') {
                         redirectUrl = '/supervisor_dashboard';
-                    } else if (user.accountType === 'volunteer') {
+                    } else if (user.accountType === 'Volunteer') {
                         redirectUrl = '/volunteer_dashboard';
                     }
     

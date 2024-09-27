@@ -69,7 +69,8 @@ const adminRoutes = [
     'admin_rank_configuration',
     'admin_rank_up',
     'admin_register',
-    'admin_volunteer_configuration'
+    'admin_volunteer_configuration',
+    'attendance_dashboard'
 ];
 
 adminRoutes.forEach(route => {

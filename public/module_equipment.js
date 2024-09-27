@@ -8,9 +8,23 @@ function toggleEquipmentForm() {
     }
 }
 
+function toggleVehicleForm() {
+    var form = document.getElementById('addVehicleForm');
+    if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden'); 
+    } else {
+        form.classList.add('hidden'); 
+    }
+}
+
 
 function closeForm() {
     var form = document.getElementById('addEquipmentForm');
+    form.classList.add('hidden'); 
+}
+
+function closeVehicleForm() {
+    var form = document.getElementById('addVehicleForm');
     form.classList.add('hidden'); 
 }
 

@@ -78,6 +78,20 @@ adminRoutes.forEach(route => {
     });
 });
 
+const volunteer = [
+    'volunteer_dashboard',
+    'volunteer_contactus',
+    'volunteer_edit_profile',
+    'volunteer_leaderboards',
+    'volunteer_main_profile'
+];
+
+volunteer.forEach(route => {
+    router.get(`/${route}`, isAuthenticated, (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'public', `${route}.html`));
+    });
+});
+
 router.get('/get-username', isAuthenticated, (req, res) => {
     res.json({ username: req.session.user.username });
 });

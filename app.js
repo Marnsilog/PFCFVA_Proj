@@ -17,20 +17,14 @@ const fs = require('fs');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
-// Create connections
+
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'pfcf_marns',
-    password: 'Superfire@143',
-    database: 'pfcf_pfcfva'
+    host: process.env.DB_HOST || 'localhost', 
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
-// const db = mysql.createConnection({
-//     host: process.env.DB_HOST || 'localhost',  // Make sure 'localhost' is used if no env variable is found
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASS,
-//     database: process.env.DB_NAME
-// });
 // Connect
 db.connect((err) => {
     if (err) {

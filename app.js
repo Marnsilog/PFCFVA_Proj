@@ -1,6 +1,6 @@
 
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql'); 
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -20,11 +20,17 @@ const randomBytesAsync = promisify(crypto.randomBytes);
 // Create connections
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'pfcfva'
+    user: 'pfcf_marns',
+    password: 'Superfire@143',
+    database: 'pfcf_pfcfva'
 });
 
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST || 'localhost',  // Make sure 'localhost' is used if no env variable is found
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASS,
+//     database: process.env.DB_NAME
+// });
 // Connect
 db.connect((err) => {
     if (err) {

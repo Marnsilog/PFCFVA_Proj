@@ -21,11 +21,11 @@
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                     <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
                     
-                        <li id="dashb" class="md:mt-12"><a href="admin_dashboard.html">Dashboard</a></li>
-                        <li id="att" class="md:mt-12"><a href="admin_attendance_logs.html">Attendance Logs</a></li>
-                        <li id="vol" class="md:mt-12"><a href="admin_merit_tracking.html">Merit Tracking</a></li>
-                        <li id="inc" class="md:mt-12"><a href="admin_fire_response.html">Fire Response</a></li>
-                        <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="admin_inventory.html">Inventory</a></li>
+                        <li id="dashb" class="md:mt-12"><a href="/admin_dashboard">Dashboard</a></li>
+                        <li id="att" class="md:mt-12"><a href="/admin_attendance_logs">Attendance Logs</a></li>
+                        <li id="vol" class="md:mt-12"><a href="/admin_merit_tracking">Merit Tracking</a></li>
+                        <li id="inc" class="md:mt-12"><a href="/admin_fire_response">Fire Response</a></li>
+                        <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
                             <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
@@ -158,7 +158,9 @@
                         <option value="Pumper 72">Pumper 72</option>
                     </select>
                 </div>
+                <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
                 <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
+                
             </div>
 
             <!-- Hidden Form for Adding New Equipment -->
@@ -191,6 +193,42 @@
                     <div class="flex justify-center space-x-10">
                         <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
                         <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeForm()">Close</button>
+                    </div>
+                   
+                </form>
+            </div>
+
+
+            <!-- Hidden Form for Adding New Vechicle -->
+            <div  class="flex justify-center w-full font-Inter">
+                <form id="addVehicleForm" class="hidden absolute top-80 w-76 h-64 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                    <h2 class="text-2xl text-center font-bold">Add New Vechicle</h2>
+                    <div class="flex justify-start mx-5">
+                        <p  class="font-semibold text-md mr-2">Vehicle Name:</p>
+                        <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="vehicleName" name="vehicleName" required>
+                    </div>
+                   
+                    <!-- <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
+                        <select class="border-[1px] border-black rounded-md" id="vehicleAssignment" name="vehicleAssignment">
+                            <option value="Engine 72">Engine 72</option>
+                            <option value="Water Tender 72">Water Tender 72</option>
+                            <option value="Pumper 72">Pumper 72</option>
+                        </select>
+                    </div>
+                  
+                    <div class="flex justify-start pl-10">
+                        <p class="font-semibold text-md">Date Acquired:</p>
+                        <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                    </div>
+                
+                    <div class="flex justify-start pl-10">
+                        <p class="mr-2 font-semibold text-md">Upload Image:</p>
+                        <input type="file" id="itemImage" name="itemImage" accept="image/*">
+                    </div> -->
+                    <div class="flex justify-center space-x-10">
+                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeVehicleForm()">Close</button>
                     </div>
                    
                 </form>

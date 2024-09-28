@@ -201,6 +201,17 @@ module.exports = (db) => {
             res.json({ success: true, data: results[0] });
         });
     });
+
+    // Route to get the logged-in username
+    router.get('/getUsername', (req, res) => {
+        if (req.session && req.session.user && req.session.user.username) {
+            // Return the username from the session
+            res.json({ username: req.session.user.username });
+        } else {
+            res.status(401).json({ error: 'User not logged in' });
+        }
+    });
+    
     
     
     return router;

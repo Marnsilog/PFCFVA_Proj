@@ -5,6 +5,7 @@
     <link href="./styles.css" rel="stylesheet">
     <link href="volunteer.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Supervisor ICS</title>
 </head>
@@ -194,7 +195,7 @@
                     
                                 </div>
     
-                                <div class="flex justify-center mt-5"> 
+                                <!-- <div class="flex justify-center mt-5"> 
                                         <div class="max-w-[70rem] w-full">
                                             <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" id="messageBox" type="text" placeholder="Type message here..."></textarea>
                                         </div>
@@ -206,7 +207,7 @@
                                 <div class="w-full h-32 mt-16">
                                         <div class="flex justify-start">
                                             <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
-                                            <!-- <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl"><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div> -->
+                                            
                                         </div>
                                     
                                         <div  class="bg-[#F3F3F3] w-full pb-14" id="chatSystem">
@@ -258,8 +259,31 @@
                                 
                                                 </tbody>
                                             </table>
+                                        </div> -->
+
+                                                            <!-- Chat system area -->
+                                        <div class="flex justify-center mt-5">
+                                            <div class="max-w-[70rem] w-full">
+                                                <textarea class="rounded-lg w-full border-[.2px] border-black pt-2 pl-2 pb-36" id="messageBox" type="text" placeholder="Type message here..."></textarea>
+                                            </div>
                                         </div>
-                                        
+                                        <div class="flex justify-end">
+                                            <button class="bg-[#CBC9C2] px-7 py-3 mt-16 text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
+                                        </div>
+
+                                        <!-- Chat logs -->
+                                        <div class="w-full h-32 mt-16">
+                                            <div class="flex justify-start">
+                                                <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl">
+                                                    <p class="text-center pt-2 font-Inter font-[700]">LOGS</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-[#F3F3F3] w-full pb-14" id="chatSystem">
+                                                <!-- Messages will be appended here dynamically -->
+                                            </div>
+                                                     
+                                            
+                                            
                                         </div>
                                         <div class="w-full flex justify-end py-10">
                                             <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='supervisor_ics_form.html'">Done</button>
@@ -286,7 +310,10 @@
                     </div>
                 </div>
                 </div>
+ <script src="/socket.io/socket.io.js"></script>
+<script src="chat.js"></script>
 </body>
 </div>
 <script src="supervisor.js" defer></script>
+
 </html>

@@ -5,18 +5,18 @@ const router = express.Router();
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
-    // port: process.env.DB_PORT,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWORD, // Corrected this line
     database: process.env.DB_NAME
 });
 
-db.connect((error) => {
-    if (error) {
-        console.error('Database connection failed:', error.stack);
-        return;
+// Connect
+db.connect((err) => {
+    if (err) {
+        throw err;
     }
-    console.log('MySQL connected as id ' + db.threadId);
+    console.log('MySQL connected');
 });
 
 function isAuthenticated(req, res, next) {

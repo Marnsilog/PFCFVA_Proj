@@ -23,11 +23,12 @@ const randomBytesAsync = promisify(crypto.randomBytes);
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
-    // port: process.env.DB_PORT,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWORD, // Corrected this line
     database: process.env.DB_NAME
 });
+
 // Connect
 db.connect((err) => {
     if (err) {

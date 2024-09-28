@@ -6,8 +6,6 @@ const router = express.Router();
 
 
 module.exports = (db) => {
-
-
     // Register route
     router.post('/register', (req, res) => {
         const {

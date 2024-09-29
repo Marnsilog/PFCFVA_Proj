@@ -1,20 +1,6 @@
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
-  
 
-//LEADERBOARDS
+
+//IMPORTANT
   function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
@@ -117,8 +103,6 @@ function exitinventorydetail(){
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    animateProgressBar(70);
-    animateProgressBar2(40);
 
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');

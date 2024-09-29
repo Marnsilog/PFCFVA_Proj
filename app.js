@@ -141,16 +141,8 @@ io.on('connection', (socket) => {
 const authRoutes = require('./routes/auth')(db); // Pass the `db` connection
 app.use('/auth', authRoutes);
 
-const attendanceRoutes = require('./routes/routes_attendance')(db); // Pass the `db` connection
+const attendanceRoutes = require('./routes/routes_all')(db); // Pass the `db` connection
 app.use('/routes_attendance', attendanceRoutes);
-
-const equipmentRoutes = require('./routes/routes_equipment')(db); // Pass the `db` connection
-app.use('/routes_equipment', equipmentRoutes);
-
-const icsRoutes = require('./routes/routes_ics')(db); // Pass the `db` connection
-app.use('/routes_ics', icsRoutes);
-
-
 
 
 

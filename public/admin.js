@@ -174,21 +174,6 @@ function showEdit(){
     // };
 
 document.addEventListener('DOMContentLoaded', function() {
-    animateProgressBar(70);
-    animateProgressBar2(40);
-    animateProgressBar3(60);
-    animateProgressBar4(10);
-
-    const logoutLink = document.getElementById('logoutLink');
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                window.location.href = 'index.html';
-            }
-        });
-    }
 
     const circles = document.querySelectorAll('.colorCircle');
     circles.forEach(circle => {

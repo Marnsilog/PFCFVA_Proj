@@ -1,5 +1,23 @@
+function animateProgressBar(currentValue, maxValue) {
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar.style.width = percentage + '%'; 
+        console.log('ProgressBar 1:', percentage + '%'); 
+    }
+}
+function animateProgressBar2(currentValue, maxValue) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar2.style.width = percentage + '%'; 
+        console.log('ProgressBar 2:', percentage + '%'); 
+    }
+}
+  
 async function fetchProfileData() {
     try {
+        
         const response = await fetch('/auth/profile', {
             method: 'GET',
             headers: {
@@ -15,6 +33,29 @@ async function fetchProfileData() {
 
         if (result.success) {
             const data = result.data;
+            const statusDuty = data.dutyHours;
+            const statusFire = data.fireResponsePoints;
+            const callsign = data.callSign.toLowerCase();;
+            let dhmax;
+            let frmax;
+            if (/Aspirant/i.test(callsign)) {
+                dhmax = 100;
+                frmax = 0;
+            } else if (/Probationary/i.test(callsign)) {
+                dhmax = 1000;
+                frmax = 10;
+            } else if (/echo/i.test(callsign)) {
+                dhmax = 2000;
+                frmax = 20;
+            } else {
+                dhmax = 100;
+                frmax = 100;
+            }
+            dhmax = parseInt(dhmax);
+            frmax = parseInt(frmax);
+            animateProgressBar(statusDuty, dhmax);
+            animateProgressBar2(statusFire, frmax);
+            
             document.querySelector('[data-field="FullName"]').innerText = data.fullName;
             document.querySelector('[data-field="CallSign"]').innerText = data.callSign;
             document.querySelector('[data-field="DutyHours"]').innerText = `${data.dutyHours} hrs`;

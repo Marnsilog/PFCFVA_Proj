@@ -95,19 +95,6 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    animateProgressBar(70);
-    animateProgressBar2(40);
-
-    const logoutLink = document.getElementById('logoutLink');
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                window.location.href = 'index.html';
-            }
-        });
-    }
 
     const circles = document.querySelectorAll('.colorCircle');
     circles.forEach(circle => {
@@ -117,21 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
   
 
 //test

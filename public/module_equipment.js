@@ -23,16 +23,17 @@ function toggleTrashForm() {
     const btnTrash = document.getElementById('btnTrash');
 
     // Toggle visibility between equipmentContainer and trashContainer
-    if (trashContainer.classList.contains('hidden')) {
-        equipmentContainer.classList.add('hidden');
-        trashContainer.classList.remove('hidden');
+    if (trashContainer.style.display === 'none' || trashContainer.style.display === '') {
+        equipmentContainer.style.display = 'none';
+        trashContainer.style.display = 'flex';  // Maintain flex properties
         btnTrash.innerText = 'Back';  // Change button text to "Back"
     } else {
-        trashContainer.classList.add('hidden');
-        equipmentContainer.classList.remove('hidden');
+        trashContainer.style.display = 'none';
+        equipmentContainer.style.display = 'flex';  // Reapply flex properties
         btnTrash.innerText = 'Trash';  // Change button text back to "Trash"
     }
 }
+
 
 
 function closeForm() {

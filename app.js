@@ -56,6 +56,7 @@ const upload = multer({
     }
 }).single('itemImage');
 
+
 // Check File Type
 function checkFileType(file, cb){
     // Allowed ext

@@ -81,7 +81,35 @@ function deleteFromTrash(itemName) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadVehicleAssignments();
+    loadAddVehicleAssignments();
+    EditAddVehicleAssignments();
 });
+function EditAddVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+    .then(response => response.json())
+    .then(data => {
+        const selectElement = document.getElementById('editvehicleAssignment');
+        selectElement.innerHTML = '<option value="">All Vehicles</option>';  // Reset options
+
+        data.forEach(item => {
+            selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+        });
+    })
+    .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+function loadAddVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+    .then(response => response.json())
+    .then(data => {
+        const selectElement = document.getElementById('addvehicleAssignment');
+        selectElement.innerHTML = '<option value="">All Vehicles</option>';  // Reset options
+
+        data.forEach(item => {
+            selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+        });
+    })
+    .catch(error => console.error('Error loading vehicle assignments:', error));
+}
 
 function loadVehicleAssignments() {
     fetch('/getVehicleAssignments')

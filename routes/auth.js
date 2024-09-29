@@ -7,97 +7,124 @@ const router = express.Router();
 
 module.exports = (db) => {
     // Register route
-    router.post('/register', (req, res) => {
+    router.get('/get-user-data', (req, res) => {
+        const username = req.session.user?.username;
+    
+        if (!username) {
+            return res.status(400).send('User not found in session');
+        }
+    
+        const query = 'SELECT * FROM tbl_accounts WHERE username = ?';
+        db.query(query, [username], (err, result) => {
+            if (err) {
+                console.error('Error fetching user data:', err);
+                return res.status(500).send('Error fetching user data');
+            }
+            if (result.length === 0) {
+                return res.status(404).send('User not found');
+            }
+    
+            const { password, ...userData } = result[0]; // Exclude password
+            res.json(userData); // Send user data without password
+        });
+    });
+    
+    
+    // Edit Profile
+    router.post('/edit-profile', (req, res) => {
         const {
-            rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,
-            callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
-            mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
-            highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
-            otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
-            inventoryPoints, dutyHours
+            lastName, firstName, middleName, emailAddress, contactNumber,
+            oldPassword, newPassword, civilStatus, nationality, bloodType,
+            birthday, gender, currentAddress, emergencyContactPerson,
+            emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+            yearsInService, skillsTraining, otherAffiliation
         } = req.body;
-
-        // Check if the username already exists in the database
-        const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
+    
+        const username = req.session.user?.username;
+    
+        if (!username) {
+            return res.status(400).send('User not found in session');
+        }
+    
+        const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
         db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
             if (checkUsernameErr) {
                 console.error('Error checking username:', checkUsernameErr);
-                res.status(500).send('Error checking username');
-                return;
+                return res.status(500).send('Error checking username');
             }
-
-            if (checkUsernameResult[0].count > 0) {
-                res.status(400).send('Username already exists');
-                return;
+    
+            if (checkUsernameResult.length === 0) {
+                return res.status(400).send('User not found');
             }
-
-            // Check if the RFID already exists in the database
-            const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
-            db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
-                if (checkRfidErr) {
-                    console.error('Error checking RFID:', checkRfidErr);
-                    res.status(500).send('Error checking RFID');
-                    return;
-                }
-
-                if (checkRfidResult[0].count > 0) {
-                    res.status(400).send('RFID already exists');
-                    return;
-                }
-
-                // Check if the email already exists in the database
-                const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
-                db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
-                    if (checkEmailErr) {
-                        console.error('Error checking email:', checkEmailErr);
-                        res.status(500).send('Error checking email');
-                        return;
+    
+            const user = checkUsernameResult[0];
+            if (oldPassword) {
+                bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
+                    if (compareErr || !isMatch) {
+                        return res.status(400).send('Old password is incorrect');
                     }
-
-                    if (checkEmailResult[0].count > 0) {
-                        res.status(400).send('Email already exists');
-                        return;
-                    }
-
-                    // Hash the password and register the user
-                    bcrypt.hash(password, 10, (hashErr, hash) => {
-                        if (hashErr) {
-                            console.error('Error hashing password:', hashErr);
-                            res.status(500).send('Error hashing password');
-                            return;
-                        }
-
-                        const sql = `
-                            INSERT INTO tbl_accounts (
-                                rfid, username, password, accountType, lastName, firstName, middleName,
-                                middleInitial, callSign, currentAddress, dateOfBirth, civilStatus, gender,
-                                nationality, bloodType, mobileNumber, emailAddress, emergencyContactPerson,
-                                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
-                                yearsInService, skillsTraining, otherAffiliation, bioDataChecked, interviewChecked,
-                                fireResponsePoints, activityPoints, inventoryPoints, dutyHours
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        `;
-
-                        db.query(sql, [
-                            rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
-                            callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
-                            mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
-                            highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
-                            otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
-                            inventoryPoints, dutyHours
-                        ], (err, result) => {
-                            if (err) {
-                                console.error('Error registering user:', err);
-                                res.status(500).send('Error registering user');
-                                return;
+                    if (newPassword) {
+                        bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                            if (hashErr) {
+                                console.error('Error hashing new password:', hashErr);
+                                return res.status(500).send('Error hashing new password');
                             }
-                            res.status(200).send('User registered successfully');
+                            updateProfile(hash); 
                         });
-                    });
+                    } else {
+                        updateProfile(user.password); 
+                    }
                 });
-            });
+            } else {
+                updateProfile(user.password);
+            }
         });
+    
+        // Function to update the user's profile
+        function updateProfile(password) {
+            const updateQuery = `
+                UPDATE tbl_accounts SET 
+                    lastName = ?, 
+                    firstName = ?, 
+                    middleName = ?, 
+                    emailAddress = ?, 
+                    mobileNumber = ?, 
+                    password = ?, 
+                    civilStatus = ?, 
+                    nationality = ?, 
+                    bloodType = ?, 
+                    dateOfBirth = ?, 
+                    gender = ?, 
+                    currentAddress = ?, 
+                    emergencyContactPerson = ?, 
+                    emergencyContactNumber = ?, 
+                    highestEducationalAttainment = ?, 
+                    nameOfCompany = ?, 
+                    yearsInService = ?, 
+                    skillsTraining = ?, 
+                    otherAffiliation = ? 
+                WHERE username = ?
+            `;
+    
+            const values = [
+                lastName, firstName, middleName, emailAddress, contactNumber,
+                password, civilStatus, nationality, bloodType,
+                birthday, gender, currentAddress, emergencyContactPerson,
+                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                yearsInService, skillsTraining, otherAffiliation,
+                username
+            ];
+    
+            db.query(updateQuery, values, (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.error('Error updating profile:', updateErr);
+                    return res.status(500).send('Error updating profile');
+                }
+                res.send('Profile updated successfully');
+            });
+        }
     });
+    
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     
@@ -145,7 +172,7 @@ module.exports = (db) => {
     router.get('/profile', (req, res) => {
         const username = req.session.user?.username;
     
-        console.log('Logged in username:', username); 
+        //console.log('Logged in username:', username); 
     
         if (!username) {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
@@ -191,14 +218,10 @@ module.exports = (db) => {
             if (results.length === 0) {
                 return res.status(404).json({ success: false, message: 'Profile not found' });
             }
-    
-            // Print the result of the database query
-            //console.log('Profile data:', results[0]);
-    
             res.json({ success: true, data: results[0] });
         });
     });
-    // Route to get the logged-in username
+
     router.get('/getUsername', (req, res) => {
         if (req.session && req.session.user && req.session.user.username) {
             // Return the username from the session
@@ -207,8 +230,6 @@ module.exports = (db) => {
             res.status(401).json({ error: 'User not logged in' });
         }
     });
-    
-    // Route to fetch all volunteers
     router.get('/volunteers', (req, res) => {
         const query = 'SELECT accountID as id, firstName as name, dutyHours as points FROM tbl_accounts';
         db.query(query, (err, results) => {
@@ -219,8 +240,6 @@ module.exports = (db) => {
             res.json(results);
         });
     });
-    
-    // Route to fetch a specific volunteer by ID
     router.get('/volunteer/:id', (req, res) => {
         const volunteerId = req.params.id;
         const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
@@ -235,8 +254,6 @@ module.exports = (db) => {
             res.json(results[0]);
         });
     });
-
-    // Route to fetch all volunteers
     router.get('/fireresponse', (req, res) => {
         const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts';
         db.query(query, (err, results) => {
@@ -247,8 +264,6 @@ module.exports = (db) => {
             res.json(results);
         });
     });
-    
-    // Route to fetch a specific volunteer by ID
     router.get('/fireresponse/:id', (req, res) => {
         const volunteerId = req.params.id;
         const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
@@ -264,7 +279,88 @@ module.exports = (db) => {
         });
     });
     
-
+    router.post('/edit-profile', (req, res) => {
+        const {
+            username, lastName, firstName, middleName, emailAddress, contactNumber, 
+            oldPassword, newPassword, civilStatus, nationality, bloodType, 
+            birthday, gender, currentAddress, emergencyContactPerson, 
+            emergencyContactNumber, highestEducationalAttainment, nameOfCompany, 
+            yearsInService, skillsTraining, otherAffiliation
+        } = req.body;
+    
+        // Optionally check if the username exists, you can adjust this logic based on your needs
+        const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
+        db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+            if (checkUsernameErr) {
+                console.error('Error checking username:', checkUsernameErr);
+                return res.status(500).send('Error checking username');
+            }
+    
+            if (checkUsernameResult.length === 0) {
+                return res.status(400).send('User not found');
+            }
+    
+            // Validate old password if it was provided
+            if (oldPassword) {
+                const user = checkUsernameResult[0];
+                bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
+                    if (compareErr || !isMatch) {
+                        return res.status(400).send('Old password is incorrect');
+                    }
+    
+                    // Hash new password if provided
+                    if (newPassword) {
+                        bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                            if (hashErr) {
+                                console.error('Error hashing new password:', hashErr);
+                                return res.status(500).send('Error hashing new password');
+                            }
+                            updateProfile(hash);
+                        });
+                    } else {
+                        updateProfile(user.password); // use old password if no new password is provided
+                    }
+                });
+            } else {
+                updateProfile(null); // No old password provided
+            }
+        });
+    
+        function updateProfile(hashedPassword) {
+            const updateQuery = `
+                UPDATE tbl_accounts 
+                SET 
+                    lastName = ?, firstName = ?, middleName = ?, emailAddress = ?, contactNumber = ?, 
+                    civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?, gender = ?, 
+                    currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, 
+                    highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, 
+                    skillsTraining = ?, otherAffiliation = ? 
+                    ${hashedPassword ? ', password = ?' : ''}
+                WHERE username = ?`;
+    
+            const values = [
+                lastName, firstName, middleName, emailAddress, contactNumber,
+                civilStatus, nationality, bloodType, birthday, gender,
+                currentAddress, emergencyContactPerson, emergencyContactNumber,
+                highestEducationalAttainment, nameOfCompany, yearsInService,
+                skillsTraining, otherAffiliation,
+                username,
+            ];
+    
+            if (hashedPassword) {
+                values.push(hashedPassword);
+            }
+    
+            db.query(updateQuery, values, (updateErr, result) => {
+                if (updateErr) {
+                    console.error('Error updating profile:', updateErr);
+                    return res.status(500).send('Error updating profile');
+                }
+                res.status(200).send('Profile updated successfully');
+            });
+        }
+    });
+    
     
     return router;
 };

@@ -36,6 +36,7 @@ async function fetchProfileData() {
             document.querySelector('[data-field="CurrentAddress"]').innerText = data.currentAddress;
             document.querySelector('[data-field="EmergencyContactPerson"]').innerText = data.emergencyContactPerson;
             document.querySelector('[data-field="EmergencyContactNumber"]').innerText = data.emergencyContactNumber;
+            
 
         } else {
             console.error('Profile not found or other error:', result.message);
@@ -46,3 +47,35 @@ async function fetchProfileData() {
 }
 
 window.onload = fetchProfileData;
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/auth/get-user-data') // Replace with your endpoint to get user data
+        .then(response => response.json())
+        .then(data => {
+            const dateOfBirth = new Date(data.dateOfBirth);
+            const formattedDate = dateOfBirth.toISOString().split('T')[0];
+            document.getElementById('HiddenUsername').value = data.username;
+            document.getElementById('EditUsername').value = data.username;
+            document.getElementById('EditLastName').value = data.lastName;
+            document.getElementById('EditFirstName').value = data.firstName;
+            document.getElementById('EditMiddleName').value = data.middleName;
+            document.getElementById('EditEmailAddress').value = data.emailAddress;
+            document.getElementById('EditContactNumber').value = data.mobileNumber;
+            // Add more fields as necessary
+            document.getElementById('EditCivilStatus').value = data.civilStatus;
+            document.getElementById('EditNationality').value = data.nationality;
+            document.getElementById('EditBloodType').value = data.bloodType;
+            document.getElementById('EditBirthday').value = formattedDate;
+            document.getElementById('EditGender').value = data.gender;
+            document.getElementById('EditCurrentAddress').value = data.currentAddress;
+            document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson;
+            document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber;
+            document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment;
+            document.getElementById('EditNameOfCompany').value = data.nameOfCompany;
+            document.getElementById('EditYearsInService').value = data.yearsInService;
+            document.getElementById('EditSkillsTraining').value = data.skillsTraining;
+            document.getElementById('EditOtherAffiliation').value = data.otherAffiliation;
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+});
+

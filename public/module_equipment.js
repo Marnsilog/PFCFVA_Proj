@@ -8,14 +8,7 @@ function toggleEquipmentForm() {
     }
 }
 
-function toggleVehicleForm() {
-    var form = document.getElementById('addVehicleForm');
-    if (form.classList.contains('hidden')) {
-        form.classList.remove('hidden'); 
-    } else {
-        form.classList.add('hidden'); 
-    }
-}
+
 
 function toggleTrashForm() {
     const equipmentContainer = document.getElementById('equipmentContainer');
@@ -86,14 +79,37 @@ function deleteFromTrash(itemName) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadVehicleAssignments();
+});
 
-function loadEquipment() {
-    fetch('/getEquipment')
+function loadVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+    .then(response => response.json())
+    .then(data => {
+        const selectElement = document.getElementById('sortVehicleAssignment');
+        selectElement.innerHTML = '<option value="">All Vehicles</option>';  // Reset options
+
+        data.forEach(item => {
+            selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+        });
+    })
+    .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+
+document.getElementById('sortVehicleAssignment').addEventListener('change', function() {
+    const selectedValue = this.value;
+    loadEquipment(selectedValue); 
+});
+
+function loadEquipment(vehicleAssignment) {
+    const url = vehicleAssignment ? `/getEquipment?vehicleAssignment=${vehicleAssignment}` : '/getEquipment';
+    
+    fetch(url)
     .then(response => response.json())
     .then(data => {
         const equipmentGrid = document.getElementById('equipmentGrid');
-        equipmentGrid.innerHTML = '';  // Clear the grid
-
+        equipmentGrid.innerHTML = '';  
         data.forEach(item => {
             equipmentGrid.innerHTML += `
                 <div class="w-full bg-gray-300 h-28 mx-3 rounded-xl flex justify-between">
@@ -112,6 +128,7 @@ function loadEquipment() {
     })
     .catch(error => console.error('Error loading equipment:', error));
 }
+
 
 
 function loadTrash() {
@@ -376,6 +393,43 @@ function editEquipment(itemName) {
 }
 
 
+function toggleVehicleForm() {
+    var form = document.getElementById('addVehicleForm');
+    form.classList.remove('hidden');
 
+}
+ //Add Equipment
+ document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('addVehicleForm').addEventListener('submit', async function (event) {
+        event.preventDefault();  
+        
+        const vehicleName = document.getElementById('vehicleName').value;
+        const confirmation = confirm(`Are you sure you want to add the vehicle: ${vehicleName}?`);
 
+        if (confirmation) {
+            const formData = new FormData(this);
+            try {
+                const response = await fetch('/auth/addVehicle', {
+                    method: 'POST',
+                    body: formData,
+                });
 
+                const result = await response.json(); // Parse response only once
+
+                if (response.ok) {
+                    alert(result.message);
+                    this.reset(); // Reset the form
+                    closeVehicleForm(); // Close the form only after successful submission
+                } else {
+                    console.error('Server responded with an error:', result);
+                    alert(`Error: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('An unexpected error occurred. Check the console for details.');
+            }
+        } else {
+            console.log('Vehicle addition cancelled.'); // Log when the user cancels
+        }
+    });
+});

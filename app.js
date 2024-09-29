@@ -608,10 +608,28 @@ app.post('/uploadEquipment', (req, res) => {
 //     });
 // });
 
-//select equip route excluding trashed items
-app.get('/getEquipment', (req, res) => {
-    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
+app.get('/getVehicleAssignments', (req, res) => {
+    const sql = 'SELECT * from tbl_vehicles;';
     db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Failed to retrieve vehicle assignments:', err);
+            res.status(500).json({ error: 'Failed to retrieve vehicle assignments' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+app.get('/getEquipment', (req, res) => {
+    const vehicleAssignment = req.query.vehicleAssignment;
+    let sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
+    const params = []; 
+    if (vehicleAssignment && vehicleAssignment !== '') {
+        sql += ' AND vehicleAssignment = ?';
+        params.push(vehicleAssignment); 
+    }
+
+    db.query(sql, params, (err, results) => {
         if (err) {
             console.error('Failed to retrieve equipment:', err);
             res.status(500).json({ error: 'Failed to retrieve equipment' });
@@ -621,7 +639,7 @@ app.get('/getEquipment', (req, res) => {
     });
 });
 
-// Get trashed items (equipment in trash)
+
 app.get('/getTrashedEquipment', (req, res) => {
     const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = "trash"';
     db.query(sql, (err, results) => {

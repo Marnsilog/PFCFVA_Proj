@@ -10,117 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-//PROFILE CONFIG
-  function displaySection(sectionName) {
-    const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
-
-    sections.forEach(section => {
-
-        const element = document.getElementById(section);
-        if (section === sectionName) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-
-    });
-}
-function Records() {
-    displaySection('frmRecord');
-}
-function Profile() {
-    displaySection('frmMyprofile');
-}
-function Achievements() {
-    displaySection('frmAchievement');
-}
-function Rankings() {
-    displaySection('frmRankings');
-}
-
-// //old
-// function addLine(LineId) {
-//     const formIds = ['dashb', 'reg', 'att','vol','ranks','inc','inV','prof'];
-    
-//     formIds.forEach(id => {
-//         const element = document.getElementById(id);
-//         if (id === LineId) {
-//             element.classList.add('underline', 'underline-offset-8');
-//         }
-//         else {
-//             element.classList.remove('underline', 'underline-offset-8');
-//         }
-//     });
-// }
-
-//new
-function addLine(LineId) {
-    const formIds = ['dashb','att','vol','inc','inV','prof'];
-    
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === LineId) {
-            element.classList.add('underline', 'underline-offset-8');
-        }
-        else {
-            element.classList.remove('underline', 'underline-offset-8');
-        }
-    });
-}
-
-
-  function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile', 'accountsConfiguration', 'frmRanksConfiguration'];
-
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === elementId) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    });
-}
-
-//DASHBOARD CONFIG ------------------------------------------------------->
-function showDashboard() {
-    showElement('frmDashboard');
-    addLine('dashb');
-}
-function showRegister(){
-    showElement('frmRegister');
-    addLine('reg');
-}
-function showAttendance(){
-    showElement('frmAttendance');
-    addLine('att');
-}
-function showRanks(){
-    showElement('frmRanks');
-    addLine('ranks');
-}
-function showVolunteer(){
-    showElement('SummaryVolunteer');
-    addLine('vol');
-}
-function showAccountsConfiguration(){
-    showElement('accountsConfiguration');
-    
-}
-
-function showRanksConfiguration(){
-    showElement('frmRanksConfiguration');
-    
-}
-
-function showIncident(){
-    showElement('frmIncident');
-    addLine('inc');
-}
-function showInventory() {
-    showElement('frmInventory');
-    addLine('inV');
-}
 
 function edit() {
 
@@ -153,25 +42,6 @@ function toggleSetting() {
     addLine('prof');
 }
 
-//SETTING CONFIG
-function myProfile() {
-    showElement('frmMainProfile');
-    
-}
-function showAboutUs() {
-    showElement('frmaboutus');
-}
-function showHwVolunteer() {
-    showElement('frmHtvolunteer');
-}
-function showEdit(){
-    showElement('editProfile');
-}
-
-
-    // window.onload = function() {
-    // showDashboard();
-    // };
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -183,35 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
-
-  function animateProgressBar3(targetWidth) {
-    const progressBar3 = document.getElementById('progress3');
-    if (progressBar3) {
-      progressBar3.style.width = targetWidth + '%';
-    }
-  }
-
-  function animateProgressBar4(targetWidth) {
-    const progress4 = document.getElementById('progress4');
-    if (progress4) {
-        progress4.style.width = targetWidth + '%';
-    }
-  }
   
   //FORM INCIDENT ----------------------------------->
   function inciform(){
@@ -392,12 +233,12 @@ function icsBack(){
     
 
     //for calendar
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const dateOfBirthInput = document.getElementById('dateOfBirth');
-        const today = new Date();
-        const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-        dateOfBirthInput.setAttribute('max', minDate);
-    });
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     const dateOfBirthInput = document.getElementById('dateOfBirth');
+    //     const today = new Date();
+    //     const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+    //     dateOfBirthInput.setAttribute('max', minDate);
+    // });
 
     //FOR RESPONSIVE ---------------------------------->
     document.addEventListener('DOMContentLoaded', function () {
@@ -428,22 +269,20 @@ function icsBack(){
         });
         
     });
-
-
-
-
-
     //register, clear form
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('registerForm');
         const clearButton = document.getElementById('clearButton');
         const callSignSelect = document.getElementById('callSign');
-        const tooltipText = callSignSelect.nextElementSibling;
-
-        clearButton.addEventListener('click', function() {
-            clearForm(form);
-        });
-
+        const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
+        if (clearButton) {
+            clearButton.addEventListener('click', function() {
+                clearForm(form);
+            });
+        } else {
+            return;
+        }
+    
         function clearForm(form) {
             Array.from(form.elements).forEach(element => {
                 switch(element.type) {
@@ -468,45 +307,60 @@ function icsBack(){
                         break;
                 }
             });
-
-            // reset callSign select to its initial state, may minor bug on clear, tool tip auto pops up
-            callSignSelect.disabled = true;
-            tooltipText.classList.remove('hidden');
+    
+            // Reset callSign select to its initial state
+            if (callSignSelect) {
+                callSignSelect.disabled = true;
+                if (tooltipText) {
+                    tooltipText.classList.remove('hidden');
+                }
+            }
         }
     });
     
-
-
-
+    
     //register, dont allow numbers
     document.addEventListener('DOMContentLoaded', function() {
-        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson'];
+        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
     
-        nameFields.forEach(fieldId => {
+        numberFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
-            field.addEventListener('keypress', function(event) {
-                if (/\d/.test(event.key)) {
-                    event.preventDefault();
-                }
-            });
+            if (field) { // Check if the field exists
+                field.addEventListener('keypress', function(event) {
+                    if (/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                });
+            } 
         });
     });
+    
+    
     
     //register, don't allow letters for specific fields
     document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
-
+        const numberFields = [
+            'contactNumber', 
+            'emergencyContactNumber', 
+            'dutyHours', 
+            'fireResponse', 
+            'activityPoints', 
+            'inventoryPoints', 
+            'yearsInService'
+        ];
+    
         numberFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
-            field.addEventListener('keypress', function(event) {
-                if (/[a-zA-Z]/.test(event.key)) {
-                    event.preventDefault();
-                }
-            });
+            if (field) { 
+                field.addEventListener('keypress', function(event) {
+                    // Prevent input of letters
+                    if (/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                });
+            } 
         });
     });
-
-
     //auto format
     document.addEventListener('DOMContentLoaded', function() {
         const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
@@ -532,9 +386,6 @@ function icsBack(){
             });
         });
     });
-    
-
-
      //handle accountType/callSign
      document.addEventListener('DOMContentLoaded', function() {
         const accountTypeSelect = document.getElementById('accountType');
@@ -576,51 +427,59 @@ function icsBack(){
         });
     });
 
-    document.getElementById('editProfileForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the form from submitting the traditional way
+    document.addEventListener("DOMContentLoaded", function () {
+        const editProfileForm = document.getElementById('editProfileForm');
+        
+        if (editProfileForm) {
+            editProfileForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the form from submitting the traditional way
     
-        const formData = {
-            username: document.getElementById('HiddenUsername').value,
-            lastName: document.getElementById('EditLastName').value,
-            firstName: document.getElementById('EditFirstName').value,
-            middleName: document.getElementById('EditMiddleName').value,
-            emailAddress: document.getElementById('EditEmailAddress').value,
-            contactNumber: document.getElementById('EditContactNumber').value,
-            oldPassword: document.getElementById('EditOldPassword').value,
-            newPassword: document.getElementById('EditNewPassword').value,
-            civilStatus: document.getElementById('EditCivilStatus').value,
-            nationality: document.getElementById('EditNationality').value,
-            bloodType: document.getElementById('EditBloodType').value,
-            birthday: document.getElementById('EditBirthday').value,
-            gender: document.getElementById('EditGender').value,
-            currentAddress: document.getElementById('EditCurrentAddress').value,
-            emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
-            emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
-            highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
-            nameOfCompany: document.getElementById('EditNameOfCompany').value,
-            yearsInService: document.getElementById('EditYearsInService').value,
-            skillsTraining: document.getElementById('EditSkillsTraining').value,
-            otherAffiliation: document.getElementById('EditOtherAffiliation').value,
-        };
+                const formData = {
+                    username: document.getElementById('HiddenUsername').value,
+                    lastName: document.getElementById('EditLastName').value,
+                    firstName: document.getElementById('EditFirstName').value,
+                    middleName: document.getElementById('EditMiddleName').value,
+                    emailAddress: document.getElementById('EditEmailAddress').value,
+                    contactNumber: document.getElementById('EditContactNumber').value,
+                    oldPassword: document.getElementById('EditOldPassword').value,
+                    newPassword: document.getElementById('EditNewPassword').value,
+                    civilStatus: document.getElementById('EditCivilStatus').value,
+                    nationality: document.getElementById('EditNationality').value,
+                    bloodType: document.getElementById('EditBloodType').value,
+                    birthday: document.getElementById('EditBirthday').value,
+                    gender: document.getElementById('EditGender').value,
+                    currentAddress: document.getElementById('EditCurrentAddress').value,
+                    emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
+                    emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
+                    highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
+                    nameOfCompany: document.getElementById('EditNameOfCompany').value,
+                    yearsInService: document.getElementById('EditYearsInService').value,
+                    skillsTraining: document.getElementById('EditSkillsTraining').value,
+                    otherAffiliation: document.getElementById('EditOtherAffiliation').value,
+                };
     
-        fetch('/auth/edit-profile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text); });
-            }
-            return response.text(); // Assuming the server sends back a message
-        })
-        .then(message => {
-            alert(message); // Display the success message
-            window.location.href = 'volunteer_main_profile'; // Redirect to the desired page
-        })
-        .catch(error => {
-            alert('Error: ' + error.message); // Display error message
-        });
+                fetch('/auth/edit-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    return response.text();
+                })
+                .then(message => {
+                    alert(message); 
+                    window.location.href = 'volunteer_main_profile';
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            });
+        }
     });
+
+    

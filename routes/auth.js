@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: './.env' });
+const multer = require('multer');
+const upload = multer(); 
 const router = express.Router();
 
 
@@ -195,9 +197,8 @@ module.exports = (db) => {
 
         res.json({ success: true, data: results[0] });
     });
-});
+    });
 
-    
     router.get('/profile', (req, res) => {
         const username = req.session.user?.username;
     
@@ -259,7 +260,7 @@ module.exports = (db) => {
         }
     });
     router.get('/volunteers', (req, res) => {
-        const query = 'SELECT accountID as id, firstName as name, dutyHours as points FROM tbl_accounts';
+        const query = 'SELECT accountID AS id, firstName AS name, dutyHours AS points FROM tbl_accounts ORDER BY dutyHours DESC';
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
@@ -283,7 +284,7 @@ module.exports = (db) => {
         });
     });
     router.get('/fireresponse', (req, res) => {
-        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts';
+        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts ORDER BY fireResponsePoints DESC';
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
@@ -386,6 +387,28 @@ module.exports = (db) => {
                 res.status(200).send('Profile updated successfully');
             });
         }
+    });
+    
+    router.post('/addVehicle', upload.none(), (req, res) => {
+        console.log("Received request:", req.body); 
+        const vehicleName = req.body.vehicleName;
+    
+        // Input validation
+        if (!vehicleName || typeof vehicleName !== 'string' || vehicleName.length < 1) {
+            return res.status(400).json({ message: 'Invalid vehicle name' });
+        }
+    
+        // Insert into database
+        const query = 'INSERT INTO tbl_vehicles (vehicleName) VALUES (?)';
+        db.query(query, [vehicleName], (err, result) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Failed to add vehicle' });
+            }
+    
+            console.log('Vehicle added:', result.insertId); // Log the inserted ID
+            res.status(201).json({ message: 'Vehicle added successfully!', vehicleId: result.insertId });
+        });
     });
     
     

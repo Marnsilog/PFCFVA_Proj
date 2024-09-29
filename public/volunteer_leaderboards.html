@@ -126,176 +126,84 @@
                         </div>
                     </div>
                     <!-- DUTY HOURS -->
-                     <div class="w-full " id="frmDutyhours"> 
-                        <div  class="flex justify-center pt-10">        
-                            <div class="w-full">
-                                <table id="myTable2" class="text-start rounded-lg shadow-lg shadow-black w-full">
-                                <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
-                                    <tr>
-                                        <th class="text-start pl-5">Volunteers</th>
-                                        <th class="text-center">Points</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm md:text-xl text-start font-Inter">
-                                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300  border-gray-500 md:h-16 cursor-pointer"  onclick="dutyhoursdetail()">
-                                        <td class="pl-5 flex justify-normal space-x-3 pt-4" >
-                                            <p class="text-2xl font-bold">1.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Diosdado Amog</p></td>
-                                        <td class="text-center">2297</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 hover:bg-gray-300  border-b-[1px] border-gray-500 md:h-16 cursor-pointer" onclick="dutyhoursdetail()">
-                                        <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                            <p class="text-2xl font-bold">2.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p> Mj Marianoa</p></td>
-                                        <td class="text-center">2290</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300  border-gray-500 md:h-16 cursor-pointer" onclick="dutyhoursdetail()">
-                                        <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                            <p class="text-2xl font-bold">3.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p> Anne Pangan</p></td>
-                                        <td class="text-center">1005</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="dutyhoursdetail()">
-                                        <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                            <p class="text-2xl font-bold">4.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p> Marniel Corsiga</p></td>
-                                        <td class="text-center">1001</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="dutyhoursdetail()">
-                                        <td class="pl-5  flex justify-normal space-x-3 pt-4"  >
-                                            <p class="text-2xl font-bold">5.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>James Aguirre</p> </td>
-                                        <td class="text-center">905</td>
-                                    </tr>
-                                
-                                    </tbody>
-                             </table>
+                     <div class="w-full h-full " id="frmDutyhours"> 
+                        <div class="w-full h-full flex justify-normal">
+                            <div class="px-5 w-full flex justify-center " id="Container">
                             </div>
-    
+                            
                             <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
-                                <div class="w-full flex justify-end pr-5 mt-2"><a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a></div>
+                                <div class="w-full flex justify-end pr-5 mt-2">
+                                    <a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a>
+                                </div>
                                 <div class="flex justify-center space-x-10 mt-3">
-                                    <img src="img/user.png" class="w-32 h-32" alt="">
+                                    <img src="img/user.png" class="w-32 h-32" id="detailImage" alt="">
                                     <div class="font-inter">
-                                        <p class="text-3xl font-semibold mt-5">Marniel Igops</p>
-                                        <p class="text-center text-2xl text-[#930D0D]">Echo 817</p>
-                                    </div> 
+                                        <p id="detailName" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                        <p id="detailID" class="text-center text-2xl text-[#930D0D]">ID</p>
+                                    </div>
                                 </div>
                                 <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
                                     <div class="w-full h-full font-inter pt-3">
-                                        <p class="text-2xl text-center font-bold">22297</p>
-                                        <p class="text-lg text-center">Duty Hours</p></div>
+                                        <p id="dutyHours" class="text-2xl text-center font-bold">Duty Hours</p>
+                                        <p class="text-lg text-center">Duty Hours</p>
+                                    </div>
                                     <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                        <p class="text-2xl text-center font-bold">12</p>
+                                        <p id="fireResponse" class="text-2xl text-center font-bold">Fire Response</p>
                                         <p class="text-lg text-center">Fire Response</p>
                                     </div>
                                     <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                        <p class="text-2xl text-center font-bold">1</p>
+                                        <p id="inventory" class="text-2xl text-center font-bold">Inventory</p>
                                         <p class="text-lg text-center">Inventory</p>
                                     </div>
                                     <div class="w-full h-full">
-                                        <p class="text-2xl text-center font-bold pt-3">4</p>
+                                        <p id="activity" class="text-2xl text-center font-bold pt-3">Activity</p>
                                         <p class="text-lg text-center">Activity</p>
                                     </div>
                                 </div>
-    
                             </div>
-                         </div>
+                        </div>
+                       
                      </div>
                    
                         <!-- FIRE RESPONSE -->
-                    <div class="w-full hidden"  id="frmFireResponse">
-                        <div class="w-full flex justify-between pt-8">
-                            <div  class="w-full">
-                                <table id="myTable3" class="text-start rounded-lg shadow-lg shadow-black w-full">
-                                    <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:mt-10 md:h-16">
-                                        <tr>
-                                            <th class="text-start pl-2">Volunteers</th>
-                                            <th class="text-center">Fire Response</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-sm md:text-xl text-start font-Inter">
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4"  >
-                                                <p class="text-2xl font-bold">1.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>James Aguirre</p></td>
-                                            <td class="text-center">30</td>
-                                        </tr>
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4">
-                                                <p class="text-2xl font-bold">2.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>Marniel Corsiga</p</td>
-                                            <td class="text-center">24</td>
-                                        </tr>
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4">
-                                                <p class="text-2xl font-bold">3.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>Anne Pangan</p></td>
-                                            <td class="text-center">22</td>
-                                        </tr>
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer"  onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4">
-                                                <p class="text-2xl font-bold">4.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>Mj Mariano</p></td>
-                                            <td class="text-center">20</td>
-                                        </tr>
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4" >
-                                                <p class="text-2xl font-bold">5.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>Diosdado Amog</p> </td>
-                                            <td class="text-center">19</td>
-                                        </tr>
-                                        <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                            <td class="flex justify-normal space-x-3 pt-4" >
-                                                <p class="text-2xl font-bold">6.</p>
-                                                <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                                <p>Lyster Liwanag</p></td>
-                                            <td class="text-center">15</td>
-                                        </tr>
-                                    
-                                        </tbody>
-                                     </table>
-                            </div>        
-                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black hidden" id="fireresponsedetail">
-                                <div class="w-full flex justify-end pr-5 mt-2"><a href="#" onclick="exitfrdetail()" class="text-2xl font-semibold">X</a></div>
+                    <div class="w-full h-full"  style="display: none;" id="frmFireResponse">
+                        <div class="w-full h-full flex justify-normal">
+                            <div class="px-5 w-full flex justify-center " id="Container2">
+                            </div>
+                            
+                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
+                                <div class="w-full flex justify-end pr-5 mt-2">
+                                    <a href="#" onclick="exitdtdetail2()" class="text-2xl font-semibold">X</a>
+                                </div>
                                 <div class="flex justify-center space-x-10 mt-3">
-                                    <img src="img/user.png" class="w-32 h-32" alt="">
+                                    <img src="img/user.png" class="w-32 h-32" id="detailImage" alt="">
                                     <div class="font-inter">
-                                        <p class="text-3xl font-semibold mt-5">Marniel Igops</p>
-                                        <p class="text-center text-2xl text-[#930D0D]">Echo 817</p>
-                                    </div> 
+                                        <p id="detailName2" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                        <p id="detailID2" class="text-center text-2xl text-[#930D0D]">ID</p>
+                                    </div>
                                 </div>
                                 <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
                                     <div class="w-full h-full font-inter pt-3">
-                                        <p class="text-2xl text-center font-bold">22297</p>
-                                        <p class="text-lg text-center">Duty Hours</p></div>
+                                        <p id="dutyHours2" class="text-2xl text-center font-bold">Duty Hours</p>
+                                        <p class="text-lg text-center">Duty Hours</p>
+                                    </div>
                                     <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                        <p class="text-2xl text-center font-bold">12</p>
+                                        <p id="fireResponse2" class="text-2xl text-center font-bold">Fire Response</p>
                                         <p class="text-lg text-center">Fire Response</p>
                                     </div>
                                     <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                        <p class="text-2xl text-center font-bold">1</p>
+                                        <p id="inventory2" class="text-2xl text-center font-bold">Inventory</p>
                                         <p class="text-lg text-center">Inventory</p>
                                     </div>
                                     <div class="w-full h-full">
-                                        <p class="text-2xl text-center font-bold pt-3">4</p>
+                                        <p id="activity2" class="text-2xl text-center font-bold pt-3">Activity</p>
                                         <p class="text-lg text-center">Activity</p>
                                     </div>
                                 </div>
-    
                             </div>
-                         </div>
-                    </div>
+                        </div>
+
+                    </div> 
                     
 
             </div>

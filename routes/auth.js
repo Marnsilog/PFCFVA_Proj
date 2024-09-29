@@ -6,8 +6,6 @@ const router = express.Router();
 
 
 module.exports = (db) => {
-
-
     // Register route
     router.post('/register', (req, res) => {
         const {
@@ -144,7 +142,6 @@ module.exports = (db) => {
             res.status(500).json({ message: 'Error processing login' });
         }
     });
-
     router.get('/profile', (req, res) => {
         const username = req.session.user?.username;
     
@@ -201,7 +198,6 @@ module.exports = (db) => {
             res.json({ success: true, data: results[0] });
         });
     });
-
     // Route to get the logged-in username
     router.get('/getUsername', (req, res) => {
         if (req.session && req.session.user && req.session.user.username) {
@@ -212,7 +208,63 @@ module.exports = (db) => {
         }
     });
     
+    // Route to fetch all volunteers
+    router.get('/volunteers', (req, res) => {
+        const query = 'SELECT accountID as id, firstName as name, dutyHours as points FROM tbl_accounts';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
     
+    // Route to fetch a specific volunteer by ID
+    router.get('/volunteer/:id', (req, res) => {
+        const volunteerId = req.params.id;
+        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        db.query(query, [volunteerId], (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer details:', err);
+                return res.status(500).json({ error: 'Error fetching details' });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Volunteer not found' });
+            }
+            res.json(results[0]);
+        });
+    });
+
+    // Route to fetch all volunteers
+    router.get('/fireresponse', (req, res) => {
+        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+    
+    // Route to fetch a specific volunteer by ID
+    router.get('/fireresponse/:id', (req, res) => {
+        const volunteerId = req.params.id;
+        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        db.query(query, [volunteerId], (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer details:', err);
+                return res.status(500).json({ error: 'Error fetching details' });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Volunteer not found' });
+            }
+            res.json(results[0]);
+        });
+    });
+    
+
     
     return router;
 };

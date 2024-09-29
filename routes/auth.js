@@ -165,6 +165,39 @@ module.exports = (db) => {
             res.status(500).json({ message: 'Error processing login' });
         }
     });
+
+    router.get('/dashboard-data', (req, res) => {
+    const username = req.session.user?.username;
+
+    // Check if the user is authorized
+    if (!username) {
+        console.log('Unauthorized access attempt'); // Log unauthorized access
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    // SQL query to fetch the dashboard data
+    const query = `SELECT accountType, CONCAT(firstname, ' ', lastname) AS fullName, 
+                          dutyHours, fireResponsePoints, inventoryPoints, activityPoints
+                   FROM tbl_accounts WHERE username = ?`;
+
+    // Execute the query
+    db.query(query, [username], (error, results) => {
+        if (error) {
+            console.error('Error fetching profile data:', error);
+            return res.status(500).json({ success: false, message: 'Server error' });
+        }
+
+        // Check if the results are empty
+        if (results.length === 0) {
+            console.log('No profile found for username:', username); // Log when no profile is found
+            return res.status(404).json({ success: false, message: 'Profile not found' });
+        }
+
+        res.json({ success: true, data: results[0] });
+    });
+});
+
+    
     router.get('/profile', (req, res) => {
         const username = req.session.user?.username;
     

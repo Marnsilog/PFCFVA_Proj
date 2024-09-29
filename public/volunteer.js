@@ -146,16 +146,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
     fetch('/auth/volunteers')
         .then(response => response.json())
         .then(data => {
             console.log(data); 
             const container = document.getElementById('Container');
-
-            // Build the table dynamically with the header and rows combined
+            if (!container) {
+                return;
+            }
             let tableHTML = `
                 <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg  shadow-black shadow-lg">
                     <table id="myTable2" class="text-start   w-full px-4">
@@ -188,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             container.innerHTML = tableHTML;
         })
-        .catch(error => console.error('Error fetching data:', error));
 });
 
 function showDutyDetails(volunteerId) {
@@ -204,7 +202,6 @@ function showDutyDetails(volunteerId) {
             document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
             document.querySelector('#activity').textContent = volunteerDetails.activityPoints;
         })
-        .catch(error => console.error('Error fetching details:', error));
 }
 
 function exitdtdetail() {
@@ -217,6 +214,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log(data); 
             const container = document.getElementById('Container2');
+            if (!container) {
+                return;
+            }
 
             // Build the table dynamically with the header and rows combined
             let tableHTML = `
@@ -250,8 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
 
             container.innerHTML = tableHTML;
-        })
-        .catch(error => console.error('Error fetching data:', error));
+        });
 });
 
 function showFireRe(volunteerId) {
@@ -267,59 +266,64 @@ function showFireRe(volunteerId) {
             document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
             document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
         })
-        .catch(error => console.error('Error fetching details:', error));
 }
 
 function exitdtdetail2() {
     document.getElementById('frdetail').style.display = 'none';
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const editProfileForm = document.getElementById('editProfileForm');
+    
+    if (editProfileForm) {
+        editProfileForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
 
-document.getElementById('editProfileForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+            const formData = {
+                username: document.getElementById('HiddenUsername').value,
+                lastName: document.getElementById('EditLastName').value,
+                firstName: document.getElementById('EditFirstName').value,
+                middleName: document.getElementById('EditMiddleName').value,
+                emailAddress: document.getElementById('EditEmailAddress').value,
+                contactNumber: document.getElementById('EditContactNumber').value,
+                oldPassword: document.getElementById('EditOldPassword').value,
+                newPassword: document.getElementById('EditNewPassword').value,
+                civilStatus: document.getElementById('EditCivilStatus').value,
+                nationality: document.getElementById('EditNationality').value,
+                bloodType: document.getElementById('EditBloodType').value,
+                birthday: document.getElementById('EditBirthday').value,
+                gender: document.getElementById('EditGender').value,
+                currentAddress: document.getElementById('EditCurrentAddress').value,
+                emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
+                emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
+                highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
+                nameOfCompany: document.getElementById('EditNameOfCompany').value,
+                yearsInService: document.getElementById('EditYearsInService').value,
+                skillsTraining: document.getElementById('EditSkillsTraining').value,
+                otherAffiliation: document.getElementById('EditOtherAffiliation').value,
+            };
 
-    const formData = {
-        username: document.getElementById('HiddenUsername').value,
-        lastName: document.getElementById('EditLastName').value,
-        firstName: document.getElementById('EditFirstName').value,
-        middleName: document.getElementById('EditMiddleName').value,
-        emailAddress: document.getElementById('EditEmailAddress').value,
-        contactNumber: document.getElementById('EditContactNumber').value,
-        oldPassword: document.getElementById('EditOldPassword').value,
-        newPassword: document.getElementById('EditNewPassword').value,
-        civilStatus: document.getElementById('EditCivilStatus').value,
-        nationality: document.getElementById('EditNationality').value,
-        bloodType: document.getElementById('EditBloodType').value,
-        birthday: document.getElementById('EditBirthday').value,
-        gender: document.getElementById('EditGender').value,
-        currentAddress: document.getElementById('EditCurrentAddress').value,
-        emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
-        emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
-        highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
-        nameOfCompany: document.getElementById('EditNameOfCompany').value,
-        yearsInService: document.getElementById('EditYearsInService').value,
-        skillsTraining: document.getElementById('EditSkillsTraining').value,
-        otherAffiliation: document.getElementById('EditOtherAffiliation').value,
-    };
-
-    fetch('/auth/edit-profile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text); });
-        }
-        return response.text(); // Assuming the server sends back a message
-    })
-    .then(message => {
-        alert(message); // Display the success message
-        window.location.href = 'volunteer_main_profile'; // Redirect to the desired page
-    })
-    .catch(error => {
-        alert('Error: ' + error.message); // Display error message
-    });
+            fetch('/auth/edit-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.text();
+            })
+            .then(message => {
+                alert(message); 
+                window.location.href = 'volunteer_main_profile';
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+            });
+        });
+    }
 });
+

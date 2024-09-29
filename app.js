@@ -12,6 +12,8 @@ const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
 require('dotenv').config({ path: './.env' });
+const socketIo = require('socket.io');
+const http = require('http');  // Added for HTTP server creation
 // const session = require('express-session');
 // const MySQLStore = require('express-mysql-session')(session);
 
@@ -20,9 +22,10 @@ const randomBytesAsync = promisify(crypto.randomBytes);
 
 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost', 
+    host: process.env.DB_HOST,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWORD, // Corrected this line
     database: process.env.DB_NAME
 });
 
@@ -80,14 +83,54 @@ app.use(bodyParser.json());
 
 
 //session
+// app.use(session({
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { maxAge: 1000 * 60 * 60 * 24 } 
+// }));
 app.use(session({
-    secret: 'secret',
+    secret: 'ampotangina',
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } 
-}));
+    cookie: { secure: false },
+    saveUninitialized: true
+}));;
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+// Create HTTP server and pass it to socket.io
+const server = http.createServer(app);  // Create the HTTP server
+
+const io = socketIo(server);  // Attach Socket.IO to the server
+
+// // Socket.IO connection handling
+// io.on('connection', (socket) => {
+//     console.log('A user connected: ', socket.id);
+
+//     socket.on('chatMessage', (msg) => {
+//         io.emit('chatMessage', msg);  // Broadcast message to all clients
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('A user disconnected: ', socket.id);
+//     });
+// });
+
+io.on('connection', (socket) => {
+    console.log('A user connected: ', socket.id);
+
+    // Handle incoming messages
+    socket.on('chatMessage', (msgData) => {
+        // Broadcast the message object to all clients
+        io.emit('chatMessage', msgData);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected: ', socket.id);
+    });
+});
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -95,8 +138,11 @@ app.use(session({
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //routes etc
-const authRoutes = require('./routes/auth')(db); //zzz
-app.use('/auth', authRoutes); //zzz
+const authRoutes = require('./routes/auth')(db); // Pass the `db` connection
+app.use('/auth', authRoutes);
+
+const attendanceRoutes = require('./routes/routes_all')(db); // Pass the `db` connection
+app.use('/routes_attendance', attendanceRoutes);
 
 
 
@@ -406,8 +452,6 @@ app.get('/accountsAll', (req, res) => {
 });
 
 
-
-
 //admin attendance shit
 // endpoint to retrieve attendance details
 app.get('/attendanceDetails', (req, res) => {
@@ -627,10 +671,19 @@ app.put('/updateEquipment', (req, res) => {
 });
 
 
+const pages = require('./routes/pages');
+app.use('/', pages);
 
 
-//port
+
+// //port
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server started on port ${PORT}`);
+// });
+
+
 const PORT = 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

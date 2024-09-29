@@ -20,16 +20,16 @@
               
                     <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                         <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
-                            <li id="dashb" class="md:mt-12 "><a href="supervisor_dashboard.html">Dashboard</a></li>
-                            <li id="fireS" class="md:mt-12 "><a href="supervisor_fire_response.html">Fire Response</a></li>
-                            <li id="leadB" class="md:mt-12 underline underline-offset-8"><a href="supervisor_leaderboards.html">Leaderboards</a></li>
-                            <li id="inV" class="md:mt-12 "><a href="supervisor_inventory.html">Inventory</a></li>
+                            <li id="dashb" class="md:mt-12 underline underline-offset-8"><a href="/supervisor_dashboard">Dashboard</a></li>
+                            <li id="fireS" class="md:mt-12 "><a href="/supervisor_fire_response">Fire Response</a></li>
+                            <li id="leadB" class="md:mt-12 "><a href="/supervisor_leaderboards">Leaderboards</a></li>
+                            <li id="inV" class="md:mt-12 "><a href="/supervisor_inventory">Inventory</a></li>
                             <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                             <li class="md:mt-6">
                                 <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
                             </li>
                         </ul>
-                </nav>
+                     </nav>
                 <div class="flex justify-start space-x-3 mr-2">
                     <div>
                         <!-- FOR NOTIFICATION -->
@@ -92,215 +92,123 @@
         <!-- SETTINGS -->
         <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
             <div class="bg-white rounded-lg border-[1px] border-black w-64">
-                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='supervisor_main_profile.html'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='/supervisor_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
                 <div class="bg-black h-[2px]"></div>
-                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" id="logoutLink" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
         </div>
 
         <!-- FORM LEADERBOARDS -->
-    <div class="md:w-full md:flex md:justify-center"  id="frmLeaderboards">
-        <div class="md:max-w-[90rem] md:w-full md:mt-10 md:ml-40">
-            <p class="text-center md:text-start font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
-            <div class="md:ml-5">
-                <div class="mt-5 md:flex md:justify-between md:mt-0">
-                
-                    <div class="w-full flex justify-center md:block">
-                        <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
-                            <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
-                                <p class="text-center font-Inter font-[700] md:pt-2">Duty Hours</p></div>
-                                
-                            <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 w-[12rem] h-[27px] my-[1px] || md:mr-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
-                                <p class="text-center font-Inter font-[700] md:pt-2">Fire Response</p></div>
-
+        <div class="md:w-full md:flex md:justify-center" id="frmLeaderboards">
+            <div class="md:max-w-[90rem] md:w-full md:mt-10 md:ml-40">
+                <p class="text-center md:text-start font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
+                <div class="md:ml-5">
+                    <div class="mt-5 md:flex md:justify-between md:mt-0">
+                    
+                        <div class="w-full flex justify-center md:block">
+                            <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
+                                <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
+                                    <p class="text-center font-Inter font-[700] md:pt-2">Duty Hours</p></div>
+                                    
+                                <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 w-[12rem] h-[27px] my-[1px] || md:mr-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
+                                    <p class="text-center font-Inter font-[700] md:pt-2">Fire Response</p></div>
+   
+                            </div>
+        
                         </div>
-    
-                    </div>
-              
-                    <div class=" md:pl-0 md:w-[32rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                        <input class="w-full h-full px-2 focus:outline-none" type="text" placeholder="Search">
-                        <div style="cursor: pointer;" onclick="summaryfilter()">
-                            <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+                  
+                        <div class=" md:pl-0 md:w-[32rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                            <input class="w-full h-full px-2 focus:outline-none" type="text" placeholder="Search">
+                            <div style="cursor: pointer;" onclick="summaryfilter()">
+                                <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- DUTY HOURS -->
-                 <div class="w-full " id="frmDutyhours"> 
-                    <div  class="flex justify-center pt-10">        
-                        <div class="w-full">
-                            <table id="myTable2" class="text-start rounded-lg shadow-lg shadow-black w-full">
-                            <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
-                                <tr>
-                                    <th class="text-start pl-5">Volunteers</th>
-                                    <th class="text-center">Points</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm md:text-xl text-start font-Inter">
-                                <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300  border-gray-500 md:h-16 cursor-pointer"  onclick="dutyhoursdetail()">
-                                    <td class="pl-5 flex justify-normal space-x-3 pt-4" >
-                                        <p class="text-2xl font-bold">1.</p>
-                                        <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                        <p>Diosdado Amog</p></td>
-                                    <td class="text-center">2297</td>
-                                </tr>
-                                <tr class="h-7 border-t-2 hover:bg-gray-300  border-b-[1px] border-gray-500 md:h-16 cursor-pointer" onclick="dutyhoursdetail()">
-                                    <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                        <p class="text-2xl font-bold">2.</p>
-                                        <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                        <p> Mj Marianoa</p></td>
-                                    <td class="text-center">2290</td>
-                                </tr>
-                                <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300  border-gray-500 md:h-16 cursor-pointer" onclick="dutyhoursdetail()">
-                                    <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                        <p class="text-2xl font-bold">3.</p>
-                                        <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                        <p> Anne Pangan</p></td>
-                                    <td class="text-center">1005</td>
-                                </tr>
-                                <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="dutyhoursdetail()">
-                                    <td class="pl-5 flex justify-normal space-x-3 pt-4"  >
-                                        <p class="text-2xl font-bold">4.</p>
-                                        <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                        <p> Marniel Corsiga</p></td>
-                                    <td class="text-center">1001</td>
-                                </tr>
-                                <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="dutyhoursdetail()">
-                                    <td class="pl-5  flex justify-normal space-x-3 pt-4"  >
-                                        <p class="text-2xl font-bold">5.</p>
-                                        <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                        <p>James Aguirre</p> </td>
-                                    <td class="text-center">905</td>
-                                </tr>
+                    <!-- DUTY HOURS -->
+                     <div class="w-full h-full " id="frmDutyhours"> 
+                        <div class="w-full h-full flex justify-normal">
+                            <div class="px-5 w-full flex justify-center " id="Container">
+                            </div>
                             
-                                </tbody>
-                         </table>
-                        </div>
-
-                        <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
-                            <div class="w-full flex justify-end pr-5 mt-2"><a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a></div>
-                            <div class="flex justify-center space-x-10 mt-3">
-                                <img src="img/user.png" class="w-32 h-32" alt="">
-                                <div class="font-inter">
-                                    <p class="text-3xl font-semibold mt-5">Marniel Igops</p>
-                                    <p class="text-center text-2xl text-[#930D0D]">Echo 817</p>
-                                </div> 
+                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
+                                <div class="w-full flex justify-end pr-5 mt-2">
+                                    <a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a>
+                                </div>
+                                <div class="flex justify-center space-x-10 mt-3">
+                                    <img src="img/user.png" class="w-32 h-32" id="detailImage" alt="">
+                                    <div class="font-inter">
+                                        <p id="detailName" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                        <p id="detailID" class="text-center text-2xl text-[#930D0D]">ID</p>
+                                    </div>
+                                </div>
+                                <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
+                                    <div class="w-full h-full font-inter pt-3">
+                                        <p id="dutyHours" class="text-2xl text-center font-bold">Duty Hours</p>
+                                        <p class="text-lg text-center">Duty Hours</p>
+                                    </div>
+                                    <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                                        <p id="fireResponse" class="text-2xl text-center font-bold">Fire Response</p>
+                                        <p class="text-lg text-center">Fire Response</p>
+                                    </div>
+                                    <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                                        <p id="inventory" class="text-2xl text-center font-bold">Inventory</p>
+                                        <p class="text-lg text-center">Inventory</p>
+                                    </div>
+                                    <div class="w-full h-full">
+                                        <p id="activity" class="text-2xl text-center font-bold pt-3">Activity</p>
+                                        <p class="text-lg text-center">Activity</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                                <div class="w-full h-full font-inter pt-3">
-                                    <p class="text-2xl text-center font-bold">22297</p>
-                                    <p class="text-lg text-center">Duty Hours</p></div>
-                                <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                    <p class="text-2xl text-center font-bold">12</p>
-                                    <p class="text-lg text-center">Fire Response</p>
-                                </div>
-                                <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                    <p class="text-2xl text-center font-bold">1</p>
-                                    <p class="text-lg text-center">Inventory</p>
-                                </div>
-                                <div class="w-full h-full">
-                                    <p class="text-2xl text-center font-bold pt-3">4</p>
-                                    <p class="text-lg text-center">Activity</p>
-                                </div>
-                            </div>
-
                         </div>
+                       
                      </div>
-                 </div>
-               
-                    <!-- FIRE RESPONSE -->
-                <div class="w-full hidden"  id="frmFireResponse">
-                    <div class="w-full flex justify-between pt-8">
-                        <div  class="w-full">
-                            <table id="myTable3" class="text-start rounded-lg shadow-lg shadow-black w-full">
-                                <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:mt-10 md:h-16">
-                                    <tr>
-                                        <th class="text-start pl-2">Volunteers</th>
-                                        <th class="text-center">Fire Response</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm md:text-xl text-start font-Inter">
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4"  >
-                                            <p class="text-2xl font-bold">1.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>James Aguirre</p></td>
-                                        <td class="text-center">30</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4">
-                                            <p class="text-2xl font-bold">2.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Marniel Corsiga</p</td>
-                                        <td class="text-center">24</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4">
-                                            <p class="text-2xl font-bold">3.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Anne Pangan</p></td>
-                                        <td class="text-center">22</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer"  onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4">
-                                            <p class="text-2xl font-bold">4.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Mj Mariano</p></td>
-                                        <td class="text-center">20</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4" >
-                                            <p class="text-2xl font-bold">5.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Diosdado Amog</p> </td>
-                                        <td class="text-center">19</td>
-                                    </tr>
-                                    <tr class="h-7 border-t-2 border-b-[1px] border-gray-500 md:h-16 hover:bg-gray-300 cursor-pointer" onclick="fireresponsedetai()">
-                                        <td class="flex justify-normal space-x-3 pt-4" >
-                                            <p class="text-2xl font-bold">6.</p>
-                                            <img src="img/user.png" class="w-8 h-8 object-fill" alt="">
-                                            <p>Lyster Liwanag</p></td>
-                                        <td class="text-center">15</td>
-                                    </tr>
-                                
-                                    </tbody>
-                                 </table>
-                        </div>        
-                        <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black hidden" id="fireresponsedetail">
-                            <div class="w-full flex justify-end pr-5 mt-2"><a href="#" onclick="exitfrdetail()" class="text-2xl font-semibold">X</a></div>
-                            <div class="flex justify-center space-x-10 mt-3">
-                                <img src="img/user.png" class="w-32 h-32" alt="">
-                                <div class="font-inter">
-                                    <p class="text-3xl font-semibold mt-5">Marniel Igops</p>
-                                    <p class="text-center text-2xl text-[#930D0D]">Echo 817</p>
-                                </div> 
+                   
+                        <!-- FIRE RESPONSE -->
+                    <div class="w-full h-full"  style="display: none;" id="frmFireResponse">
+                        <div class="w-full h-full flex justify-normal">
+                            <div class="px-5 w-full flex justify-center " id="Container2">
                             </div>
-                            <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                                <div class="w-full h-full font-inter pt-3">
-                                    <p class="text-2xl text-center font-bold">22297</p>
-                                    <p class="text-lg text-center">Duty Hours</p></div>
-                                <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                    <p class="text-2xl text-center font-bold">12</p>
-                                    <p class="text-lg text-center">Fire Response</p>
+                            
+                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
+                                <div class="w-full flex justify-end pr-5 mt-2">
+                                    <a href="#" onclick="exitdtdetail2()" class="text-2xl font-semibold">X</a>
                                 </div>
-                                <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                    <p class="text-2xl text-center font-bold">1</p>
-                                    <p class="text-lg text-center">Inventory</p>
+                                <div class="flex justify-center space-x-10 mt-3">
+                                    <img src="img/user.png" class="w-32 h-32" id="detailImage" alt="">
+                                    <div class="font-inter">
+                                        <p id="detailName2" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                        <p id="detailID2" class="text-center text-2xl text-[#930D0D]">ID</p>
+                                    </div>
                                 </div>
-                                <div class="w-full h-full">
-                                    <p class="text-2xl text-center font-bold pt-3">4</p>
-                                    <p class="text-lg text-center">Activity</p>
+                                <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
+                                    <div class="w-full h-full font-inter pt-3">
+                                        <p id="dutyHours2" class="text-2xl text-center font-bold">Duty Hours</p>
+                                        <p class="text-lg text-center">Duty Hours</p>
+                                    </div>
+                                    <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                                        <p id="fireResponse2" class="text-2xl text-center font-bold">Fire Response</p>
+                                        <p class="text-lg text-center">Fire Response</p>
+                                    </div>
+                                    <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                                        <p id="inventory2" class="text-2xl text-center font-bold">Inventory</p>
+                                        <p class="text-lg text-center">Inventory</p>
+                                    </div>
+                                    <div class="w-full h-full">
+                                        <p id="activity2" class="text-2xl text-center font-bold pt-3">Activity</p>
+                                        <p class="text-lg text-center">Activity</p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                     </div>
-                </div>
-                
 
+                    </div> 
+                    
+
+            </div>
         </div>
-    </div>
-</div>
+        </div>
 
 </body>
 </div>

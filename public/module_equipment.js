@@ -8,9 +8,40 @@ function toggleEquipmentForm() {
     }
 }
 
+function toggleVehicleForm() {
+    var form = document.getElementById('addVehicleForm');
+    if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden'); 
+    } else {
+        form.classList.add('hidden'); 
+    }
+}
+
+function toggleTrashForm() {
+    const equipmentContainer = document.getElementById('equipmentContainer');
+    const trashContainer = document.getElementById('trashContainer');
+    const btnTrash = document.getElementById('btnTrash');
+
+    // Toggle visibility between equipmentContainer and trashContainer
+    if (trashContainer.classList.contains('hidden')) {
+        equipmentContainer.classList.add('hidden');
+        trashContainer.classList.remove('hidden');
+        btnTrash.innerText = 'Back';  // Change button text to "Back"
+    } else {
+        trashContainer.classList.add('hidden');
+        equipmentContainer.classList.remove('hidden');
+        btnTrash.innerText = 'Trash';  // Change button text back to "Trash"
+    }
+}
+
 
 function closeForm() {
     var form = document.getElementById('addEquipmentForm');
+    form.classList.add('hidden'); 
+}
+
+function closeVehicleForm() {
+    var form = document.getElementById('addVehicleForm');
     form.classList.add('hidden'); 
 }
 

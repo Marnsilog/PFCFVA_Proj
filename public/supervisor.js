@@ -25,39 +25,6 @@
     FireR.classList.add('text-black');
     }
 
-    function dutyhoursdetail(){
-        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
-        if (dutyhoursdetail.style.display === 'none' || dutyhoursdetail.style.display === '') {
-           
-            dutyhoursdetail.style.display = 'block';
-        } else {
-          
-            dutyhoursdetail.style.display = 'none';
-        }
-    }
-
-    function exitdtdetail(){
-        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
-            dutyhoursdetail.style.display = 'none';
-       
-    }
-
-    function fireresponsedetai(){
-        var fireresponsedetail = document.getElementById('fireresponsedetail');
-        if (fireresponsedetail.style.display === 'none' || fireresponsedetail.style.display === '') {
-           
-            fireresponsedetail.style.display = 'block';
-        } else {
-          
-            fireresponsedetail.style.display = 'none';
-        }
-    }
-
-    function exitfrdetail(){
-        var fireresponsedetail = document.getElementById('fireresponsedetail');
-        fireresponsedetail.style.display = 'none';
-       
-    }
 
 
 // FIRE RESPONSE ICS
@@ -114,112 +81,7 @@
 //     firelog.style.display = 'block';
 // }
 
-//PROFILE CONFIG
-  function displaySection(sectionName) {
-    const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
 
-    sections.forEach(section => {
-
-        const element = document.getElementById(section);
-        if (section === sectionName) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-
-    });
-}
-function Records() {
-    displaySection('frmRecord');
-}
-function Profile() {
-    displaySection('frmMyprofile');
-}
-function Achievements() {
-    displaySection('frmAchievement');
-}
-function Rankings() {
-    displaySection('frmRankings');
-}
-
-function addLine(LineId) {
-    const formIds = ['dashb', 'fireS', 'leadB', 'inV','prof'];
-    
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === LineId) {
-            element.classList.add('underline', 'underline-offset-8');
-        }
-        else {
-            element.classList.remove('underline', 'underline-offset-8');
-        }
-    });
-}
-//   function showElement(elementId) {
-//     const formIds = ['frmDashboard', 'frmFireResponse', 'frmLeaderboards', 'frmInventory','frmHtvolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile','AddResponse','fireresponseform'];
-
-//     formIds.forEach(id => {
-//         const element = document.getElementById(id);
-//         if (id === elementId) {
-//             element.style.display = 'block';
-//         } else {
-//             element.style.display = 'none';
-//         }
-//     });
-// }
-
-// //DASHBOARD CONFIG
-// function showDashboard() {
-//     showElement('frmDashboard');
-//     addLine('dashb');
-// }
-// function showFireRes() {
-//     showElement('frmFireResponse');
-//     addLine('fireS');
-//     // const dashboard = document.getElementById('frmDashboard');
-//     // dashboard.style.display = 'block';
-// }
-// function showInventory() {
-//     showElement('frmInventory');
-//     addLine('inV');
-// }
-// function showLeaderboards() {
-//   showElement('frmLeaderboards');
-//   addLine('leadB');
-// }
-function toggleSetting() {
-
-    var profileForm = document.getElementById('Setting');
-    
-    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-     
-        profileForm.style.display = 'block';
-    } else {
-      
-        profileForm.style.display = 'none';
-    }
-    addLine('prof');
-}
-
-//SETTING CONFIG
-function myProfile() {
-    showElement('frmMainProfile');
-    
-}
-function showAboutUs() {
-    showElement('frmaboutus');
-}
-function showHwVolunteer() {
-    showElement('frmHtvolunteer');
-}
-function showEdit(){
-    showElement('editProfile');
-}
-
-
-// window.onload = function() {
-//   showDashboard();
-// };
 
 document.addEventListener('DOMContentLoaded', function() {
     animateProgressBar(70);
@@ -302,3 +164,130 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/auth/volunteers')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); 
+            const container = document.getElementById('Container');
+
+            // Build the table dynamically with the header and rows combined
+            let tableHTML = `
+                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg  shadow-black shadow-lg">
+                    <table id="myTable2" class="text-start   w-full px-4">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                            <tr>
+                                <th class="text-start pl-5">Volunteers</th>
+                                <th class="text-center">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+            `;
+
+            // Loop through the data and create table rows dynamically
+            data.forEach((volunteer, index) => {
+                tableHTML += `
+                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showDutyDetails(${volunteer.id})">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-4">
+                            <p class="text-2xl font-bold">${index + 1}.</p>
+                            <p>${volunteer.name}</p>
+                        </td>
+                        <td class="text-center">${volunteer.points}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = tableHTML;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+function showDutyDetails(volunteerId) {
+    fetch(`/auth/volunteer/${volunteerId}`)
+        .then(response => response.json())
+        .then(volunteerDetails => {
+            document.getElementById('dutyhoursdetail').style.display = 'block';
+
+            document.querySelector('#detailName').textContent = volunteerDetails.name;
+            document.querySelector('#detailID').textContent = volunteerDetails.id;
+            document.querySelector('#dutyHours').textContent = volunteerDetails.dutyHours;
+            document.querySelector('#fireResponse').textContent = volunteerDetails.fireResponsePoints;
+            document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
+            document.querySelector('#activity').textContent = volunteerDetails.activityPoints;
+        })
+        .catch(error => console.error('Error fetching details:', error));
+}
+
+function exitdtdetail() {
+    document.getElementById('dutyhoursdetail').style.display = 'none';
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/auth/fireresponse')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); 
+            const container = document.getElementById('Container2');
+
+            // Build the table dynamically with the header and rows combined
+            let tableHTML = `
+                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                    <table id="myTable3" class="text-start   w-full px-4">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                            <tr>
+                                <th class="text-start pl-5">Volunteers</th>
+                                <th class="text-center">Fire Response</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+            `;
+
+            // Loop through the data and create table rows dynamically
+            data.forEach((volunteer, index) => {
+                tableHTML += `
+                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showFireRe(${volunteer.id})">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-4">
+                            <p class="text-2xl font-bold">${index + 1}.</p>
+                            <p>${volunteer.name}</p>
+                        </td>
+                        <td class="text-center">${volunteer.points}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            container.innerHTML = tableHTML;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+function showFireRe(volunteerId) {
+    fetch(`/auth/fireresponse/${volunteerId}`)
+        .then(response => response.json())
+        .then(volunteerDetails => {
+            document.getElementById('frdetail').style.display = 'block';
+
+            document.querySelector('#detailName2').textContent = volunteerDetails.name;
+            document.querySelector('#detailID2').textContent = volunteerDetails.id;
+            document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
+            document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
+            document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
+            document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
+        })
+        .catch(error => console.error('Error fetching details:', error));
+}
+
+function exitdtdetail2() {
+    document.getElementById('frdetail').style.display = 'none';
+}

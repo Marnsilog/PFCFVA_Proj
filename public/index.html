@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
+    <link href="./aron.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCVA || Dashboard</title>
 </head>
@@ -57,10 +58,10 @@
                         <form id="loginForm">
                             <div class="space-y-2 font-Istok text-xs">
                                 <div>
-                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="text" placeholder="username" id="username">
+                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="text" placeholder="username" id="username" name="username">
                                 </div>
                                 <div class="pt-2 md:pt-0">
-                                    <input class="px-14 py-3 border rounded-xl focus:outline-none focus:border-black md:w-80 md:h-10 md:px-4 md:py-5 md:rounded-md" type="password" placeholder="Password" id="password">
+                                    <input class="px-14 py-3 border rounded-xl focus:outline-none focus:border-black md:w-80 md:h-10 md:px-4 md:py-5 md:rounded-md" type="password" placeholder="Password" id="password" name="password">
                                 </div>
                                 <div class="pl-[110px] || md:text-right md:px-16">
                                     <a class="text-xs text-gray-400" href="#" id="forgotPasswordLink">Forgot Password?</a>
@@ -69,7 +70,36 @@
                             <div class="mt-5 md:mt-0">
                                 <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Log In</button>
                             </div>
+                            
+                            <!-- Add the clickable message here -->
+                            <div class="mt-2 text-center">
+                                <a href="#" id="firstTimeLoginLink" class="text-gray-400 underline text-xs">First time logging in? Click here</a>
+                            </div>
+
+                            <!-- Hidden instructions that will appear when clicked -->
+                            <div id="loginInstructions" class="hidden mt-4 text-gray-600 text-sm text-left bg-gray-100 rounded-lg px-14 py-4">
+                                <h2 class="text-lg font-bold mb-2">Login Instructions</h2>
+                                
+                                <!-- First paragraph bold -->
+                                <p class="font-bold">Default Credentials Format:</p>
+                                
+                                <!-- Normal text -->
+                                <p>Use your assigned RFID number as <span class="text-red-600 font-bold">username</span>, and your lastname + birthday(yyyy/mm/dd) as <span class="text-red-600 font-bold">password</span>.</p>
+                                
+                                <!-- Example section -->
+                                <p class="font-bold">Example:</p>
+                                
+                                <!-- Red text for "username" and "password" -->
+                                <p><span class="text-red-600 font-bold">username</span>: 0008900422</p>
+                                <p><span class="text-red-600 font-bold">password</span>: delacruz20010527</p>
+                                
+                                <!-- Normal text -->
+                                <p>Make sure to change your password after your first login to ensure security.</p>
+                            </div>
+
+                            <div id="error-message" style="display:none; color: red;"></div>
                         </form>
+                        
                         <form id="forgotPasswordForm" style="display: none;">
                             <div class="space-y-2 font-Istok text-xs">
                                 <div>
@@ -89,6 +119,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="script.js"></script>
 <script src="login.js"></script>

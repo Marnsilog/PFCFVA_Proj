@@ -20,10 +20,10 @@
   
         <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
             <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
-                <li id="dashb" class="md:mt-12 "><a href="#">Dashboard</a></li>
-                <li id="inV" class="md:mt-12 "><a href="#">Inventory</a></li>
-                <li id="leadB" class="md:mt-12 "><a href="#">Leaderboards</a></li>
-                <li id="conN" class="md:mt-12 "><a href="#">Contact Us</a></li>
+                <li id="dashb" class="md:mt-12 "><a href="/volunteer_dashboard">Dashboard</a></li>
+                <li id="inV" class="md:mt-12 "><a href="/volunteer_inventory">Inventory</a></li>
+                <li id="leadB" class="md:mt-12"><a href="/volunteer_leaderboards">Leaderboards</a></li>
+                <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                 <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                 <li class="md:mt-6">
                     <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
@@ -80,8 +80,7 @@
 
             <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
 
-            <div class="ml-3 flex justify-normal" id="logoutLink" style="cursor: pointer;"><svg class="mt-[5px] w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
-            <p class="ml-2 block">Log Out</p>
+            <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
         </div>
             
         </div>
@@ -93,10 +92,10 @@
 <!-- SETTINGS -->
 <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
     <div class="bg-white rounded-lg border-[1px] border-black w-64">
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile.html'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
         <div class="bg-black h-[2px]"></div>
       
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" id="logoutLink" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
     </div>
 </div>
 
@@ -113,8 +112,8 @@
                         
                         <div class="w-full text-center">
                          
-                            <p class="text-black text-4xl font-bold" id="FullName">Hev C. Abi</p>
-                            <p class="text-[#930D0D] text-xl" id="CallSign">Aspirant</p>
+                            <p class="text-black text-4xl font-bold" data-field="FullName">Hev C. Abi</p>
+                            <p class="text-[#930D0D] text-xl" data-field="CallSign">Aspirant</p>
                            
                         </div>
                         <div class="mt-5 w-full flex justify-center">
@@ -126,7 +125,7 @@
                             <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                                 <div id="progress" class="h-full"></div>
                             </div>
-                            <p class="text-end text-base text-[#4B4B4B]" id="DutyHours">100 hrs</p>
+                            <p class="text-end text-base text-[#4B4B4B]" data-field="DutyHours">100 hrs</p>
                         </div>
                 
                         <div class="px-10">
@@ -134,18 +133,18 @@
                             <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                                 <div id="progress2" class="h-full"></div>
                             </div>
-                            <p class="text-end text-base text-[#4B4B4B]" id="FireResponse">200 points</p>
+                            <p class="text-end text-base text-[#4B4B4B]" data-field="FireResponse">200 points</p>
                         </div>
                         <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
                         
                         <div class="mt-6 flex justify-center space-x-10 text-2xl">
                             <div class="text-center font-Inter ">
-                                <p class="font-semibold" id="InventoryPoints">300</p>
+                                <p class="font-semibold" data-field="InventoryPoints">300</p>
                                 <p >Inventory</p>
                             </div>
                 
                             <div class="text-center font-Inter">
-                                <p class="font-semibold" id="ActivityPoints">400</p>
+                                <p class="font-semibold" data-field="ActivityPoints">400</p>
                                 <p>Activity</p>
                             </div>
                             
@@ -164,48 +163,48 @@
                             <div class="bg-[#9C9C9C] h-[3px] mt-2 mx-3"></div>
     
                         <!-- FORM PROFILE -->
-                        <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  id="frmMyprofile">
+                        <div class="md:pt-11 ml-5 md:ml-16 font-Inter mt-10"  data-field="frmMyprofile">
                             <p class="text-[#9E9E9E] md:text-5xl text-2xl font-bold">Basic Information</p>
                     
                             <div class="text-xl md:text-4xl mt-5">
                     
                                                 <div class="flex items-start pt-5 md:pt-14 md:my-5">
                                                     <p class="font-semibold md:mr-[8rem] mr-[4rem]">Birthday: </p> 
-                                                    <p id="Birthday">July 99, 1999</p>
+                                                    <p data-field="Birthday">July 99, 1999</p>
                                                 </div>
                                     
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[9rem] mr-[4.6rem]">Gender: </p> 
-                                                    <p id="Gender">Trans</p>
+                                                    <p data-field="Gender">Trans</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2 ">
                                                     <p class="font-semibold md:mr-[4.5rem] mr-[2.2rem]">Civil Status: </p> 
-                                                    <p id="CivilStatus">Divorced</p>
+                                                    <p data-field="CivilStatus">Divorced</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[5rem] mr-[2.5rem]">Nationality: </p> 
-                                                    <p  id="Nationality">Spy</p>
+                                                    <p  data-field="Nationality">Spy</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[4.5rem] mr-[2.2rem]">Blood Type: </p> 
-                                                    <p id="BloodType">ABC</p>
+                                                    <p data-field="BloodType">ABC</p>
                                                 </div>
                                                     <p class="font-semibold md:my-5 my-2">Highest Educational <br>Attainment: <span class="md:ml-[17rem] ml-[6rem] font-[400]" id="HighestEducationalAttainment">Mafia</span></p> 
                                                 <div class="flex items-start md:py-5 ">
                                                     <p class=" font-semibold md:mr-[5.5rem] mr-[2rem]">Name of the Company: </p> 
-                                                    <p  id="NameOfCompany">Google</p>
+                                                    <p  data-field="NameOfCompany">Google</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2 ">
                                                     <p class="font-semibold md:mr-[12rem] mr-[3rem]">Years in Service: </p> 
-                                                    <p id="YearsInService">5 Years</p>
+                                                    <p data-field="YearsInService">5 Years</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[14rem] mr-[2.3rem]">Skills/Training: </p> 
-                                                    <p  id="SkillsTraining">Yoyo Champion</p>
+                                                    <p  data-field="SkillsTraining">Yoyo Champion</p>
                                                 </div>
                                                 <div class="flex items-start md:my-5 my-2">
                                                     <p class="font-semibold md:mr-[12.3rem] mr-[20px]">Other Affiliation: </p> 
-                                                    <p  id="OtherAffiliation">Tambay</p>
+                                                    <p  data-field="OtherAffiliation">Tambay</p>
                                                 </div>
                                             
                                         </div>
@@ -215,22 +214,22 @@
                                         <div class="md:text-4xl text-lg pb-14" >
                                             <div class="flex items-start md:pt-14 md:my-5 my-2">
                                                 <p class=" font-semibold md:mr-[6rem] mr-[2rem]">Email Address: </p> 
-                                                <p class="break-all" id="EmailAddress">corsigamarniel14@gmail.com</p>
+                                                <p class="break-all" data-field="EmailAddress">corsigamarniel14@gmail.com</p>
                                             </div>
                                 
                                             <div class="flex items-start md:my-5 my-2">
                                                 <p class=" font-semibold md:mr-[8.6rem] mr-[2.2rem]">Contact No.: </p> 
-                                                <p  class="break-all" id="ContactNumber">091919111</p>
+                                                <p  class="break-all" data-field="ContactNumber">091919111</p>
                                             </div>
                                             <div class="flex items-start md:my-5 my-2">
                                                 <p class="font-semibold md:mr-[14rem] mr-[5rem]">Adress: </p> 
-                                                <p  id="CurrentAddress">Paranaque Taguig</p>
+                                                <p  data-field="CurrentAddress">Paranaque Taguig</p>
                                             </div>
                                             <div class="flex items-start md:my-5 my-2">
-                                                <p class="font-semibold">Emergency <br>Contact Person: <span class="md:ml-[4rem] ml-[2rem] break-words font-[400]" id="EmergencyContactPerson">Hades Grey</span></p> 
+                                                <p class="font-semibold">Emergency <br>Contact Person: <span class="md:ml-[4rem] ml-[2rem] break-words font-[400]" data-field="EmergencyContactPerson">Hades Grey</span></p> 
                                             </div>
                                             <div class="flex items-start md:my-5 my-2">
-                                                <p class="font-semibold">Emergency <br> Contact Number: <span class="md:ml-[3rem] ml-[1.5rem] brea-all font-[400]" id="EmergencyContactNumber">09123456789</span></p> 
+                                                <p class="font-semibold">Emergency <br> Contact Number: <span class="md:ml-[3rem] ml-[1.5rem] brea-all font-[400]" data-field="EmergencyContactNumber">09123456789</span></p> 
                                             </div>
                                         
                                         </div>
@@ -306,10 +305,8 @@
 </body>
 </div>
 
-
-<!-- <script src="sessions.js" defer></script> -->
 <script src="volunteer.js" defer></script>
-<script src="sessions_volunteer.js" defer></script>
+<script src="super_profiler.js" defer></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>

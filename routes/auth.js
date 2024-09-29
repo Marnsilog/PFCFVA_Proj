@@ -1,18 +1,11 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const path = require('path'); // Required for serving the HTML file
+const bcrypt = require('bcryptjs');
+require('dotenv').config({ path: './.env' });
 const router = express.Router();
 
-module.exports = (db) => {
-    // Middleware to check if user is logged in and a volunteer
-    const ensureVolunteerAuthenticated = (req, res, next) => {
-        if (req.session.loggedin && req.session.accountType === 'Volunteer') {
-            return next(); // User is authenticated and a volunteer
-        } else {
-            res.redirect('/index.html'); // Redirect to index.html if not authenticated
-        }
-    };
 
+
+module.exports = (db) => {
     // Register route
     router.post('/register', (req, res) => {
         const {
@@ -105,130 +98,174 @@ module.exports = (db) => {
             });
         });
     });
-
-    // Login route
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
-        const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-        db.query(sql, [username], (err, result) => {
-            if (err) {
-                res.status(500).send('Error logging in');
-                return;
-            }
-            if (result.length === 0) {
-                res.status(401).send('Invalid username or password');
-                return;
-            }
-            const user = result[0];
-            const hashedPassword = user.password;
-
-            bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
-                if (compareErr) {
-                    res.status(500).send('Error comparing passwords');
-                    return;
+    
+        try {
+            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(sql, [username], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching user:', error);
+                    return res.status(500).json({ message: 'Internal Server Error' });
                 }
-                if (compareResult) {
-                    // Store only essential information in the session
-                    req.session.loggedin = true;
-                    req.session.accountID = user.accountID;
-                    req.session.username = user.username;
-                    req.session.accountType = user.accountType;
-
-                    // Log session data to the console to confirm it's working
-                    console.log('Session data:', req.session);
-
-                    res.status(200).json({ message: 'Login successful', accountType: user.accountType });
+    
+                if (results.length === 0) {
+                    return res.status(401).json({ message: 'Invalid username or password' });
+                }
+    
+                const user = results[0];
+                const isMatch = await bcrypt.compare(password, user.password);
+    
+                if (isMatch) {
+                    // Set the user in the session
+                    req.session.user = { 
+                        username: user.username, 
+                        userId: user.accountID
+                    };
+    
+                    //let redirectUrl = '/supervisor_dashboard'; // Default redirect
+                    if (user.accountType === 'Admin') {
+                        redirectUrl = '/admin_dashboard';
+                    } else if (user.accountType === 'Supervisor') {
+                        redirectUrl = '/supervisor_dashboard';
+                    } else if (user.accountType === 'Volunteer') {
+                        redirectUrl = '/volunteer_dashboard';
+                    }
+    
+                    res.status(200).json({ message: 'Login successful!', redirectUrl });
                 } else {
-                    res.status(401).send('Invalid username or password');
+                    res.status(401).json({ message: 'Invalid username or password' });
                 }
             });
+        } catch (err) {
+            console.error('Error processing login:', err);
+            res.status(500).json({ message: 'Error processing login' });
+        }
+    });
+    router.get('/profile', (req, res) => {
+        const username = req.session.user?.username;
+    
+        console.log('Logged in username:', username); 
+    
+        if (!username) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+    
+        const query = `
+            SELECT 
+                rfid, 
+                CONCAT(firstname, ' ', lastname) AS fullName, 
+                callSign, 
+                dateOfBirth, 
+                gender, 
+                civilStatus, 
+                nationality, 
+                bloodType, 
+                highestEducationalAttainment, 
+                nameOfCompany, 
+                yearsInService, 
+                skillsTraining, 
+                otherAffiliation, 
+                emailAddress, 
+                mobileNumber, 
+                currentAddress, 
+                emergencyContactPerson, 
+                emergencyContactNumber, 
+                dutyHours, 
+                fireResponsePoints, 
+                inventoryPoints, 
+                activityPoints 
+            FROM tbl_accounts 
+            WHERE username = ?`;
+    
+        //console.log('Executing query for username:', username); // Log before executing query
+    
+        db.query(query, [username], (error, results) => {
+            if (error) {
+                console.error('Error fetching profile data:', error);
+                return res.status(500).json({ success: false, message: 'Server error' });
+            }
+    
+            //console.log('Query Results:', results); // Log the results of the query
+    
+            if (results.length === 0) {
+                return res.status(404).json({ success: false, message: 'Profile not found' });
+            }
+    
+            // Print the result of the database query
+            //console.log('Profile data:', results[0]);
+    
+            res.json({ success: true, data: results[0] });
         });
     });
-
-    // Routes for volunteer-related HTMLs
-    router.get('/volunteer/dashboard', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_dashboard.html'));
+    // Route to get the logged-in username
+    router.get('/getUsername', (req, res) => {
+        if (req.session && req.session.user && req.session.user.username) {
+            // Return the username from the session
+            res.json({ username: req.session.user.username });
+        } else {
+            res.status(401).json({ error: 'User not logged in' });
+        }
     });
-
-    router.get('/volunteer/main_profile', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_main_profile.html'));
-    });
-
-    router.get('/volunteer/contactus', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_contactus.html'));
-    });
-
-    router.get('/volunteer/edit_profile', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_edit_profile.html'));
-    });
-
-    router.get('/volunteer/inventory', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_inventory.html'));
-    });
-
-    router.get('/volunteer/leaderboards', ensureVolunteerAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, '../public', 'volunteer_leaderboards.html'));
-    });
-
-    // Profile route: fetch user data based on accountID
-    router.get('/volunteer/profile', ensureVolunteerAuthenticated, (req, res) => {
-        const sql = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
-        db.query(sql, [req.session.accountID], (err, result) => {
+    
+    // Route to fetch all volunteers
+    router.get('/volunteers', (req, res) => {
+        const query = 'SELECT accountID as id, firstName as name, dutyHours as points FROM tbl_accounts';
+        db.query(query, (err, results) => {
             if (err) {
-                res.status(500).send('Error fetching profile data');
-                return;
+                console.error('Error fetching volunteer data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
             }
-            if (result.length === 0) {
-                res.status(404).send('Profile not found');
-                return;
-            }
-            const user = result[0];
-            const fullName = `${user.lastName}, ${user.firstName} ${user.middleName || ''}`;
-            const formattedDate = new Date(user.dateOfBirth).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            res.json({
-                rfid: user.rfid,
-                fullName: fullName.trim(),
-                callSign: user.callSign,
-                dateOfBirth: formattedDate,
-                gender: user.gender,
-                civilStatus: user.civilStatus,
-                nationality: user.nationality,
-                bloodType: user.bloodType,
-                highestEducationalAttainment: user.highestEducationalAttainment,
-                nameOfCompany: user.nameOfCompany,
-                yearsInService: user.yearsInService,
-                skillsTraining: user.skillsTraining,
-                otherAffiliation: user.otherAffiliation,
-                emailAddress: user.emailAddress,
-                mobileNumber: user.mobileNumber,
-                currentAddress: user.currentAddress,
-                emergencyContactPerson: user.emergencyContactPerson,
-                emergencyContactNumber: user.emergencyContactNumber,
-                dutyHours: user.dutyHours,
-                fireResponsePoints: user.fireResponsePoints,
-                inventoryPoints: user.inventoryPoints,
-                activityPoints: user.activityPoints,
-                accountType: user.accountType
-            });
+            res.json(results);
         });
     });
-
-    // Logout route
-    router.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
+    
+    // Route to fetch a specific volunteer by ID
+    router.get('/volunteer/:id', (req, res) => {
+        const volunteerId = req.params.id;
+        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        db.query(query, [volunteerId], (err, results) => {
             if (err) {
-                console.error('Error during logout:', err);
-                return res.status(500).send('Unable to log out');
+                console.error('Error fetching volunteer details:', err);
+                return res.status(500).json({ error: 'Error fetching details' });
             }
-            res.redirect('/index.html'); // Redirect to index.html after logout
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Volunteer not found' });
+            }
+            res.json(results[0]);
         });
     });
 
+    // Route to fetch all volunteers
+    router.get('/fireresponse', (req, res) => {
+        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+    
+    // Route to fetch a specific volunteer by ID
+    router.get('/fireresponse/:id', (req, res) => {
+        const volunteerId = req.params.id;
+        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        db.query(query, [volunteerId], (err, results) => {
+            if (err) {
+                console.error('Error fetching volunteer details:', err);
+                return res.status(500).json({ error: 'Error fetching details' });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Volunteer not found' });
+            }
+            res.json(results[0]);
+        });
+    });
+    
+
+    
     return router;
 };
 

@@ -6,7 +6,6 @@ const router = express.Router();
 
 
 module.exports = (db) => {
-    // Register route
     router.get('/get-user-data', (req, res) => {
         const username = req.session.user?.username;
     
@@ -28,9 +27,6 @@ module.exports = (db) => {
             res.json(userData); // Send user data without password
         });
     });
-    
-    
-    // Edit Profile
     router.post('/edit-profile', (req, res) => {
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,
@@ -124,7 +120,6 @@ module.exports = (db) => {
             });
         }
     });
-    
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     
@@ -147,7 +142,8 @@ module.exports = (db) => {
                     // Set the user in the session
                     req.session.user = { 
                         username: user.username, 
-                        userId: user.accountID
+                        userId: user.accountID,
+                        permission: user.accountType
                     };
     
                     //let redirectUrl = '/supervisor_dashboard'; // Default redirect
@@ -221,7 +217,6 @@ module.exports = (db) => {
             res.json({ success: true, data: results[0] });
         });
     });
-
     router.get('/getUsername', (req, res) => {
         if (req.session && req.session.user && req.session.user.username) {
             // Return the username from the session
@@ -278,7 +273,6 @@ module.exports = (db) => {
             res.json(results[0]);
         });
     });
-    
     router.post('/edit-profile', (req, res) => {
         const {
             username, lastName, firstName, middleName, emailAddress, contactNumber, 

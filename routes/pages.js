@@ -25,6 +25,17 @@ function isAuthenticated(req, res, next) {
     }
     res.redirect('/');
 }
+function hasPermission(requiredPermission) {
+    return (req, res, next) => {
+        const userPermission = req.session.user.permission;
+
+        if (userPermission === requiredPermission) {
+            return next();
+        }
+        return res.status(403).json({ message: 'Forbidden: You do not have access to this resource.' });
+    };
+}
+
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -49,7 +60,7 @@ const Supervisor = [
 ];
 
 Supervisor.forEach(route => {
-    router.get(`/${route}`, isAuthenticated, (req, res) => {
+    router.get(`/${route}`, isAuthenticated, hasPermission('Supervisor'), (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'public', `${route}.html`));
     });
 });
@@ -74,10 +85,11 @@ const adminRoutes = [
 ];
 
 adminRoutes.forEach(route => {
-    router.get(`/${route}`, isAuthenticated, (req, res) => {
+    router.get(`/${route}`, isAuthenticated, hasPermission('Admin'), (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'public', `${route}.html`));
     });
 });
+
 
 const volunteer = [
     'volunteer_dashboard',
@@ -89,7 +101,7 @@ const volunteer = [
 ];
 
 volunteer.forEach(route => {
-    router.get(`/${route}`, isAuthenticated, (req, res) => {
+    router.get(`/${route}`, isAuthenticated, hasPermission('Volunteer'), (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'public', `${route}.html`));
     });
 });

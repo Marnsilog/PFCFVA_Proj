@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            const response = await fetch('/auth/login', {
+            const response = await fetch('/auth/login', { //fetches from auth
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -129,3 +129,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 });
 
+
+// Get elements
+const firstTimeLoginLink = document.getElementById('firstTimeLoginLink');
+const loginInstructions = document.getElementById('loginInstructions');
+
+// Toggle the instructions when the link is clicked
+firstTimeLoginLink.addEventListener('click', (event) => {
+    event.preventDefault();  // Prevent default link behavior
+    if (loginInstructions.classList.contains('hidden')) {
+        loginInstructions.classList.remove('hidden');  // Show instructions
+    } else {
+        loginInstructions.classList.add('hidden');  // Hide instructions
+    }
+});

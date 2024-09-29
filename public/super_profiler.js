@@ -1,5 +1,23 @@
+function animateProgressBar(currentValue, maxValue) {
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar.style.width = percentage + '%'; 
+        console.log('ProgressBar 1:', percentage + '%'); 
+    }
+}
+function animateProgressBar2(currentValue, maxValue) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar2.style.width = percentage + '%'; 
+        console.log('ProgressBar 2:', percentage + '%'); 
+    }
+}
+  
 async function fetchProfileData() {
     try {
+        
         const response = await fetch('/auth/profile', {
             method: 'GET',
             headers: {
@@ -15,6 +33,29 @@ async function fetchProfileData() {
 
         if (result.success) {
             const data = result.data;
+            const statusDuty = data.dutyHours;
+            const statusFire = data.fireResponsePoints;
+            const callsign = data.callSign.toLowerCase();;
+            let dhmax;
+            let frmax;
+            if (/Aspirant/i.test(callsign)) {
+                dhmax = 100;
+                frmax = 0;
+            } else if (/Probationary/i.test(callsign)) {
+                dhmax = 1000;
+                frmax = 10;
+            } else if (/echo/i.test(callsign)) {
+                dhmax = 2000;
+                frmax = 20;
+            } else {
+                dhmax = 100;
+                frmax = 100;
+            }
+            dhmax = parseInt(dhmax);
+            frmax = parseInt(frmax);
+            animateProgressBar(statusDuty, dhmax);
+            animateProgressBar2(statusFire, frmax);
+            
             document.querySelector('[data-field="FullName"]').innerText = data.fullName;
             document.querySelector('[data-field="CallSign"]').innerText = data.callSign;
             document.querySelector('[data-field="DutyHours"]').innerText = `${data.dutyHours} hrs`;
@@ -36,13 +77,119 @@ async function fetchProfileData() {
             document.querySelector('[data-field="CurrentAddress"]').innerText = data.currentAddress;
             document.querySelector('[data-field="EmergencyContactPerson"]').innerText = data.emergencyContactPerson;
             document.querySelector('[data-field="EmergencyContactNumber"]').innerText = data.emergencyContactNumber;
+            
 
         } else {
             console.error('Profile not found or other error:', result.message);
         }
     } catch (error) {
-        console.error('Error fetching profile data:', error);
+        return;
     }
 }
 
 window.onload = fetchProfileData;
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/auth/get-user-data') // Replace with your endpoint to get user data
+        .then(response => response.json())
+        .then(data => {
+            const dateOfBirth = new Date(data.dateOfBirth);
+            const formattedDate = dateOfBirth.toISOString().split('T')[0];
+
+            // Check if elements exist before setting their values
+            if (document.getElementById('HiddenUsername')) {
+                document.getElementById('HiddenUsername').value = data.username;
+            }
+            if (document.getElementById('EditUsername')) {
+                document.getElementById('EditUsername').value = data.username;
+            }
+            if (document.getElementById('EditLastName')) {
+                document.getElementById('EditLastName').value = data.lastName;
+            }
+            if (document.getElementById('EditFirstName')) {
+                document.getElementById('EditFirstName').value = data.firstName;
+            }
+            if (document.getElementById('EditMiddleName')) {
+                document.getElementById('EditMiddleName').value = data.middleName;
+            }
+            if (document.getElementById('EditEmailAddress')) {
+                document.getElementById('EditEmailAddress').value = data.emailAddress;
+            }
+            if (document.getElementById('EditContactNumber')) {
+                document.getElementById('EditContactNumber').value = data.mobileNumber;
+            }
+
+            // Add similar checks for the rest of the fields
+            if (document.getElementById('EditCivilStatus')) {
+                document.getElementById('EditCivilStatus').value = data.civilStatus;
+            }
+            if (document.getElementById('EditNationality')) {
+                document.getElementById('EditNationality').value = data.nationality;
+            }
+            if (document.getElementById('EditBloodType')) {
+                document.getElementById('EditBloodType').value = data.bloodType;
+            }
+            if (document.getElementById('EditBirthday')) {
+                document.getElementById('EditBirthday').value = formattedDate;
+            }
+            if (document.getElementById('EditGender')) {
+                document.getElementById('EditGender').value = data.gender;
+            }
+            if (document.getElementById('EditCurrentAddress')) {
+                document.getElementById('EditCurrentAddress').value = data.currentAddress;
+            }
+            if (document.getElementById('EditEmergencyContactPerson')) {
+                document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson;
+            }
+            if (document.getElementById('EditEmergencyContactNumber')) {
+                document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber;
+            }
+            if (document.getElementById('EditHighestEducationalAttainment')) {
+                document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment;
+            }
+            if (document.getElementById('EditNameOfCompany')) {
+                document.getElementById('EditNameOfCompany').value = data.nameOfCompany;
+            }
+            if (document.getElementById('EditYearsInService')) {
+                document.getElementById('EditYearsInService').value = data.yearsInService;
+            }
+            if (document.getElementById('EditSkillsTraining')) {
+                document.getElementById('EditSkillsTraining').value = data.skillsTraining;
+            }
+            if (document.getElementById('EditOtherAffiliation')) {
+                document.getElementById('EditOtherAffiliation').value = data.otherAffiliation;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    function fetchDashboardData() {
+        fetch('/auth/dashboard-data')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    updateDashboard(data.data);
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+    }
+    function updateDashboard(data) {
+        document.querySelector('[data-feild="DashboardFullName"]').textContent = data.fullName || 'N/A';
+        document.querySelector('[data-feild="DashboardAccountType"]').textContent = data.accountType || 'N/A';
+        document.querySelector('[data-feild="DashboardDutyHours"]').textContent = data.dutyHours || '0';
+        document.querySelector('[data-feild="DashboardFireResponse"]').textContent = data.fireResponsePoints || '0';
+        document.querySelector('[data-feild="DashboardInventoryPoints"]').textContent = data.inventoryPoints || '0';
+        document.querySelector('[data-feild="DashboardActivityPoints"]').textContent = data.activityPoints || '0';
+    }
+    fetchDashboardData();
+});

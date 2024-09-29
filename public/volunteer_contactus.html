@@ -20,10 +20,10 @@
       
             <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                 <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
-                    <li id="dashb" class="md:mt-12 underline underline-offset-4"><a href="/volunteer_dashboard">Dashboard</a></li>
+                    <li id="dashb" class="md:mt-12 "><a href="/volunteer_dashboard">Dashboard</a></li>
                     <li id="inV" class="md:mt-12 "><a href="/volunteer_inventory">Inventory</a></li>
                     <li id="leadB" class="md:mt-12 "><a href="/volunteer_leaderboards">Leaderboards</a></li>
-                    <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
+                    <li id="conN" class="md:mt-12 underline underline-offset-4"><a href="/volunteer_contactus">Contact Us</a></li>
                     <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                     <li class="md:mt-6">
                         <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
@@ -52,7 +52,7 @@
             <div class="md:hidden w-1/2 h-[22rem] py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
                 <div class="ml-3 flex justify-start mr-3" onclick="myProfile()"  style="cursor: pointer;">
                     <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
-                    <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
+                    <p class="ml-2 py-2 text-sm" data-feild="MenuFullName"></p>
                    
                 </div>
                 
@@ -106,7 +106,7 @@
             <div class="border-[1px] border-black mt-30 h-37 shadow-sm shadow-gray-600" >
 
                 <div class="text-black font-Inter pt-11 pl-10">
-                    <p class="text-2xl font-bold" id="ContactUsFullName">Hev C. Abi</p>
+                    <p class="text-2xl font-bold" data-feild="DashboardFullName"></p>
                     <p class="text-lg" id="ContactUsAccountType">Volunteer</p>
                 </div>
             </div>
@@ -168,27 +168,15 @@
                            
                             
                         </div>
-                
-              
-        
+                        
                 </div>
         </div>
- 
-      
-
-    
     </div>
-
-
-
-
 </body>
 </div>
 
 
 <!-- <script src="sessions.js" defer></script> -->
+<script src="super_profiler.js" defer></script>
 <script src="volunteer.js" defer></script>
-
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
 </html>

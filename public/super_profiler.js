@@ -42,7 +42,7 @@ async function fetchProfileData() {
             console.error('Profile not found or other error:', result.message);
         }
     } catch (error) {
-        console.error('Error fetching profile data:', error);
+        return;
     }
 }
 
@@ -54,28 +54,101 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             const dateOfBirth = new Date(data.dateOfBirth);
             const formattedDate = dateOfBirth.toISOString().split('T')[0];
-            document.getElementById('HiddenUsername').value = data.username;
-            document.getElementById('EditUsername').value = data.username;
-            document.getElementById('EditLastName').value = data.lastName;
-            document.getElementById('EditFirstName').value = data.firstName;
-            document.getElementById('EditMiddleName').value = data.middleName;
-            document.getElementById('EditEmailAddress').value = data.emailAddress;
-            document.getElementById('EditContactNumber').value = data.mobileNumber;
-            // Add more fields as necessary
-            document.getElementById('EditCivilStatus').value = data.civilStatus;
-            document.getElementById('EditNationality').value = data.nationality;
-            document.getElementById('EditBloodType').value = data.bloodType;
-            document.getElementById('EditBirthday').value = formattedDate;
-            document.getElementById('EditGender').value = data.gender;
-            document.getElementById('EditCurrentAddress').value = data.currentAddress;
-            document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson;
-            document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber;
-            document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment;
-            document.getElementById('EditNameOfCompany').value = data.nameOfCompany;
-            document.getElementById('EditYearsInService').value = data.yearsInService;
-            document.getElementById('EditSkillsTraining').value = data.skillsTraining;
-            document.getElementById('EditOtherAffiliation').value = data.otherAffiliation;
+
+            // Check if elements exist before setting their values
+            if (document.getElementById('HiddenUsername')) {
+                document.getElementById('HiddenUsername').value = data.username;
+            }
+            if (document.getElementById('EditUsername')) {
+                document.getElementById('EditUsername').value = data.username;
+            }
+            if (document.getElementById('EditLastName')) {
+                document.getElementById('EditLastName').value = data.lastName;
+            }
+            if (document.getElementById('EditFirstName')) {
+                document.getElementById('EditFirstName').value = data.firstName;
+            }
+            if (document.getElementById('EditMiddleName')) {
+                document.getElementById('EditMiddleName').value = data.middleName;
+            }
+            if (document.getElementById('EditEmailAddress')) {
+                document.getElementById('EditEmailAddress').value = data.emailAddress;
+            }
+            if (document.getElementById('EditContactNumber')) {
+                document.getElementById('EditContactNumber').value = data.mobileNumber;
+            }
+
+            // Add similar checks for the rest of the fields
+            if (document.getElementById('EditCivilStatus')) {
+                document.getElementById('EditCivilStatus').value = data.civilStatus;
+            }
+            if (document.getElementById('EditNationality')) {
+                document.getElementById('EditNationality').value = data.nationality;
+            }
+            if (document.getElementById('EditBloodType')) {
+                document.getElementById('EditBloodType').value = data.bloodType;
+            }
+            if (document.getElementById('EditBirthday')) {
+                document.getElementById('EditBirthday').value = formattedDate;
+            }
+            if (document.getElementById('EditGender')) {
+                document.getElementById('EditGender').value = data.gender;
+            }
+            if (document.getElementById('EditCurrentAddress')) {
+                document.getElementById('EditCurrentAddress').value = data.currentAddress;
+            }
+            if (document.getElementById('EditEmergencyContactPerson')) {
+                document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson;
+            }
+            if (document.getElementById('EditEmergencyContactNumber')) {
+                document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber;
+            }
+            if (document.getElementById('EditHighestEducationalAttainment')) {
+                document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment;
+            }
+            if (document.getElementById('EditNameOfCompany')) {
+                document.getElementById('EditNameOfCompany').value = data.nameOfCompany;
+            }
+            if (document.getElementById('EditYearsInService')) {
+                document.getElementById('EditYearsInService').value = data.yearsInService;
+            }
+            if (document.getElementById('EditSkillsTraining')) {
+                document.getElementById('EditSkillsTraining').value = data.skillsTraining;
+            }
+            if (document.getElementById('EditOtherAffiliation')) {
+                document.getElementById('EditOtherAffiliation').value = data.otherAffiliation;
+            }
         })
-        .catch(error => console.error('Error fetching user data:', error));
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    function fetchDashboardData() {
+        fetch('/auth/dashboard-data')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    updateDashboard(data.data);
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+    }
+    function updateDashboard(data) {
+        document.querySelector('[data-feild="DashboardFullName"]').textContent = data.fullName || 'N/A';
+        document.querySelector('[data-feild="DashboardAccountType"]').textContent = data.accountType || 'N/A';
+        document.querySelector('[data-feild="DashboardDutyHours"]').textContent = data.dutyHours || '0';
+        document.querySelector('[data-feild="DashboardFireResponse"]').textContent = data.fireResponsePoints || '0';
+        document.querySelector('[data-feild="DashboardInventoryPoints"]').textContent = data.inventoryPoints || '0';
+        document.querySelector('[data-feild="DashboardActivityPoints"]').textContent = data.activityPoints || '0';
+    }
+    fetchDashboardData();
+});

@@ -679,12 +679,11 @@ app.delete('/deleteEquipment/:itemName', (req, res) => {
     });
 });
 
-// Move equipment to trash
+// Move equipment to trash (soft delete, no image deletion)
 app.put('/moveToTrash/:itemName', (req, res) => {
     const itemName = req.params.itemName;
 
-    // Move the item to the trash by updating its `status` or `location` in your database
-    // This route doesn't delete the item, it can just mark it or move it to another area
+    // Move the item to the trash by updating its `itemStatus`
     const sql = 'UPDATE tbl_inventory SET itemStatus = "trash" WHERE itemName = ?'; 
     db.query(sql, [itemName], (err, result) => {
         if (err) {
@@ -696,20 +695,46 @@ app.put('/moveToTrash/:itemName', (req, res) => {
     });
 });
 
+
 // Permanently delete equipment from trash
 app.delete('/deleteFromTrash/:itemName', (req, res) => {
     const itemName = req.params.itemName;
 
-    const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';  // Permanently delete the item
-    db.query(sql, [itemName], (err, result) => {
+    // First, retrieve the image path from the database
+    const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+    db.query(getImagePathQuery, [itemName], (err, results) => {
         if (err) {
-            console.error('Error deleting equipment:', err);
-            return res.status(500).json({ error: 'Failed to delete equipment.' });
+            console.error('Error retrieving image path:', err);
+            return res.status(500).json({ error: 'Failed to retrieve image path.' });
         }
 
-        res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Equipment not found.' });
+        }
+
+        const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+
+        // Delete the image file
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Failed to delete image file:', err);
+                return res.status(500).json({ error: 'Failed to delete image file.' });
+            }
+
+            // Proceed to delete the database entry
+            const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+            db.query(sql, [itemName], (err, result) => {
+                if (err) {
+                    console.error('Error deleting equipment:', err);
+                    return res.status(500).json({ error: 'Failed to delete equipment.' });
+                }
+
+                res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+            });
+        });
     });
 });
+
 
 
 

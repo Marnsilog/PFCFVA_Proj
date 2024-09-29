@@ -56,6 +56,7 @@ const upload = multer({
     }
 }).single('itemImage');
 
+
 // Check File Type
 function checkFileType(file, cb){
     // Allowed ext
@@ -594,9 +595,22 @@ app.post('/uploadEquipment', (req, res) => {
 
 
 
-//select equip route
+// //select equip route
+// app.get('/getEquipment', (req, res) => {
+//     const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
+//     db.query(sql, (err, results) => {
+//         if (err) {
+//             console.error('Failed to retrieve equipment:', err);
+//             res.status(500).json({ error: 'Failed to retrieve equipment' });
+//         } else {
+//             res.json(results);
+//         }
+//     });
+// });
+
+//select equip route excluding trashed items
 app.get('/getEquipment', (req, res) => {
-    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
+    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Failed to retrieve equipment:', err);
@@ -606,6 +620,21 @@ app.get('/getEquipment', (req, res) => {
         }
     });
 });
+
+// Get trashed items (equipment in trash)
+app.get('/getTrashedEquipment', (req, res) => {
+    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = "trash"';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Failed to retrieve trashed equipment:', err);
+            res.status(500).json({ error: 'Failed to retrieve trashed equipment' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
 
 //delete equipment route
 app.delete('/deleteEquipment/:itemName', (req, res) => {
@@ -649,6 +678,63 @@ app.delete('/deleteEquipment/:itemName', (req, res) => {
         });
     });
 });
+
+// Move equipment to trash (soft delete, no image deletion)
+app.put('/moveToTrash/:itemName', (req, res) => {
+    const itemName = req.params.itemName;
+
+    // Move the item to the trash by updating its `itemStatus`
+    const sql = 'UPDATE tbl_inventory SET itemStatus = "trash" WHERE itemName = ?'; 
+    db.query(sql, [itemName], (err, result) => {
+        if (err) {
+            console.error('Error moving equipment to trash:', err);
+            return res.status(500).json({ error: 'Failed to move equipment to trash.' });
+        }
+
+        res.status(200).json({ message: 'Equipment moved to trash successfully.' });
+    });
+});
+
+
+// Permanently delete equipment from trash
+app.delete('/deleteFromTrash/:itemName', (req, res) => {
+    const itemName = req.params.itemName;
+
+    // First, retrieve the image path from the database
+    const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+    db.query(getImagePathQuery, [itemName], (err, results) => {
+        if (err) {
+            console.error('Error retrieving image path:', err);
+            return res.status(500).json({ error: 'Failed to retrieve image path.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Equipment not found.' });
+        }
+
+        const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+
+        // Delete the image file
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Failed to delete image file:', err);
+                return res.status(500).json({ error: 'Failed to delete image file.' });
+            }
+
+            // Proceed to delete the database entry
+            const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+            db.query(sql, [itemName], (err, result) => {
+                if (err) {
+                    console.error('Error deleting equipment:', err);
+                    return res.status(500).json({ error: 'Failed to delete equipment.' });
+                }
+
+                res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+            });
+        });
+    });
+});
+
 
 
 

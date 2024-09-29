@@ -14,7 +14,7 @@ function animateProgressBar(targetWidth) {
   }
   
 
-//LEADERBOARDS
+//IMPORTANT
   function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');

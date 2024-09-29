@@ -25,7 +25,18 @@
     FireR.classList.add('text-black');
     }
 
+    function toggleSetting() {
 
+        var profileForm = document.getElementById('Setting');
+        
+        if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+         
+            profileForm.style.display = 'block';
+        } else {
+          
+            profileForm.style.display = 'none';
+        }
+    }
 
 // FIRE RESPONSE ICS
 // function addthis(){

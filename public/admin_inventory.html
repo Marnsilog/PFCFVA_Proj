@@ -159,6 +159,7 @@
                     </select>
                 </div>
                 <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
+                <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleTrashForm()" id="btnTrash">Trash</button>
                 <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
                 
             </div>
@@ -259,6 +260,16 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Trash Container (Initially hidden) -->
+            <div id="trashContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto hidden">
+                <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
+                    <div id="trashGrid" class="w-full font-Inter space-y-3">
+                        <!-- Trash Grid Content Here -->
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     

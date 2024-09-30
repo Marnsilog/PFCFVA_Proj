@@ -211,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-
 function loadTrash() {
     fetch('/getTrashedEquipment')
     .then(response => response.json())
@@ -238,9 +237,6 @@ function loadTrash() {
     })
     .catch(error => console.error('Error loading trash:', error));
 }
-
-
-
 function closeForm() {
     var form = document.getElementById('addEquipmentForm');
     form.classList.add('hidden'); 
@@ -250,10 +246,6 @@ function closeVehicleForm() {
     var form = document.getElementById('addVehicleForm');
     form.classList.add('hidden'); 
 }
-
-
-
-
 function loadEquipment() {
     fetch('/getEquipment') 
         .then(response => response.json())
@@ -316,9 +308,6 @@ function loadEquipment() {
         });
 }
 
-
-
-
 function deleteEquipment(itemName) {
     if (confirm(`Are you sure you want to delete ${itemName}?`)) {
         fetch(`/deleteEquipment/${encodeURIComponent(itemName)}`, {
@@ -340,8 +329,6 @@ function deleteEquipment(itemName) {
         });
     }
 }
-
-
 function editEquipment(itemName) {
     // Scroll to the top of the page when edit is clicked
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -426,7 +413,6 @@ function editEquipment(itemName) {
     };
 }
 
-
 function toggleVehicleForm() {
     var form = document.getElementById('addVehicleForm');
     form.classList.remove('hidden');
@@ -467,3 +453,7 @@ function toggleVehicleForm() {
         }
     });
 });
+
+
+
+

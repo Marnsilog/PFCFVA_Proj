@@ -97,7 +97,8 @@ const volunteer = [
     'volunteer_edit_profile',
     'volunteer_leaderboards',
     'volunteer_main_profile',
-    'volunteer_inventory'
+    'volunteer_inventory',
+    'volunteer_form_inv'
 ];
 
 volunteer.forEach(route => {

@@ -26,7 +26,10 @@ const db = mysql.createConnection({
     // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD, // Corrected this line
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
 });
 
 // Connect
@@ -778,6 +781,7 @@ app.put('/updateEquipment', (req, res) => {
 
 const pages = require('./routes/pages');
 app.use('/', pages);
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 
 

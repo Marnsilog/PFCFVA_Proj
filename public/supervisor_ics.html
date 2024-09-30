@@ -117,10 +117,11 @@
                     
                         <div  class="mt-9 flex justify-between text-xl text-white font-[500]" >
     
-                            <button class="bg-[#1C7D26] px-10 py-2  rounded-full">ACTIVATE</button>
-                            <button class="bg-[#E4A52A] px-10 py-2  rounded-full">INJURED</button>
-                            <button class="bg-[#DF0000] px-10 py-2  rounded-full">STANDOWN</button>
-                            <button class="bg-[#212D9C] px-10 py-2  rounded-full">FIRE OUT</button>
+                            <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
+                            <button class="bg-[#1C7D26] px-10 py-2  rounded-full" id="msgActivate">ACTIVATE</button>
+                            <button class="bg-[#E4A52A] px-10 py-2  rounded-full" id="msgInjured">INJURED</button>
+                            <button class="bg-[#DF0000] px-10 py-2  rounded-full" id="msgStandown">STANDOWN</button>
+                            <button class="bg-[#212D9C] px-10 py-2  rounded-full" id="msgFireOut">FIRE OUT</button>
                             <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button>
     
                         </div>
@@ -187,11 +188,12 @@
                                         </tbody>
                                     </table>
                                     <div  class="mt-2 flex justify-between text-lg text-white font-[500]" >
-    
-                                        <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight">REQUEST<br> BACK UP</button>
-                                        <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
-                                        <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight">RESUPPLY <br> WATER TANK</button>
-                                        <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight">REQUEST <br> FALLBACK</button>
+
+                                         <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
+                                        <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight" id="msgBackUp">REQUEST<br> BACK UP</button>
+                                        <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight" id="msgMedicalAssistance">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
+                                        <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight" id="msgResupplyWater">RESUPPLY <br> WATER TANK</button>
+                                        <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight" id="msgFallback">REQUEST <br> FALLBACK</button>
                     
                                 </div>
     

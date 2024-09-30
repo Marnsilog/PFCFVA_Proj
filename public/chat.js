@@ -1,32 +1,3 @@
-// // Connect to the server via Socket.IO
-// const socket = io();
-
-// // Log connection status
-// socket.on('connect', () => {
-//     console.log('Connected to server');
-// });
-
-// // Send message when the Send button is clicked
-// document.getElementById('btnSendMessage').addEventListener('click', () => {
-//     const message = document.getElementById('messageBox').value;
-
-//     if (message.trim() !== '') {
-//         socket.emit('chatMessage', message); // Emit message to server
-//         document.getElementById('messageBox').value = ''; // Clear the message box
-//     }
-// });
-
-// // Listen for incoming messages
-// socket.on('chatMessage', (msg) => {
-//     const chatSystem = document.getElementById('chatSystem');
-
-//     const messageElement = document.createElement('div');
-//     messageElement.classList.add('message'); // Add a class for styling
-//     messageElement.innerText = msg;
-
-//     chatSystem.appendChild(messageElement);
-//     chatSystem.scrollTop = chatSystem.scrollHeight; // Auto-scroll to the bottom
-// });
 
 
 document.addEventListener('DOMContentLoaded', () => {

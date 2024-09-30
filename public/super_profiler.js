@@ -181,15 +181,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     console.error('Error:', data.message);
                 }
-            })
+            });
     }
+
     function updateDashboard(data) {
-        document.querySelector('[data-feild="DashboardFullName"]').textContent = data.fullName || 'N/A';
-        document.querySelector('[data-feild="DashboardAccountType"]').textContent = data.accountType || 'N/A';
-        document.querySelector('[data-feild="DashboardDutyHours"]').textContent = data.dutyHours || '0';
-        document.querySelector('[data-feild="DashboardFireResponse"]').textContent = data.fireResponsePoints || '0';
-        document.querySelector('[data-feild="DashboardInventoryPoints"]').textContent = data.inventoryPoints || '0';
-        document.querySelector('[data-feild="DashboardActivityPoints"]').textContent = data.activityPoints || '0';
+        const fields = [
+            { key: "fullName", element: "DashboardFullName", fallback: 'N/A' },
+            { key: "accountType", element: "DashboardAccountType", fallback: 'N/A' },
+            { key: "dutyHours", element: "DashboardDutyHours", fallback: '0' },
+            { key: "fireResponsePoints", element: "DashboardFireResponse", fallback: '0' },
+            { key: "inventoryPoints", element: "DashboardInventoryPoints", fallback: '0' },
+            { key: "activityPoints", element: "DashboardActivityPoints", fallback: '0' },
+        ];
+
+        fields.forEach(field => {
+            const element = document.querySelector(`[data-feild="${field.element}"]`);
+            if (element) {
+                element.textContent = data[field.key] || field.fallback;
+            } 
+        });
     }
+
     fetchDashboardData();
 });

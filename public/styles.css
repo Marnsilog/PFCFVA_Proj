@@ -811,6 +811,11 @@ video {
   margin-bottom: 4px;
 }
 
+.mx-6{
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
 .mb-12{
   margin-bottom: 3rem;
 }
@@ -1356,12 +1361,28 @@ video {
   max-height: 3rem;
 }
 
+.max-h-96{
+  max-height: 24rem;
+}
+
+.max-h-\[32rem\]{
+  max-height: 32rem;
+}
+
 .min-h-\[10rem\]{
   min-height: 10rem;
 }
 
 .min-h-\[2rem\]{
   min-height: 2rem;
+}
+
+.min-h-72{
+  min-height: 18rem;
+}
+
+.min-h-\[32rem\]{
+  min-height: 32rem;
 }
 
 .w-1\/2{
@@ -1556,6 +1577,14 @@ video {
   width: 100%;
 }
 
+.w-\[90\%\]{
+  width: 90%;
+}
+
+.w-\[95\%\]{
+  width: 95%;
+}
+
 .min-w-\[22rem\]{
   min-width: 22rem;
 }
@@ -1598,6 +1627,14 @@ video {
 
 .max-w-\[90rem\]{
   max-width: 90rem;
+}
+
+.max-w-\[72rem\]{
+  max-width: 72rem;
+}
+
+.max-w-\[68rem\]{
+  max-width: 68rem;
 }
 
 .flex-1{
@@ -1712,6 +1749,10 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.75rem * var(--tw-space-y-reverse));
+}
+
+.overflow-auto{
+  overflow: auto;
 }
 
 .overflow-hidden{
@@ -2260,6 +2301,10 @@ video {
   padding-bottom: 9rem;
 }
 
+.pb-7{
+  padding-bottom: 1.75rem;
+}
+
 .pl-10{
   padding-left: 2.5rem;
 }
@@ -2374,6 +2419,10 @@ video {
 
 .pt-\[6px\]{
   padding-top: 6px;
+}
+
+.pr-24{
+  padding-right: 6rem;
 }
 
 .text-left{

@@ -113,11 +113,9 @@
                     <p class="md:text-2xl text-lg md:text-start text-center font-Inter">Engine 72</p>
                     <div class="flex justify-between md:mx-0 mx-3 font-Inter">
                         <div class="flex justify-start space-x-2 mt-5"> 
-                                <select class="h-8 pr-16  rounded-lg md:border-[2px] border-[1px] border-black text-start mx-5" id="truckId">
-                                    <option value="text">Vehicle</option>
-                                    <option value="text">Engine 72</option>
-                                    <option value="text">Water Tender 72</option>
-                                    <option value="text">Pumber 72</option>
+                                <select class="h-8 pr-16  rounded-lg md:border-[2px] border-[1px] border-black text-start mx-5" id="sortVehicleAssignment">
+                                    <select class="h-8 pr-16 rounded-lg md:border-[2px] border-[1px] border-black text-start mx-5" id="sortVehicleAssignment">
+                                        <option value="">All Vehicles</option>
                                 </select>
                                   <p class="font-Inter text-xl font-[400] mt-2">Total Item: <span>0000</span> </p>
                                 
@@ -131,7 +129,7 @@
                         </select></div>
                     </div>
                     <div class="w-full flex justify-center mt-5">
-                        <div class="max-w-[70rem] w-full h-full space-y-5" id="inventoryContainer">
+                        <div class="max-w-[68rem] w-full h-full space-y-5 min-h-[32rem] max-h-[32rem] overflow-auto rounded-lg shadow-lg shadow-gray-500" id="inventoryContainer">
                            
                         </div>
                     </div>

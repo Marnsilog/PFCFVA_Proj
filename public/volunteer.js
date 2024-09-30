@@ -84,22 +84,6 @@ function CancelInv(){
 
 }
 
-// function seeinventory(){
-//     var inventorydetail = document.getElementById('inventorydetail');
-//     if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
-       
-//         inventorydetail.style.display = 'block';
-//     } else {
-      
-//         inventorydetail.style.display = 'none';
-//     }
-// }
-// function exitinventorydetail(){
-//     var inventorydetail = document.getElementById('inventorydetail');
-
-//     inventorydetail.style.display = 'none';
- 
-// }
 
 
 document.addEventListener('DOMContentLoaded', function() {

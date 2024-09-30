@@ -81,7 +81,6 @@ function deleteFromTrash(itemName) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadVehicleAssignments();
-    loadAddVehicleAssignments();
     EditAddVehicleAssignments();
 });
 function EditAddVehicleAssignments() {
@@ -89,20 +88,7 @@ function EditAddVehicleAssignments() {
     .then(response => response.json())
     .then(data => {
         const selectElement = document.getElementById('editvehicleAssignment');
-        selectElement.innerHTML = '<option value="">All Vehicles</option>';  // Reset options
-
-        data.forEach(item => {
-            selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
-        });
-    })
-    .catch(error => console.error('Error loading vehicle assignments:', error));
-}
-function loadAddVehicleAssignments() {
-    fetch('/getVehicleAssignments')
-    .then(response => response.json())
-    .then(data => {
-        const selectElement = document.getElementById('addvehicleAssignment');
-        selectElement.innerHTML = '<option value="">All Vehicles</option>';  // Reset options
+        selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
 
         data.forEach(item => {
             selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
@@ -157,6 +143,73 @@ function loadEquipment(vehicleAssignment) {
     .catch(error => console.error('Error loading equipment:', error));
 }
 
+// Load vehicle assignments into the select element
+function loadAddVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('addvehicleAssignment');
+            selectElement.innerHTML = '<option value="">All Vehicles</option>';
+
+            // Check if data is not null and has content
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+                });
+            } else {
+                console.error('No vehicle assignments found');
+            }
+        })
+        .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadAddVehicleAssignments();
+    loadEquipment(); 
+    const addEquipmentForm = document.getElementById('addEquipmentForm');
+    if (addEquipmentForm) {
+        addEquipmentForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var formData = new FormData(this); 
+            const vehicleAssignment = document.getElementById('addvehicleAssignment').value;
+            if (!vehicleAssignment) {
+                alert('Please select a vehicle assignment.');
+                return; 
+            }
+
+            fetch('/uploadEquipment', {
+                method: 'POST',
+                body: formData // Send the form data, including file uploads
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Success: ' + data.message);
+                    closeForm(); // Close the form on success
+                    window.location.reload(); // Reload the page
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting the form: ' + error.message);
+                });
+        });
+    }
+
+    // Reload equipment list on sorting or search input
+    const sortVehicleAssignment = document.getElementById('sortVehicleAssignment');
+    if (sortVehicleAssignment) {
+        sortVehicleAssignment.addEventListener('change', loadEquipment); // Reload equipment based on vehicle sorting
+    }
+
+    const inventorySearchBox = document.getElementById('inventorySearchBox');
+    if (inventorySearchBox) {
+        inventorySearchBox.addEventListener('input', loadEquipment); // Search functionality
+    }
+});
 
 
 function loadTrash() {
@@ -199,53 +252,6 @@ function closeVehicleForm() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    
-  
-    const addEquipmentForm = document.getElementById('addEquipmentForm');
-    if (addEquipmentForm) {
-        addEquipmentForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-
-            
-            fetch('/uploadEquipment', {
-                method: 'POST',
-                body: formData 
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text || 'Server responded with status: ' + response.status) });
-                }
-                return response.json();
-            })
-            .then(data => {
-                alert('Success: ' + data.message);
-                closeForm(); 
-                window.location.reload(); 
-            })
-            .catch(error => {2
-                console.error('Error:', error);
-                alert('Error submitting the form: ' + error.message);
-            });
-        });
-    }
-
-   
-    loadEquipment(); 
-
-    
-    const sortVehicleAssignment = document.getElementById('sortVehicleAssignment');
-    if (sortVehicleAssignment) {
-        sortVehicleAssignment.addEventListener('change', loadEquipment); 
-    }
-
-  
-    const inventorySearchBox = document.getElementById('inventorySearchBox');
-    if (inventorySearchBox) {
-        inventorySearchBox.addEventListener('input', loadEquipment); 
-    }
-});
 
 
 function loadEquipment() {

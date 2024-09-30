@@ -206,12 +206,9 @@ function showDutyDetails(volunteerId) {
         })
         .catch(error => console.error('Error fetching details:', error));
 }
-
 function exitdtdetail() {
     document.getElementById('dutyhoursdetail').style.display = 'none';
 }
-
-
 document.addEventListener('DOMContentLoaded', function () {
     fetch('/auth/fireresponse')
         .then(response => response.json())
@@ -254,7 +251,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-
 function showFireRe(volunteerId) {
     fetch(`/auth/fireresponse/${volunteerId}`)
         .then(response => response.json())
@@ -274,3 +270,61 @@ function showFireRe(volunteerId) {
 function exitdtdetail2() {
     document.getElementById('frdetail').style.display = 'none';
 }
+
+async function loadVehicleAssignments(itemId, selectElement, assignedVehicle) {
+    try {
+        const response = await fetch('/getVehicleAssignments');
+        const vehicles = await response.json();
+        
+        selectElement.innerHTML = '<option value="">All Vehicles</option>';
+        
+        if (vehicles && vehicles.length > 0) {
+            vehicles.forEach(vehicle => {
+                const isSelected = vehicle.vehicleName === assignedVehicle ? 'selected' : '';
+                selectElement.innerHTML += `<option value="${vehicle.vehicleName}" ${isSelected}>${vehicle.vehicleName}</option>`;
+            });
+        } else {
+            console.error('No vehicle assignments found');
+        }
+    } catch (error) {
+        console.error('Error loading vehicle assignments:', error);
+    }
+}
+async function fetchAndDisplayInventory() {
+    try {
+        const response = await fetch('/auth/inventory-supervisor');
+        const inventoryItems = await response.json();
+        
+        const container = document.getElementById('inventoryContainer');
+        container.innerHTML = ''; 
+
+        inventoryItems.forEach(async (item) => {
+            const inventoryDiv = document.createElement('div');
+            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5');
+
+            // Build the HTML content dynamically using template literals
+            inventoryDiv.innerHTML = `
+                <div class="w-full rounded-lg h-36 bg-[#DDDDDD] flex justify-between px-6">
+                    <div class="flex justify-normal space-x-6">
+                        <img src="${item.itemImage}" class="h-28 w-40 rounded-lg mt-4 ml-2" alt="">
+                        <div class="Font-Inter mt-6 space-y-2">
+                            <p class="text-3xl font-bold">${item.itemName}</p>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <p>Transfer to</p>
+                        <select class="h-10 pr-16 rounded-lg text-start" id="addvehicleAssignment-${item.itemId}"></select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(inventoryDiv);
+            const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
+            await loadVehicleAssignments(item.itemId, selectElement, item.vehicleAssignment);
+        });
+    } catch (error) {
+        console.error('Error fetching inventory data:', error);
+    }
+}
+
+// Fetch and display the inventory when the page loads
+window.onload = fetchAndDisplayInventory;

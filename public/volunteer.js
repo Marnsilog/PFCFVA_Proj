@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             console.log(data); 
-            const container = document.getElementById('Container');
+            const container = document.getElementById('dhContainer');
             if (!container) {
                 return;
             }
@@ -311,19 +311,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+//INVENTORY
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/auth/inventory') // Fetching from the /auth/inventory endpoint
+    fetch('/auth/inventory') 
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector('#myTable2 tbody');
-            tbody.innerHTML = ''; // Clear previous rows
+            tbody.innerHTML = ''; 
 
             data.forEach(item => {
                 const row = document.createElement('tr');
                 row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
                 row.dataset.itemId = item.id; // Use 'id' from the response
-                const imageSrc = item.itemImage ? `/uploads/${item.itemImage}` : '/path/to/placeholder/image.jpg';
-                const altText = item.itemImage ? item.name : 'Image not available';
+
 
                 row.innerHTML = `
                 <td>
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function cancelInventory() {
     console.log('Cancel clicked');
 }
-
+//INVENTORYLOG
 function submitInventory() {
     const tbody = document.querySelector('#myTable2 tbody');
     const items = [];

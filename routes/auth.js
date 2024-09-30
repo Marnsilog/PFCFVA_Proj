@@ -479,19 +479,19 @@ module.exports = (db) => {
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
         const query = `
-                                        SELECT il.itemID, 
-                        DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
-                        DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
-                        iv.vehicleAssignment AS vehicle
-                    FROM 
-                        tbl_inventory_logs il
-                    JOIN 
-                        tbl_inventory iv ON iv.ItemID = il.itemID
-                    WHERE 
-                        il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
-                    ORDER BY 
-                        il.dateAndTimeChecked DESC  -- Sort by date and time checked, most recent first
-                    LIMIT 0, 25;`;
+                                    SELECT il.itemID, 
+                    DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                    DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                    iv.vehicleAssignment AS vehicle
+                FROM 
+                    tbl_inventory_logs il
+                JOIN 
+                    tbl_inventory iv ON iv.ItemID = il.itemID
+                WHERE 
+                    il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+                ORDER BY 
+                    il.dateAndTimeChecked DESC  -- Sort by date and time checked, most recent first
+                LIMIT 0, 25;`;
     
         db.query(query, [ username], (err, results) => {
             if (err) {
@@ -517,6 +517,18 @@ module.exports = (db) => {
             res.json(results);
         });
     });
+
+    router.get('/inventory-supervisor', (req, res) => {
+        const query = "SELECT itemId, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = 'Available'";
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+    
 
     
 

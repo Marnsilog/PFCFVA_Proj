@@ -190,22 +190,19 @@
 
 
             <div  class="flex justify-center w-full font-Inter">
-                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data">
                     <h2 class="text-2xl text-center font-bold">Add New Equipment</h2>
                     <div class="flex justify-start pl-10">
-                        <p  class="font-semibold text-md mr-2">Item Name:</p>
+                        <p class="font-semibold text-md mr-2">Item Name:</p>
                         <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="itemName" name="itemName" required>
                     </div>
-                   
+                    
                     <div class="flex justify-start pl-10">
                         <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
-                        <select class="border-[1px] border-black rounded-md" id="addvehicleAssignment">
-                            <option value="Engine 72">Engine 72</option>
-                            <option value="Water Tender 72">Water Tender 72</option>
-                            <option value="Pumper 72">Pumper 72</option>
+                        <select class="border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
                         </select>
                     </div>
-                  
+                
                     <div class="flex justify-start pl-10">
                         <p class="font-semibold text-md">Date Acquired:</p>
                         <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
@@ -215,12 +212,13 @@
                         <p class="mr-2 font-semibold text-md">Upload Image:</p>
                         <input type="file" id="itemImage" name="itemImage" accept="image/*">
                     </div>
+                
                     <div class="flex justify-center space-x-10">
                         <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
-                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeForm()">Close</button>
+                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
                     </div>
-                   
                 </form>
+                
             </div>
 
             <div  class="flex justify-center w-full font-Inter">

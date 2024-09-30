@@ -84,22 +84,22 @@ function CancelInv(){
 
 }
 
-function seeinventory(){
-    var inventorydetail = document.getElementById('inventorydetail');
-    if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
+// function seeinventory(){
+//     var inventorydetail = document.getElementById('inventorydetail');
+//     if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
        
-        inventorydetail.style.display = 'block';
-    } else {
+//         inventorydetail.style.display = 'block';
+//     } else {
       
-        inventorydetail.style.display = 'none';
-    }
-}
-function exitinventorydetail(){
-    var inventorydetail = document.getElementById('inventorydetail');
+//         inventorydetail.style.display = 'none';
+//     }
+// }
+// function exitinventorydetail(){
+//     var inventorydetail = document.getElementById('inventorydetail');
 
-    inventorydetail.style.display = 'none';
+//     inventorydetail.style.display = 'none';
  
-}
+// }
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             console.log(data); 
-            const container = document.getElementById('Container');
+            const container = document.getElementById('dhContainer');
             if (!container) {
                 return;
             }
@@ -310,4 +310,176 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+//INVENTORY
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/auth/inventory') 
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = ''; 
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
+                row.dataset.itemId = item.id; // Use 'id' from the response
+
+
+                row.innerHTML = `
+                <td>
+                    <div class="justify-center flex m-2">
+                        <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
+                    </div>
+                </td>
+                <td><p class="text-center">${item.name}</p></td> <!-- Changed to item.name -->
+                <td class="flex justify-center pr-5 h-full pt-5">
+                   <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                        <option value="" disabled ${!item.Status ? 'selected' : ''}></option> <!-- Changed to item.Status -->
+                        <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option> <!-- Changed to item.Status -->
+                        <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option> <!-- Changed to item.Status -->
+                        <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option> <!-- Changed to item.Status -->
+                    </select>
+                </td>
+                <td>
+                    <div class="flex justify-center pr-5">
+                        <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                    </div>
+                </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+});
+
+function cancelInventory() {
+    console.log('Cancel clicked');
+}
+//INVENTORYLOG
+function submitInventory() {
+    const tbody = document.querySelector('#myTable2 tbody');
+    const items = [];
+    Array.from(tbody.children).forEach(row => {
+        const itemId = row.dataset.itemId;
+        const statusSelect = row.querySelector('select');
+        const remarksTextarea = row.querySelector('textarea');
+        
+        if (itemId && statusSelect.value) {
+            items.push({
+                itemID: itemId,
+                status: statusSelect.value,
+                remarks: remarksTextarea.value,
+            });
+        }
+    });
+    
+    fetch('/auth/inventory/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(items),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.redirect) {
+            // Redirect to /volunteer_form_inv
+            window.location.href = data.redirect; 
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting inventory:', error);
+        alert('Failed to submit inventory. Check console for details.');
+    });
+}
+
+// Function to fetch inventory data and populate the table
+async function fetchInventoryData() {
+    try {
+        const response = await fetch('/inventory'); // Adjust the URL if needed
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const inventoryData = await response.json();
+        populateTable(inventoryData);
+    } catch (error) {
+        console.error('Error fetching inventory data:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/auth/inventory2') 
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory data:', data); // Debug log for fetched data
+            const tbody = document.querySelector('#myTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
+
+                row.innerHTML = `
+                    <td>${item.checked_date || 'N/A'}</td>
+                    <td>${item.checked_time || 'N/A'}</td>
+                    <td>${item.vehicle || 'N/A'}</td>
+                    
+                    <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.itemID})">See details</a></td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+});
+
+function seeinventory(itemID) {
+    console.log(`Fetching details for itemID: ${itemID}`); // Debug log
+    fetch(`/auth/inventory2/detail/${itemID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory details:', data); // Debug log for fetched details
+            const inventoryDetailDiv = document.getElementById('inventorydetail');
+            const tbody = inventoryDetailDiv.querySelector('tbody');
+            tbody.innerHTML = ''; 
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No details available</td></tr>'; // Handle no data case
+                inventoryDetailDiv.style.display = 'block';
+                return;
+            }
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('text-center', 'h-10');
+
+                row.innerHTML = `
+                    <td>${item.itemName || 'N/A'}</td>
+                    <td>${item.status || 'N/A'}</td>
+                     <td>${item.vehicleAssignment || 'N/A'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+            inventoryDetailDiv.style.display = 'block';
+        })
+        .catch(err => console.error('Error fetching inventory details:', err));
+}
+
+function exitinventorydetail() {
+    const inventoryDetailDiv = document.getElementById('inventorydetail');
+    inventoryDetailDiv.style.display = 'none';
+}
+
+
 

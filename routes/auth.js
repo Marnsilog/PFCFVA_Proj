@@ -4,7 +4,15 @@ require('dotenv').config({ path: './.env' });
 const multer = require('multer');
 const upload = multer(); 
 const router = express.Router();
+const mysql = require('mysql2/promise');
 
+const db2 = mysql.createPool({
+    host: process.env.DB_HOST,
+    //port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
 
 
 module.exports = (db) => {
@@ -410,6 +418,70 @@ module.exports = (db) => {
             res.status(201).json({ message: 'Vehicle added successfully!', vehicleId: result.insertId });
         });
     });
+
+    router.get('/inventory', (req, res) => {
+        const query = "SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory WHERE itemStatus = 'Available'";
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            //console.log(results);
+            res.json(results);
+        });
+    });
+    
+    router.post('/inventory/log', async (req, res) => {
+        const items = req.body; 
+        const username = req.session.user?.username; 
+        let connection;
+    
+        try {
+            connection = await db2.getConnection(); 
+            await connection.beginTransaction();
+            
+            for (const item of items) {
+                const { itemID, status, remarks } = item;
+                const [currentStatusResult] = await connection.query(
+                    'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
+                    [itemID]
+                );
+                const currentStatus = currentStatusResult[0]?.Status;
+                if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
+                    await connection.query(
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, itemStatusUpdates, dateAndTimeChecked, remarks) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), ?, NOW(), ?)`, 
+                        [itemID, username, status, remarks]
+                    );
+    
+                    // Update the inventory status
+                    await connection.query(
+                        'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
+                        [status, itemID]
+                    );
+                }
+            }
+    
+            await connection.commit();
+            res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            
+        } catch (err) {
+            console.error('Database error:', err);
+            
+            // Rollback the transaction if any operation fails
+            if (connection) await connection.rollback();
+            res.status(500).json({ message: 'Server error' });
+        } finally {
+            if (connection) connection.release();
+        }
+    });
+    
+    
+    
+    
+    
+    
+    
     
     
     return router;

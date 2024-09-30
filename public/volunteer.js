@@ -311,3 +311,85 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/auth/inventory') // Fetching from the /auth/inventory endpoint
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = ''; // Clear previous rows
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
+                row.dataset.itemId = item.id; // Use 'id' from the response
+                const imageSrc = item.itemImage ? `/uploads/${item.itemImage}` : '/path/to/placeholder/image.jpg';
+                const altText = item.itemImage ? item.name : 'Image not available';
+
+                row.innerHTML = `
+                <td>
+                    <div class="justify-center flex m-2">
+                        <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
+                    </div>
+                </td>
+                <td><p class="text-center">${item.name}</p></td> <!-- Changed to item.name -->
+                <td class="flex justify-center pr-5 h-full pt-5">
+                   <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                        <option value="" disabled ${!item.Status ? 'selected' : ''}></option> <!-- Changed to item.Status -->
+                        <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option> <!-- Changed to item.Status -->
+                        <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option> <!-- Changed to item.Status -->
+                        <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option> <!-- Changed to item.Status -->
+                    </select>
+                </td>
+                <td>
+                    <div class="flex justify-center pr-5">
+                        <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                    </div>
+                </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+});
+
+function cancelInventory() {
+    console.log('Cancel clicked');
+}
+
+function submitInventory() {
+    const tbody = document.querySelector('#myTable2 tbody');
+    const items = [];
+    Array.from(tbody.children).forEach(row => {
+        const itemId = row.dataset.itemId;
+        const statusSelect = row.querySelector('select');
+        const remarksTextarea = row.querySelector('textarea');
+        
+        if (itemId && statusSelect.value) {
+            items.push({
+                itemID: itemId,
+                status: statusSelect.value,
+                remarks: remarksTextarea.value,
+            });
+        }
+    });
+    
+    fetch('/auth/inventory/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(items),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.redirect) {
+            // Redirect to /volunteer_form_inv
+            window.location.href = data.redirect; 
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting inventory:', error);
+        alert('Failed to submit inventory. Check console for details.');
+    });
+}
+

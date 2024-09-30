@@ -114,6 +114,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//Leaderboards
+
 document.addEventListener('DOMContentLoaded', function () {
     fetch('/auth/volunteers')
         .then(response => response.json())
@@ -124,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg  shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[37rem] min-h-[37rem] overflow-y-auto rounded-lg  shadow-black shadow-lg">
                     <table id="myTable2" class="text-start   w-full px-4">
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
                             <tr>
@@ -296,8 +298,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //INVENTORY
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/auth/inventory') 
+//VOLUNTEER INV
+function loadsVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('sortVehicleAssignment');
+            selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
+
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+                });
+            } else {
+                console.error('No vehicle assignments found');
+            }
+
+            // Add event listener for sorting
+            selectElement.addEventListener('change', () => {
+                const selectedVehicle = selectElement.value; // Get selected value
+                fetchAndDisplayInventory(selectedVehicle); // Pass selected vehicle to the function
+            });
+        })
+        .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+
+function fetchAndDisplayInventory(vehicleName) {
+    let url = '/auth/inventory'; 
+
+    if (vehicleName) {
+        url += `?sortVehicle=${encodeURIComponent(vehicleName)}`; 
+    }
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector('#myTable2 tbody');
@@ -306,36 +339,39 @@ document.addEventListener('DOMContentLoaded', function() {
             data.forEach(item => {
                 const row = document.createElement('tr');
                 row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
-                row.dataset.itemId = item.id; // Use 'id' from the response
-
+                row.dataset.itemId = item.id;
 
                 row.innerHTML = `
-                <td>
-                    <div class="justify-center flex m-2">
-                        <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
-                    </div>
-                </td>
-                <td><p class="text-center">${item.name}</p></td> <!-- Changed to item.name -->
-                <td class="flex justify-center pr-5 h-full pt-5">
-                   <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
-                        <option value="" disabled ${!item.Status ? 'selected' : ''}></option> <!-- Changed to item.Status -->
-                        <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option> <!-- Changed to item.Status -->
-                        <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option> <!-- Changed to item.Status -->
-                        <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option> <!-- Changed to item.Status -->
-                    </select>
-                </td>
-                <td>
-                    <div class="flex justify-center pr-5">
-                        <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
-                    </div>
-                </td>
+                    <td>
+                        <div class="justify-center flex m-2">
+                            <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
+                        </div>
+                    </td>
+                    <td><p class="text-center">${item.name}</p></td>
+                    <td class="flex justify-center pr-5 h-14 pt-5">
+                       <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                            <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                            <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                            <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                            <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="flex justify-center pr-5">
+                            <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                        </div>
+                    </td>
                 `;
 
                 tbody.appendChild(row);
             });
         })
         .catch(err => console.error('Error fetching inventory data:', err));
-});
+}
+window.onload = () => {
+    loadsVehicleAssignments();
+    fetchAndDisplayInventory(); 
+};
 
 function cancelInventory() {
     console.log('Cancel clicked');

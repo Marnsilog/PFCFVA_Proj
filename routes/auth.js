@@ -420,16 +420,22 @@ module.exports = (db) => {
     });
 
     router.get('/inventory', (req, res) => {
-        const query = "SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory WHERE itemStatus = 'Available'";
+        const { sortVehicle } = req.query; // Get sorting option from query parameters
+        let query = "SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory WHERE itemStatus = 'Available'";
+    
+        if (sortVehicle) {
+            query += ` AND vehicleAssignment = '${sortVehicle}'`; // Filter by vehicle name if provided
+        }
+    
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
             }
-            //console.log(results);
             res.json(results);
         });
     });
+    
     
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
@@ -450,8 +456,8 @@ module.exports = (db) => {
     
                 if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
                     await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeFrom, changeTo, dateAndTimeChecked, remarks) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), ?, ?, NOW(), ?)`, 
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
                         [itemID, username, currentStatus, status, remarks]
                     );
     
@@ -556,9 +562,9 @@ module.exports = (db) => {
     
                 if (currentVehicleAssignment !== vehicleAssignment) {
                     await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeFrom, changeTo, dateAndTimeChecked) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), ?, ?, NOW())`, // Update here
-                        [itemID, username, currentVehicleAssignment, vehicleAssignment] // Changed here
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+                        [itemID, username, currentVehicleAssignment, vehicleAssignment] 
                     );
                     await connection.query(
                         'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',

@@ -264,7 +264,7 @@ function loadsVehicleAssignments() {
         .then(response => response.json())
         .then(data => {
             const selectElement = document.getElementById('sortVehicleAssignment');
-            selectElement.innerHTML = '<option value="">All Vehicles</option>'; // Set "All Vehicles" with empty value
+            selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
 
             if (data && data.length > 0) {
                 data.forEach(item => {
@@ -283,7 +283,7 @@ function loadsVehicleAssignments() {
         .catch(error => console.error('Error loading vehicle assignments:', error));
 }
 
-async function loadVehicleAssignments(itemId, selectElement, assignedVehicle) {
+async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
     try {
         const response = await fetch('/getVehicleAssignments');
         const vehicles = await response.json();
@@ -314,8 +314,8 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
 
         inventoryItems.forEach(async (item) => {
             const inventoryDiv = document.createElement('div');
-            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item'); // Add the 'inventory-item' class
-            inventoryDiv.setAttribute('data-item-id', item.itemId); // Set the data attribute with itemId
+            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item'); 
+            inventoryDiv.setAttribute('data-item-id', item.itemId); 
             inventoryDiv.innerHTML = `
                 <div class="w-[95%] rounded-lg h-20 bg-[#DDDDDD] flex justify-between mx-6">
                     <div class="flex justify-normal space-x-6">
@@ -332,7 +332,7 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
             `;
             container.appendChild(inventoryDiv);
             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
-            await loadVehicleAssignments(item.itemId, selectElement, item.vehicleAssignment);
+            await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
         });
     } catch (error) {
         console.error('Error fetching inventory data:', error);

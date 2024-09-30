@@ -420,16 +420,22 @@ module.exports = (db) => {
     });
 
     router.get('/inventory', (req, res) => {
-        const query = "SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory WHERE itemStatus = 'Available'";
+        const { sortVehicle } = req.query; // Get sorting option from query parameters
+        let query = "SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory WHERE itemStatus = 'Available'";
+    
+        if (sortVehicle) {
+            query += ` AND vehicleAssignment = '${sortVehicle}'`; // Filter by vehicle name if provided
+        }
+    
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
             }
-            //console.log(results);
             res.json(results);
         });
     });
+    
     
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
@@ -447,11 +453,12 @@ module.exports = (db) => {
                     [itemID]
                 );
                 const currentStatus = currentStatusResult[0]?.Status;
+    
                 if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
                     await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, itemStatusUpdates, dateAndTimeChecked, remarks) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), ?, NOW(), ?)`, 
-                        [itemID, username, status, remarks]
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
+                        [itemID, username, currentStatus, status, remarks]
                     );
     
                     // Update the inventory status
@@ -502,7 +509,6 @@ module.exports = (db) => {
         });
     });
     
-// Add this route to your existing routes
     router.get('/inventory2/detail/:itemID', (req, res) => {
         const itemID = req.params.itemID;
         const query = `
@@ -518,9 +524,15 @@ module.exports = (db) => {
         });
     });
 
+    //FOR SUPERVISOR INV
     router.get('/inventory-supervisor', (req, res) => {
-        const query = "SELECT itemId, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = 'Available'";
-        db.query(query, (err, results) => {
+        const vehicleAssignment = req.query.vehicleAssignment; 
+        let query = "SELECT itemId, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = 'Available'";
+        if (vehicleAssignment && vehicleAssignment !== '') {
+            query += " AND vehicleAssignment = ?";
+        }
+    
+        db.query(query, vehicleAssignment ? [vehicleAssignment] : [], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -529,9 +541,51 @@ module.exports = (db) => {
         });
     });
     
-
     
 
+    router.post('/inventory-supervisor/log', async (req, res) => {
+        const items = req.body;
+        const username = req.session.user?.username;
+        let connection;
+    
+        try {
+            connection = await db2.getConnection();
+            await connection.beginTransaction();
+            
+            for (const item of items) {
+                const { itemID, vehicleAssignment } = item;
+                const [currentVehicleAssignmentResult] = await connection.query(
+                    'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+                    [itemID]
+                );
+                const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+                if (currentVehicleAssignment !== vehicleAssignment) {
+                    await connection.query(
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+                        [itemID, username, currentVehicleAssignment, vehicleAssignment] 
+                    );
+                    await connection.query(
+                        'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+                        [vehicleAssignment, itemID]
+                    );
+                }
+            }
+    
+            await connection.commit();
+            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_dashboard' });
+            
+        } catch (err) {
+            console.error('Database error:', err);
+            if (connection) await connection.rollback();
+            res.status(500).json({ message: 'Server error' });
+        } finally {
+            if (connection) connection.release();
+        }
+    });
+    
+    
     return router;
 };
 

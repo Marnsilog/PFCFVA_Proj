@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             fetch('/uploadEquipment', {
                 method: 'POST',
-                body: formData // Send the form data, including file uploads
+                body: formData 
             })
                 .then(response => {
                     if (!response.ok) {
@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     alert('Success: ' + data.message);
-                    closeForm(); // Close the form on success
-                    window.location.reload(); // Reload the page
+                    closeForm();
+                    window.location.reload(); 
                 })
                 .catch(error => {
                     console.error('Error:', error);

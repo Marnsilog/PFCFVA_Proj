@@ -89,14 +89,15 @@
         
 
 <!-- SETTINGS -->
-<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
-    <div class="bg-white rounded-lg border-[1px] border-black w-64">
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
-        <div class="bg-black h-[2px]"></div>
-      
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
-</div>
-</div>
+    <!-- SETTINGS -->
+    <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
+        <div class="bg-white rounded-lg border-[1px] border-black w-64">
+            <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
+            <div class="bg-black h-[2px]"></div>
+          
+            <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+        </div>
+    </div>
 
 
 
@@ -106,25 +107,22 @@
         <div class="md:max-w-[75rem] w-full">
             <div class="md:mt-5 font-Inter w-full" >
                 <p class="text-center md:text-start font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
-                <div class="mt-5 w-full md:flex md:justify-between md:mt-16">
+                <div class="mt-5 w-full md:flex md:justify-between md:mt-7">
                     <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-[1px] rounded-lg border-black flex justify-normal md:mx-0 ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                         <input class="w-full h-full px-2 focus:outline-none rounded-lg" type="text" placeholder="Search">
                     </div>
 
                     <div class="mt-7 ml-2 || md:ml-0 md:mt-0">
-                        <select class="rounded-lg border-[1px] rounded-black  md:rounded-full" id="truckId">
-                            <option value="text" disabled selected>Vehicle</option>
-                            <option value="text">Engine 72</option>
-                            <option value="text">Water Tender 72</option>
-                            <option value="text">Pumber 72</option>
-                        </select>
+                        <select class="h-8 pr-16  rounded-lg md:border-[2px] border-[1px] border-black text-start mx-5" id="sortVehicleAssignment">
+                            <option value="">All Vehicles</option>
+                    </select>
                     </div>
     
                 </div>
     
              <div class="w-full mt-2 md:mt-7">        
-                <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600">
+                <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600 h-full min-h-[28rem] max-h-[28rem]">
                     <thead class="h-14 bg-gray-300">
                         <tr class="font-semibold">
                             <th></th>
@@ -135,13 +133,12 @@
                         </tr>
                     </thead>
                     <tbody class="md:text-2xl text-lg font-Inter">
-                        <!-- Rows will be dynamically added here -->
                     </tbody>
                 </table>
-                                <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
-                                    <button onclick="CancelInv()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full text-white h-8 w-20 md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
-                                    <button onclick="submitInventory()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 md:text-xl md:h-12 md:w-36">Submit</button>
-                                </div>
+                <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
+                    <button onclick="location.href='/volunteer_form_inv'" class="bg-[#930D0D] hover:bg-gray-500 rounded-full text-white h-8 w-20 md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
+                    <button onclick="submitInventory()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 md:text-xl md:h-12 md:w-36">Submit</button>
+                </div>
                                 
              </div>
             </div>

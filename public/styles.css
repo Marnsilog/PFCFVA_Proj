@@ -678,12 +678,12 @@ video {
   top: 5rem;
 }
 
-.top-32{
-  top: 8rem;
-}
-
 .top-36{
   top: 9rem;
+}
+
+.top-44{
+  top: 11rem;
 }
 
 .top-5{
@@ -3086,6 +3086,10 @@ video {
     height: 3rem;
   }
 
+  .md\:h-14{
+    height: 3.5rem;
+  }
+
   .md\:h-16{
     height: 4rem;
   }
@@ -3144,10 +3148,6 @@ video {
 
   .md\:h-screen{
     height: 100vh;
-  }
-
-  .md\:h-14{
-    height: 3.5rem;
   }
 
   .md\:max-h-\[38rem\]{

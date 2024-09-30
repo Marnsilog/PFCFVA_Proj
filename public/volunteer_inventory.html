@@ -98,96 +98,7 @@
 </div>
 </div>
 
-<!--FORM INVENTORY-->
-<div class="pt-4 w-full flex justify-center" >
-    <div class="w-full md:max-w-[85rem] md:pt-7 hidden"  id="frmInventory">
-            <div class="w-full">
-                        <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
-                            <div class=""> <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="AddInventory()">+ Add Inventory log</button></div>
-                             <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                                <input class="w-full h-full focus:outline-none" type="text">
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="font-Inter w-full">       
-                    <table id="myTable" class="mt-5 w-full md:mt-10 ">
-                        <thead class="h-14 bg-[#D9D9D9] opacity-75 text-black md:mt-10 mdh-16 md:text-3xl ">
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Vehicle</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="w-full text-center text-sm md:text-2xl">
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>09/25/23</td>
-                                <td>06:45 pm</td>
-                                <td>Water Tender 72</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>10/03/23</td>
-                                <td>10:48 am</td>
-                                <td>Pumper2</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>11/03/23</td>
-                                <td>02:48 am</td>
-                                <td>Pumper3</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex justify-center">
-                    <div class="absolute top-32 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail">
-                        <p class="text-2xl font-bold mx-10 my-5">Pumper 72</p>
-                        <div>
-                            <table class="w-full font-Inter">
-                                <thead class="h-14 border-y-[1px] border-black">
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Blue)</td>
-                                        <td>1</td>
-                                        <td>Damaged</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Yellow)</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Fire Hydrant Key</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="flex justify-center underline underline-offset-2"> <a href="#" onclick="exitinventorydetail()">close</a></div>
-                           
-                        </div>
-                    </div>
-
-                </div>
-                
-        </div>
-                
-                    
-            
-    </div>
 
 <!-- Add Inventory -->
 <div id="addInventory">
@@ -236,30 +147,7 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center">
-        <div class="absolute top-36 w-[32rem] h-[30rem] bg-white border-black border-2 rounded-lg "id="remarkstag" style="display: none;">
-            <!-- <div class="flex justify-normal pt-8 pl-8 pb-2">
-                <img src="/public/img/ex1.jpg" class=" w-[10rem] h-[13rem] border-2 border-black object-fill" alt="" srcset="">
-                <div class="font-Inter text-xl mx-2">
-                    <p class="text-2xl font-bold">Item 1</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li class="text-gray-700">Damaged</li>
-                        <li class="text-gray-700">Missing</li>
-                        
-                    </ul>
-                </div>
-                
-            </div> -->
-            <div class="flex justify-center">
-                <textarea name="" class="w-[28rem] min-h-[10rem] border-2 border-black focus:outline-none px-3 bg-[#E6E6E6]" id=""></textarea>
-            </div>
-            <div class="flex justify-end space-x-5 pr-8 pt-5">
-                <button class="bg-[#E6E6E6] w-20 h-7 border-[1px] rounded-full text-black" onclick="exitremarks()">Cancel</button>
-                <Button class="bg-[#E6E6E6] w-20 h-7 border-[1px] rounded-full text-black">Save</Button>
-            </div>
-        </div>
-
-    </div>
+    
 </div>
 
 

@@ -112,71 +112,42 @@
                     </div>
 
                     <div class="font-Inter w-full">       
-                    <table id="myTable" class="mt-5 w-full md:mt-10 ">
-                        <thead class="h-14 bg-[#D9D9D9] opacity-75 text-black md:mt-10 mdh-16 md:text-3xl ">
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Vehicle</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="w-full text-center text-sm md:text-2xl">
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>09/25/23</td>
-                                <td>06:45 pm</td>
-                                <td>Water Tender 72</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>10/03/23</td>
-                                <td>10:48 am</td>
-                                <td>Pumper2</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>11/03/23</td>
-                                <td>02:48 am</td>
-                                <td>Pumper3</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
+                        <div class="font-Inter w-full">       
+                            <table id="myTable" class="mt-5 w-full md:mt-10">
+                                <thead class="h-14 bg-[#D9D9D9] opacity-75 text-black md:mt-10 mdh-16 md:text-3xl">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Vehicle</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="w-full text-center text-sm md:text-2xl">
+                                    <!-- Rows will be populated here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
                         
-                        </tbody>
-                    </table>
                 </div>
 
-                <div class="flex justify-center" style="display: none;">
-                    <div class="absolute top-32 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail">
-                        <p class="text-2xl font-bold mx-10 my-5">Pumper 72</p>
+                <div class="flex justify-center" >
+                    <div class="absolute top-44 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail" style="display: none;">
                         <div>
                             <table class="w-full font-Inter">
                                 <thead class="h-14 border-y-[1px] border-black">
                                     <tr>
                                         <th>Item</th>
-                                        <th>Quantity</th>
                                         <th>Status</th>
+                                        <th>Vehicle Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Blue)</td>
-                                        <td>1</td>
-                                        <td>Damaged</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Yellow)</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Fire Hydrant Key</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
+                                    <!-- Dynamic content will be inserted here -->
                                 </tbody>
                             </table>
-                            <div class="flex justify-center underline underline-offset-2"> <a href="#" onclick="exitinventorydetail()">close</a></div>
+                            <div class="flex justify-center underline underline-offset-2">
+                                <a href="#" onclick="exitinventorydetail()">close</a>
+                            </div>
                            
                         </div>
                     </div>
@@ -188,8 +159,8 @@
     </div>
 
 <!-- Add Inventory -->
-    <div class="flex justify-center">
-        <div class="absolute top-36 w-[32rem] h-[30rem] bg-white border-black border-2 rounded-lg "id="remarkstag" style="display: none;">
+    <!-- <div class="flex justify-center">
+        <div class="absolute top-36 w-[32rem] h-[30rem] bg-white border-black border-2 rounded-lg "id="inventorydetail" style="display: none;">
             <div class="flex justify-normal pt-8 pl-8 pb-2">
                 <img src="/public/img/ex1.jpg" class=" w-[10rem] h-[13rem] border-2 border-black object-fill" alt="" srcset="">
                 <div class="font-Inter text-xl mx-2">
@@ -211,7 +182,7 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
 </div>
 
 

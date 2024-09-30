@@ -476,14 +476,50 @@ module.exports = (db) => {
         }
     });
     
+    router.get('/inventory2', (req, res) => {
+        const username = req.session.user?.username; 
+        const query = `
+                                        SELECT il.itemID, 
+                        DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                        DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                        iv.vehicleAssignment AS vehicle
+                    FROM 
+                        tbl_inventory_logs il
+                    JOIN 
+                        tbl_inventory iv ON iv.ItemID = il.itemID
+                    WHERE 
+                        il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+                    ORDER BY 
+                        il.dateAndTimeChecked DESC  -- Sort by date and time checked, most recent first
+                    LIMIT 0, 25;`;
     
+        db.query(query, [ username], (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
     
+// Add this route to your existing routes
+    router.get('/inventory2/detail/:itemID', (req, res) => {
+        const itemID = req.params.itemID;
+        const query = `
+            SELECT itemName, status,vehicleAssignment FROM tbl_inventory  WHERE itemID = ?;
+        `;
+
+        db.query(query, [itemID], (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory details:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+
     
-    
-    
-    
-    
-    
+
     return router;
 };
 

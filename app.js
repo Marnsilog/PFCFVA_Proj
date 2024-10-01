@@ -389,7 +389,7 @@ app.get('/recentAttendance', (req, res) => {
         FROM tbl_attendance a
         JOIN tbl_accounts b ON a.accountID = b.accountID
         ORDER BY a.attendanceID DESC
-        LIMIT 10`; // pang limit kung ilan kukunin shit
+        LIMIT 50`; // pang limit kung ilan kukunin shit
 
     db.query(sql, (err, results) => {
         if (err) {

@@ -116,7 +116,7 @@ function icsBack(){
             x.type = "text";
             unseen.classList.remove('hidden');
             seen.classList.add('hidden');
-    
+
         } else {
             x.type = "password";
             seen.classList.remove('hidden');

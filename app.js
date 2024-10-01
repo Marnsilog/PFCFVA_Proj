@@ -145,8 +145,8 @@ io.on('connection', (socket) => {
 const authRoutes = require('./routes/auth')(db); // Pass the `db` connection
 app.use('/auth', authRoutes);
 
-const attendanceRoutes = require('./routes/routes_all')(db); // Pass the `db` connection
-app.use('/routes_attendance', attendanceRoutes);
+const allRoutes = require('./routes/routes_all')(db); // Pass the `db` connection
+app.use('/routes_attendance', allRoutes);
 
 
 
@@ -389,7 +389,7 @@ app.get('/recentAttendance', (req, res) => {
         FROM tbl_attendance a
         JOIN tbl_accounts b ON a.accountID = b.accountID
         ORDER BY a.attendanceID DESC
-        LIMIT 10`; // pang limit kung ilan kukunin shit
+        LIMIT 50`; // pang limit kung ilan kukunin shit
 
     db.query(sql, (err, results) => {
         if (err) {

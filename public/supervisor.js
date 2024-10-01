@@ -10,7 +10,7 @@
     frmFireResponse.style.display = 'none';
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
-    dutyH.classList.add('text-black');
+    dutyH.classList.add('text-bla   ck');
     }
 
   function showFireRes(){

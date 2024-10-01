@@ -36,7 +36,7 @@
                 </div>
             </div>
             
-            <div class="px-36 my-10">
+            <!-- <div class="px-36 my-10">
                 <p class="font-Inter text-xl">Attendance Logs</p>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-200">
@@ -52,6 +52,30 @@
                             
                         </tbody>
                     </table>
+                </div>
+            </div> -->
+
+            <div class="px-36 my-10">
+                <p class="font-Inter text-xl">Attendance Logs</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b">Name</th>
+                                <th class="py-2 px-4 border-b border-r">Time In</th>
+                                <th class="py-2 px-4 border-b border-r">Time Out</th>
+                                <th class="py-2 px-4 border-b border-r">Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <!-- Make the tbody section scrollable -->
+                    <div style="max-height: 300px; overflow-y: auto;"> <!-- Apply scrollable behavior to the div -->
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <tbody id="attendanceLogs">
+                                <!-- Attendance logs will be appended here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
            

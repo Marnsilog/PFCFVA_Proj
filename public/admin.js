@@ -482,4 +482,42 @@ function icsBack(){
         }
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td>${row.item}</td>
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.from_vehicle}</td>
+                    <td>${row.change_to}</td>
+                    <td class="w-72 break-words overflow-auto">${row.remarks}</td>
+
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
     

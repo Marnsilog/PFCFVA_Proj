@@ -154,39 +154,31 @@
         </div>
 
         <div class="w-[370px] h-8 border-[1px] border-black flex justify-center font-Inter mt-8 ml-10 rounded-md">
-            <div class="w-[70%] h-full bg-[#930D0D] rounded-l-md"><p class="text-center text-white text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs.html'">Status logs</p></div>
-            <div class="w-full bg-white rounded-r-md"><p class="text-center text-black text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass.html'">Vehicle Assignment Logs</p></div>
+            <div class="w-[70%] h-full bg-[#930D0D] rounded-l-md"><p class="text-center text-white text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs'">Status logs</p></div>
+            <div class="w-full bg-white rounded-r-md"><p class="text-center text-black text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass'">Vehicle Assignment Logs</p></div>
         </div>
 
-        <table class="md:w-full w-[60rem] text-center mt-5" >
-            <thead class="md:h-12 md:text-2xl text-md  bg-[#D6D6D6] border-t-2 border-b-2 border-black">
-                <tr class="text-lg">
-                    <th> </th>
-                    <th class="py-2 sticky-col bg-[#D6D6D6]">Item</th>
-                    <th>Volunteer Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Quantity</th>
-                    <th>Vehicle</th>
-                    <th>Status</th>
-                    <th>Remarks</th>
-                </tr>
-            </thead>
-            <tbody class="font-[500]">
-                <tr>
-                   <td><div class="flex justify-center"><img src="img/ex2.jpg" class="w-10 h-10 object-fill mt-2" alt="" srcset=""></div></td>
-                   <td>Name</td>
-                   <td>Marniel Corsiga</td>
-                   <td>12/01/24</td>
-                   <td>12:30</td>
-                   <td>2</td>
-                   <td>Engine 72</td>
-                   <td>Missing</td>
-                   <td>Comments</td>
-                </tr>
-               
-            </tbody>
-        </table>   
+        <div class=" overflow-y-auto max-h-[35rem]">
+            <table class="md:w-full w-[60rem] text-center mt-5" >
+                <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] border-t-2 border-b-2 border-black sticky top-0 z-10">
+                    <tr class="text-lg ">
+                        <th></th>
+                        <th class="py-2 bg-[#D6D6D6]">Item</th>
+                        <th>Volunteer Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Vehicle</th>
+                        <th>from vehicle</th>
+                        <th>to vehicle</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-log" class="font-[500] ">
+                    <!-- Data will be injected here -->
+                </tbody>
+            </table>
+        </div>
+       
     </div>
 
  </div>
@@ -194,6 +186,5 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
-<!-- <script src="admin_modules.js" defer></script>
-<script src="register.js" defer></script> -->
+
 </html>

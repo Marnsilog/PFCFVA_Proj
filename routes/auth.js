@@ -687,6 +687,31 @@ module.exports = (db) => {
             JOIN tbl_inventory i ON i.itemID = il.itemID 
             JOIN tbl_accounts a ON a.accountID = il.accountID
             LEFT JOIN tbl_inventory iv ON iv.itemID = il.itemID
+            WHERE il.changeLabel = 'change status'
+            ORDER BY il.dateAndTimeChecked DESC
+            LIMIT 50`;
+    
+        db.query(query, (err, results) => {
+            if (err) throw err;
+            //console.log(results); // Log the results to see if data is retrieved
+            res.json(results);
+        });
+    });
+
+    router.get('/admin-inventory/log2', (req, res) => {
+        const query = `SELECT i.itemImage AS image, i.itemName AS item, 
+                a.firstName AS volunteer_name, 
+                DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                iv.vehicleAssignment AS vehicle, 
+                il.changeFrom AS from_vehicle, 
+                il.changeTo AS change_to, 
+                il.remarks 
+            FROM tbl_inventory_logs il
+            JOIN tbl_inventory i ON i.itemID = il.itemID 
+            JOIN tbl_accounts a ON a.accountID = il.accountID
+            LEFT JOIN tbl_inventory iv ON iv.itemID = il.itemID
+            WHERE il.changeLabel = 'change truckAssignment'
             ORDER BY il.dateAndTimeChecked DESC
             LIMIT 50`;
     

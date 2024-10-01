@@ -132,60 +132,18 @@
                                     <table class="w-full text-center border-2 border-black" >
                                         <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
                                             <tr>
-                                                <th>CALL SIGN</th>
-                                                <th>NAME</th>
+                                                <th>Call Sign</th>
+                                                <th>Name</th>
                                                 <th>Issue <br> Commands To</th>
-                                                <th>TIMER</th>
-                                                <th> </th>
+                                                <th>Timer</th>
+                                                <th>Remove</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="w-auto text-center text-xl ">
                                         
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 12</td>
-                                                <td>Marniel Corsiga</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16 bg-[#D9D9D9]">
-                                                <td>Probi 13</td>
-                                                <td>Maria Joanalynn Mariano</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-    
-                        
+                                        <tbody class="w-auto text-center text-xl" id="icsAttendees">
+                                            <!-- ICS Attendees will be populated here by JavaScript -->
                                         </tbody>
+                                        
                                     </table>
                                     <div  class="mt-2 flex justify-between text-lg text-white font-[500]" >
 
@@ -252,5 +210,6 @@
 </body>
 </div>
 <script src="supervisor.js" defer></script>
+<script src="module_incident.js" defer></script>
 
 </html>

@@ -16,7 +16,6 @@
                     <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
                     <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
                 </div>
-
                 <nav class="hidden text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                     <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
                         <li id="dashb" class="md:mt-12"><a href="/supervisor_dashboard">Dashboard</a></li>
@@ -29,23 +28,8 @@
                         </li>
                     </ul>
                 </nav>
-
                 <div class="flex justify-start space-x-3 mr-2">
-                    <!-- FOR NOTIFICATION -->
-                    <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                        <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/>
-                    </svg></a>
-                    <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mt-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="relative w-full flex justify-end z-30">
-                <div class="md:hidden w-1/2 h-[22rem] py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;">
-                    <!-- mobile menu content -->
+                    <!-- Notification and Mobile Menu Button Code -->
                 </div>
             </div>
         </div>
@@ -56,24 +40,22 @@
                 <div class="max-w-[80rem] w-full h-full">
                     <div class="font-Inter text-black">
                         <p class="font-bold text-4xl">Fire Response Attendees Checklist</p>
-                        <p class="mt-2 ml-3 text-xl">Choose volunteers to include in the Incident Command System (ICS). Make sure to select the vehicle assigned for the Officer In Charge. Only volunteers included will be able to receive fire response points after FIRE OUT.</p>
                     </div>
 
+                    <!-- Dropdown for Vehicle and Add Button -->
                     <div class="mt-9 flex justify-between">
                         <select class="h-9 pr-20 rounded-lg border-[2px] border-black text-start" id="truckId">
                             <option value="text">Choose Vehicle</option>
                             <option value="text">Engine 72</option>
                             <option value="text">Water Tender 72</option>
-                            <option value="text">Pumber 72</option>
+                            <option value="text">Pumper 72</option>
                         </select>
-                        <button class="bg-white border-2 border-black px-5 py-2 text-3xl font-[500] rounded-md flex justify-start space-x-5" onclick="addthis()">
-                            <svg class="w-7 h-7 mt-[6px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
-                            </svg>+
+                        <button class="bg-white border-2 border-black px-5 py-2 text-3xl font-[500] rounded-md flex justify-start space-x-5">
+                            <svg class="w-7 h-7 mt-[6px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>+
                         </button>
                     </div>
 
-                    <!-- Present Attendees Table Section -->
+                    <!-- Table for Present Attendees -->
                     <div class="mt-5 flex justify-center items-center max-w-[90rem]">
                         <div class="font-Inter w-full">
                             <table class="w-full text-center border-2 border-black">
@@ -85,28 +67,26 @@
                                     </tr>
                                 </thead>
                                 <tbody id="currentPresent">
-                                    <!-- List of present attendees will be populated here by JavaScript -->
+                                    <!-- Attendees will be dynamically populated here -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
+                    <!-- Confirm Attendance Button -->
                     <div class="flex justify-end">
-                        <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md" onclick="location.href='/supervisor_ics'">Confirm Attendance</button>
+                        <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md" id="confirmAttendanceBtn">Confirm Attendance</button>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Add Person Modal (canAddPerson) -->
-                    <div id="addPer" style="display: none;">
-                        <div class="w-full h-full flex justify-center">
-                            <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
-                                <div class="flex justify-end mr-3 font-bold text-2xl">
-                                    <a href="#" onclick="canaddPerson()">X</a>
-                                </div>
-                                <!-- You can add the form or content for adding a person here -->
-                            </div>
-                        </div>
+        <div id="addPer" style="display: none;">
+            <div class="w-full h-full flex justify-center">
+                <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
+                    <div class="flex justify-end mr-3 font-bold text-2xl">
+                        <a href="#" onclick="canaddPerson()">X</a>
                     </div>
-
                 </div>
             </div>
         </div>

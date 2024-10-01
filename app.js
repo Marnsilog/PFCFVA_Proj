@@ -513,6 +513,24 @@ app.get('/volunteerDetails', (req, res) => {
     }); 
 });
 
+// Endpoint to get current attendees with timeInStatus = 1
+app.get('/getCurrentPresent', (req, res) => {
+    const sql = `
+        SELECT b.callSign, b.firstName, b.middleInitial, b.lastName 
+        FROM tbl_attendance a
+        JOIN tbl_accounts b ON a.accountID = b.accountID
+        WHERE a.timeInStatus = 1
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) {  
+            console.error('Error retrieving current present attendees:', err);
+            res.status(500).send('Error retrieving current present attendees');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 

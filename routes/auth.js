@@ -126,7 +126,7 @@ module.exports = (db, db2) => {
                         profilePicPath: user.idPicture 
                     };
                     
-                    console.log(user.idPicture);
+                    //console.log(user.idPicture);
                     let redirectUrl;
                     if (user.accountType === 'Admin') {
                         redirectUrl = '/admin_dashboard';
@@ -245,7 +245,7 @@ module.exports = (db, db2) => {
                             return res.status(500).send({ success: false, message: 'Error saving profile picture' });
                         }
     
-                        console.log('File successfully uploaded to:', uploadPath);
+                        //console.log('File successfully uploaded to:', uploadPath);
                         profilePicturePath = `profilePicture/${uniqueFileName}`;
                         updateUserDetails(password, profilePicturePath); // Update with new picture
                     });
@@ -296,7 +296,15 @@ module.exports = (db, db2) => {
                         console.error('Error updating profile:', updateErr);
                         return res.status(500).send({ success: false, message: 'Error updating profile' });
                     }
-                    res.redirect('/volunteer_main_profile');
+                    let accountType =  req.session.user.permission;;
+                    if (accountType === 'Admin') {
+                        res.redirect('/admin_main_profile');
+                    } else if (accountType === 'Supervisor') {
+                        res.redirect('/supervisor_main_profile');
+                    } else if (accountType === 'Volunteer') {
+                        res.redirect('/volunteer_main_profile');
+                    }
+                  
                 });
             }
         });

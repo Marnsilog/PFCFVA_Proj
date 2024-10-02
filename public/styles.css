@@ -1352,10 +1352,6 @@ video {
   max-height: 12rem;
 }
 
-.max-h-\[28rem\]{
-  max-height: 28rem;
-}
-
 .max-h-\[30rem\]{
   max-height: 30rem;
 }
@@ -1380,10 +1376,6 @@ video {
   min-height: 10rem;
 }
 
-.min-h-\[28rem\]{
-  min-height: 28rem;
-}
-
 .min-h-\[2rem\]{
   min-height: 2rem;
 }
@@ -1392,8 +1384,16 @@ video {
   min-height: 32rem;
 }
 
+.min-h-\[35rem\]{
+  min-height: 35rem;
+}
+
 .min-h-\[37rem\]{
   min-height: 37rem;
+}
+
+.min-h-\[30rem\]{
+  min-height: 30rem;
 }
 
 .w-1\/2{

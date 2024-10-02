@@ -125,20 +125,23 @@
     
                 </div>
     
-             <div class="w-full mt-2 md:mt-7">        
-                <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600 h-full min-h-[28rem] max-h-[28rem]">
-                    <thead class="h-14 bg-gray-300">
-                        <tr class="font-semibold">
-                            <th></th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Remarks</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody class="md:text-2xl text-lg font-Inter">
-                    </tbody>
-                </table>
+             <div class="w-full mt-2 md:mt-7 ">   
+                <div class="overflow-y-auto h-full min-h-[35rem] max-h-[35rem] border-[1px] border-black shadow-lg shadow-gray-600 ">
+                    <table id="myTable2" class="w-full h-full">
+                        <thead class="h-14 bg-gray-300">
+                            <tr class="font-semibold">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="md:text-2xl text-lg font-Inter h-24">
+                        </tbody>
+                    </table>
+                </div>     
+               
                 <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
                     <button onclick="location.href='/volunteer_form_inv'" class="bg-[#930D0D] hover:bg-gray-500 rounded-full text-white h-8 w-20 md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
                     <button onclick="submitInventory()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 md:text-xl md:h-12 md:w-36">Submit</button>

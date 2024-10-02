@@ -242,60 +242,6 @@ function exitdtdetail2() {
     document.getElementById('frdetail').style.display = 'none';
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const editProfileForm = document.getElementById('editProfileForm');
-    
-    if (editProfileForm) {
-        editProfileForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from submitting the traditional way
-
-            const formData = {
-                username: document.getElementById('HiddenUsername').value,
-                lastName: document.getElementById('EditLastName').value,
-                firstName: document.getElementById('EditFirstName').value,
-                middleName: document.getElementById('EditMiddleName').value,
-                emailAddress: document.getElementById('EditEmailAddress').value,
-                contactNumber: document.getElementById('EditContactNumber').value,
-                oldPassword: document.getElementById('EditOldPassword').value,
-                newPassword: document.getElementById('EditNewPassword').value,
-                civilStatus: document.getElementById('EditCivilStatus').value,
-                nationality: document.getElementById('EditNationality').value,
-                bloodType: document.getElementById('EditBloodType').value,
-                birthday: document.getElementById('EditBirthday').value,
-                gender: document.getElementById('EditGender').value,
-                currentAddress: document.getElementById('EditCurrentAddress').value,
-                emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
-                emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
-                highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
-                nameOfCompany: document.getElementById('EditNameOfCompany').value,
-                yearsInService: document.getElementById('EditYearsInService').value,
-                skillsTraining: document.getElementById('EditSkillsTraining').value,
-                otherAffiliation: document.getElementById('EditOtherAffiliation').value,
-            };
-
-            fetch('/auth/edit-profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text); });
-                }
-                return response.text();
-            })
-            .then(message => {
-                alert(message); 
-                window.location.href = 'volunteer_main_profile';
-            })
-            .catch(error => {
-                alert('Error: ' + error.message);
-            });
-        });
-    }
-});
 
 //INVENTORY
 //VOLUNTEER INV

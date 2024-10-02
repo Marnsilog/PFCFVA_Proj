@@ -17,8 +17,8 @@ const http = require('http');  // Added for HTTP server creation
 // const session = require('express-session');
 // const MySQLStore = require('express-mysql-session')(session);
 const mysql2 = require('mysql2/promise');
+const fileUpload = require('express-fileupload');
 
-const randomBytesAsync = promisify(crypto.randomBytes);
 
 
 const db = mysql.createConnection({
@@ -50,7 +50,9 @@ db.connect((err) => {
 
 const app = express();
 
-
+app.use(fileUpload({
+    createParentPath: true,  // Automatically creates directories if they don't exist
+}));
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/'),
     filename: function(req, file, cb) {
@@ -857,7 +859,8 @@ app.put('/updateEquipment', (req, res) => {
 const pages = require('./routes/pages');
 app.use('/', pages);
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
-
+app.use('/profilePicture', express.static(path.join(__dirname, 'profilePicture')));
+app.use('/img', express.static(path.join(__dirname, 'public/img')));
 
 
 // //port

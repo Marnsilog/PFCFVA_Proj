@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -135,6 +135,9 @@
 <!-- NEW INVENTORY LOGS -->
  <div class="w-full flex justify-center h-full">
     <div class="max-w-[90rem] w-full h-auto">
+        <div id="loading-container" style="display: none;">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
         <div class="flex justify-between w-full px-20 font-Inter pt-14">
             <div>
                 <p class="text-4xl font-bold">Inventory Logs</p>
@@ -160,7 +163,7 @@
 
         <div class=" overflow-y-auto max-h-[35rem]">
             <table class="md:w-full w-[60rem] text-center mt-5" >
-                <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] border-t-2 border-b-2 border-black sticky top-0 z-10">
+                <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] border-t-2 border-b-2 border-black">
                     <tr class="text-lg ">
                         <th></th>
                         <th class="py-2 bg-[#D6D6D6]">Item</th>
@@ -186,5 +189,5 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
-
+<script src="profileImage.js" defer></script>
 </html>

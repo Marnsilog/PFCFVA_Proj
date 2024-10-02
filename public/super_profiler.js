@@ -95,8 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             const dateOfBirth = new Date(data.dateOfBirth);
             const formattedDate = dateOfBirth.toISOString().split('T')[0];
-
-            // Check if elements exist before setting their values
+            
             if (document.getElementById('HiddenUsername')) {
                 document.getElementById('HiddenUsername').value = data.username;
             }
@@ -204,3 +203,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchDashboardData();
 });
+

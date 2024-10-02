@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -133,6 +133,9 @@
 </div>
 <!-- INCIDENT COMMAND SYSTEM -->
 <div id="InciSys">
+    <div id="loading-container" style="display: none;">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
     <div class="w-full h-full flex justify-center pt-5 md:pt-16 md:pb-32" >
         <div class="max-w-[75rem] w-full">
             <div class="font-Inter text-black">
@@ -258,4 +261,5 @@
 <script src="admin.js" defer></script>
 <script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

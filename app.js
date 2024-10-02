@@ -745,39 +745,88 @@ app.put('/moveToTrash/:itemName', (req, res) => {
 
 
 // Permanently delete equipment from trash
+// app.delete('/deleteFromTrash/:itemName', (req, res) => {
+//     const itemName = req.params.itemName;
+
+//     // First, retrieve the image path from the database
+//     const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+//     db.query(getImagePathQuery, [itemName], (err, results) => {
+//         if (err) {
+//             console.error('Error retrieving image path:', err);
+//             return res.status(500).json({ error: 'Failed to retrieve image path.' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ error: 'Equipment not found.' });
+//         }
+
+//         const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+
+//         // Delete the image file
+//         fs.unlink(imagePath, (err) => {
+//             if (err) {
+//                 console.error('Failed to delete image file:', err);
+//                 return res.status(500).json({ error: 'Failed to delete image file.' });
+//             }
+
+//             // Proceed to delete the database entry
+//             const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+//             db.query(sql, [itemName], (err, result) => {
+//                 if (err) {
+//                     console.error('Error deleting equipment:', err);
+//                     return res.status(500).json({ error: 'Failed to delete equipment.' });
+//                 }
+
+//                 res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+//             });
+//         });
+//     });
+// });
+
+
 app.delete('/deleteFromTrash/:itemName', (req, res) => {
-    const itemName = req.params.itemName;
+    const { itemName } = req.params;
+    const { password } = req.body;
+    const username = req.session.user?.username;  // Get the logged-in user's username
 
-    // First, retrieve the image path from the database
-    const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
-    db.query(getImagePathQuery, [itemName], (err, results) => {
-        if (err) {
-            console.error('Error retrieving image path:', err);
-            return res.status(500).json({ error: 'Failed to retrieve image path.' });
+    if (!username) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Check if the provided password matches the current user's password
+    const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+    db.query(getPasswordQuery, [username], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(500).json({ error: 'Error retrieving password' });
         }
 
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Equipment not found.' });
-        }
-
-        const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-
-        // Delete the image file
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Failed to delete image file:', err);
-                return res.status(500).json({ error: 'Failed to delete image file.' });
+        const hashedPassword = results[0].password;
+        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
             }
 
-            // Proceed to delete the database entry
-            const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-            db.query(sql, [itemName], (err, result) => {
-                if (err) {
-                    console.error('Error deleting equipment:', err);
-                    return res.status(500).json({ error: 'Failed to delete equipment.' });
+            // If the password matches, proceed to delete the item
+            const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+            db.query(getImagePathQuery, [itemName], (err, results) => {
+                if (err || results.length === 0) {
+                    return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to delete image file' });
+                    }
+
+                    const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+                    db.query(deleteQuery, [itemName], (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to delete equipment' });
+                        }
+                        res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                    });
+                });
             });
         });
     });

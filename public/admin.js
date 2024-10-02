@@ -427,6 +427,8 @@ function icsBack(){
         });
     });
 
+
+
     //ADMIN INVENTORY STATUS 
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/auth/admin-inventory/log')

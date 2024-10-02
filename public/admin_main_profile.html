@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -134,19 +134,23 @@
 </div>
 <!-- FORM MAIN PROFILE -->
 <div id="frmMainProfile">
+       
     <div class="w-full md:flex md:justify-center" >
         <div class="md:max-w-[90rem] w-full" >
+            <div id="loading-container" style="display: none;">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
             <p class="text-black md:text-4xl font-bold font-Inter md:my-7" id="RFID"></p>
             <div class="w-full h-full md:flex md:justify-start">
                 <div class="md:w-[30%] h-[45rem] md:h-screen bg-mjgrey">
                     <div class="pt-5 w-full flex justify-center">
-                        <img src="img/user.png" class="w-52 h-52">
+                        <img src="img/user.png" class="w-52 h-52 rounded-full" id="profile-pic">
                     </div>
                     
                     <div class="w-full text-center">
                      
-                        <p class="text-black text-4xl font-bold" data-field="FullName">Hev C. Abi</p>
-                        <p class="text-[#930D0D] text-xl" data-field="CallSign">Aspirant</p>
+                        <p class="text-black text-4xl font-bold" data-field="FullName"></p>
+                        <p class="text-[#930D0D] text-xl" data-field="CallSign"></p>
                        
                     </div>
                     <div class="mt-5 w-full flex justify-center">
@@ -158,7 +162,7 @@
                         <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                             <div id="progress" class="h-full"></div>
                         </div>
-                        <p class="text-end text-base text-[#4B4B4B]" data-field="DutyHours">100 hrs</p>
+                        <p class="text-end text-base text-[#4B4B4B]" data-field="DutyHours"></p>
                     </div>
             
                     <div class="px-10">
@@ -166,7 +170,7 @@
                         <div class="bg-white border-black border-[1px] h-8 rounded-full overflow-hidden pt-[1.5px] px-3">
                             <div id="progress2" class="h-full"></div>
                         </div>
-                        <p class="text-end text-base text-[#4B4B4B]" data-field="FireResponse">200 points</p>
+                        <p class="text-end text-base text-[#4B4B4B]" data-field="FireResponse"></p>
                     </div>
                     <div class="bg-[#9C9C9C] h-[3px] mt-4 mx-3"></div>
                     
@@ -337,6 +341,5 @@
 </div>
 <script src="super_profiler.js" defer></script>
 <script src="admin.js" defer></script>
-<script src="admin_modules.js" defer></script>
-<script src="register.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

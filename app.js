@@ -16,7 +16,7 @@ const socketIo = require('socket.io');
 const http = require('http');  // Added for HTTP server creation
 // const session = require('express-session');
 // const MySQLStore = require('express-mysql-session')(session);
-
+const mysql2 = require('mysql2/promise');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
@@ -30,6 +30,14 @@ const db = mysql.createConnection({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
+});
+const db2 = mysql2.createPool({
+    host: process.env.DB_HOST,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD, // Corrected this line
+    database: process.env.DB_NAME,
+
 });
 
 // Connect
@@ -142,7 +150,7 @@ io.on('connection', (socket) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //routes etc
-const authRoutes = require('./routes/auth')(db); // Pass the `db` connection
+const authRoutes = require('./routes/auth')(db, db2); // Pass the `db` connection
 app.use('/auth', authRoutes);
 
 const allRoutes = require('./routes/routes_all')(db); // Pass the `db` connection

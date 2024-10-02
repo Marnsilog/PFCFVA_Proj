@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
     <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Inventory</title>
 </head>
@@ -26,7 +27,7 @@
                 <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                 <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                 <li class="md:mt-6">
-                    <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                    <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                 </li>
             </ul>
     </nav>
@@ -89,223 +90,68 @@
         
 
 <!-- SETTINGS -->
-<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
-    <div class="bg-white rounded-lg border-[1px] border-black w-64">
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
-        <div class="bg-black h-[2px]"></div>
-      
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
-</div>
-</div>
-
-<!--FORM INVENTORY-->
-<div class="pt-4 w-full flex justify-center" >
-    <div class="w-full md:max-w-[85rem] md:pt-7 hidden"  id="frmInventory">
-            <div class="w-full">
-                        <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
-                            <div class=""> <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="AddInventory()">+ Add Inventory log</button></div>
-                             <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                                <input class="w-full h-full focus:outline-none" type="text">
-                                <div style="cursor: pointer;" onclick="summaryfilter()">
-                                    <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="font-Inter w-full">       
-                    <table id="myTable" class="mt-5 w-full md:mt-10 ">
-                        <thead class="h-14 bg-[#D9D9D9] opacity-75 text-black md:mt-10 mdh-16 md:text-3xl ">
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Vehicle</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="w-full text-center text-sm md:text-2xl">
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>09/25/23</td>
-                                <td>06:45 pm</td>
-                                <td>Water Tender 72</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>10/03/23</td>
-                                <td>10:48 am</td>
-                                <td>Pumper2</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                            <tr class="border-t-2 border-b-2 h-8 border-black md:h-16">
-                                <td>11/03/23</td>
-                                <td>02:48 am</td>
-                                <td>Pumper3</td>
-                                <td><a class="underline underline-offset-1  md:text-xl" href="#" onclick="seeinventory()">See details</a></td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex justify-center">
-                    <div class="absolute top-32 w-[35rem] py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail">
-                        <p class="text-2xl font-bold mx-10 my-5">Pumper 72</p>
-                        <div>
-                            <table class="w-full font-Inter">
-                                <thead class="h-14 border-y-[1px] border-black">
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Blue)</td>
-                                        <td>1</td>
-                                        <td>Damaged</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Banker set (Yellow)</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
-                                    <tr class="text-center h-10">
-                                        <td>Fire Hydrant Key</td>
-                                        <td>2</td>
-                                        <td>Missing</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="flex justify-center underline underline-offset-2"> <a href="#" onclick="exitinventorydetail()">close</a></div>
-                           
-                        </div>
-                    </div>
-
-                </div>
-                
+    <!-- SETTINGS -->
+    <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
+        <div class="bg-white rounded-lg border-[1px] border-black w-64">
+            <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
+            <div class="bg-black h-[2px]"></div>
+          
+            <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
         </div>
-                
-                    
-            
     </div>
+
+
 
 <!-- Add Inventory -->
 <div id="addInventory">
     <div class="w-full flex justify-center" >
         <div class="md:max-w-[75rem] w-full">
+            <div id="loading-container">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
             <div class="md:mt-5 font-Inter w-full" >
                 <p class="text-center md:text-start font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
-                <div class="mt-5 w-full md:flex md:justify-between md:mt-16">
+                <div class="mt-5 w-full md:flex md:justify-between md:mt-7">
                     <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-[1px] rounded-lg border-black flex justify-normal md:mx-0 ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                        <input class="w-full h-full px-2 focus:outline-none" type="text" placeholder="Search">
-                        <div style="cursor: pointer;" onclick="summaryfilter()">
-                            <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
-                        </div>
+                        <input class="w-full h-full px-2 focus:outline-none rounded-lg" type="text" placeholder="Search">
                     </div>
 
                     <div class="mt-7 ml-2 || md:ml-0 md:mt-0">
-                        <select class="rounded-lg border-[1px] rounded-black  md:rounded-full" id="truckId">
-                            <option value="text" disabled selected>Vehicle</option>
-                            <option value="text">Engine 72</option>
-                            <option value="text">Water Tender 72</option>
-                            <option value="text">Pumber 72</option>
-                        </select>
+                        <select class="h-8 pr-16  rounded-lg md:border-[2px] border-[1px] border-black text-start mx-5" id="sortVehicleAssignment">
+                            <option value="">All Vehicles</option>
+                    </select>
                     </div>
     
                 </div>
     
-             <div class="w-full mt-2 md:mt-7">        
-                                <table id="myTable2" class="w-full border-[1px] border-black shadow-lg shadow-gray-600 ">
-                                    <div class="bg-black">
-                                        <thead class="h-14 bg-gray-300">
-                                            <tr class="font-semibold">
-                                                <th></th>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                                <th>Quantity</th>
-                                                <th >Remarks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="md:text-2xl text-lg font-Inter">
-                                            <tr class="border-t-[1px] border-b-[1px] border-gray-500 md:h-28">
-                                                <td><div class="justify-center flex"><img src="./img/ex3.jpg" class="w-14 h-14 object-fill" id="" alt=""></div></td>
-                                                <td><p class="text-center">Item 1</p></td>
-                                               
-                                                <td class="flex justify-center pr-5 h-full pt-10">
-                                                    <select class="border-[1px] border-black text-lg w-32" id="itemstat" onchange="itemstatus(this)">
-                                                        <option value="text" disabled selected></option>
-                                                        <option value="Damaged">Damaged</option>
-                                                        <option value="Missing">Missing</option>
-                                                        <option value="Good">Good</option>
-                                                    </select>
-                                                  
-                                                </td>
-                                                <td><div class="flex justify-center"><input class="w-16 h-7 border-2 border-black" type="number" name="" id=""></div></td>
-                                                <td>
-                                                   <div class="flex justify-center pr-5"> <textarea name="" class="text-sm min-h-[6rem] max-h-[7rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3  bg-white" id=""></textarea></div>
-                                                </td>
-                                            </tr>
-                                            <tr class="border-t-[1px] border-b-[1px] border-gray-500 md:h-28">
-                                                <td><div class="justify-center flex"><img src="./img/ex3.jpg" class="w-14 h-14 object-fill" id="" alt=""></div></td>
-                                                <td><p class="text-center">Item 1</p></td>
-                                               
-                                                <td class="flex justify-center pr-5 h-full pt-10">
-                                                    <select class="border-[1px] border-black text-lg w-32" id="itemstat" onchange="itemstatus(this)">
-                                                        <option value="text" disabled selected></option>
-                                                        <option value="Damaged">Damaged</option>
-                                                        <option value="Missing">Missing</option>
-                                                        <option value="Good">Good</option>
-                                                    </select>
-                                                  
-                                                </td>
-                                                <td><div class="flex justify-center"><input class="w-16 h-7 border-2 border-black" type="number" name="" id=""></div></td>
-                                                <td>
-                                                   <div class="flex justify-center pr-5"> <textarea name="" class="text-sm min-h-[6rem] max-h-[7rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3  bg-white" id=""></textarea></div>
-                                                </td>
-                                            </tr>
-                       
-                       
-                                            
-                                        </tbody>
-                                    </div>
-                                  
-                                </table>
-                                <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
-                                    <button onclick="CancelInv()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full  text-white h-8 w-20 || md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
-                                    <button onclick="CancelInv()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 || md:text-xl md:h-12 md:w-36 ">Submit</button>
-                                </div>
+             <div class="w-full mt-2 md:mt-7 ">   
+                <div class="overflow-y-auto h-full min-h-[35rem] max-h-[35rem] border-[1px] border-black shadow-lg shadow-gray-600 ">
+                    <table id="myTable2" class="w-full h-full">
+                        <thead class="h-14 bg-gray-300">
+                            <tr class="font-semibold">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="md:text-2xl text-lg font-Inter h-24">
+                        </tbody>
+                    </table>
+                </div>     
+               
+                <div class="mt-5 md:mt-10 md:mb-20 w-full flex justify-end space-x-2 pr-5 md:space-x-5">
+                    <button onclick="location.href='/volunteer_form_inv'" class="bg-[#930D0D] hover:bg-gray-500 rounded-full text-white h-8 w-20 md:text-xl md:h-12 md:w-36 font-Inter font-[500]">Cancel</button>
+                    <button onclick="submitInventory()" class="bg-[#930D0D] hover:bg-gray-500 rounded-full font-Inter font-[500] text-white h-8 w-24 md:text-xl md:h-12 md:w-36">Submit</button>
+                </div>
+                                
              </div>
             </div>
         </div>
     </div>
-    <div class="flex justify-center">
-        <div class="absolute top-36 w-[32rem] h-[30rem] bg-white border-black border-2 rounded-lg "id="remarkstag" style="display: none;">
-            <div class="flex justify-normal pt-8 pl-8 pb-2">
-                <img src="/public/img/ex1.jpg" class=" w-[10rem] h-[13rem] border-2 border-black object-fill" alt="" srcset="">
-                <div class="font-Inter text-xl mx-2">
-                    <p class="text-2xl font-bold">Item 1</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li class="text-gray-700">Damaged</li>
-                        <li class="text-gray-700">Missing</li>
-                        
-                    </ul>
-                </div>
-                
-            </div>
-            <div class="flex justify-center">
-                <textarea name="" class="w-[28rem] min-h-[10rem] border-2 border-black focus:outline-none px-3 bg-[#E6E6E6]" id=""></textarea>
-            </div>
-            <div class="flex justify-end space-x-5 pr-8 pt-5">
-                <button class="bg-[#E6E6E6] w-20 h-7 border-[1px] rounded-full text-black" onclick="exitremarks()">Cancel</button>
-                <Button class="bg-[#E6E6E6] w-20 h-7 border-[1px] rounded-full text-black">Save</Button>
-            </div>
-        </div>
-
-    </div>
+    
 </div>
 
 
@@ -315,6 +161,5 @@
 
 <!-- <script src="sessions.js" defer></script> -->
 <script src="volunteer.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
+<script src="profileImage.js" defer></script>
 </html>

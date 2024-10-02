@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
     <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
+    
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Dashboard</title>
 </head>
@@ -26,7 +28,7 @@
                 <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                 <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                 <li class="md:mt-6">
-                    <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                    <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                 </li>
             </ul>
     </nav>
@@ -101,13 +103,17 @@
 
 <!-- FORM MAIN PROFILE -->
     <div id="frmMainProfile">
+       
         <div class="w-full md:flex md:justify-center" >
             <div class="md:max-w-[90rem] w-full" >
+                <div id="loading-container" style="display: none;">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
                 <p class="text-black md:text-4xl font-bold font-Inter md:my-7" id="RFID"></p>
                 <div class="w-full h-full md:flex md:justify-start">
                     <div class="md:w-[30%] h-[45rem] md:h-screen bg-mjgrey">
                         <div class="pt-5 w-full flex justify-center">
-                            <img src="img/user.png" class="w-52 h-52">
+                            <img src="img/user.png" class="w-52 h-52 rounded-full" id="profile-pic">
                         </div>
                         
                         <div class="w-full text-center">
@@ -307,8 +313,6 @@
 
 <script src="volunteer.js" defer></script>
 <script src="super_profiler.js" defer></script>
+<script src="profileImage.js" defer></script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
 </html>

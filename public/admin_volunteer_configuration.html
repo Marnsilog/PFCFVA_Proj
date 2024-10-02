@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12"><a href="admin_inventory.html">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -134,6 +134,9 @@
  <!-- FORM VOLUNTEER ACCOUNTS CONFIGURATION -->
  <div class="flex justify-center w-full font-Inter" >
     <div class="md:max-w-[90rem] w-full md:mt-14 md:space-y-7 space-y-3" id="accountsConfiguration" >
+        <div id="loading-container" style="display: none;">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
             <div class="md:flex justify-between">
                 <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Volunteer Accounts Configuration</p>
                 <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
@@ -215,4 +218,5 @@
 <script src="admin.js" defer></script>
 <script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

@@ -36,7 +36,7 @@
                 </div>
             </div>
             
-            <div class="px-36 my-10">
+            <!-- <div class="px-36 my-10">
                 <p class="font-Inter text-xl">Attendance Logs</p>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-200">
@@ -49,18 +49,44 @@
                             </tr>
                         </thead>
                         <tbody id="attendanceLogs">
-                            <!-- Attendance logs will be appended here by JavaScript -->
+                            
                         </tbody>
                     </table>
                 </div>
+            </div> -->
+
+            <div class="px-36 my-10">
+                <p class="font-Inter text-xl">Attendance Logs</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b">Name</th>
+                                <th class="py-2 px-4 border-b border-r">Time In</th>
+                                <th class="py-2 px-4 border-b border-r">Time Out</th>
+                                <th class="py-2 px-4 border-b border-r">Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <!-- Make the tbody section scrollable -->
+                    <div style="max-height: 300px; overflow-y: auto;"> <!-- Apply scrollable behavior to the div -->
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <tbody id="attendanceLogs">
+                                <!-- Attendance logs will be appended here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
            
+            
+
         </div>
 
         <div class="w-1/2">
             <div class="w-full h-full flex justify-start">
                 <div class="w-full mt-20">
-                    <p class="font-Inter text-3xl text-black font-bold text-start md:text-center">RFID</p>
+                    <p class="font-Inter text-3xl text-black font-bold text-start md:text-center" id="rfidText">RFID</p>
                     <div class="pt-5 w-full flex justify-center">
                         <img src="img/user.png" class="w-28 h-28">
                         <div class="ml-5 mt-5">
@@ -100,9 +126,6 @@
             </div>
         </div>
     </div>
-
-    <audio id="timeInAudio" src="audio/timein.mp3"></audio>
-    <audio id="timeOutAudio" src="audio/timeout.mp3"></audio>
 
 </body>
 <script src="module_attendance.js" defer></script>

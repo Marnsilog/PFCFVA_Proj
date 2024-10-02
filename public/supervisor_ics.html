@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
     <link href="volunteer.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
                             <li id="inV" class="md:mt-12 "><a href="/supervisor_inventory">Inventory</a></li>
                             <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                             <li class="md:mt-6">
-                                <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                                <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                             </li>
                         </ul>
                      </nav>
@@ -100,6 +101,9 @@
 
                <!-- INCIDENT COMMAND SYSTEM -->
                <div id="InciSys">
+                <div id="loading-container" style="display: none;">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
                 <div class="w-full h-full flex justify-center pt-16 pb-32" >
                     <div class="max-w-[75rem] w-full">
                         <div class="font-Inter text-black">
@@ -117,10 +121,11 @@
                     
                         <div  class="mt-9 flex justify-between text-xl text-white font-[500]" >
     
-                            <button class="bg-[#1C7D26] px-10 py-2  rounded-full">ACTIVATE</button>
-                            <button class="bg-[#E4A52A] px-10 py-2  rounded-full">INJURED</button>
-                            <button class="bg-[#DF0000] px-10 py-2  rounded-full">STANDOWN</button>
-                            <button class="bg-[#212D9C] px-10 py-2  rounded-full">FIRE OUT</button>
+                            <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
+                            <button class="bg-[#1C7D26] px-10 py-2  rounded-full" id="msgActivate">ACTIVATE</button>
+                            <button class="bg-[#E4A52A] px-10 py-2  rounded-full" id="msgInjured">INJURED</button>
+                            <button class="bg-[#DF0000] px-10 py-2  rounded-full" id="msgStandown">STANDOWN</button>
+                            <button class="bg-[#212D9C] px-10 py-2  rounded-full" id="msgFireOut">FIRE OUT</button>
                             <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button>
     
                         </div>
@@ -131,135 +136,29 @@
                                     <table class="w-full text-center border-2 border-black" >
                                         <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
                                             <tr>
-                                                <th>CALL SIGN</th>
-                                                <th>NAME</th>
+                                                <th>Call Sign</th>
+                                                <th>Name</th>
                                                 <th>Issue <br> Commands To</th>
-                                                <th>TIMER</th>
-                                                <th> </th>
+                                                <th>Timer</th>
+                                                <th>Remove</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="w-auto text-center text-xl ">
                                         
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 12</td>
-                                                <td>Marniel Corsiga</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16 bg-[#D9D9D9]">
-                                                <td>Probi 13</td>
-                                                <td>Maria Joanalynn Mariano</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>Echo 1</td>
-                                                <td>Dinesh Anne Pangan</td>
-                                                <td><input type="checkbox" id="option1" name="option1"></td>
-                                                <td>02:40:09</td>
-                                                <td><a class="text-3xl text-red-700 font-bold mr-4" href="#">x</a></td>
-                                            </tr>
-    
-                        
+                                        <tbody class="w-auto text-center text-xl" id="icsAttendees">
+                                            <!-- ICS Attendees will be populated here by JavaScript -->
                                         </tbody>
+                                        
                                     </table>
                                     <div  class="mt-2 flex justify-between text-lg text-white font-[500]" >
-    
-                                        <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight">REQUEST<br> BACK UP</button>
-                                        <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
-                                        <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight">RESUPPLY <br> WATER TANK</button>
-                                        <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight">REQUEST <br> FALLBACK</button>
+
+                                         <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
+                                        <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight" id="msgBackUp">REQUEST<br> BACK UP</button>
+                                        <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight" id="msgMedicalAssistance">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
+                                        <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight" id="msgResupplyWater">RESUPPLY <br> WATER TANK</button>
+                                        <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight" id="msgFallback">REQUEST <br> FALLBACK</button>
                     
                                 </div>
     
-                                <!-- <div class="flex justify-center mt-5"> 
-                                        <div class="max-w-[70rem] w-full">
-                                            <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" id="messageBox" type="text" placeholder="Type message here..."></textarea>
-                                        </div>
-                                </div>
-                                <div class="flex justify-end">
-                                        <button class="bg-[#CBC9C2] px-7 py-3 mt-16 text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
-                                </div>
-    
-                                <div class="w-full h-32 mt-16">
-                                        <div class="flex justify-start">
-                                            <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
-                                            
-                                        </div>
-                                    
-                                        <div  class="bg-[#F3F3F3] w-full pb-14" id="chatSystem">
-                                            <div class="max-h-[38rem] overflow-y-auto"> 
-                                                <table class="text-center  pt-10 " >
-                                                <thead class="mt-10">
-                                                    <tr>
-                                                        <th> </th>
-                                                        <th> </th>
-                                                    
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="w-auto text-lg  font-Inter font-bold">
-                                                
-                                                    <tr class="h-16 ">
-                                                        <td class="text-start pl-7 text-[#00A110] w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:55 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16 ">
-                                                        <td class="text-start pl-7 text-[#202D9C] w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:54 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:45 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING TO FALLBACK DUE TO UNFORESEEN CIRCUMSTANCES.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:33 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS REQUESTING FOR MEDICAL ASSISTANCE.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 2:01 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 w-3/4 ">PROBI 13 has been injured.</td>
-                                                        <td class="text-end mx-14  pr-14">04/11/24 - 1:50 AM</td>
-                                                    </tr>
-                                                    <tr class="h-16">
-                                                        <td class="text-start pl-7 text-[#FF0000] w-3/4 ">ALERT!! OIC ECHO 817 PUMPER 77 IS RESUPPLYING THE WATER TANK..</td>
-                                                        <td class="text-end mx-14 pr-14">04/11/24 - 1:41 AM</td>
-                                                    </tr>
-    
-                    
-                                
-                                                </tbody>
-                                            </table>
-                                        </div> -->
 
                                                             <!-- Chat system area -->
                                         <div class="flex justify-center mt-5">
@@ -282,12 +181,12 @@
                                                 <!-- Messages will be appended here dynamically -->
                                             </div>
                                                      
-                                            
+                                            <div class="w-full flex justify-end py-10">
+                                                <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='/supervisor_ics_form'">Save Logs</button>
+                                            </div>
                                             
                                         </div>
-                                        <div class="w-full flex justify-end py-10">
-                                            <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='supervisor_ics_form.html'">Done</button>
-                                        </div>
+                                       
                                     
     
                                 </div>
@@ -315,5 +214,7 @@
 </body>
 </div>
 <script src="supervisor.js" defer></script>
+<script src="module_incident.js" defer></script>
+<script src="profileImage.js" defer></script>
 
 </html>

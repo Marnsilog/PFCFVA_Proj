@@ -116,7 +116,7 @@ function icsBack(){
             x.type = "text";
             unseen.classList.remove('hidden');
             seen.classList.add('hidden');
-    
+
         } else {
             x.type = "password";
             seen.classList.remove('hidden');
@@ -427,59 +427,83 @@ function icsBack(){
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const editProfileForm = document.getElementById('editProfileForm');
-        
-        if (editProfileForm) {
-            editProfileForm.addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent the form from submitting the traditional way
+
+
+    //ADMIN INVENTORY STATUS 
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
     
-                const formData = {
-                    username: document.getElementById('HiddenUsername').value,
-                    lastName: document.getElementById('EditLastName').value,
-                    firstName: document.getElementById('EditFirstName').value,
-                    middleName: document.getElementById('EditMiddleName').value,
-                    emailAddress: document.getElementById('EditEmailAddress').value,
-                    contactNumber: document.getElementById('EditContactNumber').value,
-                    oldPassword: document.getElementById('EditOldPassword').value,
-                    newPassword: document.getElementById('EditNewPassword').value,
-                    civilStatus: document.getElementById('EditCivilStatus').value,
-                    nationality: document.getElementById('EditNationality').value,
-                    bloodType: document.getElementById('EditBloodType').value,
-                    birthday: document.getElementById('EditBirthday').value,
-                    gender: document.getElementById('EditGender').value,
-                    currentAddress: document.getElementById('EditCurrentAddress').value,
-                    emergencyContactPerson: document.getElementById('EditEmergencyContactPerson').value,
-                    emergencyContactNumber: document.getElementById('EditEmergencyContactNumber').value,
-                    highestEducationalAttainment: document.getElementById('EditHighestEducationalAttainment').value,
-                    nameOfCompany: document.getElementById('EditNameOfCompany').value,
-                    yearsInService: document.getElementById('EditYearsInService').value,
-                    skillsTraining: document.getElementById('EditSkillsTraining').value,
-                    otherAffiliation: document.getElementById('EditOtherAffiliation').value,
-                };
-    
-                fetch('/auth/edit-profile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData), // Ensure formData is an object containing the updated user information
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => { throw new Error(text); });
-                    }
-                    return response.text();
-                })
-                .then(message => {
-                    alert(message); 
-                    window.location.href = 'volunteer_main_profile';
-                })
-                .catch(error => {
-                    alert('Error: ' + error.message);
-                });
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td>${row.item}</td>
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.from_vehicle}</td>
+                    <td>${row.change_to}</td>
+                    <td class="w-72 break-words overflow-auto">${row.remarks}</td>
+
+                `;
+                
+                tbody.appendChild(tr);
             });
-        }
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
     });
 
+    //ADMIN VEHICLE STATUS
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log2')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log2');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td>${row.item}</td>
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.from_vehicle}</td>
+                    <td>${row.change_to}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
     

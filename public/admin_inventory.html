@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -132,23 +132,21 @@
 <div id="frmInventory">
     <div class="w-full flex justify-center">
         <div class="max-w-[80rem] w-full space-y-5">
+            <div id="loading-container" style="display: none;">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
             <div class="md:flex justify-between mt-7">
                 <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Equipment</p>
-                <div class="md:flex justify-end mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
+                <div class="md:flex justify-end mt-10 static md:mx-0 md:max-w-[110rem] w-full px-3 ">
                     <div class="md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512">
                             <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                         </svg>
-                        <input class="w-full h-full focus:outline-none px-2" type="text" id="inventorySearchBox" placeholder="Search">
-                        <div style="cursor: pointer;" onclick="summaryfilter()">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512">
-                                <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/>
-                            </svg>
-                        </div>
+                        <input class="w-full h-full focus:outline-none px-2 rounded-lg" type="text" id="inventorySearchBox" placeholder="Search">
+                       
                     </div>
                 </div>
             </div>
-            <p class="md:text-2xl text-lg md:text-start text-center font-Inter">Engine 72</p>
             <div class="flex justify-between md:mx-0 mx-3">
                 <div>
                     <select class="h-9 pr-20 rounded-lg md:border-[2px] border-[1px] border-black text-start" id="sortVehicleAssignment"> <!-- Marked change: Added sort select element -->
@@ -190,22 +188,19 @@
 
 
             <div  class="flex justify-center w-full font-Inter">
-                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data"> <!-- Added enctype attribute for file upload -->
+                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data">
                     <h2 class="text-2xl text-center font-bold">Add New Equipment</h2>
                     <div class="flex justify-start pl-10">
-                        <p  class="font-semibold text-md mr-2">Item Name:</p>
+                        <p class="font-semibold text-md mr-2">Item Name:</p>
                         <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="itemName" name="itemName" required>
                     </div>
-                   
+                    
                     <div class="flex justify-start pl-10">
                         <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
-                        <select class="border-[1px] border-black rounded-md" id="addvehicleAssignment">
-                            <option value="Engine 72">Engine 72</option>
-                            <option value="Water Tender 72">Water Tender 72</option>
-                            <option value="Pumper 72">Pumper 72</option>
+                        <select class="border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
                         </select>
                     </div>
-                  
+                
                     <div class="flex justify-start pl-10">
                         <p class="font-semibold text-md">Date Acquired:</p>
                         <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
@@ -215,12 +210,13 @@
                         <p class="mr-2 font-semibold text-md">Upload Image:</p>
                         <input type="file" id="itemImage" name="itemImage" accept="image/*">
                     </div>
+                
                     <div class="flex justify-center space-x-10">
                         <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
-                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold"  type="button" onclick="closeForm()">Close</button>
+                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
                     </div>
-                   
                 </form>
+                
             </div>
 
             <div  class="flex justify-center w-full font-Inter">
@@ -290,4 +286,5 @@
 <script src="admin_modules.js" defer></script>
 <script src="module_equipment.js" defer></script>
 <script src="register.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

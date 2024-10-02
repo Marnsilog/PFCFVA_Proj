@@ -454,6 +454,10 @@ function toggleVehicleForm() {
     });
 });
 
+//INVTORY STATUS LOG
+
+
+
 
 
 

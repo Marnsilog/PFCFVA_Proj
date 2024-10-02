@@ -650,6 +650,10 @@ video {
   position: relative;
 }
 
+.sticky{
+  position: sticky;
+}
+
 .bottom-5{
   bottom: 1.25rem;
 }
@@ -708,6 +712,10 @@ video {
 
 .top-\[90px\]{
   top: 90px;
+}
+
+.top-0{
+  top: 0px;
 }
 
 .z-10{
@@ -771,6 +779,11 @@ video {
   margin-right: 1.25rem;
 }
 
+.mx-6{
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -809,11 +822,6 @@ video {
 .my-\[4px\]{
   margin-top: 4px;
   margin-bottom: 4px;
-}
-
-.mx-6{
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
 }
 
 .mb-12{
@@ -1345,8 +1353,16 @@ video {
   max-height: 12rem;
 }
 
+.max-h-\[28rem\]{
+  max-height: 28rem;
+}
+
 .max-h-\[30rem\]{
   max-height: 30rem;
+}
+
+.max-h-\[32rem\]{
+  max-height: 32rem;
 }
 
 .max-h-\[37rem\]{
@@ -1361,36 +1377,28 @@ video {
   max-height: 3rem;
 }
 
-.max-h-96{
-  max-height: 24rem;
+.max-h-\[20rem\]{
+  max-height: 20rem;
 }
 
-.max-h-\[32rem\]{
-  max-height: 32rem;
-}
-
-.max-h-\[28rem\]{
-  max-height: 28rem;
+.max-h-\[35rem\]{
+  max-height: 35rem;
 }
 
 .min-h-\[10rem\]{
   min-height: 10rem;
 }
 
+.min-h-\[28rem\]{
+  min-height: 28rem;
+}
+
 .min-h-\[2rem\]{
   min-height: 2rem;
 }
 
-.min-h-72{
-  min-height: 18rem;
-}
-
 .min-h-\[32rem\]{
   min-height: 32rem;
-}
-
-.min-h-\[28rem\]{
-  min-height: 28rem;
 }
 
 .min-h-\[37rem\]{
@@ -1577,6 +1585,10 @@ video {
   width: 7rem;
 }
 
+.w-\[95\%\]{
+  width: 95%;
+}
+
 .w-\[9rem\]{
   width: 9rem;
 }
@@ -1587,14 +1599,6 @@ video {
 
 .w-full{
   width: 100%;
-}
-
-.w-\[90\%\]{
-  width: 90%;
-}
-
-.w-\[95\%\]{
-  width: 95%;
 }
 
 .min-w-\[22rem\]{
@@ -1625,6 +1629,10 @@ video {
   max-width: 60rem;
 }
 
+.max-w-\[68rem\]{
+  max-width: 68rem;
+}
+
 .max-w-\[70rem\]{
   max-width: 70rem;
 }
@@ -1639,14 +1647,6 @@ video {
 
 .max-w-\[90rem\]{
   max-width: 90rem;
-}
-
-.max-w-\[72rem\]{
-  max-width: 72rem;
-}
-
-.max-w-\[68rem\]{
-  max-width: 68rem;
 }
 
 .flex-1{
@@ -2313,10 +2313,6 @@ video {
   padding-bottom: 9rem;
 }
 
-.pb-7{
-  padding-bottom: 1.75rem;
-}
-
 .pl-10{
   padding-left: 2.5rem;
 }
@@ -2431,10 +2427,6 @@ video {
 
 .pt-\[6px\]{
   padding-top: 6px;
-}
-
-.pr-24{
-  padding-right: 6rem;
 }
 
 .text-left{
@@ -3447,10 +3439,6 @@ video {
 
   .md\:overflow-x-hidden{
     overflow-x: hidden;
-  }
-
-  .md\:rounded-full{
-    border-radius: 9999px;
   }
 
   .md\:rounded-lg{

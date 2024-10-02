@@ -4,18 +4,12 @@ require('dotenv').config({ path: './.env' });
 const multer = require('multer');
 const upload = multer(); 
 const router = express.Router();
-const mysql = require('mysql2/promise');
-
-const db2 = mysql.createPool({
-    host: process.env.DB_HOST,
-    //port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
-});
 
 
-module.exports = (db) => {
+
+
+
+module.exports = (db, db2) => {
     router.post('/register', (req, res) => {
         const {
             rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,

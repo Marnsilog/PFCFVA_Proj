@@ -4,10 +4,8 @@ require('dotenv').config({ path: './.env' });
 const multer = require('multer');
 const upload = multer(); 
 const router = express.Router();
-
-
-
-
+const path = require('path');
+const fs = require('fs');
 
 module.exports = (db, db2) => {
     router.post('/register', (req, res) => {
@@ -101,7 +99,58 @@ module.exports = (db, db2) => {
             });
         });
     });
-
+    
+    router.post('/login', (req, res) => {
+        const { username, password } = req.body;
+    
+        try {
+            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(sql, [username], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching user:', error);
+                    return res.status(500).json({ message: 'Internal Server Error' });
+                }
+    
+                if (results.length === 0) {
+                    return res.status(401).json({ message: 'Invalid username or password' });
+                }
+    
+                const user = results[0];
+                const isMatch = await bcrypt.compare(password, user.password);
+    
+                if (isMatch) {
+                    req.session.user = { 
+                        username: user.username, 
+                        userId: user.accountID,
+                        permission: user.accountType,
+                        profilePicPath: user.idPicture 
+                    };
+                    
+                    //console.log(user.idPicture);
+                    let redirectUrl;
+                    if (user.accountType === 'Admin') {
+                        redirectUrl = '/admin_dashboard';
+                    } else if (user.accountType === 'Supervisor') {
+                        redirectUrl = '/supervisor_dashboard';
+                    } else if (user.accountType === 'Volunteer') {
+                        redirectUrl = '/volunteer_dashboard';
+                    }
+    
+                    // Include the profilePicPath in the response
+                    res.status(200).json({ 
+                        message: 'Login successful!', 
+                        redirectUrl,
+                        profilePicPath: user.idPicture 
+                    });
+                } else {
+                    res.status(401).json({ message: 'Invalid username or password' });
+                }
+            });
+        } catch (err) {
+            console.error('Error processing login:', err);
+            res.status(500).json({ message: 'Error processing login' });
+        }
+    });
     router.get('/get-user-data', (req, res) => {
         const username = req.session.user?.username;
     
@@ -123,7 +172,9 @@ module.exports = (db, db2) => {
             res.json(userData); // Send user data without password
         });
     });
+
     router.post('/edit-profile', (req, res) => {
+        console.log('Uploaded files:', req.files);  // Log uploaded files
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,
             oldPassword, newPassword, civilStatus, nationality, bloodType,
@@ -133,7 +184,6 @@ module.exports = (db, db2) => {
         } = req.body;
     
         const username = req.session.user?.username;
-    
         if (!username) {
             return res.status(400).send('User not found in session');
         }
@@ -142,125 +192,152 @@ module.exports = (db, db2) => {
         db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
             if (checkUsernameErr) {
                 console.error('Error checking username:', checkUsernameErr);
-                return res.status(500).send('Error checking username');
+                return res.status(500).send({ success: false, message: 'Error checking username' });
             }
     
             if (checkUsernameResult.length === 0) {
-                return res.status(400).send('User not found');
+                return res.status(400).send({ success: false, message: 'User not found' });
             }
     
             const user = checkUsernameResult[0];
+            let profilePicturePath = user.profileImage;
+    
+            // Handling password update
             if (oldPassword) {
                 bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
                     if (compareErr || !isMatch) {
-                        return res.status(400).send('Old password is incorrect');
+                        return res.status(400).send({ success: false, message: 'Old password is incorrect' });
                     }
+    
                     if (newPassword) {
                         bcrypt.hash(newPassword, 10, (hashErr, hash) => {
                             if (hashErr) {
                                 console.error('Error hashing new password:', hashErr);
-                                return res.status(500).send('Error hashing new password');
+                                return res.status(500).send({ success: false, message: 'Error hashing new password' });
                             }
-                            updateProfile(hash); 
+                            handleProfilePictureUpdate(hash);
                         });
                     } else {
-                        updateProfile(user.password); 
+                        handleProfilePictureUpdate(user.password);
                     }
                 });
             } else {
-                updateProfile(user.password);
+                handleProfilePictureUpdate(user.password);
             }
-        });
     
-        // Function to update the user's profile
-        function updateProfile(password) {
-            const updateQuery = `
-                UPDATE tbl_accounts SET 
-                    lastName = ?, 
-                    firstName = ?, 
-                    middleName = ?, 
-                    emailAddress = ?, 
-                    mobileNumber = ?, 
-                    password = ?, 
-                    civilStatus = ?, 
-                    nationality = ?, 
-                    bloodType = ?, 
-                    dateOfBirth = ?, 
-                    gender = ?, 
-                    currentAddress = ?, 
-                    emergencyContactPerson = ?, 
-                    emergencyContactNumber = ?, 
-                    highestEducationalAttainment = ?, 
-                    nameOfCompany = ?, 
-                    yearsInService = ?, 
-                    skillsTraining = ?, 
-                    otherAffiliation = ? 
-                WHERE username = ?
-            `;
+            // Function to handle profile picture upload and update profile
+            function handleProfilePictureUpdate(password) {
+                if (req.files && req.files.profilePicture) {
+                    const profilePicture = req.files.profilePicture;
+                    const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
+                    const uploadDir = path.join(__dirname, '../profilePicture');
+                    const uploadPath = path.join(uploadDir, uniqueFileName);
     
-            const values = [
-                lastName, firstName, middleName, emailAddress, contactNumber,
-                password, civilStatus, nationality, bloodType,
-                birthday, gender, currentAddress, emergencyContactPerson,
-                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
-                yearsInService, skillsTraining, otherAffiliation,
-                username
-            ];
-    
-            db.query(updateQuery, values, (updateErr, updateResult) => {
-                if (updateErr) {
-                    console.error('Error updating profile:', updateErr);
-                    return res.status(500).send('Error updating profile');
-                }
-                res.send('Profile updated successfully');
-            });
-        }
-    });
-    router.post('/login', (req, res) => {
-        const { username, password } = req.body;
-    
-        try {
-            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-            db.query(sql, [username], async (error, results) => {
-                if (error) {
-                    console.error('Error fetching user:', error);
-                    return res.status(500).json({ message: 'Internal Server Error' });
-                }
-    
-                if (results.length === 0) {
-                    return res.status(401).json({ message: 'Invalid username or password' });
-                }
-    
-                const user = results[0];
-                const isMatch = await bcrypt.compare(password, user.password);
-    
-                if (isMatch) {
-                    // Set the user in the session
-                    req.session.user = { 
-                        username: user.username, 
-                        userId: user.accountID,
-                        permission: user.accountType
-                    };
-    
-                    //let redirectUrl = '/supervisor_dashboard'; // Default redirect
-                    if (user.accountType === 'Admin') {
-                        redirectUrl = '/admin_dashboard';
-                    } else if (user.accountType === 'Supervisor') {
-                        redirectUrl = '/supervisor_dashboard';
-                    } else if (user.accountType === 'Volunteer') {
-                        redirectUrl = '/volunteer_dashboard';
+                    // Ensure the directory exists
+                    if (!fs.existsSync(uploadDir)) {
+                        fs.mkdirSync(uploadDir, { recursive: true });
                     }
     
-                    res.status(200).json({ message: 'Login successful!', redirectUrl });
+                    // Log and move the file
+                    profilePicture.mv(uploadPath, (err) => {
+                        if (err) {
+                            console.error('Error moving file:', err);
+                            return res.status(500).send({ success: false, message: 'Error saving profile picture' });
+                        }
+    
+                        //console.log('File successfully uploaded to:', uploadPath);
+                        profilePicturePath = `profilePicture/${uniqueFileName}`;
+                        updateUserDetails(password, profilePicturePath); // Update with new picture
+                    });
                 } else {
-                    res.status(401).json({ message: 'Invalid username or password' });
+                    updateUserDetails(password, profilePicturePath); // Update without new picture
                 }
-            });
-        } catch (err) {
-            console.error('Error processing login:', err);
-            res.status(500).json({ message: 'Error processing login' });
-        }
+            }
+    
+            // Function to execute the update query
+            function updateUserDetails(password, profilePicturePath) {
+                const updateQuery = `
+                    UPDATE tbl_accounts SET 
+                        lastName = ?, 
+                        firstName = ?, 
+                        middleName = ?, 
+                        emailAddress = ?, 
+                        mobileNumber = ?, 
+                        password = ?, 
+                        civilStatus = ?, 
+                        nationality = ?, 
+                        bloodType = ?, 
+                        dateOfBirth = ?, 
+                        gender = ?, 
+                        currentAddress = ?, 
+                        emergencyContactPerson = ?, 
+                        emergencyContactNumber = ?, 
+                        highestEducationalAttainment = ?, 
+                        nameOfCompany = ?, 
+                        yearsInService = ?, 
+                        skillsTraining = ?, 
+                        otherAffiliation = ?, 
+                        idPicture = ? 
+                    WHERE username = ?
+                `;
+    
+                const values = [
+                    lastName, firstName, middleName, emailAddress, contactNumber,
+                    password, civilStatus, nationality, bloodType,
+                    birthday, gender, currentAddress, emergencyContactPerson,
+                    emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                    yearsInService, skillsTraining, otherAffiliation,
+                    profilePicturePath,
+                    username
+                ];
+    
+                db.query(updateQuery, values, (updateErr, updateResult) => {
+                    if (updateErr) {
+                        console.error('Error updating profile:', updateErr);
+                        return res.status(500).send({ success: false, message: 'Error updating profile' });
+                    }
+                    let accountType =  req.session.user.permission;;
+                    if (accountType === 'Admin') {
+                        res.redirect('/admin_main_profile');
+                    } else if (accountType === 'Supervisor') {
+                        res.redirect('/supervisor_main_profile');
+                    } else if (accountType === 'Volunteer') {
+                        res.redirect('/volunteer_main_profile');
+                    }
+                  
+                });
+            }
+        });
     });
+    
+    
+    // router.get('/get-profilePic', (req, res) => {
+    //     const profilePicPath = req.session.user?.profilePicPath || 'img/user.png'; 
+    //     console.log(profilePicPath)
+    //     res.json({ success: true, profilePicPath }); 
+    // });
+    
+    router.get('/get-profilePic', (req, res) => {
+        const username = req.session.user?.username;
+    
+        if (!username) {
+            return res.status(400).json({ success: false, message: "User not logged in." });
+        }
+    
+        const query = 'SELECT idPicture AS profile_pic FROM tbl_accounts WHERE username = ?';
+        db.query(query, [username], (error, results) => {
+            if (error) {
+                console.error('Error fetching user data:', error);
+                return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            }
+    
+            // If no results found, use the default profile picture
+            const profilePicPath = results[0]?.profile_pic || 'img/user.png';
+            res.json({ success: true, profilePicPath });
+        });
+    });
+
+    
 
     router.get('/dashboard-data', (req, res) => {
     const username = req.session.user?.username;
@@ -325,7 +402,8 @@ module.exports = (db, db2) => {
                 dutyHours, 
                 fireResponsePoints, 
                 inventoryPoints, 
-                activityPoints 
+                activityPoints,
+                idPicture 
             FROM tbl_accounts 
             WHERE username = ?`;
     
@@ -667,7 +745,6 @@ module.exports = (db, db2) => {
             if (connection) connection.release();
         }
     });
-
     router.get('/admin-inventory/log', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
                 a.firstName AS volunteer_name, 
@@ -691,7 +768,6 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-
     router.get('/admin-inventory/log2', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
                 a.firstName AS volunteer_name, 
@@ -715,8 +791,6 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-    
     
     return router;
 };

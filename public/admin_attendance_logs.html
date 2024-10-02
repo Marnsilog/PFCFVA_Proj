@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -28,7 +28,7 @@
                         <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
                         <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                         <li class="md:mt-6">
-                            <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                            <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
@@ -133,6 +133,9 @@
 </div>
 <!-- FORM ATTENDANCE ||CHANGED to ATTENDANCE LOGS -->
 <div id="frmAttendance">
+    <div id="loading-container" style="display: none;">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
     <p class="md:mt-14 mt-5 md:ml-36 md:text-4xl text-2xl text-center md:text-start font-bold">Attendance Logs</p>
     <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
         <div class="md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
@@ -172,4 +175,5 @@
 <script src="admin.js" defer></script>
 <script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

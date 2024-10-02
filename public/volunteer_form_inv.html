@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
     <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Inventory</title>
 </head>
@@ -26,7 +27,7 @@
                 <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                 <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                 <li class="md:mt-6">
-                    <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                    <img id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                 </li>
             </ul>
     </nav>
@@ -102,6 +103,9 @@
 <div class="pt-4 w-full flex justify-center" >
     <div class="w-full md:max-w-[85rem] md:pt-7"  id="frmInventory">
             <div class="w-full">
+                <div id="loading-container">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
                         <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
                             <div class=""> <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="location.href='/volunteer_inventory'">+ Add Inventory log</button></div>
                              <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
@@ -191,4 +195,5 @@
 
 
 <script src="volunteer.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

@@ -674,6 +674,10 @@ video {
   right: 1.25rem;
 }
 
+.top-0{
+  top: 0px;
+}
+
 .top-16{
   top: 4rem;
 }
@@ -714,10 +718,6 @@ video {
   top: 90px;
 }
 
-.top-0{
-  top: 0px;
-}
-
 .z-10{
   z-index: 10;
 }
@@ -742,11 +742,6 @@ video {
 .mx-10{
   margin-left: 2.5rem;
   margin-right: 2.5rem;
-}
-
-.mx-14{
-  margin-left: 3.5rem;
-  margin-right: 3.5rem;
 }
 
 .mx-16{
@@ -1088,6 +1083,10 @@ video {
   margin-top: 5rem;
 }
 
+.mt-24{
+  margin-top: 6rem;
+}
+
 .mt-3{
   margin-top: 0.75rem;
 }
@@ -1353,10 +1352,6 @@ video {
   max-height: 12rem;
 }
 
-.max-h-\[28rem\]{
-  max-height: 28rem;
-}
-
 .max-h-\[30rem\]{
   max-height: 30rem;
 }
@@ -1365,32 +1360,20 @@ video {
   max-height: 32rem;
 }
 
-.max-h-\[37rem\]{
-  max-height: 37rem;
+.max-h-\[35rem\]{
+  max-height: 35rem;
 }
 
-.max-h-\[38rem\]{
-  max-height: 38rem;
+.max-h-\[37rem\]{
+  max-height: 37rem;
 }
 
 .max-h-\[3rem\]{
   max-height: 3rem;
 }
 
-.max-h-\[20rem\]{
-  max-height: 20rem;
-}
-
-.max-h-\[35rem\]{
-  max-height: 35rem;
-}
-
 .min-h-\[10rem\]{
   min-height: 10rem;
-}
-
-.min-h-\[28rem\]{
-  min-height: 28rem;
 }
 
 .min-h-\[2rem\]{
@@ -1401,8 +1384,16 @@ video {
   min-height: 32rem;
 }
 
+.min-h-\[35rem\]{
+  min-height: 35rem;
+}
+
 .min-h-\[37rem\]{
   min-height: 37rem;
+}
+
+.min-h-\[30rem\]{
+  min-height: 30rem;
 }
 
 .w-1\/2{
@@ -1451,10 +1442,6 @@ video {
 
 .w-40{
   width: 10rem;
-}
-
-.w-44{
-  width: 11rem;
 }
 
 .w-48{
@@ -1617,6 +1604,10 @@ video {
   max-width: 100rem;
 }
 
+.max-w-\[120rem\]{
+  max-width: 120rem;
+}
+
 .max-w-\[13rem\]{
   max-width: 13rem;
 }
@@ -1731,6 +1722,12 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(1.5rem * var(--tw-space-x-reverse));
   margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-8 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(2rem * var(--tw-space-x-reverse));
+  margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-y-10 > :not([hidden]) ~ :not([hidden]){
@@ -2337,10 +2334,6 @@ video {
   padding-left: 1.5rem;
 }
 
-.pl-7{
-  padding-left: 1.75rem;
-}
-
 .pl-8{
   padding-left: 2rem;
 }
@@ -2594,11 +2587,6 @@ video {
 .text-\[\#9E9E9E\]{
   --tw-text-opacity: 1;
   color: rgb(158 158 158 / var(--tw-text-opacity));
-}
-
-.text-\[\#FF0000\]{
-  --tw-text-opacity: 1;
-  color: rgb(255 0 0 / var(--tw-text-opacity));
 }
 
 .text-black{

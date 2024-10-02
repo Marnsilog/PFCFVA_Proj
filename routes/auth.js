@@ -303,13 +303,31 @@ module.exports = (db, db2) => {
     });
     
     
-    router.get('/get-profilePic', (req, res) => {
-        const profilePicPath = req.session.user?.profilePicPath || 'img/user.png'; 
-        console.log(profilePicPath)
-        res.json({ success: true, profilePicPath }); 
-    });
+    // router.get('/get-profilePic', (req, res) => {
+    //     const profilePicPath = req.session.user?.profilePicPath || 'img/user.png'; 
+    //     console.log(profilePicPath)
+    //     res.json({ success: true, profilePicPath }); 
+    // });
     
-
+    router.get('/get-profilePic', (req, res) => {
+        const username = req.session.user?.username;
+    
+        if (!username) {
+            return res.status(400).json({ success: false, message: "User not logged in." });
+        }
+    
+        const query = 'SELECT idPicture AS profile_pic FROM tbl_accounts WHERE username = ?';
+        db.query(query, [username], (error, results) => {
+            if (error) {
+                console.error('Error fetching user data:', error);
+                return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            }
+    
+            // If no results found, use the default profile picture
+            const profilePicPath = results[0]?.profile_pic || 'img/user.png';
+            res.json({ success: true, profilePicPath });
+        });
+    });
 
     
 

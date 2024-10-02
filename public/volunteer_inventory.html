@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
     <link href="marns.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || Volunteer Inventory</title>
 </head>
@@ -26,7 +27,7 @@
                 <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                 <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                 <li class="md:mt-6">
-                    <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                    <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                 </li>
             </ul>
     </nav>
@@ -105,6 +106,9 @@
 <div id="addInventory">
     <div class="w-full flex justify-center" >
         <div class="md:max-w-[75rem] w-full">
+            <div id="loading-container">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
             <div class="md:mt-5 font-Inter w-full" >
                 <p class="text-center md:text-start font-semibold text-2xl || md:font-bold md:text-4xl">Inventory</p>
                 <div class="mt-5 w-full md:flex md:justify-between md:mt-7">
@@ -154,4 +158,5 @@
 
 <!-- <script src="sessions.js" defer></script> -->
 <script src="volunteer.js" defer></script>
+<script src="profileImage.js" defer></script>
 </html>

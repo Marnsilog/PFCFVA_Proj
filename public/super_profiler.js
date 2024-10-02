@@ -204,22 +204,3 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchDashboardData();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const profilePic = document.getElementById('profile-pic');
-    const profilePicButton = document.getElementById('profile-pic-button');
-
-    function fetchProfilePic(element) {
-        fetch('/auth/get-profilePic') // Fetch from server
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    element.src = data.profilePicPath || 'img/user.png'; // Set image or use fallback
-                } else {
-                    console.error('Failed to fetch profile picture:', data.message);
-                }
-            })
-            .catch(error => console.error('Error fetching profile picture:', error));
-    }
-    fetchProfilePic(profilePic);
-    fetchProfilePic(profilePicButton);
-});

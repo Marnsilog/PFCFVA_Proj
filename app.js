@@ -119,12 +119,14 @@ const server = http.createServer(app);  // Create the HTTP server
 
 const io = socketIo(server);  // Attach Socket.IO to the server
 
-// // Socket.IO connection handling
+
 // io.on('connection', (socket) => {
 //     console.log('A user connected: ', socket.id);
 
-//     socket.on('chatMessage', (msg) => {
-//         io.emit('chatMessage', msg);  // Broadcast message to all clients
+//     // Handle incoming messages
+//     socket.on('chatMessage', (msgData) => {
+//         // Broadcast the message object to all clients
+//         io.emit('chatMessage', msgData);
 //     });
 
 //     socket.on('disconnect', () => {
@@ -135,9 +137,46 @@ const io = socketIo(server);  // Attach Socket.IO to the server
 io.on('connection', (socket) => {
     console.log('A user connected: ', socket.id);
 
-    // Handle incoming messages
+    // Send the chat log when a user connects
+    const now = new Date();
+    const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+    const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+    // Check if the log file exists and read it
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading chat log file:', err);
+        } else {
+            // Send the entire chat log content to the client
+            socket.emit('loadChatLog', data);
+        }
+    });
+
+    // Handle incoming chat messages
     socket.on('chatMessage', (msgData) => {
-        // Broadcast the message object to all clients
+        const now = new Date();
+        const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+        const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+        const logMessage = `[${msgData.date} ${msgData.time}] ${msgData.username}: ${msgData.message}\n`;
+
+        // Save the message to the .txt file
+        fs.appendFile(filePath, logMessage, (err) => {
+            if (err) {
+                console.error('Error writing to chat log:', err);
+                return;
+            }
+
+            // Store the file path in the database if it's not already saved
+            const query = 'INSERT INTO tbl_chat_logs (filePath) VALUES (?) ON DUPLICATE KEY UPDATE filePath = ?';
+            db.query(query, [filePath, filePath], (err) => {
+                if (err) {
+                    console.error('Error saving chat log path:', err);
+                }
+            });
+        });
+
+        // Broadcast the message to all clients
         io.emit('chatMessage', msgData);
     });
 

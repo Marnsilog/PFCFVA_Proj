@@ -477,9 +477,17 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     router.get('/volunteer/:id', (req, res) => {
         const volunteerId = req.params.id;
-        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        if (isNaN(volunteerId)) {
+            return res.status(400).json({ error: 'Invalid volunteer ID' });
+        }
+        const query = `
+            SELECT accountID AS id, firstName AS name, dutyHours, 
+                fireResponsePoints, inventoryPoints, activityPoints, 
+                idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
+    
         db.query(query, [volunteerId], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer details:', err);
@@ -488,9 +496,28 @@ module.exports = (db, db2) => {
             if (results.length === 0) {
                 return res.status(404).json({ error: 'Volunteer not found' });
             }
-            res.json(results[0]);
+            const profilePicPath = results[0]?.profile_pic
+                ? `${results[0].profile_pic}`
+                : 'img/user.png';
+    
+            // Send the volunteer details including the profile picture path
+            const volunteerDetails = {
+                id: results[0].id,
+                name: results[0].name,
+                dutyHours: results[0].dutyHours,
+                fireResponsePoints: results[0].fireResponsePoints,
+                inventoryPoints: results[0].inventoryPoints,
+                activityPoints: results[0].activityPoints,
+                image: profilePicPath  
+            };
+    
+            res.json(volunteerDetails);
         });
     });
+    
+    
+    
+    
     router.get('/fireresponse', (req, res) => {
         const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts ORDER BY fireResponsePoints DESC';
         db.query(query, (err, results) => {
@@ -503,7 +530,14 @@ module.exports = (db, db2) => {
     });
     router.get('/fireresponse/:id', (req, res) => {
         const volunteerId = req.params.id;
-        const query = 'SELECT accountID as id, firstName as name, dutyHours, fireResponsePoints, inventoryPoints, activityPoints FROM tbl_accounts WHERE accountID = ?';
+        if (isNaN(volunteerId)) {
+            return res.status(400).json({ error: 'Invalid volunteer ID' });
+        }
+        const query = `
+            SELECT accountID AS id, firstName AS name, dutyHours, 
+                fireResponsePoints, inventoryPoints, activityPoints, 
+                idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
+    
         db.query(query, [volunteerId], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer details:', err);
@@ -512,7 +546,22 @@ module.exports = (db, db2) => {
             if (results.length === 0) {
                 return res.status(404).json({ error: 'Volunteer not found' });
             }
-            res.json(results[0]);
+            const profilePicPath = results[0]?.profile_pic
+                ? `${results[0].profile_pic}`
+                : 'img/user.png';
+    
+            // Send the volunteer details including the profile picture path
+            const volunteerDetails = {
+                id: results[0].id,
+                name: results[0].name,
+                dutyHours: results[0].dutyHours,
+                fireResponsePoints: results[0].fireResponsePoints,
+                inventoryPoints: results[0].inventoryPoints,
+                activityPoints: results[0].activityPoints,
+                image: profilePicPath  
+            };
+    
+            res.json(volunteerDetails);
         });
     });
     router.post('/add-vehicle', (req, res) => {

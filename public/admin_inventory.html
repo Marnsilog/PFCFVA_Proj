@@ -271,20 +271,25 @@
     
     <div id="invedit" style="display: none;">
         <div class="flex justify-center w-full">
-            <div class="top-72 absolute h-96 w-80 rounded-xl border-2 border-black bg-white pt-3 font-Inter">
+            <div class="top-72 absolute h-96 w-96 rounded-xl border-2 border-black bg-white pt-3 font-Inter">
                 <div class="w-full flex justify-end"><a href="#" class="font-Inter text-xl mr-3" onclick="exitinvedit()">X</a></div>
-                <div class="w-full flex justify-center"><img src="img/ex1.jpg" class="object-fill w-56 h-44"></div>
+                <div class="w-full flex justify-center">
+                    <img class="object-fill w-56 h-44" id="itemImageadsd"></div>
                 <div class="w-full flex justify-center mt-2 font-semibold text-md">
                     <div class="space-y-2">
-                        <p class="text-center mb-2">Change</p>
+                       <input class="ml-24 block" type="file" name="" id="editImage">
+                      <div class="flex justify-center w-full">
+                       <div class="space-y-2">
                         <select class="w-48 border-[1px] border-black rounded-md" id="editvehicleAssignment">
                             <option value="Engine 72">Engine 72</option>
                             <option value="Water Tender 72">Water Tender 72</option>
                             <option value="Pumper 72">Pumper 72</option>
                         </select>
                         <div>
-                            <input placeholder="Name" class="border-[1px] border-black w-48 pl-2 text-sm h-7" type="text">
+                            <input placeholder="Name" id="name" class="border-[1px] border-black w-48 pl-2 text-sm h-7" type="text">
                         </div>
+                       </div>
+                      </div>
                         
                     </div>
                    

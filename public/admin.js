@@ -11,23 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function edit() {
 
-    var invedit = document.getElementById('invedit');
-    
-    if (invedit.style.display === 'none' || invedit.style.display === '') {
-     
-        invedit.style.display = 'block';
-    } else {
-      
-        invedit.style.display = 'none';
-    }
-}
-function exitinvedit(){
-    var invedit = document.getElementById('invedit');
-    invedit.style.display = 'none';
-
-}
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');
@@ -105,7 +89,7 @@ function icsBack(){
         unseen.classList.add('hidden');
        
     }
-    }      
+}      
 function passEye2() {
         var x = document.getElementById("confirmPassword");
         var seen = document.getElementById('seen2');
@@ -121,7 +105,7 @@ function passEye2() {
             unseen.classList.add('hidden');
            
         }
-        }    
+}    
         
     // FORM VOLUNTEER ----------------------------------------------------->
     function summarySorting(){
@@ -322,8 +306,6 @@ function passEye2() {
         });
     });
     
-    
-    
     //register, don't allow letters for specific fields
     document.addEventListener('DOMContentLoaded', function() {
         const numberFields = [
@@ -492,4 +474,8 @@ function passEye2() {
         })
         .catch(error => console.error('Error fetching inventory log data:', error));
     });
+
+
+    
+    
     

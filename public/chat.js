@@ -302,24 +302,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Receiving a message
-    socket.on('chatMessage', (msgData) => {
-        const chatSystem = document.getElementById('chatSystem');
+    // socket.on('chatMessage', (msgData) => {
+    //     const chatSystem = document.getElementById('chatSystem');
 
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');  // Add a class for styling if needed
+    //     const messageElement = document.createElement('div');
+    //     messageElement.classList.add('message');  // Add a class for styling if needed
 
-        // Display both date and time
-        const timestamp = `${msgData.date} ${msgData.time}`;
+    //     // Display both date and time
+    //     const timestamp = `${msgData.date} ${msgData.time}`;
 
-        // Check if the message is an "injured" or "medical assistance" message and apply red color
-        if (msgData.isInjuredOrMedical) {
-            messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="color: red; font-weight: bold;">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
-        } else {
-            // Append the username, message, and timestamp to the message element
-            messageElement.innerHTML = `<strong>${msgData.username}</strong>: ${msgData.message} <span class="text-gray-500">(${timestamp})</span>`;
-        }
+    //     // Check if the message is an "injured" or "medical assistance" message and apply red color
+    //     if (msgData.isInjuredOrMedical) {
+    //         messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="color: red; font-weight: bold;">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+    //     } else {
+    //         // Append the username, message, and timestamp to the message element
+    //         messageElement.innerHTML = `<strong>${msgData.username}</strong>: ${msgData.message} <span class="text-gray-500">(${timestamp})</span>`;
+    //     }
 
-        chatSystem.appendChild(messageElement);
-        chatSystem.scrollTop = chatSystem.scrollHeight;  // Auto-scroll to the bottom
-    });
+    //     chatSystem.appendChild(messageElement);
+    //     chatSystem.scrollTop = chatSystem.scrollHeight;  // Auto-scroll to the bottom
+    // });
+
+// Receiving a message
+socket.on('chatMessage', (msgData) => {
+    const chatSystem = document.getElementById('chatSystem');
+
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');  // Add a class for styling if needed
+
+    // Display both date and time
+    const timestamp = `${msgData.date} ${msgData.time}`;
+
+    // Check if the message is an "injured" or "medical assistance" message and apply red color
+    if (msgData.isInjuredOrMedical) {
+        messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="color: red; font-weight: bold;">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+    } else {
+        // Append the username, message, and timestamp to the message element
+        messageElement.innerHTML = `<strong>${msgData.username}</strong>: ${msgData.message} <span class="text-gray-500">(${timestamp})</span>`;
+    }
+
+    // Prepend the new message at the top of the chat system
+    chatSystem.insertBefore(messageElement, chatSystem.firstChild);
+});
+
+
+
 });

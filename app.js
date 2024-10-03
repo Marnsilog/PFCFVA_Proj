@@ -595,9 +595,10 @@ app.get('/getVehicleAssignments', (req, res) => {
     });
 });
 
+
 app.get('/getEquipment', (req, res) => {
     const vehicleAssignment = req.query.vehicleAssignment;
-    let sql = 'SELECT CAST(itemID AS CHAR) AS itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash";';
+    let sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
     const params = []; 
     if (vehicleAssignment && vehicleAssignment !== '') {
         sql += ' AND vehicleAssignment = ?';

@@ -87,3 +87,21 @@ function removeAttendee(index) {
     sessionStorage.setItem('attendees', JSON.stringify(attendees)); // Save the updated list
     location.reload(); // Refresh the page to reflect changes
 }
+
+
+function loadVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('vehicleAssignment');
+            selectElement.innerHTML = '<option value="">Choose Vehicle</option>';  // Reset options
+
+            data.forEach(item => {
+                selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+            });
+        })
+        .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', loadVehicleAssignments);

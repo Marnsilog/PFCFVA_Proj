@@ -116,12 +116,16 @@ document.addEventListener('DOMContentLoaded', function() {
 //VOLUNTEER INV
 window.addEventListener('load', function() {
     if (window.location.pathname === '/volunteer_form_inv') {
+        
         document.getElementById('Search_form_inv').addEventListener('input', function() {
             const searchQuery = this.value.trim();
             fetchInventory_form(searchQuery); 
         });
         fetchInventory_form();
     } else if (window.location.pathname === '/volunteer_inventory') {
+        loadsVehicleAssignments();
+        const vehicleName = ''; 
+        fetchAndDisplayInventory(vehicleName); 
         document.getElementById('searchInputInvs').addEventListener('input', function() {
             const searchQuery = this.value.trim();
             fetchAndDisplayInventoryforsearch(searchQuery); 
@@ -132,9 +136,7 @@ window.addEventListener('load', function() {
             fetchAndDisplayInventorySearch(selectedStatus);
         });
     
-        loadsVehicleAssignments();
-        const vehicleName = ''; 
-        fetchAndDisplayInventory(vehicleName); 
+
     }
 });
 function fetchInventory_form(searchTerm = '') {  // Provide a default parameter

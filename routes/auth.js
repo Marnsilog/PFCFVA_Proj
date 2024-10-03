@@ -468,19 +468,18 @@ module.exports = (db, db2) => {
         }
     });
     router.get('/volunteers', (req, res) => {
-        const search = req.query.search || ''; // Get the search term from query parameters
-        // Use parameterized queries to avoid SQL injection
+        const search = req.query.search || ''; 
         const query = `
             SELECT accountID AS id, firstName AS name, dutyHours AS points 
             FROM tbl_accounts 
-            WHERE firstName LIKE ? 
+            WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
             ORDER BY dutyHours DESC
         `;
-        
+    
         // Prepare the search pattern for SQL LIKE
         const searchPattern = `%${search}%`;
     
-        db.query(query, [searchPattern], (err, results) => {
+        db.query(query, [searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -488,6 +487,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     router.get('/volunteer/:id', (req, res) => {
         const volunteerId = req.params.id;
         if (isNaN(volunteerId)) {
@@ -528,20 +528,23 @@ module.exports = (db, db2) => {
     router.get('/fireresponse', (req, res) => {
         const searchTerm = req.query.search || ''; // Get search term from query parameter
         const query = `
-            SELECT accountID as id, firstName as name, fireResponsePoints as points 
+            SELECT accountID AS id, firstName AS name, fireResponsePoints AS points 
             FROM tbl_accounts 
-            WHERE firstName LIKE ? 
+            WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
             ORDER BY fireResponsePoints DESC
         `;
         
-        db.query(query, [`%${searchTerm}%`], (err, results) => {
+        const searchPattern = `%${searchTerm}%`; // Prepare the search pattern for SQL LIKE
+    
+        db.query(query, [searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern], (err, results) => {
             if (err) {
-                console.error('Error fetching volunteer data:', err);
+                console.error('Error fetching fire response data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
             }
             res.json(results);
         });
     });
+    
     
     router.get('/fireresponse/:id', (req, res) => {
         const volunteerId = req.params.id;
@@ -612,24 +615,30 @@ module.exports = (db, db2) => {
         });
     });
     router.get('/inventory-search', (req, res) => {
-        const search = req.query.search || ''; 
+        try {
+            const search = req.query.search || ''; 
     
-        const query = `
-            SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory 
-            WHERE itemName LIKE ? OR vehicleAssignment LIKE ?
-        `;
+            const query = `
+                SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory 
+                WHERE itemName LIKE ? OR vehicleAssignment LIKE ? OR status LIKE ? OR itemStatus LIKE ?
+            `;
     
-        const searchParam = `%${search}%`; 
+            const searchParam = `%${search}%`; 
     
-        db.query(query, [searchParam, searchParam], (err, results) => {
-            if (err) {
-                console.error('Error fetching inventory:', err);
-                return res.status(500).json({ error: 'Failed to fetch inventory' });
-            }
+            db.query(query, [searchParam, searchParam, searchParam, searchParam], (err, results) => {
+                if (err) {
+                    console.error('Error fetching inventory:', err);
+                    return res.status(500).json({ error: 'Failed to fetch inventory' });
+                }
     
-            res.json(results); 
-        });
+                res.json(results); 
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            res.status(500).json({ error: 'An unexpected error occurred' });
+        }
     });
+    
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
         const username = req.session.user?.username; 

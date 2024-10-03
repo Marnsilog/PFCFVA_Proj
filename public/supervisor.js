@@ -146,8 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Build the table dynamically with the header and rows combined
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg  shadow-black shadow-lg">
-                    <table id="myTable2" class="text-start   w-full px-4">
+                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                    <table id="myTable2" class="text-start w-full px-4">
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
@@ -159,10 +159,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Loop through the data and create table rows dynamically
             data.forEach((volunteer, index) => {
+                // Set the color red for the first 10 volunteers
+                const textColorClass = index < 5 ? 'text-red-500' : '';
+
                 tableHTML += `
                     <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showDutyDetails(${volunteer.id})">
                         <td class="pl-5 flex justify-normal space-x-3 pt-4">
-                            <p class="text-2xl font-bold">${index + 1}.</p>
+                            <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
                             <p>${volunteer.name}</p>
                         </td>
                         <td class="text-center">${volunteer.points}</td>
@@ -180,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error fetching data:', error));
 });
 
+
 function showDutyDetails(volunteerId) {
     fetch(`/auth/volunteer/${volunteerId}`)
         .then(response => response.json())
@@ -192,8 +196,12 @@ function showDutyDetails(volunteerId) {
             document.querySelector('#fireResponse').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
             document.querySelector('#activity').textContent = volunteerDetails.activityPoints;
+
+            // Set the source of the detail image
+            const detailImage = document.getElementById('detailImage');
+            detailImage.src = volunteerDetails.image ? `${volunteerDetails.image}` : 'img/user.png';
         })
-        .catch(error => console.error('Error fetching details:', error));
+        .catch(error => console.error('Error fetching volunteer details:', error));
 }
 function exitdtdetail() {
     document.getElementById('dutyhoursdetail').style.display = 'none';
@@ -220,10 +228,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Loop through the data and create table rows dynamically
             data.forEach((volunteer, index) => {
+                const textColorClass = index < 5 ? 'text-red-500' : '';
                 tableHTML += `
                     <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showFireRe(${volunteer.id})">
                         <td class="pl-5 flex justify-normal space-x-3 pt-4">
-                            <p class="text-2xl font-bold">${index + 1}.</p>
+                            <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
                             <p>${volunteer.name}</p>
                         </td>
                         <td class="text-center">${volunteer.points}</td>
@@ -252,6 +261,10 @@ function showFireRe(volunteerId) {
             document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
             document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
+
+             // Set the source of the detail image
+             const detailImage = document.getElementById('detailImage2');
+             detailImage.src = volunteerDetails.image ? `${volunteerDetails.image}` : 'img/user.png';
         })
         .catch(error => console.error('Error fetching details:', error));
 }

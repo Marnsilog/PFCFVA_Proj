@@ -54,20 +54,20 @@ app.use(fileUpload({
     createParentPath: true,  // Automatically creates directories if they don't exist
 }));
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, 'public/uploads/'),
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, 'public', 'uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
     }
+    cb(null, uploadPath); // Save to 'uploads' directory inside 'public'
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename file to avoid conflicts
+  },
 });
 
 // Init upload
-const upload = multer({
-    storage: storage,
-    limits: {fileSize: 50 * 1024 * 1024}, // 50MB limit
-    fileFilter: function(req, file, cb){
-        checkFileType(file, cb);
-    }
-}).single('itemImage');
+const upload = multer({ storage: storage });
 
 
 // Check File Type
@@ -119,12 +119,14 @@ const server = http.createServer(app);  // Create the HTTP server
 
 const io = socketIo(server);  // Attach Socket.IO to the server
 
-// // Socket.IO connection handling
+
 // io.on('connection', (socket) => {
 //     console.log('A user connected: ', socket.id);
 
-//     socket.on('chatMessage', (msg) => {
-//         io.emit('chatMessage', msg);  // Broadcast message to all clients
+//     // Handle incoming messages
+//     socket.on('chatMessage', (msgData) => {
+//         // Broadcast the message object to all clients
+//         io.emit('chatMessage', msgData);
 //     });
 
 //     socket.on('disconnect', () => {
@@ -135,9 +137,46 @@ const io = socketIo(server);  // Attach Socket.IO to the server
 io.on('connection', (socket) => {
     console.log('A user connected: ', socket.id);
 
-    // Handle incoming messages
+    // Send the chat log when a user connects
+    const now = new Date();
+    const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+    const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+    // Check if the log file exists and read it
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading chat log file:', err);
+        } else {
+            // Send the entire chat log content to the client
+            socket.emit('loadChatLog', data);
+        }
+    });
+
+    // Handle incoming chat messages
     socket.on('chatMessage', (msgData) => {
-        // Broadcast the message object to all clients
+        const now = new Date();
+        const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+        const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+        const logMessage = `[${msgData.date} ${msgData.time}] ${msgData.username}: ${msgData.message}\n`;
+
+        // Save the message to the .txt file
+        fs.appendFile(filePath, logMessage, (err) => {
+            if (err) {
+                console.error('Error writing to chat log:', err);
+                return;
+            }
+
+            // Store the file path in the database if it's not already saved
+            const query = 'INSERT INTO tbl_chat_logs (filePath) VALUES (?) ON DUPLICATE KEY UPDATE filePath = ?';
+            db.query(query, [filePath, filePath], (err) => {
+                if (err) {
+                    console.error('Error saving chat log path:', err);
+                }
+            });
+        });
+
+        // Broadcast the message to all clients
         io.emit('chatMessage', msgData);
     });
 
@@ -544,102 +583,6 @@ app.get('/getCurrentPresent', (req, res) => {
 
 
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-// working with compression and anti
-app.post('/uploadEquipment', (req, res) => {
-    upload(req, res, function(err) {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded.' });
-        }
-
-        // Destructure the fields correctly from req.body
-        const { itemName, vehicleAssignment, dateAcquired } = req.body;
-
-        if (!itemName || !dateAcquired || !vehicleAssignment) {  // Make sure all fields are validated
-            return res.status(400).json({ error: 'All fields are required.' });
-        }
-
-        // Check if the itemName already exists
-        const checkItemNameQuery = 'SELECT COUNT(*) AS count FROM tbl_inventory WHERE itemName = ?';
-        db.query(checkItemNameQuery, [itemName], (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to check item name uniqueness' });
-            }
-
-            if (result[0].count > 0) {
-                return res.status(400).json({ error: 'Item name already exists. Please choose a different name.' });
-            }
-
-            const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename);
-
-            // Compress the image using sharp and resize it
-            sharp(originalImagePath)
-                .metadata()
-                .then(metadata => {
-                    const newWidth = Math.round(metadata.width * 0.5);
-                    const newHeight = Math.round(metadata.height * 0.5);
-
-                    return sharp(originalImagePath)
-                        .resize({ width: newWidth, height: newHeight })
-                        .toBuffer();
-                })
-                .then(data => {
-                    fs.writeFile(originalImagePath, data, (err) => {
-                        if (err) {
-                            return res.status(500).json({ error: 'Failed to save compressed image.' });
-                        }
-
-                        const itemImagePath = `/uploads/${req.file.filename}`;
-
-                        const sql = `
-                            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                            VALUES (?, ?, ?, ?)
-                        `;
-
-                        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-                            if (err) {
-                                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-                            }
-                            res.status(201).json({
-                                message: 'Equipment added successfully!',
-                                data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
-                            });
-                        });
-                    });
-                })
-                .catch(err => {
-                    console.error('Error compressing image:', err);
-                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-                });
-        });
-    });
-});
-
-
-
-
-
-// //select equip route
-// app.get('/getEquipment', (req, res) => {
-//     const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
-//     db.query(sql, (err, results) => {
-//         if (err) {
-//             console.error('Failed to retrieve equipment:', err);
-//             res.status(500).json({ error: 'Failed to retrieve equipment' });
-//         } else {
-//             res.json(results);
-//         }
-//     });
-// });
-
 app.get('/getVehicleAssignments', (req, res) => {
     const sql = 'SELECT * from tbl_vehicles;';
     db.query(sql, (err, results) => {
@@ -747,39 +690,88 @@ app.put('/moveToTrash/:itemName', (req, res) => {
 
 
 // Permanently delete equipment from trash
+// app.delete('/deleteFromTrash/:itemName', (req, res) => {
+//     const itemName = req.params.itemName;
+
+//     // First, retrieve the image path from the database
+//     const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+//     db.query(getImagePathQuery, [itemName], (err, results) => {
+//         if (err) {
+//             console.error('Error retrieving image path:', err);
+//             return res.status(500).json({ error: 'Failed to retrieve image path.' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ error: 'Equipment not found.' });
+//         }
+
+//         const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+
+//         // Delete the image file
+//         fs.unlink(imagePath, (err) => {
+//             if (err) {
+//                 console.error('Failed to delete image file:', err);
+//                 return res.status(500).json({ error: 'Failed to delete image file.' });
+//             }
+
+//             // Proceed to delete the database entry
+//             const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+//             db.query(sql, [itemName], (err, result) => {
+//                 if (err) {
+//                     console.error('Error deleting equipment:', err);
+//                     return res.status(500).json({ error: 'Failed to delete equipment.' });
+//                 }
+
+//                 res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+//             });
+//         });
+//     });
+// });
+
+
 app.delete('/deleteFromTrash/:itemName', (req, res) => {
-    const itemName = req.params.itemName;
+    const { itemName } = req.params;
+    const { password } = req.body;
+    const username = req.session.user?.username;  // Get the logged-in user's username
 
-    // First, retrieve the image path from the database
-    const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
-    db.query(getImagePathQuery, [itemName], (err, results) => {
-        if (err) {
-            console.error('Error retrieving image path:', err);
-            return res.status(500).json({ error: 'Failed to retrieve image path.' });
+    if (!username) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Check if the provided password matches the current user's password
+    const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+    db.query(getPasswordQuery, [username], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(500).json({ error: 'Error retrieving password' });
         }
 
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Equipment not found.' });
-        }
-
-        const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-
-        // Delete the image file
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Failed to delete image file:', err);
-                return res.status(500).json({ error: 'Failed to delete image file.' });
+        const hashedPassword = results[0].password;
+        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
             }
 
-            // Proceed to delete the database entry
-            const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-            db.query(sql, [itemName], (err, result) => {
-                if (err) {
-                    console.error('Error deleting equipment:', err);
-                    return res.status(500).json({ error: 'Failed to delete equipment.' });
+            // If the password matches, proceed to delete the item
+            const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+            db.query(getImagePathQuery, [itemName], (err, results) => {
+                if (err || results.length === 0) {
+                    return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to delete image file' });
+                    }
+
+                    const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+                    db.query(deleteQuery, [itemName], (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to delete equipment' });
+                        }
+                        res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                    });
+                });
             });
         });
     });

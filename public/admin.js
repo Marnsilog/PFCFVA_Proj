@@ -41,8 +41,6 @@ function toggleSetting() {
     }
     addLine('prof');
 }
-
-
 document.addEventListener('DOMContentLoaded', function() {
 
     const circles = document.querySelectorAll('.colorCircle');
@@ -108,7 +106,7 @@ function icsBack(){
        
     }
     }      
-    function passEye2() {
+function passEye2() {
         var x = document.getElementById("confirmPassword");
         var seen = document.getElementById('seen2');
         var unseen = document.getElementById('unseen2');
@@ -229,17 +227,6 @@ function icsBack(){
         }
     };
     
-    
-    
-
-    //for calendar
-    // document.addEventListener('DOMContentLoaded', (event) => {
-    //     const dateOfBirthInput = document.getElementById('dateOfBirth');
-    //     const today = new Date();
-    //     const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-    //     dateOfBirthInput.setAttribute('max', minDate);
-    // });
-
     //FOR RESPONSIVE ---------------------------------->
     document.addEventListener('DOMContentLoaded', function () {
         const menuToggle = document.getElementById('menu-toggle');
@@ -426,7 +413,6 @@ function icsBack(){
             tooltipText.classList.add('hidden');
         });
     });
-
 
 
     //ADMIN INVENTORY STATUS 

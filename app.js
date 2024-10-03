@@ -54,20 +54,20 @@ app.use(fileUpload({
     createParentPath: true,  // Automatically creates directories if they don't exist
 }));
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, 'public/uploads/'),
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, 'public', 'uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
     }
+    cb(null, uploadPath); // Save to 'uploads' directory inside 'public'
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename file to avoid conflicts
+  },
 });
 
 // Init upload
-const upload = multer({
-    storage: storage,
-    limits: {fileSize: 50 * 1024 * 1024}, // 50MB limit
-    fileFilter: function(req, file, cb){
-        checkFileType(file, cb);
-    }
-}).single('itemImage');
+const upload = multer({ storage: storage });
 
 
 // Check File Type
@@ -582,102 +582,6 @@ app.get('/getCurrentPresent', (req, res) => {
 });
 
 
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-// working with compression and anti
-app.post('/uploadEquipment', (req, res) => {
-    upload(req, res, function(err) {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded.' });
-        }
-
-        // Destructure the fields correctly from req.body
-        const { itemName, vehicleAssignment, dateAcquired } = req.body;
-
-        if (!itemName || !dateAcquired || !vehicleAssignment) {  // Make sure all fields are validated
-            return res.status(400).json({ error: 'All fields are required.' });
-        }
-
-        // Check if the itemName already exists
-        const checkItemNameQuery = 'SELECT COUNT(*) AS count FROM tbl_inventory WHERE itemName = ?';
-        db.query(checkItemNameQuery, [itemName], (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to check item name uniqueness' });
-            }
-
-            if (result[0].count > 0) {
-                return res.status(400).json({ error: 'Item name already exists. Please choose a different name.' });
-            }
-
-            const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename);
-
-            // Compress the image using sharp and resize it
-            sharp(originalImagePath)
-                .metadata()
-                .then(metadata => {
-                    const newWidth = Math.round(metadata.width * 0.5);
-                    const newHeight = Math.round(metadata.height * 0.5);
-
-                    return sharp(originalImagePath)
-                        .resize({ width: newWidth, height: newHeight })
-                        .toBuffer();
-                })
-                .then(data => {
-                    fs.writeFile(originalImagePath, data, (err) => {
-                        if (err) {
-                            return res.status(500).json({ error: 'Failed to save compressed image.' });
-                        }
-
-                        const itemImagePath = `/uploads/${req.file.filename}`;
-
-                        const sql = `
-                            INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                            VALUES (?, ?, ?, ?)
-                        `;
-
-                        db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-                            if (err) {
-                                return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-                            }
-                            res.status(201).json({
-                                message: 'Equipment added successfully!',
-                                data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
-                            });
-                        });
-                    });
-                })
-                .catch(err => {
-                    console.error('Error compressing image:', err);
-                    return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-                });
-        });
-    });
-});
-
-
-
-
-
-// //select equip route
-// app.get('/getEquipment', (req, res) => {
-//     const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
-//     db.query(sql, (err, results) => {
-//         if (err) {
-//             console.error('Failed to retrieve equipment:', err);
-//             res.status(500).json({ error: 'Failed to retrieve equipment' });
-//         } else {
-//             res.json(results);
-//         }
-//     });
-// });
 
 app.get('/getVehicleAssignments', (req, res) => {
     const sql = 'SELECT * from tbl_vehicles;';

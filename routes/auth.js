@@ -99,6 +99,45 @@ module.exports = (db, db2) => {
             });
         });
     });
+    router.post('/addEquipment', (req, res) => {
+        const { itemName, vehicleAssignment, dateAcquired } = req.body;
+        let itemImagePath = null;
+        if (req.files && req.files.itemImage) {
+            const itemImage = req.files.itemImage;
+            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+    
+            itemImage.mv(uploadPath, (err) => {
+                if (err) {
+                    console.error('Error moving file:', err);
+                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+                }
+    
+                itemImagePath = `uploads/${uniqueFileName}`;
+                insertEquipment();
+            });
+        } else {
+            // No image uploaded, proceed with inserting data into the database
+            insertEquipment();
+        }
+    
+        function insertEquipment() {
+            const query = `
+                INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+                VALUES (?, ?, ?, ?)
+            `;
+            const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+    
+            db.query(query, queryParams, (error, results) => {
+                if (error) {
+                    console.error('Error inserting equipment data:', error);
+                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+                }
+    
+                res.send({ success: true, message: 'Equipment added successfully.' });
+            });
+        }
+    });
     
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
@@ -174,7 +213,7 @@ module.exports = (db, db2) => {
     });
 
     router.post('/edit-profile', (req, res) => {
-        console.log('Uploaded files:', req.files);  // Log uploaded files
+        //console.log('Uploaded files:', req.files);  // Log uploaded files
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,
             oldPassword, newPassword, civilStatus, nationality, bloodType,
@@ -310,7 +349,7 @@ module.exports = (db, db2) => {
         });
     });
     
-    
+
     // router.get('/get-profilePic', (req, res) => {
     //     const profilePicPath = req.session.user?.profilePicPath || 'img/user.png'; 
     //     console.log(profilePicPath)
@@ -336,9 +375,6 @@ module.exports = (db, db2) => {
             res.json({ success: true, profilePicPath });
         });
     });
-
-    
-
     router.get('/dashboard-data', (req, res) => {
     const username = req.session.user?.username;
 
@@ -479,107 +515,18 @@ module.exports = (db, db2) => {
             res.json(results[0]);
         });
     });
-    router.post('/edit-profile', (req, res) => {
-        const {
-            username, lastName, firstName, middleName, emailAddress, contactNumber, 
-            oldPassword, newPassword, civilStatus, nationality, bloodType, 
-            birthday, gender, currentAddress, emergencyContactPerson, 
-            emergencyContactNumber, highestEducationalAttainment, nameOfCompany, 
-            yearsInService, skillsTraining, otherAffiliation
-        } = req.body;
+    router.post('/add-vehicle', (req, res) => {
+        const { vehicleName } = req.body;
     
-        // Optionally check if the username exists, you can adjust this logic based on your needs
-        const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
-        db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
-            if (checkUsernameErr) {
-                console.error('Error checking username:', checkUsernameErr);
-                return res.status(500).send('Error checking username');
+        // SQL query to insert the vehicle name into the database
+        const sql = 'INSERT INTO tbl_vehicles (vehicleName) VALUES (?)';
+    
+        db.query(sql, [vehicleName], (error, results) => {
+            if (error) {
+                console.error('Error inserting vehicle:', error);
+                return res.status(500).json({ success: false, message: 'Database error' });
             }
-    
-            if (checkUsernameResult.length === 0) {
-                return res.status(400).send('User not found');
-            }
-    
-            // Validate old password if it was provided
-            if (oldPassword) {
-                const user = checkUsernameResult[0];
-                bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
-                    if (compareErr || !isMatch) {
-                        return res.status(400).send('Old password is incorrect');
-                    }
-    
-                    // Hash new password if provided
-                    if (newPassword) {
-                        bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-                            if (hashErr) {
-                                console.error('Error hashing new password:', hashErr);
-                                return res.status(500).send('Error hashing new password');
-                            }
-                            updateProfile(hash);
-                        });
-                    } else {
-                        updateProfile(user.password); // use old password if no new password is provided
-                    }
-                });
-            } else {
-                updateProfile(null); // No old password provided
-            }
-        });
-    
-        function updateProfile(hashedPassword) {
-            const updateQuery = `
-                UPDATE tbl_accounts 
-                SET 
-                    lastName = ?, firstName = ?, middleName = ?, emailAddress = ?, contactNumber = ?, 
-                    civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?, gender = ?, 
-                    currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?, 
-                    highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, 
-                    skillsTraining = ?, otherAffiliation = ? 
-                    ${hashedPassword ? ', password = ?' : ''}
-                WHERE username = ?`;
-    
-            const values = [
-                lastName, firstName, middleName, emailAddress, contactNumber,
-                civilStatus, nationality, bloodType, birthday, gender,
-                currentAddress, emergencyContactPerson, emergencyContactNumber,
-                highestEducationalAttainment, nameOfCompany, yearsInService,
-                skillsTraining, otherAffiliation,
-                username,
-            ];
-    
-            if (hashedPassword) {
-                values.push(hashedPassword);
-            }
-    
-            db.query(updateQuery, values, (updateErr, result) => {
-                if (updateErr) {
-                    console.error('Error updating profile:', updateErr);
-                    return res.status(500).send('Error updating profile');
-                }
-                res.status(200).send('Profile updated successfully');
-            });
-        }
-    });
-    
-    router.post('/addVehicle', upload.none(), (req, res) => {
-        console.log("Received request:", req.body); 
-        const vehicleName = req.body.vehicleName;
-    
-        // Input validation
-        if (!vehicleName || typeof vehicleName !== 'string' || vehicleName.length < 1) {
-            return res.status(400).json({ message: 'Invalid vehicle name' });
-        }
-    
-        // Insert into database
-        const query = 'INSERT INTO tbl_vehicles (vehicleName) VALUES (?)';
-        db.query(query, [vehicleName], (err, result) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ message: 'Failed to add vehicle' });
-            }
-    
-            console.log('Vehicle added:', result.insertId); // Log the inserted ID
-            res.status(201).json({ message: 'Vehicle added successfully!', vehicleId: result.insertId });
+            return res.status(200).json({ success: true, message: 'Vehicle added successfully' });
         });
     });
 

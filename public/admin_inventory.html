@@ -212,7 +212,7 @@
                     </div>
                 
                     <div class="flex justify-center space-x-10">
-                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
                         <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
                     </div>
                 </form>
@@ -220,7 +220,7 @@
             </div>
 
             <div  class="flex justify-center w-full font-Inter">
-                <form id="addVehicleForm" class="hidden absolute top-80 w-76 h-64 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data">
+                <form id="addVehicleForm" class="hidden absolute top-80 w-76 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
                     <h2 class="text-2xl text-center font-bold">Add New Vehicle</h2>
                     <div class="flex justify-start mx-5">
                         <p class="font-semibold text-md mr-2">Vehicle Name:</p>
@@ -252,17 +252,20 @@
 
 
    <!-- Password confirmation modal -->
-<div id="passwordModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
-    <div class="bg-white p-5 rounded-lg w-full max-w-lg">
-      <h2 class="text-lg font-bold mb-4 text-center">Confirm Deletion</h2>
-      <p class="mb-3 text-center">Please enter your password to confirm deletion:</p>
-      <input id="passwordInput" type="password" class="w-full px-3 py-2 border rounded-md mb-4" placeholder="Enter your password" />
-      <div class="flex justify-end space-x-2">
-        <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Cancel</button>
-        <button id="confirmButton" class="bg-red-600 text-white px-4 py-2 rounded-lg">Confirm</button>
-      </div>
+    <div id="passwordModal" class="hidden">
+        <div  class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
+            <div class="bg-white p-5 rounded-lg w-full max-w-lg">
+              <h2 class="text-lg font-bold mb-4 text-center">Confirm Deletion</h2>
+              <p class="mb-3 text-center">Please enter your password to confirm deletion:</p>
+              <input id="passwordInput" type="password" class="w-full px-3 py-2 border rounded-md mb-4" placeholder="Enter your password" />
+              <div class="flex justify-end space-x-2">
+                <button id="cancelButton" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Cancel</button>
+                <button id="confirmButton" class="bg-red-600 text-white px-4 py-2 rounded-lg">Confirm</button>
+              </div>
+            </div>
+        </div>
     </div>
-</div>
+
 
 
     
@@ -301,8 +304,6 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
-<script src="admin_modules.js" defer></script>
 <script src="module_equipment.js" defer></script>
-<script src="register.js" defer></script>
 <script src="profileImage.js" defer></script>
 </html>

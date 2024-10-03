@@ -57,28 +57,89 @@ function moveToTrash(itemName) {
 }
 
 
-function deleteFromTrash(itemName) {
-    if (confirm(`Are you sure you want to permanently delete ${itemName}? This action cannot be undone.`)) {
-        fetch(`/deleteFromTrash/${encodeURIComponent(itemName)}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text || 'Failed to delete equipment'); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            loadTrash();  // Reload the trash list after permanent deletion
-        })
-        .catch(error => {
-            console.error('Error deleting equipment from trash:', error);
-            alert('Error deleting equipment from trash: ' + error.message);
-        });
-    }
+// function deleteFromTrash(itemName) {
+//     if (confirm(`Are you sure you want to permanently delete ${itemName}? This action cannot be undone.`)) {
+//         fetch(`/deleteFromTrash/${encodeURIComponent(itemName)}`, {
+//             method: 'DELETE'
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 return response.text().then(text => { throw new Error(text || 'Failed to delete equipment'); });
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             alert(data.message);
+//             loadTrash();  // Reload the trash list after permanent deletion
+//         })
+//         .catch(error => {
+//             console.error('Error deleting equipment from trash:', error);
+//             alert('Error deleting equipment from trash: ' + error.message);
+//         });
+//     }
+// }
+
+let currentItemToDelete = null;  // To store the item that is about to be deleted
+
+// Function to handle delete button click and open the modal
+function openPasswordModal(itemName) {
+    currentItemToDelete = itemName;  // Store the item name
+    const passwordModal = document.getElementById("passwordModal");
+    passwordModal.classList.remove("hidden");
 }
 
+// Function to close the modal
+function closePasswordModal() {
+    const passwordModal = document.getElementById("passwordModal");
+    passwordModal.classList.add("hidden");
+}
+
+// Function to handle the actual deletion after password confirmation
+function handlePasswordConfirmation() {
+    const passwordInput = document.getElementById("passwordInput").value;  // Get the entered password
+
+    if (!currentItemToDelete || !passwordInput) {
+        alert("Please enter your password.");
+        return;
+    }
+
+    // Send password and itemName to backend for verification and deletion
+    fetch(`/deleteFromTrash/${encodeURIComponent(currentItemToDelete)}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput })  // Send password in body
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text || 'Failed to delete equipment'); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        loadTrash();  // Reload the trash list after permanent deletion
+        closePasswordModal();  // Close the modal
+    })
+    .catch(error => {
+        console.error('Error deleting equipment from trash:', error);
+        alert('Error deleting equipment from trash: ' + error.message);
+    });
+}
+
+// Event listener for the confirm button inside the password modal
+document.getElementById("confirmButton").addEventListener("click", handlePasswordConfirmation);
+
+// Event listener for the cancel button to close the modal
+document.getElementById("cancelButton").addEventListener("click", closePasswordModal);
+
+// Example of how to trigger the delete action
+function deleteFromTrash(itemName) {
+    openPasswordModal(itemName);  // Open modal and store itemName
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', () => {
     loadVehicleAssignments();
     EditAddVehicleAssignments();

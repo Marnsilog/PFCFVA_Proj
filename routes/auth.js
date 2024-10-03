@@ -862,6 +862,31 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.get('/equipment/:id', (req, res) => {
+        const itemId = parseInt(req.params.id, 10); // Convert string to integer
+        
+        const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
+        db.query(query, [itemId], (error, results) => {
+            if (error) {
+                console.error('Error fetching equipment data:', error);
+                return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+            }
+            
+            if (results.length === 0) {
+                return res.status(404).json({ success: false, message: 'Equipment not found' });
+            }
+    
+            const equipment = results[0];
+    
+            // If the equipment image is not found, use the default image
+            const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
+
+            
+            res.json({ success: true, data: { ...equipment, itemImagePath } });
+        });
+    });
+    
+    
     
     return router;
 };

@@ -468,8 +468,19 @@ module.exports = (db, db2) => {
         }
     });
     router.get('/volunteers', (req, res) => {
-        const query = 'SELECT accountID AS id, firstName AS name, dutyHours AS points FROM tbl_accounts ORDER BY dutyHours DESC';
-        db.query(query, (err, results) => {
+        const search = req.query.search || ''; // Get the search term from query parameters
+        // Use parameterized queries to avoid SQL injection
+        const query = `
+            SELECT accountID AS id, firstName AS name, dutyHours AS points 
+            FROM tbl_accounts 
+            WHERE firstName LIKE ? 
+            ORDER BY dutyHours DESC
+        `;
+        
+        // Prepare the search pattern for SQL LIKE
+        const searchPattern = `%${search}%`;
+    
+        db.query(query, [searchPattern], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -477,10 +488,6 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-        
-
-
     router.get('/volunteer/:id', (req, res) => {
         const volunteerId = req.params.id;
         if (isNaN(volunteerId)) {
@@ -518,12 +525,16 @@ module.exports = (db, db2) => {
         });
     });
     
-    
-    
-    
     router.get('/fireresponse', (req, res) => {
-        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts ORDER BY fireResponsePoints DESC';
-        db.query(query, (err, results) => {
+        const searchTerm = req.query.search || ''; // Get search term from query parameter
+        const query = `
+            SELECT accountID as id, firstName as name, fireResponsePoints as points 
+            FROM tbl_accounts 
+            WHERE firstName LIKE ? 
+            ORDER BY fireResponsePoints DESC
+        `;
+        
+        db.query(query, [`%${searchTerm}%`], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -531,6 +542,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     router.get('/fireresponse/:id', (req, res) => {
         const volunteerId = req.params.id;
         if (isNaN(volunteerId)) {
@@ -689,8 +701,6 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-    
     router.get('/inventory2/detail/:itemID', (req, res) => {
         const itemID = req.params.itemID;
         const query = `

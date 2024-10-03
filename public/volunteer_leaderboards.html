@@ -24,7 +24,6 @@
                     <li id="dashb" class="md:mt-12 "><a href="/volunteer_dashboard">Dashboard</a></li>
                     <li id="inV" class="md:mt-12 "><a href="/volunteer_form_inv">Inventory</a></li>
                     <li id="leadB" class="md:mt-12 underline underline-offset-4"><a href="/volunteer_leaderboards">Leaderboards</a></li>
-                    <li id="conN" class="md:mt-12 "><a href="/volunteer_contactus">Contact Us</a></li>
                     <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                     <li class="md:mt-6">
                         <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
@@ -103,114 +102,116 @@
 <div id="loading-container" style="display: none;">
     <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 </div>
-    <div class="md:w-full md:flex md:justify-center" id="frmLeaderboards">
-            <div class="md:max-w-[90rem] md:w-full md:mt-10 md:ml-40">
-                <p class="text-center md:text-start font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
-                <div class="md:ml-5">
-                    <div class="mt-5 md:flex md:justify-between md:mt-0">
+<div class="md:w-full md:flex md:justify-center" id="frmLeaderboards">
+    <div class="md:max-w-[90rem] md:w-full md:mt-10 md:ml-40">
+        <p class="text-center md:text-start font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
+        <div class="md:ml-5">
+            <div class="mt-5 md:flex md:justify-between md:mt-0">
+            
+                <div class="w-full flex justify-center md:block">
+                    <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
+                        <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
+                            <p class="text-center font-Inter font-[700] md:pt-2">Duty Hours</p></div>
+                            
+                        <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 w-[12rem] h-[27px] my-[1px] || md:mr-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
+                            <p class="text-center font-Inter font-[700] md:pt-2">Fire Response</p></div>
+
+                    </div>
+
+                </div>
+          
+                <div class=" md:pl-0 md:w-[32rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                    <input class="w-full h-full px-2 focus:outline-none rounded-lg" id="txtleaderboardsearch" type="text" placeholder="Search">
+                </div>
+            </div>
+            <div id="loading-container" style="display: none;">
+                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <!-- DUTY HOURS -->
+             <div class="w-full h-full " id="frmDutyhours"> 
+                <div class="w-full h-full flex justify-normal mt-5">
+                    <div class="px-5 w-full flex justify-center " id="Container">
+                    </div>
                     
-                        <div class="w-full flex justify-center md:block">
-                            <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
-                                <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
-                                    <p class="text-center font-Inter font-[700] md:pt-2">Duty Hours</p></div>
-                                    
-                                <div class="  text-black hover:text-white hover:bg-red-700 rounded-full mr-2 w-[12rem] h-[27px] my-[1px] || md:mr-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showFireRes()" id="FireR">
-                                    <p class="text-center font-Inter font-[700] md:pt-2">Fire Response</p></div>
-   
-                            </div>
-        
+                    <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
+                        <div class="w-full flex justify-end pr-5 mt-2">
+                            <a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a>
                         </div>
-                  
-                        <div class=" md:pl-0 md:w-[32rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                            <input class="w-full h-full px-2 focus:outline-none rounded-lg" type="text" placeholder="Search">
-                           
+                        <div class="flex justify-center space-x-10 mt-3">
+                            <img src="img/user.png" class="w-32 h-32 rounded-full" id="detailImage" alt="">
+                            <div class="font-inter">
+                                <p id="detailName" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                <p id="detailID" class="text-center text-2xl text-[#930D0D]">ID</p>
+                            </div>
+                        </div>
+                        <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
+                            <div class="w-full h-full font-inter pt-3">
+                                <p id="dutyHours" class="text-2xl text-center font-bold">Duty Hours</p>
+                                <p class="text-lg text-center">Duty Hours</p>
+                            </div>
+                            <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                                <p id="fireResponse" class="text-2xl text-center font-bold">Fire Response</p>
+                                <p class="text-lg text-center">Fire Response</p>
+                            </div>
+                            <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                                <p id="inventory" class="text-2xl text-center font-bold">Inventory</p>
+                                <p class="text-lg text-center">Inventory</p>
+                            </div>
+                            <div class="w-full h-full">
+                                <p id="activity" class="text-2xl text-center font-bold pt-3">Activity</p>
+                                <p class="text-lg text-center">Activity</p>
+                            </div>
                         </div>
                     </div>
-                    <!-- DUTY HOURS -->
-                     <div class="w-full h-full " id="frmDutyhours"> 
-                        <div class="w-full h-full flex justify-normal mt-5">
-                            <div class="px-5 w-full flex justify-center " id="Container">
-                            </div>
-                            
-                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
-                                <div class="w-full flex justify-end pr-5 mt-2">
-                                    <a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a>
-                                </div>
-                                <div class="flex justify-center space-x-10 mt-3">
-                                    <img src="" class="w-32 h-32 rounded-full" id="detailImage" alt="">
-                                    <div class="font-inter">
-                                        <p id="detailName" class="text-3xl font-semibold mt-5">Volunteer Name</p>
-                                        <p id="detailID" class="text-center text-2xl text-[#930D0D]">ID</p>
-                                    </div>
-                                </div>
-                                <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                                    <div class="w-full h-full font-inter pt-3">
-                                        <p id="dutyHours" class="text-2xl text-center font-bold">Duty Hours</p>
-                                        <p class="text-lg text-center">Duty Hours</p>
-                                    </div>
-                                    <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                        <p id="fireResponse" class="text-2xl text-center font-bold">Fire Response</p>
-                                        <p class="text-lg text-center">Fire Response</p>
-                                    </div>
-                                    <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                        <p id="inventory" class="text-2xl text-center font-bold">Inventory</p>
-                                        <p class="text-lg text-center">Inventory</p>
-                                    </div>
-                                    <div class="w-full h-full">
-                                        <p id="activity" class="text-2xl text-center font-bold pt-3">Activity</p>
-                                        <p class="text-lg text-center">Activity</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                     </div>
-                   
-                        <!-- FIRE RESPONSE -->
-                    <div class="w-full h-full"  style="display: none;" id="frmFireResponse">
-                        <div class="w-full h-full flex justify-normal mt-5">
-                            <div class="px-5 w-full flex justify-center " id="Container2">
-                            </div>
-                            
-                            <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
-                                <div class="w-full flex justify-end pr-5 mt-2">
-                                    <a href="#" onclick="exitdtdetail2()" class="text-2xl font-semibold">X</a>
-                                </div>
-                                <div class="flex justify-center space-x-10 mt-3">
-                                    <img src="img/user.png" id="detailImage2"  class="w-32 h-32 rounded-full"  alt="">
-                                    <div class="font-inter">
-                                        <p id="detailName2" class="text-3xl font-semibold mt-5">Volunteer Name</p>
-                                        <p id="detailID2" class="text-center text-2xl text-[#930D0D]">ID</p>
-                                    </div>
-                                </div>
-                                <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                                    <div class="w-full h-full font-inter pt-3">
-                                        <p id="dutyHours2" class="text-2xl text-center font-bold">Duty Hours</p>
-                                        <p class="text-lg text-center">Duty Hours</p>
-                                    </div>
-                                    <div class="w-full h-full border-x-2 border-gray-400 pt-3">
-                                        <p id="fireResponse2" class="text-2xl text-center font-bold">Fire Response</p>
-                                        <p class="text-lg text-center">Fire Response</p>
-                                    </div>
-                                    <div class="w-full h-full border-r-2 border-gray-400 pt-3">
-                                        <p id="inventory2" class="text-2xl text-center font-bold">Inventory</p>
-                                        <p class="text-lg text-center">Inventory</p>
-                                    </div>
-                                    <div class="w-full h-full">
-                                        <p id="activity2" class="text-2xl text-center font-bold pt-3">Activity</p>
-                                        <p class="text-lg text-center">Activity</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> 
+                </div>
+               
+             </div>
+           
+                <!-- FIRE RESPONSE -->
+            <div class="w-full h-full"  style="display: none;" id="frmFireResponse">
+                <div class="w-full h-full flex justify-normal mt-5">
+                    <div class="px-5 w-full flex justify-center " id="Container2">
+                    </div>
                     
+                    <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
+                        <div class="w-full flex justify-end pr-5 mt-2">
+                            <a href="#" onclick="exitdtdetail2()" class="text-2xl font-semibold">X</a>
+                        </div>
+                        <div class="flex justify-center space-x-10 mt-3">
+                            <img src="img/user.png" class="w-32 h-32 rounded-full" id="detailImage2" alt="">
+                            <div class="font-inter">
+                                <p id="detailName2" class="text-3xl font-semibold mt-5">Volunteer Name</p>
+                                <p id="detailID2" class="text-center text-2xl text-[#930D0D]">ID</p>
+                            </div>
+                        </div>
+                        <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
+                            <div class="w-full h-full font-inter pt-3">
+                                <p id="dutyHours2" class="text-2xl text-center font-bold">Duty Hours</p>
+                                <p class="text-lg text-center">Duty Hours</p>
+                            </div>
+                            <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                                <p id="fireResponse2" class="text-2xl text-center font-bold">Fire Response</p>
+                                <p class="text-lg text-center">Fire Response</p>
+                            </div>
+                            <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                                <p id="inventory2" class="text-2xl text-center font-bold">Inventory</p>
+                                <p class="text-lg text-center">Inventory</p>
+                            </div>
+                            <div class="w-full h-full">
+                                <p id="activity2" class="text-2xl text-center font-bold pt-3">Activity</p>
+                                <p class="text-lg text-center">Activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            </div>
-        </div>
+            </div> 
+            
+
     </div>
+</div>
+</div>
 </body>
 
 

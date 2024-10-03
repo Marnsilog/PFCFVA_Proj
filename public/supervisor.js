@@ -11,6 +11,8 @@
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-bla   ck');
+    //fetchVolunteers();
+    handledhSearch(); 
     }
 
   function showFireRes(){
@@ -23,6 +25,8 @@
     FireR.classList.add('bg-red-700','text-white');
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
+    fetchFireResponse();
+    handlefrSearch();
     }
 
     function toggleSetting() {
@@ -135,16 +139,42 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
 });
-
+window.addEventListener('load', function() {
+    if (window.location.pathname === '/supervisor_leaderboards') {
+        handledhSearch();
+        fetchVolunteers();
+    }else if (window.location.pathname === '/supervisor_inventory') {
+        loadsVehicleAssignments();
+        fetchAndDisplayInventory(); 
+    }else if(window.location.pathname === '/volunteer_leaderboards'){
+        handledhSearch();
+        fetchVolunteers();
+    }
+});
 //LEADERBOARDS CLIENT
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/auth/volunteers')
+function handledhSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchVolunteers(searchTerm);
+    });
+}
+function handlefrSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchFireResponse(searchTerm);
+    });
+}
+function fetchVolunteers(searchTerm = '') {
+    const url = searchTerm ? `/auth/volunteers?search=${encodeURIComponent(searchTerm)}` : '/auth/volunteers';
+    
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            //console.log(data); 
             const container = document.getElementById('Container');
 
-            // Build the table dynamically with the header and rows combined
+            // Build the table HTML structure
             let tableHTML = `
                 <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable2" class="text-start w-full px-4">
@@ -157,9 +187,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         <tbody class="text-sm md:text-xl text-start font-Inter">
             `;
 
-            // Loop through the data and create table rows dynamically
+            // Loop through the data and create table rows
             data.forEach((volunteer, index) => {
-                // Set the color red for the first 10 volunteers
+                // Set the color red for the first 5 volunteers
                 const textColorClass = index < 5 ? 'text-red-500' : '';
 
                 tableHTML += `
@@ -172,17 +202,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     </tr>
                 `;
             });
+
             tableHTML += `
                         </tbody>
                     </table>
                 </div>
             `;
 
+            // Inject the generated table HTML into the container
             container.innerHTML = tableHTML;
         })
         .catch(error => console.error('Error fetching data:', error));
-});
-
+}
 
 function showDutyDetails(volunteerId) {
     fetch(`/auth/volunteer/${volunteerId}`)
@@ -206,17 +237,18 @@ function showDutyDetails(volunteerId) {
 function exitdtdetail() {
     document.getElementById('dutyhoursdetail').style.display = 'none';
 }
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/auth/fireresponse')
+function fetchFireResponse(searchTerm = '') {
+    const url = searchTerm ? `/auth/fireresponse?search=${encodeURIComponent(searchTerm)}` : '/auth/fireresponse';
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            //console.log(data); 
             const container = document.getElementById('Container2');
 
-            // Build the table dynamically with the header and rows combined
+            // Build the table HTML structure
             let tableHTML = `
                 <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
-                    <table id="myTable3" class="text-start   w-full px-4">
+                    <table id="myTable3" class="text-start w-full px-4">
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
@@ -245,10 +277,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
+            // Inject the generated table HTML into the container
             container.innerHTML = tableHTML;
         })
         .catch(error => console.error('Error fetching data:', error));
-});
+}
+
 function showFireRe(volunteerId) {
     fetch(`/auth/fireresponse/${volunteerId}`)
         .then(response => response.json())
@@ -351,10 +385,6 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
         console.error('Error fetching inventory data:', error);
     }
 }
-window.onload = () => {
-    loadsVehicleAssignments();
-    fetchAndDisplayInventory(); 
-};
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
@@ -375,10 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     inventoryItems.push({ itemID, vehicleAssignment });
                 }
             });
-
-            console.log('Inventory items being sent:', inventoryItems);
-
-            // Send the collected items to the server
             try {
                 const response = await fetch('/auth/inventory-supervisor/log', {
                     method: 'POST',

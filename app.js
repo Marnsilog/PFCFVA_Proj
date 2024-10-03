@@ -119,12 +119,14 @@ const server = http.createServer(app);  // Create the HTTP server
 
 const io = socketIo(server);  // Attach Socket.IO to the server
 
-// // Socket.IO connection handling
+
 // io.on('connection', (socket) => {
 //     console.log('A user connected: ', socket.id);
 
-//     socket.on('chatMessage', (msg) => {
-//         io.emit('chatMessage', msg);  // Broadcast message to all clients
+//     // Handle incoming messages
+//     socket.on('chatMessage', (msgData) => {
+//         // Broadcast the message object to all clients
+//         io.emit('chatMessage', msgData);
 //     });
 
 //     socket.on('disconnect', () => {
@@ -135,9 +137,46 @@ const io = socketIo(server);  // Attach Socket.IO to the server
 io.on('connection', (socket) => {
     console.log('A user connected: ', socket.id);
 
-    // Handle incoming messages
+    // Send the chat log when a user connects
+    const now = new Date();
+    const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+    const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+    // Check if the log file exists and read it
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading chat log file:', err);
+        } else {
+            // Send the entire chat log content to the client
+            socket.emit('loadChatLog', data);
+        }
+    });
+
+    // Handle incoming chat messages
     socket.on('chatMessage', (msgData) => {
-        // Broadcast the message object to all clients
+        const now = new Date();
+        const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+        const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+        const logMessage = `[${msgData.date} ${msgData.time}] ${msgData.username}: ${msgData.message}\n`;
+
+        // Save the message to the .txt file
+        fs.appendFile(filePath, logMessage, (err) => {
+            if (err) {
+                console.error('Error writing to chat log:', err);
+                return;
+            }
+
+            // Store the file path in the database if it's not already saved
+            const query = 'INSERT INTO tbl_chat_logs (filePath) VALUES (?) ON DUPLICATE KEY UPDATE filePath = ?';
+            db.query(query, [filePath, filePath], (err) => {
+                if (err) {
+                    console.error('Error saving chat log path:', err);
+                }
+            });
+        });
+
+        // Broadcast the message to all clients
         io.emit('chatMessage', msgData);
     });
 
@@ -747,39 +786,88 @@ app.put('/moveToTrash/:itemName', (req, res) => {
 
 
 // Permanently delete equipment from trash
+// app.delete('/deleteFromTrash/:itemName', (req, res) => {
+//     const itemName = req.params.itemName;
+
+//     // First, retrieve the image path from the database
+//     const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+//     db.query(getImagePathQuery, [itemName], (err, results) => {
+//         if (err) {
+//             console.error('Error retrieving image path:', err);
+//             return res.status(500).json({ error: 'Failed to retrieve image path.' });
+//         }
+
+//         if (results.length === 0) {
+//             return res.status(404).json({ error: 'Equipment not found.' });
+//         }
+
+//         const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+
+//         // Delete the image file
+//         fs.unlink(imagePath, (err) => {
+//             if (err) {
+//                 console.error('Failed to delete image file:', err);
+//                 return res.status(500).json({ error: 'Failed to delete image file.' });
+//             }
+
+//             // Proceed to delete the database entry
+//             const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+//             db.query(sql, [itemName], (err, result) => {
+//                 if (err) {
+//                     console.error('Error deleting equipment:', err);
+//                     return res.status(500).json({ error: 'Failed to delete equipment.' });
+//                 }
+
+//                 res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+//             });
+//         });
+//     });
+// });
+
+
 app.delete('/deleteFromTrash/:itemName', (req, res) => {
-    const itemName = req.params.itemName;
+    const { itemName } = req.params;
+    const { password } = req.body;
+    const username = req.session.user?.username;  // Get the logged-in user's username
 
-    // First, retrieve the image path from the database
-    const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
-    db.query(getImagePathQuery, [itemName], (err, results) => {
-        if (err) {
-            console.error('Error retrieving image path:', err);
-            return res.status(500).json({ error: 'Failed to retrieve image path.' });
+    if (!username) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Check if the provided password matches the current user's password
+    const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+    db.query(getPasswordQuery, [username], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(500).json({ error: 'Error retrieving password' });
         }
 
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Equipment not found.' });
-        }
-
-        const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-
-        // Delete the image file
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Failed to delete image file:', err);
-                return res.status(500).json({ error: 'Failed to delete image file.' });
+        const hashedPassword = results[0].password;
+        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
             }
 
-            // Proceed to delete the database entry
-            const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-            db.query(sql, [itemName], (err, result) => {
-                if (err) {
-                    console.error('Error deleting equipment:', err);
-                    return res.status(500).json({ error: 'Failed to delete equipment.' });
+            // If the password matches, proceed to delete the item
+            const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
+            db.query(getImagePathQuery, [itemName], (err, results) => {
+                if (err || results.length === 0) {
+                    return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to delete image file' });
+                    }
+
+                    const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemName = ?';
+                    db.query(deleteQuery, [itemName], (err) => {
+                        if (err) {
+                            return res.status(500).json({ error: 'Failed to delete equipment' });
+                        }
+                        res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                    });
+                });
             });
         });
     });

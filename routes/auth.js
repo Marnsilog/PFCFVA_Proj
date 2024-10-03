@@ -666,22 +666,22 @@ module.exports = (db, db2) => {
     
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
-        const query = `
-                                    SELECT il.itemID, 
-                    DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
-                    DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
-                    iv.vehicleAssignment AS vehicle
-                FROM 
-                    tbl_inventory_logs il
-                JOIN 
-                    tbl_inventory iv ON iv.ItemID = il.itemID
-                WHERE 
-                    il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
-                ORDER BY 
-                    il.dateAndTimeChecked DESC  -- Sort by date and time checked, most recent first
-                LIMIT 0, 25;`;
+        const search = req.query.search || ''; 
     
-        db.query(query, [ username], (err, results) => {
+        const query = `
+            SELECT il.itemID, 
+                   DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                   DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                   iv.vehicleAssignment AS vehicle
+            FROM tbl_inventory_logs il
+            JOIN tbl_inventory iv ON iv.ItemID = il.itemID
+            WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+              AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
+            ORDER BY il.dateAndTimeChecked DESC 
+            LIMIT 0, 25;`;
+    
+        // Use '%' wildcard for LIKE search
+        db.query(query, [username, `%${search}%`, `%${search}%`], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -689,6 +689,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     
     router.get('/inventory2/detail/:itemID', (req, res) => {
         const itemID = req.params.itemID;

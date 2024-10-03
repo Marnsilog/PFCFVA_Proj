@@ -84,8 +84,6 @@ function CancelInv(){
 
 }
 
-
-
 document.addEventListener('DOMContentLoaded', function() {
 
     const menuToggle = document.getElementById('menu-toggle');
@@ -114,56 +112,111 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-//Leaderboards
-
-
-
-function showFireRe(volunteerId) {
-    fetch(`/auth/fireresponse/${volunteerId}`)
-        .then(response => response.json())
-        .then(volunteerDetails => {
-            document.getElementById('frdetail').style.display = 'block';
-
-            document.querySelector('#detailName2').textContent = volunteerDetails.name;
-            document.querySelector('#detailID2').textContent = volunteerDetails.id;
-            document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
-            document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
-            document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
-            document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
-        })
-}
-
-function exitdtdetail2() {
-    document.getElementById('frdetail').style.display = 'none';
-}
-
-
 //INVENTORY
 //VOLUNTEER INV
-function loadsVehicleAssignments() {
-    fetch('/getVehicleAssignments')
+window.addEventListener('load', function() {
+    if (window.location.pathname === '/volunteer_form_inv') {
+        document.getElementById('Search_form_inv').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchInventory_form(searchQuery); 
+        });
+        fetchInventory_form();
+    } else if (window.location.pathname === '/volunteer_inventory') {
+        document.getElementById('searchInputInvs').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchAndDisplayInventoryforsearch(searchQuery); 
+        });
+        loadsVehicleAssignments();
+        const vehicleName = ''; 
+        fetchAndDisplayInventory(vehicleName); 
+    }
+});
+function fetchInventory_form(searchTerm = '') {  // Provide a default parameter
+    const url = new URL('/auth/inventory2', window.location.origin);
+    url.searchParams.append('search', searchTerm); // Append search term
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory data:', data); // Debug log for fetched data
+            const tbody = document.querySelector('#myTable tbody');
+            tbody.innerHTML = ''; 
+
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="4">No results found</td>'; // Show message if no results
+                tbody.appendChild(row);
+            } else {
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
+
+                    row.innerHTML = `
+                        <td>${item.checked_date || 'N/A'}</td>
+                        <td>${item.checked_time || 'N/A'}</td>
+                        <td>${item.vehicle || 'N/A'}</td>
+                        <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.itemID})">See details</a></td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+            }
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}
+function fetchAndDisplayInventoryforsearch(searchQuery = '') {
+    let url = '/auth/inventory-search'; 
+
+    if (searchQuery) {
+        url += `?search=${encodeURIComponent(searchQuery)}`;
+    }
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            const selectElement = document.getElementById('sortVehicleAssignment');
-            selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
-
-            if (data && data.length > 0) {
-                data.forEach(item => {
-                    selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
-                });
-            } else {
-                console.error('No vehicle assignments found');
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = ''; 
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">No results found</td></tr>';
             }
 
-            // Add event listener for sorting
-            selectElement.addEventListener('change', () => {
-                const selectedVehicle = selectElement.value; // Get selected value
-                fetchAndDisplayInventory(selectedVehicle); // Pass selected vehicle to the function
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
+                row.dataset.itemId = item.id;
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="justify-center flex m-2">
+                            <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
+                        </div>
+                    </td>
+                    <td><p class="text-center">${item.name}</p></td>
+                    <td class="flex justify-center pr-5 h-14 pt-5">
+                       <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                            <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                            <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                            <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                            <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="flex justify-center pr-5">
+                            <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
             });
         })
-        .catch(error => console.error('Error loading vehicle assignments:', error));
+        .catch(err => console.error('Error fetching inventory data:', err));
 }
-
 function fetchAndDisplayInventory(vehicleName) {
     let url = '/auth/inventory'; 
 
@@ -209,11 +262,29 @@ function fetchAndDisplayInventory(vehicleName) {
         })
         .catch(err => console.error('Error fetching inventory data:', err));
 }
-window.onload = () => {
-    loadsVehicleAssignments();
-    fetchAndDisplayInventory(); 
-};
+function loadsVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('sortVehicleAssignment');
+            selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
 
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+                });
+            } else {
+                console.error('No vehicle assignments found');
+            }
+
+            // Add event listener for sorting
+            selectElement.addEventListener('change', () => {
+                const selectedVehicle = selectElement.value; // Get selected value
+                fetchAndDisplayInventory(selectedVehicle); // Pass selected vehicle to the function
+            });
+        })
+        .catch(error => console.error('Error loading vehicle assignments:', error));
+}
 function cancelInventory() {
     console.log('Cancel clicked');
 }
@@ -254,7 +325,6 @@ function submitInventory() {
     });
 }
 
-// Function to fetch inventory data and populate the table
 async function fetchInventoryData() {
     try {
         const response = await fetch('/inventory'); // Adjust the URL if needed
@@ -268,36 +338,6 @@ async function fetchInventoryData() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/auth/inventory2') 
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetched inventory data:', data); // Debug log for fetched data
-            const tbody = document.querySelector('#myTable tbody');
-            tbody.innerHTML = '';
-
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
-
-                row.innerHTML = `
-                    <td>${item.checked_date || 'N/A'}</td>
-                    <td>${item.checked_time || 'N/A'}</td>
-                    <td>${item.vehicle || 'N/A'}</td>
-                    
-                    <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.itemID})">See details</a></td>
-                `;
-
-                tbody.appendChild(row);
-            });
-        })
-        .catch(err => console.error('Error fetching inventory data:', err));
-});
 
 function seeinventory(itemID) {
     console.log(`Fetching details for itemID: ${itemID}`); // Debug log
@@ -340,57 +380,4 @@ function seeinventory(itemID) {
 function exitinventorydetail() {
     const inventoryDetailDiv = document.getElementById('inventorydetail');
     inventoryDetailDiv.style.display = 'none';
-}
-document.getElementById('searchInputInvs').addEventListener('input', function() {
-    const searchQuery = this.value.trim();
-    fetchAndDisplayInventoryforsearch(searchQuery); 
-});
-function fetchAndDisplayInventoryforsearch(searchQuery) {
-    let url = '/auth/inventory-search'; 
-
-    if (searchQuery) {
-        url += `?search=${encodeURIComponent(searchQuery)}`;
-    }
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.querySelector('#myTable2 tbody');
-            tbody.innerHTML = '';  // Clear the current table content
-
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center">No results found</td></tr>';
-            }
-
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
-                row.dataset.itemId = item.id;
-
-                row.innerHTML = `
-                    <td>
-                        <div class="justify-center flex m-2">
-                            <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
-                        </div>
-                    </td>
-                    <td><p class="text-center">${item.name}</p></td>
-                    <td class="flex justify-center pr-5 h-14 pt-5">
-                       <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
-                            <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
-                            <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
-                            <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
-                            <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
-                        </select>
-                    </td>
-                    <td>
-                        <div class="flex justify-center pr-5">
-                            <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
-                        </div>
-                    </td>
-                `;
-
-                tbody.appendChild(row);
-            });
-        })
-        .catch(err => console.error('Error fetching inventory data:', err));
 }

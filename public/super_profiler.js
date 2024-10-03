@@ -117,8 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (document.getElementById('EditContactNumber')) {
                 document.getElementById('EditContactNumber').value = data.mobileNumber;
             }
-
-            // Add similar checks for the rest of the fields
             if (document.getElementById('EditCivilStatus')) {
                 document.getElementById('EditCivilStatus').value = data.civilStatus;
             }

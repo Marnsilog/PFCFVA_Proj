@@ -239,7 +239,7 @@ module.exports = (db, db2) => {
             }
     
             const user = checkUsernameResult[0];
-            let profilePicturePath = user.profileImage;
+            let profilePicturePath = user.idPicture;
     
             // Handling password update
             if (oldPassword) {
@@ -478,6 +478,9 @@ module.exports = (db, db2) => {
         });
     });
     
+        
+
+
     router.get('/volunteer/:id', (req, res) => {
         const volunteerId = req.params.id;
         if (isNaN(volunteerId)) {
@@ -596,7 +599,25 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.get('/inventory-search', (req, res) => {
+        const search = req.query.search || ''; 
     
+        const query = `
+            SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory 
+            WHERE itemName LIKE ? OR vehicleAssignment LIKE ?
+        `;
+    
+        const searchParam = `%${search}%`; 
+    
+        db.query(query, [searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory:', err);
+                return res.status(500).json({ error: 'Failed to fetch inventory' });
+            }
+    
+            res.json(results); 
+        });
+    });
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
         const username = req.session.user?.username; 

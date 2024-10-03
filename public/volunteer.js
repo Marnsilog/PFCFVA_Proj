@@ -24,7 +24,6 @@
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
     }
-
     function toggleSetting() {
 
         var profileForm = document.getElementById('Setting');
@@ -38,20 +37,20 @@
         }
     }
     
-    // function itemstatus(selectElement) {
+    function itemstatus(selectElement) {
 
-    //     const selectedValue = selectElement.value;
-    //     selectElement.classList.remove('bg-red-500', 'bg-yellow-300', 'bg-green-400');
-    //     if (selectedValue === 'Damaged') {
-    //         selectElement.classList.add('bg-red-500');
-    //     } else if (selectedValue === 'Missing') {
-    //         selectElement.classList.add('bg-yellow-300');
-    //     } else if (selectedValue === 'Good') {
-    //         selectElement.classList.add('bg-green-400');
-    //     }else {
-    //         selectElement.classList.add('bg-white');
-    //     }
-    // }
+        const selectedValue = selectElement.value;
+        selectElement.classList.remove('bg-red-500', 'bg-yellow-300', 'bg-green-400');
+        if (selectedValue === 'Damaged') {
+            selectElement.classList.add('bg-red-500');
+        } else if (selectedValue === 'Missing') {
+            selectElement.classList.add('bg-yellow-300');
+        } else if (selectedValue === 'Good') {
+            selectElement.classList.add('bg-green-400');
+        }else {
+            selectElement.classList.add('bg-white');
+        }
+    }
     
     
 
@@ -115,6 +114,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//Leaderboards
+
+
+
+function showFireRe(volunteerId) {
+    fetch(`/auth/fireresponse/${volunteerId}`)
+        .then(response => response.json())
+        .then(volunteerDetails => {
+            document.getElementById('frdetail').style.display = 'block';
+
+            document.querySelector('#detailName2').textContent = volunteerDetails.name;
+            document.querySelector('#detailID2').textContent = volunteerDetails.id;
+            document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
+            document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
+            document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
+            document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
+        })
+}
+
+function exitdtdetail2() {
+    document.getElementById('frdetail').style.display = 'none';
+}
 
 
 //INVENTORY
@@ -320,6 +341,56 @@ function exitinventorydetail() {
     const inventoryDetailDiv = document.getElementById('inventorydetail');
     inventoryDetailDiv.style.display = 'none';
 }
+document.getElementById('searchInputInvs').addEventListener('input', function() {
+    const searchQuery = this.value.trim();
+    fetchAndDisplayInventoryforsearch(searchQuery); 
+});
+function fetchAndDisplayInventoryforsearch(searchQuery) {
+    let url = '/auth/inventory-search'; 
 
+    if (searchQuery) {
+        url += `?search=${encodeURIComponent(searchQuery)}`;
+    }
 
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = '';  // Clear the current table content
 
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">No results found</td></tr>';
+            }
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
+                row.dataset.itemId = item.id;
+
+                row.innerHTML = `
+                    <td>
+                        <div class="justify-center flex m-2">
+                            <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
+                        </div>
+                    </td>
+                    <td><p class="text-center">${item.name}</p></td>
+                    <td class="flex justify-center pr-5 h-14 pt-5">
+                       <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                            <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                            <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                            <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                            <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="flex justify-center pr-5">
+                            <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}

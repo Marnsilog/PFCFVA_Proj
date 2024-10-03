@@ -139,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
 });
+//FOR LOADING CONFIGURATION
 window.addEventListener('load', function() {
     if (window.location.pathname === '/supervisor_leaderboards') {
         handledhSearch();
@@ -146,6 +147,16 @@ window.addEventListener('load', function() {
     }else if (window.location.pathname === '/supervisor_inventory') {
         loadsVehicleAssignments();
         fetchAndDisplayInventory(); 
+        document.getElementById('supervisorSearch').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchAndDisplayInventorySearch(searchQuery); 
+        });
+
+        document.getElementById('vehStatus').addEventListener('change', function() {
+            const selectedStatus = this.value;
+            console.log("Dropdown changed: " + selectedStatus);  // Add this to debug
+            fetchAndDisplayInventorySearch(selectedStatus);
+        });
     }else if(window.location.pathname === '/volunteer_leaderboards'){
         handledhSearch();
         fetchVolunteers();
@@ -329,13 +340,12 @@ function loadsVehicleAssignments() {
         })
         .catch(error => console.error('Error loading vehicle assignments:', error));
 }
-
+// VEHICLE ASSIGNMENT LOADING
 async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
     try {
         const response = await fetch('/getVehicleAssignments');
         const vehicles = await response.json();
         
-        selectElement.innerHTML = '<option value="">All Vehicles</option>';
         
         if (vehicles && vehicles.length > 0) {
             vehicles.forEach(vehicle => {
@@ -349,6 +359,7 @@ async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
         console.error('Error loading vehicle assignments:', error);
     }
 }
+//DROWNDOWN 
 async function fetchAndDisplayInventory(selectedVehicle = '') {
     try {
         const response = await fetch(`/auth/inventory-supervisor?vehicleAssignment=${selectedVehicle}`);
@@ -385,6 +396,44 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
         console.error('Error fetching inventory data:', error);
     }
 }
+//INVENTORY SEARCH
+async function fetchAndDisplayInventorySearch(search = '') {
+    try {
+        const response = await fetch(`/auth/inventory-supervisor-search?search=${search}`);
+        const inventoryItems = await response.json();
+        
+        const container = document.getElementById('inventoryContainer');
+        container.innerHTML = ''; 
+
+        inventoryItems.forEach((item) => {
+            const inventoryDiv = document.createElement('div');
+            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item');
+            inventoryDiv.setAttribute('data-item-id', item.itemId); 
+            inventoryDiv.innerHTML = `
+                <div class="w-[95%] rounded-lg h-20 bg-[#DDDDDD] flex justify-between mx-6">
+                    <div class="flex justify-normal space-x-6">
+                        <img src="${item.itemImage}" class="h-14 w-14 rounded-lg mt-4 ml-2" alt="">
+                        <div class="Font-Inter mt-4 space-y-2">
+                            <p class="text-3xl font-bold">${item.itemName}</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 pr-10">
+                        <p class="text-sm">Transfer to</p>
+                        <select class="h-7 pr-14 rounded-lg text-start" id="addvehicleAssignment-${item.itemId}"></select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(inventoryDiv);
+
+            const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
+            loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
+        });
+    } catch (error) {
+        console.error('Error fetching inventory data:', error);
+    }
+}
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');

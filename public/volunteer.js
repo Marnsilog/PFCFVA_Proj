@@ -126,6 +126,12 @@ window.addEventListener('load', function() {
             const searchQuery = this.value.trim();
             fetchAndDisplayInventoryforsearch(searchQuery); 
         });
+
+        document.getElementById('vehStatus').addEventListener('change', function() {
+            const selectedStatus = this.value; 
+            fetchAndDisplayInventorySearch(selectedStatus);
+        });
+    
         loadsVehicleAssignments();
         const vehicleName = ''; 
         fetchAndDisplayInventory(vehicleName); 

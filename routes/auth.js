@@ -741,6 +741,40 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.get('/inventory-supervisor-search', (req, res) => {
+        const search = req.query.search;
+        const searchParam = `%${search}%`; 
+        const query = `
+            SELECT itemId, itemName, itemImage, vehicleAssignment 
+            FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR status LIKE ?) 
+            AND itemStatus = 'Available'
+        `;
+        
+        db.query(query, [searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+    // router.get('/inventory/count', async (req, res) => {
+    //     try {
+    //       // Assuming you are using mysql2 with async/await
+    //       const [rows] = await db.query('SELECT COUNT(*) AS total FROM tbl_inventory');
+          
+    //       if (rows.length > 0) {
+    //         const total = rows[0].total; // Safely access the total count
+    //         res.json({ count: total });
+    //       } else {
+    //         res.json({ count: 0 }); // Handle the case where there are no rows
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching item count:', error);
+    //       res.status(500).json({ error: 'Failed to retrieve item count' });
+    //     }
+    //   });
     router.post('/inventory-supervisor/log', async (req, res) => {
         const items = req.body;
         const username = req.session.user?.username;

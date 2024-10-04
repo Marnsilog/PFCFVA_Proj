@@ -192,7 +192,7 @@ function fetchVolunteers(searchTerm = '') {
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
-                                <th class="text-center">Points</th>
+                                <th class="text-center">Hours</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm md:text-xl text-start font-Inter">

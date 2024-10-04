@@ -187,7 +187,7 @@ function fetchVolunteers(searchTerm = '') {
 
             // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[17rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable2" class="text-start w-full px-4">
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white">
                             <tr>
@@ -258,7 +258,7 @@ function fetchFireResponse(searchTerm = '') {
 
             // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[17rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable3" class="text-start w-full px-4">
                         <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white"">
                             <tr>

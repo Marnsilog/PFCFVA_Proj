@@ -244,19 +244,23 @@ function fetchAndDisplayInventory(vehicleName) {
                 row.dataset.itemId = item.id;
             
                 row.innerHTML = `
-                    <td class="p-2 flex justify-center items-center">
-                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 object-cover md:object-fill" data-item-id="${item.id}">
+                    <td class="flex justify-center items-center">
+                        <div class="mt-2 md:mt-1">
+                            <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 object-cover md:object-fill">
+                        </div>
                     </td>
                     <td class="text-center p-2">
                         <p class="text-sm md:text-base">${item.name}</p>
                     </td>
-                    <td class="p-2 md:flex md:justify-center md:items-center">
-                        <select class="border border-black text-sm md:text-base w-24 md:w-32" onchange="updateStatus(this)">
-                            <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
-                            <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
-                            <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
-                            <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
-                        </select>
+                    <td>
+                        <div class="flex justify-center">
+                            <select class="border border-black text-sm md:text-base w-24 md:w-32" onchange="updateStatus(this)">
+                                <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                                <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                                <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                                <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                            </select>
+                        </div>
                     </td>
                     <td class="p-2">
                         <div class="md:flex md:justify-center">
@@ -267,6 +271,7 @@ function fetchAndDisplayInventory(vehicleName) {
             
                 tbody.appendChild(row);
             });
+            
             
         })
         .catch(err => console.error('Error fetching inventory data:', err));

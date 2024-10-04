@@ -111,43 +111,42 @@
                                 <div class="mt-11">
                                     <div class="flex justify-start">
                                         <p class="text-lg font-bold mr-32">Incident Date</p>
-                                        <input class="border-[1px] border-black w-72" type="date">
+                                        <input class="border-[1px] border-black w-72" type="date" id="incidentDate">
                                     </div>
                                     <div class="flex justify-start mt-4">
                                         <p class="text-lg font-bold mr-[120px]">Dispatch Time</p>
-                                        <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="">
+                                        <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="dispatchTime">
                                     </div>
                                     <div class="flex  justify-start mt-4">
                                         <p class="text-lg font-bold mr-[170px]">Location</p>
-                                        <textarea class="border-[1px] border-black max-w-72 w-full h-28"></textarea>
+                                        <textarea class="border-[1px] border-black max-w-72 w-full h-28" id="location"></textarea>
                                     </div>
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[132px]">Alarm Status</p>
+                                    <div class="flex justify-start mt-7">Alarm Status</p>
                                         
-                                            <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                            <select class="border-[1px] border-black w-72 h-8" name="" id="alarmStatus">
                                                 <option value="" disabled selected> </option>
-                                                <option value="1stAlarm">1st Alarm</option>
-                                                <option value="">2nd Alarm</option>
-                                                <option value="">3rd Alarm</option>
-                                                <option value="">4th Alarm</option>
-                                                <option value="">5th Alarm</option>
-                                                <option value="">Task force alpha</option>
-                                                <option value="">Task force bravo</option>
-                                                <option value="">Task force charlie</option>
-                                                <option value="">Task force delta</option>
-                                                <option value="">Task force echo</option>
-                                                <option value="">Task force foxtrot</option>
-                                                <option value="">Task force golf</option>
-                                                <option value="">Task force hotel</option>
-                                                <option value="">Task force india</option>
-                                                <option value="">General alarm</option>
-                                                <option value="">FUC upon arrival</option>
-                                                <option value="">Rekindle with operation</option>
-                                                <option value="">Rekindle without operation</option>
-                                                <option value="">Mapping Operation</option>
-                                                <option value="">95 - Disinfection</option>
-                                                <option value="">95  - Water Salute</option>
-                                                <option value="">95  - Others</option>
+                                                <option value="1st Alarm">1st Alarm</option>
+                                                <option value="2nd Alarm">2nd Alarm</option>
+                                                <option value="3rd Alarm">3rd Alarm</option>
+                                                <option value="4th Alarm">4th Alarm</option>
+                                                <option value="5th Alarm">5th Alarm</option>
+                                                <option value="Task force alpha">Task force alpha</option>
+                                                <option value="Task force bravo">Task force bravo</option>
+                                                <option value="Task force charlie">Task force charlie</option>
+                                                <option value="Task force delta">Task force delta</option>
+                                                <option value="Task force echo">Task force echo</option>
+                                                <option value="Task force foxtrot">Task force foxtrot</option>
+                                                <option value="Task force golf">Task force golf</option>
+                                                <option value="Task force hotel">Task force hotel</option>
+                                                <option value="Task force india">Task force india</option>
+                                                <option value="General alarm">General alarm</option>
+                                                <option value="FUC upon arrival">FUC upon arrival</option>
+                                                <option value="Rekindle with operation">Rekindle with operation</option>
+                                                <option value="Rekindle without operation">Rekindle without operation</option>
+                                                <option value="Mapping Operation">Mapping Operation</option>
+                                                <option value="95 - Disinfection">95 - Disinfection</option>
+                                                <option value="95 - Water Salute">95 - Water Salute</option>
+                                                <option value="95 - Others">95 - Others</option>
                                     
                                                 </select>
                     
@@ -155,42 +154,42 @@
                                     </div>
                                     <div class="flex justify-start mt-7">
                                         <p class="text-lg font-bold mr-[110px]">Who requested<br>the response?</p>
-                                            <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                            <select class="border-[1px] border-black w-72 h-8" name="" id="whoRequested">
                                                 <option value="" disabled selected> </option>
-                                                <option value="">Caller</option>
-                                                <option value="">Monitored through radio</option>
+                                                <option value="Caller">Caller</option>
+                                                <option value="Monitored through radio">Monitored through radio</option>
                                             </select>
                                     </div>
                             
                                     <div  class="flex justify-start mt-5">
                                         <p class="text-lg font-bold mr-[140px]">Type of Fire</p>
-                                        <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                        <select class="border-[1px] border-black w-72 h-8" name="" id="fireType">
                                             <option value="" disabled selected> </option>
-                                            <option value="1stAlarm">Residential</option>
-                                            <option value="">Commercial</option>
-                                            <option value="">Industrial</option>
-                                            <option value="">Rubbish</option>
-                                            <option value="">Vehicular</option>
+                                            <option value="Residential">Residential</option>
+                                            <option value="Commercial">Commercial</option>
+                                            <option value="Industrial">Industrial</option>
+                                            <option value="Rubbish">Rubbish</option>
+                                            <option value="Vehicular">Vehicular</option>
                                         </select>
                             
                                     </div>
                             
                                     <div class="flex justify-start mt-7">
                                         <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
-                                        <select class="border-[1px] border-black w-72 h-8" name="" id="">
+                                        <select class="border-[1px] border-black w-72 h-8" name="" id="vehicleUsed">
                                             <option value="" disabled selected> </option>
-                                            <option value="">Pumper 72</option>
-                                            <option value="">Engine 72</option>
-                                            <option value="">Tanker 72</option>
-                                            <option value="">Brianza Ambulance</option>
-                                            <option value="">Private/Personal Vehicle</option>
+                                            <option value="Pumper 72">Pumper 72</option>
+                                            <option value="Engine 72">Engine 72</option>
+                                            <option value="Tanker 72">Tanker 72</option>
+                                            <option value="Brianza Ambulance">Brianza Ambulance</option>
+                                            <option value="Private/Personal Vehicle">Private/Personal Vehicle</option>
                                         </select>
                                     </div>
                                     <div class="flex justify-start mt-7">
                                         <p class="text-lg font-bold mr-[145px]">Responder</p>
                                         <div>
-                                            <table class="w-[20rem]" >
-                                                <tr>
+                                            <table class="w-[20rem]" id="responders ">
+                                                <!-- <tr>
                                                     <td>Echo 12</td>
                                                     <td>Marniel Corsiga</td>
                                                 </tr>
@@ -201,18 +200,20 @@
                                                 <tr>
                                                     <td>Echo 1</td>
                                                     <td>Dinesh Anne Pangan</td>
-                                                </tr>
+                                                </tr> -->
+
+                                                <!-- dynamically popylated -->
                                             </table>
                                         </div>
                                         
                                     </div>
                                     <div class="flex justify-start mt-7">
                                         <p class="text-lg font-bold mr-[165px]">Remarks</p>
-                                        <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id=""></textarea>
+                                        <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="remarks"></textarea>
                                     </div>
                                     <div class="w-full flex justify-end pt-5 pb-16">
                                         <div>
-                                            <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" onclick="location.href='supervisor_ics_logs.html'">Submit</button>
+                                            <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" onclick="location.href='/supervisor_ics_logs'">Submit</button>
                                         </div>
                                     </div>
                                     

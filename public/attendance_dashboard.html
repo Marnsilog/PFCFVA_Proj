@@ -120,14 +120,187 @@
                             <p class="font-semibold" id="ActivityPoints">0</p>
                             <p>Activity</p>
                         </div>
+
+
                     </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="promptButton" class="bg-[#930D0D] text-white text-lg rounded-lg font-bold py-2 px-4">
+                            Enter RFID Manually
+                        </button>
+                    </div>
+                    
+
                     
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+
+//DON'T TOUCH
+        document.getElementById('promptButton').addEventListener('click', function() {
+            // Trigger the prompt to get manual RFID
+            const manualRFID = prompt("Please enter the RFID:", "");
+        
+            if (manualRFID) {
+                // Call the existing function that handles RFID scan
+                handleManualRFID(manualRFID); // Function to process RFID
+            } else {
+                console.log("RFID input was cancelled or empty.");
+            }
+        });
+        
+        // Function to handle manual RFID scan and trigger the existing attendance logic
+        function handleManualRFID(rfid) {
+            document.getElementById('rfidText').textContent = rfid;
+            console.log('Handling Manual RFID scan:', rfid);
+        
+            fetch('/recordTimeIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rfid: rfid })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        // If Time In already exists, try recording Time Out
+                        return fetch('/recordTimeOut', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ rfid: rfid })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error recording Time Out');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById('TimeOut').textContent = data.timeOut; 
+                            fetchProfileData(rfid);  // Fetch updated profile data
+                            fetchRecentAttendance(); // Fetch updated attendance logs
+                            timeOutAudio.play();  // Play Time Out audio feedback
+                        });
+                    } else {
+                        throw new Error('Error recording attendance');
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle Time In success
+                if (data.timeIn) {
+                    document.getElementById('TimeIn').textContent = data.timeIn;
+                    document.getElementById('TimeOut').textContent = '--:--';  // Clear Time Out
+                    fetchProfileData(rfid);  // Fetch updated profile data
+                    fetchRecentAttendance(); // Fetch updated attendance logs
+                    timeInAudio.play();  // Play Time In audio feedback
+                }
+            })
+            .catch(error => {
+                console.error('Error processing RFID:', error);
+            });
+        }
+
+
+
+//// DON'T TOUC THE CODE ABOVE THIS LINE XXX
+ //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+ function animateProgressBar(currentValue, maxValue) {
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar.style.width = percentage + '%'; 
+        console.log('Duty Hours Progress:', percentage + '%'); 
+    }
+}
+
+function animateProgressBar2(currentValue, maxValue) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar2.style.width = percentage + '%'; 
+        console.log('Fire Response Progress:', percentage + '%'); 
+    }
+}
+
+async function fetchProfileData() {
+    try {
+        const response = await fetch('/auth/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+            const data = result.data;
+            const statusDuty = data.dutyHours;
+            const statusFire = data.fireResponsePoints;
+            const callsign = data.callSign.toLowerCase();
+            let dhmax, frmax;
+            
+            // Define max values based on callsign
+            if (/Aspirant/i.test(callsign)) {
+                dhmax = 100;
+                frmax = 0;
+            } else if (/Probationary/i.test(callsign)) {
+                dhmax = 1000;
+                frmax = 10;
+            } else if (/echo/i.test(callsign)) {
+                dhmax = 2000;
+                frmax = 20;
+            } else {
+                dhmax = 100;
+                frmax = 100;
+            }
+
+            // Animate progress bars based on fetched data
+            animateProgressBar(statusDuty, dhmax);
+            animateProgressBar2(statusFire, frmax);
+
+            // Update profile-related elements in the dashboard
+            document.getElementById('FullName').innerText = data.fullName;
+            document.getElementById('CallSign').innerText = data.callSign;
+            document.getElementById('DutyHours').innerText = `${data.dutyHours} hrs`;
+            document.getElementById('FireResponsePoints').innerText = `${data.fireResponsePoints} fire responses`;
+            document.getElementById('InventoryPoints').innerText = data.inventoryPoints;
+            document.getElementById('ActivityPoints').innerText = data.activityPoints;
+        } else {
+            console.error('Profile not found or other error:', result.message);
+        }
+    } catch (error) {
+        console.error('Error fetching profile data:', error);
+    }
+}
+
+// Fetch profile data and animate progress bars on page load
+window.onload = fetchProfileData;
+
+
+
+//XXXXXXXXXXXXXXX END XXXXXXXXXXXXXXXXXXX
+
+
+</script>
+        
+        
+    
 </body>
 <script src="module_attendance.js" defer></script>
 <script src="admin.js" defer></script>
+
 </html>

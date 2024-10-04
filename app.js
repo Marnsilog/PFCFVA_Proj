@@ -596,6 +596,11 @@ app.get('/getVehicleAssignments', (req, res) => {
 });
 
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 app.get('/getEquipment', (req, res) => {
     const vehicleAssignment = req.query.vehicleAssignment;
     let sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
@@ -813,7 +818,7 @@ app.use('/img', express.static(path.join(__dirname, 'public/img')));
 //     console.log(`Server started on port ${PORT}`);
 // });
 
-
+//server instead of app for HTTP || wag baguhin.
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

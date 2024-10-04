@@ -1,5 +1,21 @@
 
 
+function animateProgressBar(currentValue, maxValue) {
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar.style.width = percentage + '%'; 
+        console.log('ProgressBar 1:', percentage + '%'); 
+    }
+}
+function animateProgressBar2(currentValue, maxValue) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar2.style.width = percentage + '%'; 
+        console.log('ProgressBar 2:', percentage + '%'); 
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     const rfidInput = document.createElement('input');
     rfidInput.style.position = 'absolute';
@@ -99,6 +115,32 @@ function fetchProfileData(rfid = '') {
             return response.json();
         })
         .then(data => {
+
+            //const data = result.data;
+            const statusDuty = data.dutyHours;
+            const statusFire = data.fireResponsePoints;
+            const callsign = data.callSign.toLowerCase();;
+            let dhmax;
+            let frmax;
+            if (/Aspirant/i.test(callsign)) {
+                dhmax = 100;
+                frmax = 0;
+            } else if (/Probationary/i.test(callsign)) {
+                dhmax = 1000;
+                frmax = 10;
+            } else if (/echo/i.test(callsign)) {
+                dhmax = 2000;
+                frmax = 20;
+            } else {
+                dhmax = 100;
+                frmax = 100;
+            }
+            dhmax = parseInt(dhmax);
+            frmax = parseInt(frmax);
+            animateProgressBar(statusDuty, dhmax);
+            animateProgressBar2(statusFire, frmax);
+            
+
             if (data.fullName) {
                 document.getElementById('FullName').textContent = data.fullName; 
             }
@@ -158,3 +200,4 @@ function fetchRecentAttendance() {
             console.error('Error fetching recent attendance logs:', error);
         });
 }
+

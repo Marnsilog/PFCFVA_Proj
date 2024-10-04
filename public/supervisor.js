@@ -372,26 +372,30 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
 
         inventoryItems.forEach(async (item) => {
             const inventoryDiv = document.createElement('div');
-            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item'); 
+            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
             inventoryDiv.setAttribute('data-item-id', item.itemId); 
             inventoryDiv.innerHTML = `
-                <div class="w-[95%] rounded-lg h-20 bg-[#DDDDDD] flex justify-between mx-6">
-                    <div class="flex justify-normal space-x-6">
-                        <img src="${item.itemImage}" class="h-14 w-14 rounded-lg mt-4 ml-2" alt="">
-                        <div class="Font-Inter mt-4 space-y-2">
-                            <p class="text-3xl font-bold">${item.itemName}</p>
+                <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
+                    <div class="w-full">
+                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
+                       
+                    </div>
+                     <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+                            <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
                         </div>
-                    </div>
-                    <div class="mt-2 pr-10">
-                        <p class="text-sm">Transfer to</p>
-                        <select class="h-7 pr-14 rounded-lg text-start" id="addvehicleAssignment-${item.itemId}"></select>
-                    </div>
+                   <div class="mt-2 pr-4 md:pr-10 w-full">
+                         <p class="text-sm">Transfer to</p>
+                         <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+                     </div>
                 </div>
             `;
             container.appendChild(inventoryDiv);
+        
             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
             await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
         });
+
+        
     } catch (error) {
         console.error('Error fetching inventory data:', error);
     }
@@ -405,35 +409,35 @@ async function fetchAndDisplayInventorySearch(search = '') {
         const container = document.getElementById('inventoryContainer');
         container.innerHTML = ''; 
 
-        inventoryItems.forEach((item) => {
+        inventoryItems.forEach(async (item) => {
             const inventoryDiv = document.createElement('div');
-            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item');
+            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
             inventoryDiv.setAttribute('data-item-id', item.itemId); 
             inventoryDiv.innerHTML = `
-                <div class="w-[95%] rounded-lg h-20 bg-[#DDDDDD] flex justify-between mx-6">
-                    <div class="flex justify-normal space-x-6">
-                        <img src="${item.itemImage}" class="h-14 w-14 rounded-lg mt-4 ml-2" alt="">
-                        <div class="Font-Inter mt-4 space-y-2">
-                            <p class="text-3xl font-bold">${item.itemName}</p>
+                <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
+                    <div class="w-full">
+                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
+                       
+                    </div>
+                     <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+                            <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
                         </div>
-                    </div>
-                    <div class="mt-2 pr-10">
-                        <p class="text-sm">Transfer to</p>
-                        <select class="h-7 pr-14 rounded-lg text-start" id="addvehicleAssignment-${item.itemId}"></select>
-                    </div>
+                   <div class="mt-2 pr-4 md:pr-10 w-full">
+                         <p class="text-sm">Transfer to</p>
+                         <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+                     </div>
                 </div>
             `;
             container.appendChild(inventoryDiv);
-
+        
             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
-            loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
+            await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
         });
+
     } catch (error) {
         console.error('Error fetching inventory data:', error);
     }
 }
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');

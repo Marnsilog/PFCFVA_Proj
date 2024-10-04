@@ -21,3 +21,8 @@
 [10/4/2024 06:14:45] vvv: asdas
 [10/4/2024 06:17:19] vvv: asdasd
 [10/4/2024 06:17:24] vvv: zzzz
+[10/4/2024 06:58:43] xxx: Resupplying water tank, operations paused temporarily.
+[10/4/2024 06:58:43] xxx: ECHO has stood down and is awaiting further instructions.
+[10/4/2024 06:58:46] xxx: ECHO activated, they will proceed to the designated areas.
+[10/4/2024 06:58:50] xxx: ECHO23 activated, they will proceed to the designated areas.
+[10/4/2024 06:58:56] xxx: ECHO, ECHO23 has stood down and is awaiting further instructions.

@@ -48,42 +48,39 @@
     
         </div>
         
-        <div class="relative w-full flex justify-end z-30">
-            <div class="md:hidden w-1/2 h-[22rem] py-8 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
-                <div class="ml-3 flex justify-start mr-3" onclick="myProfile()"  style="cursor: pointer;">
-                    <img  src="img/pfcfvalogo.png" class="h-10 w-10" >
-                    <p class="ml-2 py-2 text-sm" id="MenuFullName">Hev C. Abi</p>
-                   
-                </div>
-                
-                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
-    
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showDashboard()">
-                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 576 512" class="mt-[9px] w-5 h-5"> <path fill="white" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
-                    <p class="ml-2 block py-2" >Dashboard</p>
-                </div>
-                
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showInventory()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
-                    <p class="ml-2 block py-2">Inventory</p>
-                </div>
-              
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="showLeaderboards()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
-                    <p class="ml-2 block py-2">Leaderboards</p>
-                </div>
-                
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="showContactus()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-[11px] w-5 h-5" viewBox="0 0 512 512"><path fill="white" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
-                    <p class="ml-2 block py-2" >Contact Us</p>
-                </div>
-    
-                <div class="bg-white h-[1px] w-full mb-6 mt-2"></div>
-    
-                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+    <!-- RESPONSIVE SETTING -->
+    <div class="relative w-full flex justify-end z-30 mt-2">
+        <div class="md:hidden py-3 w-1/2 h-auto bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
+            <div class="ml-3 flex justify-start mr-3" onclick="location.href='/volunteer_main_profile'" style="cursor: pointer;">
+                <img  src="img/pfcfvalogo.png" id="resPonsivepic" class="h-10 w-10" >
+                <p class="ml-2 py-2 text-sm"  data-feild="ResponsiveName"></p>
+               
             </div>
-                
+            
+            <div class="bg-white h-[1px] w-full mb-4 mt-2"></div>
+
+            <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="location.href='/volunteer_dashboard'">
+                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 576 512" class="mt-[9px] w-5 h-5"> <path fill="white" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+                <p class="ml-2 block py-2" >Dashboard</p>
             </div>
+            
+            <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="location.href='/volunteer_form_inv'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
+                <p class="ml-2 block py-2">Inventory</p>
+            </div>
+          
+            <div class="ml-3 flex justify-normal" style="cursor: pointer;"  onclick="location.href='/volunteer_leaderboards'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-6" viewBox="0 0 576 512"><path fill="white" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                <p class="ml-2 block py-2">Leaderboards</p>
+            </div>
+            
+
+            <div class="bg-white h-[1px] w-full mb-4 mt-2"></div>
+
+            <div class="ml-4 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="white" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+        </div>
+            
+        </div>
         </div>
             
     
@@ -98,16 +95,16 @@
             <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
         </div>
     </div>
-<!-- FORM LEADERBOARDS -->
+
 <div id="loading-container" style="display: none;">
     <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 </div>
+<!-- FORM LEADERBOARDS -->
 <div class="md:w-full md:flex md:justify-center" id="frmLeaderboards">
     <div class="md:max-w-[90rem] md:w-full md:mt-10 md:ml-40">
         <p class="text-center md:text-start font-Inter font-[500] pl-4 text-2xl md:font-[600] md:text-4xl">Leaderboards</p>
         <div class="md:ml-5">
-            <div class="mt-5 md:flex md:justify-between md:mt-0">
-            
+            <div class="mt-2 md:flex md:justify-between md:mt-0">
                 <div class="w-full flex justify-center md:block">
                     <div class="rounded-full border-[1px] border-black flex items-start w-[18rem] h-8 || md:w-[22rem] md:h-12 md:mt-12">
                         <div class="hover:bg-red-700 hover:text-white text-white bg-red-700 rounded-full h-[27px] w-[180px] my-[1px] ml-2  || md:ml-2 md:my-[3px] md:h-10 md:w-[200px]" style="cursor: pointer;" onclick="showDutyHours()" id="dutyH">
@@ -120,8 +117,8 @@
 
                 </div>
           
-                <div class=" md:pl-0 md:w-[32rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                <div class=" md:pl-0 md:w-[32rem] mt-2 md:mt-0 mx-5 h-8 md:h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 w-5 h-5 md:w-7 md:h-7  md:mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                     <input class="w-full h-full px-2 focus:outline-none rounded-lg" id="txtleaderboardsearch" type="text" placeholder="Search">
                 </div>
             </div>
@@ -130,35 +127,36 @@
             </div>
             <!-- DUTY HOURS -->
              <div class="w-full h-full " id="frmDutyhours"> 
-                <div class="w-full h-full flex justify-normal mt-5">
+                <div class="w-full  md:h-full md:flex justify-normal mt-2 md:mt-5">
                     <div class="px-5 w-full flex justify-center " id="Container">
+
                     </div>
                     
-                    <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
-                        <div class="w-full flex justify-end pr-5 mt-2">
+                    <div class="w-full md:h-[30rem] md:mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="dutyhoursdetail">
+                        <div class="md:w-full flex justify-end pr-5 mt-2">
                             <a href="#" onclick="exitdtdetail()" class="text-2xl font-semibold">X</a>
                         </div>
-                        <div class="flex justify-center space-x-10 mt-3">
-                            <img src="img/user.png" class="w-32 h-32 rounded-full" id="detailImage" alt="">
+                        <div class="flex justify-center space-x-3 md:space-x-10 mt-3">
+                            <img src="img/user.png" class="md:w-32 md:h-32 h-20 w-20 rounded-full" id="detailImage" alt="">
                             <div class="font-inter">
                                 <p id="detailName" class="text-3xl font-semibold mt-5">Volunteer Name</p>
                                 <p id="detailID" class="text-center text-2xl text-[#930D0D]">ID</p>
                             </div>
                         </div>
-                        <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                            <div class="w-full h-full font-inter pt-3">
+                        <div class="w-full md:h-24 border-y-2 border-gray-400 md:flex justify-between md:mt-4">
+                            <div class="md:w-full md:h-full font-inter pt-3">
                                 <p id="dutyHours" class="text-2xl text-center font-bold">Duty Hours</p>
                                 <p class="text-lg text-center">Duty Hours</p>
                             </div>
-                            <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                            <div class="md:w-full md:h-full border-x-2 border-gray-400 pt-3">
                                 <p id="fireResponse" class="text-2xl text-center font-bold">Fire Response</p>
                                 <p class="text-lg text-center">Fire Response</p>
                             </div>
-                            <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                            <div class="md:w-full md:h-full border-r-2 border-gray-400 pt-3">
                                 <p id="inventory" class="text-2xl text-center font-bold">Inventory</p>
                                 <p class="text-lg text-center">Inventory</p>
                             </div>
-                            <div class="w-full h-full">
+                            <div class="md:w-full md:h-full">
                                 <p id="activity" class="text-2xl text-center font-bold pt-3">Activity</p>
                                 <p class="text-lg text-center">Activity</p>
                             </div>
@@ -170,41 +168,42 @@
            
                 <!-- FIRE RESPONSE -->
             <div class="w-full h-full"  style="display: none;" id="frmFireResponse">
-                <div class="w-full h-full flex justify-normal mt-5">
-                    <div class="px-5 w-full flex justify-center " id="Container2">
+                <div class="w-full md:h-full md:flex justify-normal mt-2 md:mt-5">
+                    <div class="px-5 w-full flex justify-center" id="Container2">
                     </div>
-                    
-                    <div class="w-full h-[30rem] mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
-                        <div class="w-full flex justify-end pr-5 mt-2">
+                
+                    <div class="w-full md:h-[30rem] md:mx-10 rounded-lg shadow-lg shadow-black" style="display: none;" id="frdetail">
+                        <div class="md:w-full flex justify-end pr-5 mt-2">
                             <a href="#" onclick="exitdtdetail2()" class="text-2xl font-semibold">X</a>
                         </div>
-                        <div class="flex justify-center space-x-10 mt-3">
-                            <img src="img/user.png" class="w-32 h-32 rounded-full" id="detailImage2" alt="">
+                        <div class="flex justify-center space-x-3 md:space-x-10 mt-3">
+                            <img src="img/user.png" class="md:w-32 md:h-32 h-20 w-20 rounded-full" id="detailImage2" alt="">
                             <div class="font-inter">
                                 <p id="detailName2" class="text-3xl font-semibold mt-5">Volunteer Name</p>
                                 <p id="detailID2" class="text-center text-2xl text-[#930D0D]">ID</p>
                             </div>
                         </div>
-                        <div class="w-full h-24 border-y-2 border-gray-400 flex justify-between mt-4">
-                            <div class="w-full h-full font-inter pt-3">
+                        <div class="w-full md:h-24 border-y-2 border-gray-400 md:flex justify-between md:mt-4">
+                            <div class="md:w-full md:h-full font-inter pt-3">
                                 <p id="dutyHours2" class="text-2xl text-center font-bold">Duty Hours</p>
                                 <p class="text-lg text-center">Duty Hours</p>
                             </div>
-                            <div class="w-full h-full border-x-2 border-gray-400 pt-3">
+                            <div class="md:w-full md:h-full border-x-2 border-gray-400 pt-3">
                                 <p id="fireResponse2" class="text-2xl text-center font-bold">Fire Response</p>
                                 <p class="text-lg text-center">Fire Response</p>
                             </div>
-                            <div class="w-full h-full border-r-2 border-gray-400 pt-3">
+                            <div class="md:w-full md:h-full border-r-2 border-gray-400 pt-3">
                                 <p id="inventory2" class="text-2xl text-center font-bold">Inventory</p>
                                 <p class="text-lg text-center">Inventory</p>
                             </div>
-                            <div class="w-full h-full">
+                            <div class="md:w-full md:h-full">
                                 <p id="activity2" class="text-2xl text-center font-bold pt-3">Activity</p>
                                 <p class="text-lg text-center">Activity</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
 
             </div> 
             
@@ -216,6 +215,6 @@
 
 
 <script src="supervisor.js"></script>
-
+<script src="super_profiler.js" defer></script>
 <script src="profileImage.js" defer></script>
 </html>

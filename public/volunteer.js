@@ -240,33 +240,34 @@ function fetchAndDisplayInventory(vehicleName) {
 
             data.forEach(item => {
                 const row = document.createElement('tr');
-                row.classList.add('border-t-[1px]', 'border-b-[1px]', 'border-gray-500', 'md:h-14');
+                row.classList.add('border-t', 'border-b', 'border-gray-500', 'h-14', 'md:h-14');
                 row.dataset.itemId = item.id;
-
+            
                 row.innerHTML = `
-                    <td>
-                        <div class="justify-center flex m-2">
-                            <img src="${item.itemImage}" class="w-14 h-14 object-fill" data-item-id="${item.id}">
-                        </div>
+                    <td class="p-2 flex justify-center items-center">
+                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 object-cover md:object-fill" data-item-id="${item.id}">
                     </td>
-                    <td><p class="text-center">${item.name}</p></td>
-                    <td class="flex justify-center pr-5 h-14 pt-5">
-                       <select class="border-[1px] border-black text-lg w-32" onchange="updateStatus(this)">
+                    <td class="text-center p-2">
+                        <p class="text-sm md:text-base">${item.name}</p>
+                    </td>
+                    <td class="p-2 md:flex md:justify-center md:items-center">
+                        <select class="border border-black text-sm md:text-base w-24 md:w-32" onchange="updateStatus(this)">
                             <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
                             <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
                             <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
                             <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
                         </select>
                     </td>
-                    <td>
-                        <div class="flex justify-center pr-5">
-                            <textarea class="text-sm min-h-[2rem] max-h-[3rem] min-w-[22rem] border-[1px] border-black focus:outline-none px-3 bg-white"></textarea>
+                    <td class="p-2">
+                        <div class="md:flex md:justify-center">
+                            <textarea class="text-sm border border-black w-full min-h-[2rem] max-h-[3rem] px-2 py-1 bg-white focus:outline-none resize-none md:w-96"></textarea>
                         </div>
                     </td>
                 `;
-
+            
                 tbody.appendChild(row);
             });
+            
         })
         .catch(err => console.error('Error fetching inventory data:', err));
 }
@@ -335,7 +336,7 @@ function submitInventory() {
 
 async function fetchInventoryData() {
     try {
-        const response = await fetch('/inventory'); // Adjust the URL if needed
+        const response = await fetch('/inventory'); 
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

@@ -183,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateDashboard(data) {
         const fields = [
+            { key: "fullName", element: "ResponsiveName", fallback: 'N/A' },
             { key: "fullName", element: "DashboardFullName", fallback: 'N/A' },
             { key: "accountType", element: "DashboardAccountType", fallback: 'N/A' },
             { key: "dutyHours", element: "DashboardDutyHours", fallback: '0' },

@@ -187,12 +187,12 @@ function fetchVolunteers(searchTerm = '') {
 
             // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[17rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable2" class="text-start w-full px-4">
-                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
-                                <th class="text-center">Points</th>
+                                <th class="text-center">Hours</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm md:text-xl text-start font-Inter">
@@ -258,9 +258,9 @@ function fetchFireResponse(searchTerm = '') {
 
             // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[17rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable3" class="text-start w-full px-4">
-                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white"">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
                                 <th class="text-center">Fire Response</th>

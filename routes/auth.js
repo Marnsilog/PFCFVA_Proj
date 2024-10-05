@@ -690,7 +690,8 @@ module.exports = (db, db2) => {
         const search = req.query.search || ''; 
     
         const query = `
-            SELECT il.itemID, 
+            SELECT il.itemID,
+                   il.logID, 
                    DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
                    DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
                    iv.vehicleAssignment AS vehicle
@@ -710,13 +711,16 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    router.get('/inventory2/detail/:itemID', (req, res) => {
-        const itemID = req.params.itemID;
+    router.get('/inventory2/detail/:logID', (req, res) => {
+        const logID = req.params.logID;
         const query = `
-            SELECT itemName, status,vehicleAssignment FROM tbl_inventory  WHERE itemID = ?;
-        `;
+          SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
+            FROM tbl_inventory_logs il
+            JOIN tbl_inventory i ON il.itemID = i.itemID
+            WHERE il.logID = ?;
+            `;
 
-        db.query(query, [itemID], (err, results) => {
+        db.query(query, [logID], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory details:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -806,7 +810,7 @@ module.exports = (db, db2) => {
             }
     
             await connection.commit();
-            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_dashboard' });
+            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
             
         } catch (err) {
             console.error('Database error:', err);

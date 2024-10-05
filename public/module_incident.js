@@ -102,6 +102,9 @@ function handleICSPage() {
     const icsAttendeesDiv = document.getElementById('icsAttendees');
     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
 
+
+    
+
     attendees.forEach((attendee, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -145,6 +148,41 @@ function loadVehicleAssignments() {
 }
 
 
+// // Function to fetch and display supervisor's name and call sign in ics.html
+// async function populateSupervisorName() {
+//     try {
+//         // Fetch the profile data of the logged-in user
+//         const response = await fetch('/auth/profile', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//         });
+
+//         if (!response.ok) {
+//             throw new Error(`Error: ${response.status} - ${response.statusText}`);
+//         }
+
+//         const result = await response.json();
+
+//         if (result.success) {
+//             const fullName = result.data.fullName;
+//             const callSign = result.data.callSign;
+
+//             // Populate the supervisorName field with FullName [CallSign]
+//             const supervisorNameElement = document.getElementById('supervisorName');
+//             if (supervisorNameElement) {
+//                 supervisorNameElement.textContent = `${fullName} [${callSign}]`;
+//             }
+//         } else {
+//             console.error('Error fetching supervisor name:', result.message);
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// }
+
+
 // Function to fetch and display supervisor's name and call sign in ics.html
 async function populateSupervisorName() {
     try {
@@ -166,10 +204,14 @@ async function populateSupervisorName() {
             const fullName = result.data.fullName;
             const callSign = result.data.callSign;
 
+            // Store supervisor name in sessionStorage
+            const supervisorName = `${fullName} [${callSign}]`;
+            sessionStorage.setItem('supervisorName', supervisorName);
+
             // Populate the supervisorName field with FullName [CallSign]
             const supervisorNameElement = document.getElementById('supervisorName');
             if (supervisorNameElement) {
-                supervisorNameElement.textContent = `${fullName} [${callSign}]`;
+                supervisorNameElement.textContent = supervisorName;
             }
         } else {
             console.error('Error fetching supervisor name:', result.message);
@@ -178,6 +220,9 @@ async function populateSupervisorName() {
         console.error('Error:', error);
     }
 }
+
+
+
 
 // Call the function when ics.html is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -233,38 +278,102 @@ function handleICSFormPage() {
 
 
 
-document.getElementById('submitLogs').addEventListener('click', function () {
-    // Prepare the data
-    const data = {
-        supervisorName: document.getElementById('supervisorName').textContent,
+// document.getElementById('submitLogs').addEventListener('click', function () {
+//     // Prepare the data
+//     const data = {
+//         supervisorName: document.getElementById('supervisorName').textContent,
+//         incidentDate: document.getElementById('incidentDate').value,
+//         dispatchTime: document.getElementById('dispatchTime').value,
+//         location: document.getElementById('location').value,
+//         alarmStatus: document.getElementById('alarmStatus').value,
+//         whoRequested: document.getElementById('whoRequested').value,
+//         fireType: document.getElementById('fireType').value,
+//         vehicleUsed: document.getElementById('vehicleUsed').value,
+//         responders: sessionStorage.getItem('attendees'),  // Send as JSON
+//         chatLogs: document.getElementById('chatLogs').value,
+//         remarks: document.getElementById('remarks').value
+//     };
+
+//     // Send a POST request to the server
+//     fetch('/saveICSLogs', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(data)
+//     })
+//     .then(response => response.json())
+//     .then(result => {
+//         if (result.success) {
+//             alert('ICS Logs saved successfully!');
+//             window.location.href = '/supervisor_ics_logs';  // Redirect to the logs page
+//         } else {
+//             alert('Error saving ICS logs.');
+//         }
+//     })
+//     .catch(error => console.error('Error:', error));
+// });
+
+
+
+document.getElementById('submitLogs').addEventListener('click', function() {
+    // Retrieve the attendees stored in sessionStorage
+    const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+    // Convert attendees array into a string format
+    const formattedResponders = attendees.map(attendee => `[${attendee.callSign}] ${attendee.name}`).join(', ');
+
+    // Gather the rest of the form data
+    const formData = {
+        supervisorName: sessionStorage.getItem('supervisorName'),
         incidentDate: document.getElementById('incidentDate').value,
         dispatchTime: document.getElementById('dispatchTime').value,
         location: document.getElementById('location').value,
         alarmStatus: document.getElementById('alarmStatus').value,
         whoRequested: document.getElementById('whoRequested').value,
         fireType: document.getElementById('fireType').value,
-        vehicleUsed: document.getElementById('vehicleUsed').value,
-        responders: sessionStorage.getItem('attendees'),  // Send as JSON
-        chatLogs: document.getElementById('chatLogs').value,
+        vehicleUsed: sessionStorage.getItem('selectedVehicle'),
+        responders: formattedResponders,  // Use the formatted string here
+        chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
         remarks: document.getElementById('remarks').value
     };
 
-    // Send a POST request to the server
+    // Send this form data to the backend route for saving in the database
     fetch('/saveICSLogs', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(formData)
     })
     .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            alert('ICS Logs saved successfully!');
-            window.location.href = '/supervisor_ics_logs';  // Redirect to the logs page
+    .then(data => {
+        if (data.success) {
+            alert('Logs saved successfully');
+            // Optionally redirect or clear form fields
         } else {
-            alert('Error saving ICS logs.');
+            console.error('Error saving logs:', data.message);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+
+
+
+// Function to display the selected vehicle in a paragraph on the ICS form page
+function displaySelectedVehicle() {
+    const vehicle = sessionStorage.getItem('selectedVehicle'); // Retrieve the vehicle from sessionStorage
+
+    // Check if vehicle is stored and if the vehicleAssignment paragraph exists
+    if (vehicle && document.getElementById('vehicle')) {
+        document.getElementById('vehicle').textContent = vehicle; // Display the vehicle name
+    }
+}
+
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    displaySelectedVehicle(); // Display the vehicle on the ICS form page
 });

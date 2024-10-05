@@ -227,6 +227,7 @@ function fetchAndDisplayInventoryforsearch(searchQuery = '') {
         })
         .catch(err => console.error('Error fetching inventory data:', err));
 }
+
 function fetchAndDisplayInventory(vehicleName) {
     let url = '/auth/inventory'; 
 

@@ -102,6 +102,9 @@ function handleICSPage() {
     const icsAttendeesDiv = document.getElementById('icsAttendees');
     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
 
+
+    
+
     attendees.forEach((attendee, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -355,4 +358,22 @@ document.getElementById('submitLogs').addEventListener('click', function() {
     .catch(error => {
         console.error('Error:', error);
     });
+});
+
+
+
+
+// Function to display the selected vehicle in a paragraph on the ICS form page
+function displaySelectedVehicle() {
+    const vehicle = sessionStorage.getItem('selectedVehicle'); // Retrieve the vehicle from sessionStorage
+
+    // Check if vehicle is stored and if the vehicleAssignment paragraph exists
+    if (vehicle && document.getElementById('vehicle')) {
+        document.getElementById('vehicle').textContent = vehicle; // Display the vehicle name
+    }
+}
+
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    displaySelectedVehicle(); // Display the vehicle on the ICS form page
 });

@@ -185,7 +185,8 @@
                                             </div>
                                                      
                                             <div class="w-full flex justify-end py-10">
-                                                <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='/supervisor_ics_form'">Save Logs</button>
+                                                <!-- <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='/supervisor_ics_form'" id="btnSaveLogs">Save Logs</button> -->
+                                                <button class="bg-[#DF0000] px-12 py-3  rounded-lg text-white text-lg font-semibold" id="btnSaveLogs">Save Logs</button>
                                             </div>
                                             
                                         </div>
@@ -212,6 +213,34 @@
                     </div>
                 </div>
                 </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+    const btnSaveLogs = document.getElementById('btnSaveLogs');
+
+    if (btnSaveLogs) {
+        btnSaveLogs.addEventListener('click', function() {
+            // Collect attendees from `icsAttendees`
+            const attendees = [];
+            const attendeeRows = document.querySelectorAll('#icsAttendees tr');
+
+            attendeeRows.forEach(row => {
+                const callSign = row.querySelector('td:nth-child(1)').textContent;
+                const name = row.querySelector('td:nth-child(2)').textContent;
+
+                attendees.push({ callSign, name });
+            });
+
+            // Store attendees in sessionStorage
+            sessionStorage.setItem('icsAttendees', JSON.stringify(attendees));
+
+            // Redirect to the next form/page
+            window.location.href = '/supervisor_ics_form'; // Adjust the URL as necessary
+        });
+    }
+});
+
+            </script>
  <script src="/socket.io/socket.io.js"></script>
 <script src="chat.js"></script>
 </body>

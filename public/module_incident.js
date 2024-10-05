@@ -185,3 +185,86 @@ document.addEventListener('DOMContentLoaded', function() {
         populateSupervisorName(); // Populate supervisor's name when the page loads
     }
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we are on the ICS form page
+    if (document.getElementById('responders')) {
+        handleICSFormPage();
+    }
+});
+
+
+
+
+// Function to handle the ICS Form page (supervisor_ics_form.html)
+function handleICSFormPage() {
+    // Retrieve the attendees stored in sessionStorage
+    const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+    // Get the responders div and clear it before populating
+    const respondersDiv = document.getElementById('responders');
+    respondersDiv.innerHTML = ''; // Clear existing content
+
+    // Loop through attendees and create list elements for each attendee
+    attendees.forEach(attendee => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>[${attendee.callSign}]</strong> ${attendee.name}`;
+        respondersDiv.appendChild(li); // Append each attendee to the responders div
+    });
+
+    // Retrieve chat logs from sessionStorage and populate the chatLogs textarea
+    const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];  // Default to empty array if no logs found
+    const chatLogs = storedChatLogs.join('\n'); // Combine all messages into a single string with line breaks
+    document.getElementById('chatLogs').value = chatLogs;  // Populate chat logs in the textarea
+
+    // Retrieve the supervisor name (already handled, but just in case)
+    const supervisorName = sessionStorage.getItem('supervisorName') || '';
+    document.getElementById('supervisorName').textContent = supervisorName;
+
+    // If needed, retrieve and populate other details like vehicle used, incident date, etc.
+    const vehicleUsed = sessionStorage.getItem('selectedVehicle') || '';
+    document.getElementById('vehicleUsed').value = vehicleUsed;
+}
+
+
+
+
+
+document.getElementById('submitLogs').addEventListener('click', function () {
+    // Prepare the data
+    const data = {
+        supervisorName: document.getElementById('supervisorName').textContent,
+        incidentDate: document.getElementById('incidentDate').value,
+        dispatchTime: document.getElementById('dispatchTime').value,
+        location: document.getElementById('location').value,
+        alarmStatus: document.getElementById('alarmStatus').value,
+        whoRequested: document.getElementById('whoRequested').value,
+        fireType: document.getElementById('fireType').value,
+        vehicleUsed: document.getElementById('vehicleUsed').value,
+        responders: sessionStorage.getItem('attendees'),  // Send as JSON
+        chatLogs: document.getElementById('chatLogs').value,
+        remarks: document.getElementById('remarks').value
+    };
+
+    // Send a POST request to the server
+    fetch('/saveICSLogs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            alert('ICS Logs saved successfully!');
+            window.location.href = '/supervisor_ics_logs';  // Redirect to the logs page
+        } else {
+            alert('Error saving ICS logs.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});

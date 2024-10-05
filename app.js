@@ -805,6 +805,65 @@ app.put('/updateEquipment', (req, res) => {
 });
 
 
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+// POST route for saving ICS logs
+app.post('/saveICSLogs', async (req, res) => {
+    try {
+        const {
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,
+            chatLogs,
+            remarks
+        } = req.body;
+
+        // Construct the SQL query
+        const query = `
+            INSERT INTO tbl_ics_logs 
+            (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        // Insert the data into the database
+        await db.query(query, [
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,      // This should be a JSON string containing the attendees (callSign and name)
+            chatLogs,        // The chat log as a text
+            remarks
+        ]);
+
+        res.json({ success: true, message: 'ICS logs saved successfully.' });
+    } catch (error) {
+        console.error('Error saving ICS logs:', error);
+        res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
+    }
+});
+
+
+
+
+
+
+
+
 const pages = require('./routes/pages');
 app.use('/', pages);
 app.use('/upload', express.static(path.join(__dirname, 'upload')));

@@ -111,6 +111,10 @@
                             <div class="flex justify-center">
                                 <div class="mt-11">
                                     <div class="flex justify-start">
+                                        <p class="text-lg font-bold mr-32">Supervisor</p>
+                                        <p class="text-lg font-bold mr-32" id="supervisorName">
+                                    </div>
+                                    <div class="flex justify-start">
                                         <p class="text-lg font-bold mr-32">Incident Date</p>
                                         <input class="border-[1px] border-black w-72" type="date" id="incidentDate">
                                     </div>
@@ -186,11 +190,11 @@
                                             <option value="Private/Personal Vehicle">Private/Personal Vehicle</option>
                                         </select>
                                     </div>
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[145px]">Responder</p>
+                                    <!-- <div class="flex justify-start mt-7">
+                                        <p class="text-lg font-bold mr-[145px]">Responders</p>
                                         <div>
-                                            <table class="w-[20rem]" id="responders ">
-                                                <!-- <tr>
+                                            <table class="w-[20rem]" id="responders">
+                                                <tr>
                                                     <td>Echo 12</td>
                                                     <td>Marniel Corsiga</td>
                                                 </tr>
@@ -201,20 +205,35 @@
                                                 <tr>
                                                     <td>Echo 1</td>
                                                     <td>Dinesh Anne Pangan</td>
-                                                </tr> -->
+                                                </tr>
 
-                                                <!-- dynamically popylated -->
+                                                dynamically popylated
                                             </table>
                                         </div>
                                         
+                                    </div> -->
+
+                                    <div class="flex justify-start mt-7">
+                                        <p class="text-lg font-bold mr-[145px]">Responders</p>
+                                        <div id="responders">
+                                            <!-- Responders will be dynamically populated here as a list -->
+                                        </div>
                                     </div>
                                     <div class="flex justify-start mt-7">
                                         <p class="text-lg font-bold mr-[165px]">Remarks</p>
                                         <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="remarks"></textarea>
+
                                     </div>
+                                    <div class="flex justify-start mt-7">
+                                        <p class="text-lg font-bold mr-[165px]">Chat Logs</p>
+                                        <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="chatLogs"></textarea>
+
+                                    </div>
+                                    
                                     <div class="w-full flex justify-end pt-5 pb-16">
                                         <div>
-                                            <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" onclick="location.href='/supervisor_ics_logs'">Submit</button>
+                                            <!-- <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" onclick="location.href='/supervisor_ics_logs'">Submit</button> -->
+                                            <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" onclick="location.href='/supervisor_ics_logs'" id="submitLogs">Submit</button>
                                         </div>
                                     </div>
                                     
@@ -228,6 +247,9 @@
                 </div>
 </body>
 </div>
+
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="module_incident.js" defer></script>
+
 </html>

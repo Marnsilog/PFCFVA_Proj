@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(result.message);
                     window.location.href = result.redirect;
                 } else {
-                    alert('Error: ' + result.message);
+                    alert(result.message);
                 }
             } catch (error) {
                 console.error('Error saving inventory data:', error);

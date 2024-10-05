@@ -709,10 +709,6 @@ module.exports = (db, db2) => {
     });
     
     
-    
-    
-    
-    
     // router.post('/inventory/log', async (req, res) => {
     //     const items = req.body; 
     //     const username = req.session.user?.username; 
@@ -855,31 +851,50 @@ module.exports = (db, db2) => {
         try {
             connection = await db2.getConnection();
             await connection.beginTransaction();
-            
-            for (const item of items) {
-                const { itemID, vehicleAssignment } = item;
-                const [currentVehicleAssignmentResult] = await connection.query(
-                    'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-                    [itemID]
-                );
-                const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+            const [dateExpirationResult] = await connection.query(
+                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
+                [username]
+            );
     
-                if (currentVehicleAssignment !== vehicleAssignment) {
-                    await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-                        [itemID, username, currentVehicleAssignment, vehicleAssignment] 
-                    );
-                    await connection.query(
-                        'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-                        [vehicleAssignment, itemID]
-                    );
-                }
+            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+            console.log('Date Expiration:', dateExpiration);
+            if (dateExpiration === null) {
+                dateExpiration = "noway"; // Custom placeholder for null expiration
             }
     
-            await connection.commit();
-            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
-            
+            // Proceed if dateExpiration is null, empty, or in the future
+            if (dateExpiration === "noway" || new Date(dateExpiration) > new Date()) {
+                for (const item of items) {
+                    const { itemID, vehicleAssignment } = item;
+                    const [currentVehicleAssignmentResult] = await connection.query(
+                        'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+                        [itemID]
+                    );
+                    const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+                    if (currentVehicleAssignment !== vehicleAssignment) {
+                        await connection.query(
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+                            [itemID, username, currentVehicleAssignment, vehicleAssignment]
+                        );
+                        await connection.query(
+                            'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+                            [vehicleAssignment, itemID]
+                        );
+                    }
+                }
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+    
+                await connection.commit();
+                res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+            } else {
+                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+            }
+    
         } catch (err) {
             console.error('Database error:', err);
             if (connection) await connection.rollback();
@@ -888,6 +903,48 @@ module.exports = (db, db2) => {
             if (connection) connection.release();
         }
     });
+    
+    // router.post('/inventory-supervisor/log', async (req, res) => {
+    //     const items = req.body;
+    //     const username = req.session.user?.username;
+    //     let connection;
+    
+    //     try {
+    //         connection = await db2.getConnection();
+    //         await connection.beginTransaction();
+            
+    //         for (const item of items) {
+    //             const { itemID, vehicleAssignment } = item;
+    //             const [currentVehicleAssignmentResult] = await connection.query(
+    //                 'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+    //                 [itemID]
+    //             );
+    //             const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+    //             if (currentVehicleAssignment !== vehicleAssignment) {
+    //                 await connection.query(
+    //                     `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+    //                     VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+    //                     [itemID, username, currentVehicleAssignment, vehicleAssignment] 
+    //                 );
+    //                 await connection.query(
+    //                     'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+    //                     [vehicleAssignment, itemID]
+    //                 );
+    //             }
+    //         }
+    
+    //         await connection.commit();
+    //         res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+            
+    //     } catch (err) {
+    //         console.error('Database error:', err);
+    //         if (connection) await connection.rollback();
+    //         res.status(500).json({ message: 'Server error' });
+    //     } finally {
+    //         if (connection) connection.release();
+    //     }
+    // });
     router.get('/admin-inventory/log', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
                 a.firstName AS volunteer_name, 

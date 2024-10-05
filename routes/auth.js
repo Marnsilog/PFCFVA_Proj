@@ -648,31 +648,54 @@ module.exports = (db, db2) => {
             connection = await db2.getConnection(); 
             await connection.beginTransaction();
             
-            for (const item of items) {
-                const { itemID, status, remarks } = item;
-                const [currentStatusResult] = await connection.query(
-                    'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
-                    [itemID]
-                );
-                const currentStatus = currentStatusResult[0]?.Status;
+            const [dateExpirationResult] = await connection.query(
+                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?', 
+                [username]
+            );
     
-                if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
-                    await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
-                        [itemID, username, currentStatus, status, remarks]
-                    );
-    
-                    // Update the inventory status
-                    await connection.query(
-                        'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
-                        [status, itemID]
-                    );
-                }
+            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+            console.log('Date Expiration:', dateExpiration);
+            if(dateExpiration === null){
+                dateExpiration = "noway";
+                //console.log('Date Expiration:', dateExpiration);
             }
     
-            await connection.commit();
-            res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            // Proceed if dateExpiration is null, empty, or in the future
+            if (dateExpiration === "noway" || new Date(dateExpiration) > new Date()) {
+               
+                for (const item of items) {
+                    const { itemID, status, remarks } = item;
+                    const [currentStatusResult] = await connection.query(
+                        'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
+                        [itemID]
+                    );
+    
+                    const currentStatus = currentStatusResult[0]?.Status;
+    
+                    if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
+                        await connection.query(
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change status', ?, ?, NOW(), ?)`, 
+                            [itemID, username, currentStatus, status, remarks]
+                        );
+                        await connection.query(
+                            'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
+                            [status, itemID]
+                        );
+                    }
+                }
+    
+                // Increment inventory points and update expiration date
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+    
+                await connection.commit();
+                res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            } else {
+                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+            }
             
         } catch (err) {
             console.error('Database error:', err);
@@ -684,6 +707,65 @@ module.exports = (db, db2) => {
             if (connection) connection.release();
         }
     });
+    
+    
+    
+    
+    
+    
+    // router.post('/inventory/log', async (req, res) => {
+    //     const items = req.body; 
+    //     const username = req.session.user?.username; 
+    //     let connection;
+    
+    //     try {
+    //         connection = await db2.getConnection(); 
+    //         await connection.beginTransaction();
+    //         const [dateExpiration] = await connection.query(
+    //             'SELECT dateExpiration FROM tbl_accounts WHERE username = ?', 
+    //             [username]
+    //         ); if(dateExpiration>datatimenow ){
+    //             for (const item of items) {
+    //                 const { itemID, status, remarks } = item;
+    //                 const [currentStatusResult] = await connection.query(
+    //                     'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
+    //                     [itemID]
+    //                 );
+                   
+    //                 const currentStatus = currentStatusResult[0]?.Status;
+                   
+    //                     if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
+    //                         await connection.query(
+    //                             `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+    //                             VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
+    //                             [itemID, username, currentStatus, status, remarks]
+    //                         );
+                            
+    //                         // Update the inventory status
+    //                         await connection.query(
+    //                             'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
+    //                             [status, itemID]
+    //                         );
+    //                     }
+                    
+                   
+    //             }
+        
+    //         }
+          
+    //         await connection.commit();
+    //         res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            
+    //     } catch (err) {
+    //         console.error('Database error:', err);
+            
+    //         // Rollback the transaction if any operation fails
+    //         if (connection) await connection.rollback();
+    //         res.status(500).json({ message: 'Server error' });
+    //     } finally {
+    //         if (connection) connection.release();
+    //     }
+    // });
     
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
@@ -745,6 +827,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    //__search INV
     router.get('/inventory-supervisor-search', (req, res) => {
         const search = req.query.search;
         const searchParam = `%${search}%`; 
@@ -763,22 +846,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    // router.get('/inventory/count', async (req, res) => {
-    //     try {
-    //       // Assuming you are using mysql2 with async/await
-    //       const [rows] = await db.query('SELECT COUNT(*) AS total FROM tbl_inventory');
-          
-    //       if (rows.length > 0) {
-    //         const total = rows[0].total; // Safely access the total count
-    //         res.json({ count: total });
-    //       } else {
-    //         res.json({ count: 0 }); // Handle the case where there are no rows
-    //       }
-    //     } catch (error) {
-    //       console.error('Error fetching item count:', error);
-    //       res.status(500).json({ error: 'Failed to retrieve item count' });
-    //     }
-    //   });
+    
     router.post('/inventory-supervisor/log', async (req, res) => {
         const items = req.body;
         const username = req.session.user?.username;

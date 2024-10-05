@@ -308,6 +308,7 @@ function cancelInventory() {
 function submitInventory() {
     const tbody = document.querySelector('#myTable2 tbody');
     const items = [];
+    
     Array.from(tbody.children).forEach(row => {
         const itemId = row.dataset.itemId;
         const statusSelect = row.querySelector('select');
@@ -327,19 +328,27 @@ function submitInventory() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(items),
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            // If response is not ok, throw an error to be caught below
+            return response.json().then(errData => {
+                throw new Error(errData.message || 'Failed to submit inventory');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         alert(data.message);
         if (data.redirect) {
-            // Redirect to /volunteer_form_inv
             window.location.href = data.redirect; 
         }
     })
     .catch(error => {
         console.error('Error submitting inventory:', error);
-        alert('Failed to submit inventory. Check console for details.');
+        alert(error.message || 'Failed to submit inventory. Check console for details.');
     });
 }
+
 
 async function fetchInventoryData() {
     try {

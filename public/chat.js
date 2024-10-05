@@ -418,6 +418,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+
+        //store the chat messages in sessionStorage
+    let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || []; // Retrieve existing logs or create empty array
+    storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`); // Add the new message
+    sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs)); // Store updated chat logs
     });
 
     // Load chat logs when a user connects

@@ -101,30 +101,30 @@
             <div id="loading-container" style="display: none;">
                 <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
             </div>
-            <div class="w-full h-full flex justify-center pt-16">
-                <div class="max-w-[80rem] w-full h-full">
+            <div class="w-full h-full flex justify-center md:pt-16 pt-3">
+                <div class="md:max-w-[80rem] w-full h-full">
                     <div class="font-Inter text-black">
-                        <p class="font-bold text-4xl">Fire Response Attendees Checklist</p>
+                        <p class="font-bold text-xl md:text-start text-center md:text-4xl">Fire Response Attendees Checklist</p>
                     </div>
 
                     <!-- Dropdown for Vehicle and Add Button -->
-                    <div class="mt-9 flex justify-between">
-                        <select class="h-9 pr-20 rounded-lg border-[2px] border-black text-start" id="vehicleAssignment">
-                            <option value="text">Choose Vehicle</option>
+                    <div class="mt-3 md:mt-9 flex justify-between md:px-0 px-5">
+                        <select class="md:h-9 h-8 md:w-auto w-48 md:pr-20 rounded-lg border-[2px] border-black text-start" id="vehicleAssignment">
+                            <!-- <option value="text">Choose Vehicle</option>
                             <option value="text">Engine 72</option>
                             <option value="text">WaterTender 72</option>
-                            <option value="text">Pumper 72</option>
+                            <option value="text">Pumper 72</option> -->
                         </select>
-                        <button class="bg-white border-2 border-black px-5 py-2 text-3xl font-[500] rounded-md flex justify-start space-x-5">
-                            <svg class="w-7 h-7 mt-[6px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>+
+                        <button onclick="showAddperson()" class="bg-white border-2 border-black px-3 md:px-5 md:py-2 text-3xl font-[500] rounded-md flex justify-start space-x-5">
+                            <svg class="h-5 w-5 md:w-7 md:h-7 mt-[6px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>+
                         </button>
                     </div>
 
                     <!-- Table for Present Attendees -->
-                    <div class="mt-5 flex justify-center items-center max-w-[90rem]">
-                        <div class="font-Inter w-full">
-                            <table class="w-full text-center border-2 border-black">
-                                <thead class="bg-[#EED033] text-black mt-10 h-16 text-2xl">
+                    <div class="mt-2 md:mt-5 flex justify-center items-center md:max-w-[90rem]">
+                        <div class="font-Inter w-full md:min-h-[30rem] md:max-h-[30rem] min-h-[27rem] max-h-[27rem] overflow-y-auto border-2 border-black">
+                            <table class="w-full text-center ">
+                                <thead class="bg-[#EED033] text-black md:mt-10 md:h-16 md:text-2xl text-sm">
                                     <tr>
                                         <th>CALL SIGN</th>
                                         <th>NAME</th>
@@ -133,25 +133,92 @@
                                 </thead>
                                 <tbody id="currentPresent">
                                     <!-- Attendees will be dynamically populated here -->
+                                   <!-- <tr class="text-sm md:text-2xl">
+                                    <td class="py-2 md:px-4 border-b">dasd</td>
+                                    <td class="py-2 md:px-4 border-b">dawdwaawdwd</td>
+                                    <td class="py-2 md:px-4 border-b text-center">
+                                        <a href="#" onclick="removeFromTable(this)">
+                                            <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
+                                        </a>
+                                    </td>
+                                   </tr> -->
+                                   
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                     <!-- Confirm Attendance Button -->
-                    <div class="flex justify-end">
-                        <button class="bg-[#EED033] px-10 py-4 mt-16 text-xl font-[500] rounded-md" id="confirmAttendanceBtn">Confirm Attendance</button>
+                    <div class="flex justify-center md:justify-end md:mr-0 mt-2">
+                        <button class="bg-[#EED033] px-5 py-2 md:px-10 md:py-4 md:mt-8 md:text-xl font-[500] rounded-md" id="confirmAttendanceBtn">Confirm Attendance</button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="addPer" style="display: none;">
-            <div class="w-full h-full flex justify-center">
-                <div class="absolute bg-white border-[1px] border-black h-[70rem] w-[50rem] top-16">
+        <!-- <div id="addPer" style="display: none;">
+            <div class="w-full flex justify-center">
+                <div class="absolute bg-white border-[1px] border-black md:w-[25rem] md:h-[30rem] w-[20rem] h-[30rem] top-20 md:top-16 shadow-lg shadow-gray-300">
                     <div class="flex justify-end mr-3 font-bold text-2xl">
                         <a href="#" onclick="canaddPerson()">X</a>
                     </div>
+                    <div class="w-full flex justify-center py-3">
+                        <input type="text" class="px-2 w-64 h-6 border-[1px] border-black focus:outline-none rounded-md" id="searchInput" onkeyup="searchTable()" placeholder="Search by name">
+                    </div>
+                    <div class="mx-4 h-full min-h-[20rem] max-h-[20rem] border-[1px] border-black">
+                        <table class="w-full">
+                            <thead class="bg-[#EED033] text-black">
+                                <tr>
+                                    <th class="px-14 text-start">Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="addPersonICS">
+         
+                            </tbody>
+                        </table>
+                    </div>
+        
+                    <div class="py-2 w-full flex justify-center items-center">
+                        <button class="bg-[#EED033] px-5 py-2 md:px-8 md:py-2 font-semibold md:text-lg rounded-md" id="addMember" onclick="fetchMembers()">Fetch Members</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div id="addPer" style="display: none;">
+            <div class="w-full flex justify-center">
+                <div class="absolute bg-white border-[1px] border-black md:w-[25rem] md:h-[30rem] w-[22rem] h-[30rem] top-20 md:top-16 shadow-lg shadow-gray-300">
+                    <div class="flex justify-end mr-3 font-bold text-2xl">
+                        <a href="#" onclick="canaddPerson()">X</a>
+                    </div>
+                    <div class="w-full flex justify-center py-3">
+                        <input type="text" class="px-2 w-64 h-6 border-[1px] border-black focus:outline-none rounded-md" id="searchPerson">
+                    </div>
+                    <div class=" mx-2 h-full min-h-[20rem] max-h-[20rem] border-[1px] overflow-y-auto border-black">
+                        <table class="w-full">
+                            <thead class="bg-[#EED033] text-black w-full">
+                                <tr class="w-full">
+                                    <th class="w-[70%]">CALL SIGN</th>
+                                    <th class="px-14 text-center">Name</th>
+                                    <th class="w-full"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="addPersonICS">
+                               <!-- <tr class="">
+                                <td class="px-5">Marniel Corsiga</td>
+                                <td class="w-[50%]">
+                                   <div class="w-full flex justify-center">
+                                    <input type="checkbox" id="task3" name="task3">
+                                   </div>
+                                </td>
+                               </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="py-2 w-full flex justify-center items-center">
+                        <button onclick="submitSelectedMembers()" type="button" class="bg-[#EED033] px-5 py-2 md:px-8 md:py-2 font-semibold md:text-lg  rounded-md">Add Member</button>
+                    </div>
+                    
+
                 </div>
             </div>
         </div>

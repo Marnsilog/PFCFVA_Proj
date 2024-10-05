@@ -1015,8 +1015,28 @@ module.exports = (db, db2) => {
         });
     });
     
+    router.get('/getMembers', (req, res) => {
+        const search = req.query.search || '';
     
+        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts';
+        
+        if (search) {
+          
+            sql += ' WHERE callSign LIKE ? OR firstName LIKE ? OR lastName LIKE ?';
+        }
     
+        const searchParam = `%${search}%`;
+    
+        db.query(sql, [searchParam, searchParam, searchParam], (err, result) => {
+            if (err) {
+                console.error('Error fetching members:', err);
+                return res.status(500).json({ error: 'Failed to retrieve members' });
+            }
+            res.json(result);
+        });
+    });
+    
+
     return router;
 };
 

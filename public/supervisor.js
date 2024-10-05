@@ -42,15 +42,14 @@
         }
     }
 
+
+
 // FIRE RESPONSE ICS
 // function addthis(){
 //     var addPer = document.getElementById('addPer');
 //     addPer.style.display = 'block';
 // }
-// function canaddPerson(){
-//     var canAdd = document.getElementById('addPer');
-//     canAdd.style.display = 'none';
-// }
+
 // function ConfirmAdd(){
 //     var AddResponse = document.getElementById('AddResponse');
 //     var InciSys = document.getElementById('InciSys');

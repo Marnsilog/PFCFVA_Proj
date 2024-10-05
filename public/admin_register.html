@@ -161,16 +161,16 @@
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                         <div>
                             <p>Last Name <span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="lastName" required>
+                            <input class="border-[1px] border-black w-[17rem] h-7" oninput="removeNumbers(event)" type="text" id="lastName" required>
                         </div>
                         <div>
                             <p>First Name<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="firstName" required>
+                            <input class="border-[1px] border-black w-[17rem] h-7" oninput="removeNumbers(event)" type="text" id="firstName" required>
                             
                         </div>
                         <div>
                             <p>Middle Name</p>
-                            <input class="border-[1px] border-black w-[17rem] h-7" type="text" id="middleName" required>
+                            <input class="border-[1px] border-black w-[17rem] h-7" oninput="removeNumbers(event)" type="text" id="middleName" required>
                         </div>
                     </div>
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
@@ -207,7 +207,7 @@
                         </div>
                         <div>
                             <p>Date of Birth<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black w-[17rem] h-7"  type="date" id="dateOfBirth" required>
+                            <input class="border-[1px] border-black w-[17rem] h-7" oninput="validateBirthday()"  type="date" id="dateOfBirth" required>
                         </div>
                     </div>
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
@@ -271,11 +271,11 @@
                         </div> -->
                         <div>
                             <p>Email Address<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="emailAddress" required>
+                            <input class="border-[1px] border-black h-7 w-[17rem]" oninput="validateEmailS(event)" type="text" id="emailAddress" required>
                         </div>
                         <div>
                             <p>Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black h-7 w-[17rem]" type="text" id="contactNumber" required pattern="[0-9]+" title="Please enter numbers only">
+                            <input class="border-[1px] border-black h-7 w-[17rem]" oninput="validateContactNumber(event)" type="text" id="contactNumber" required pattern="[0-9]+" title="Please enter numbers only">
                             
                         </div>
                     </div>
@@ -314,11 +314,11 @@
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                         <div>
                             <p>Emergency Contact Person<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" id="emergencyContactPerson" required>
+                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" oninput="removeNumbers(event)" id="emergencyContactPerson" required>
                         </div>
                         <div>
                             <p>Emergency Contact Number<span class="text-red-500 font-bold mr-1">*</span></p>
-                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" type="text" id="emergencyContactNumber" required pattern="[0-9]+" title="Please enter numbers only">
+                            <input class="border-[1px] border-black md:w-[25rem] w-[17rem] h-7" oninput="validateContactNumber(event)" type="text" id="emergencyContactNumber" required pattern="[0-9]+" title="Please enter numbers only">
                             
                         </div>
                     </div>
@@ -340,7 +340,7 @@
                         </div>
                         <div>
                             <p>Years in service</p>
-                            <input class="border-[1px] border-black md:w-[8rem] w-[17rem]   h-7" type="text" id="yearsInService" pattern="[0-9]+" title="Please enter numbers only">
+                            <input class="border-[1px] border-black md:w-[8rem] w-[17rem] h-7" oninput="validateYearsInService()" type="text" id="yearsInService" pattern="[0-9]+" title="Please enter numbers only">
                         </div>
                     </div>
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
@@ -398,7 +398,7 @@
 </body>
 </div>
 <script src="admin.js" defer></script>
-<script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="register_constraint.js" defer></script>
 </html>

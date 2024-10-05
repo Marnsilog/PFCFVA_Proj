@@ -55,6 +55,7 @@ const Supervisor = [
     'supervisor_ics',
     'supervisor_inventory',
     'supervisor_main_profile',
+    'supervisor_inventory_report',
     'supervisor_leaderboards'
 
 ];

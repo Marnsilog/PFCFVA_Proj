@@ -139,9 +139,9 @@ window.addEventListener('load', function() {
 
     }
 });
-function fetchInventory_form(searchTerm = '') {  // Provide a default parameter
+function fetchInventory_form(searchTerm = '') {  
     const url = new URL('/auth/inventory2', window.location.origin);
-    url.searchParams.append('search', searchTerm); // Append search term
+    url.searchParams.append('search', searchTerm); 
 
     fetch(url)
         .then(response => {
@@ -151,13 +151,13 @@ function fetchInventory_form(searchTerm = '') {  // Provide a default parameter
             return response.json();
         })
         .then(data => {
-            console.log('Fetched inventory data:', data); // Debug log for fetched data
+            console.log('Fetched inventory data:', data);
             const tbody = document.querySelector('#myTable tbody');
             tbody.innerHTML = ''; 
 
             if (data.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="4">No results found</td>'; // Show message if no results
+                row.innerHTML = '<td colspan="4">No results found</td>';
                 tbody.appendChild(row);
             } else {
                 data.forEach(item => {
@@ -168,7 +168,7 @@ function fetchInventory_form(searchTerm = '') {  // Provide a default parameter
                         <td>${item.checked_date || 'N/A'}</td>
                         <td>${item.checked_time || 'N/A'}</td>
                         <td>${item.vehicle || 'N/A'}</td>
-                        <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.itemID})">See details</a></td>
+                        <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.logID})">See details</a></td>
                     `;
 
                     tbody.appendChild(row);
@@ -308,6 +308,7 @@ function cancelInventory() {
 function submitInventory() {
     const tbody = document.querySelector('#myTable2 tbody');
     const items = [];
+    
     Array.from(tbody.children).forEach(row => {
         const itemId = row.dataset.itemId;
         const statusSelect = row.querySelector('select');
@@ -327,19 +328,27 @@ function submitInventory() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(items),
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            // If response is not ok, throw an error to be caught below
+            return response.json().then(errData => {
+                throw new Error(errData.message || 'Failed to submit inventory');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         alert(data.message);
         if (data.redirect) {
-            // Redirect to /volunteer_form_inv
             window.location.href = data.redirect; 
         }
     })
     .catch(error => {
         console.error('Error submitting inventory:', error);
-        alert('Failed to submit inventory. Check console for details.');
+        alert(error.message || 'Failed to submit inventory. Check console for details.');
     });
 }
+
 
 async function fetchInventoryData() {
     try {
@@ -355,9 +364,9 @@ async function fetchInventoryData() {
 }
 
 
-function seeinventory(itemID) {
-    console.log(`Fetching details for itemID: ${itemID}`); // Debug log
-    fetch(`/auth/inventory2/detail/${itemID}`)
+function seeinventory(logID) {
+    console.log(`Fetching details for itemID: ${logID}`); // Debug log
+    fetch(`/auth/inventory2/detail/${logID}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -382,8 +391,8 @@ function seeinventory(itemID) {
 
                 row.innerHTML = `
                     <td>${item.itemName || 'N/A'}</td>
-                    <td>${item.status || 'N/A'}</td>
-                     <td>${item.vehicleAssignment || 'N/A'}</td>
+                    <td>${item.changeFrom || 'N/A'}</td>
+                     <td>${item.changeTo || 'N/A'}</td>
                 `;
 
                 tbody.appendChild(row);

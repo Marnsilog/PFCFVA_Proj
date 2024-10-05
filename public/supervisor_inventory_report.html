@@ -23,10 +23,10 @@
                             <li id="dashb" class="md:mt-12"><a href="/supervisor_dashboard">Dashboard</a></li>
                             <li id="fireS" class="md:mt-12 "><a href="/supervisor_fire_response">Fire Response</a></li>
                             <li id="leadB" class="md:mt-12 "><a href="/supervisor_leaderboards">Leaderboards</a></li>
-                            <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="/supervisor_inventory">Inventory</a></li>
+                            <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="/supervisor_inventory_report">Inventory</a></li>
                             <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
                             <li class="md:mt-6">
-                                <img id="prof" src="img/pfcfvalogo.png" class="h-16 w-16 mb-5" style="cursor: pointer;" onclick="toggleSetting()">
+                                <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                             </li>
                         </ul>
                      </nav>
@@ -81,7 +81,7 @@
                             <p class="ml-2 block py-2">Leaderboards</p>
                         </div>
                         
-                        <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/supervisor_inventory'">
+                        <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/supervisor_inventory_report'">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mt-[10px] w-5 h-5" viewBox="0 0 384 512"><path fill="white" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM72 272a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm104-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16s7.2-16 16-16zM72 368a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zm88 0c0-8.8 7.2-16 16-16H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H176c-8.8 0-16-7.2-16-16z"/></svg>
                             <p class="ml-2 block py-2">Inventory</p>
                         </div>
@@ -98,7 +98,69 @@
                     
             </div>
 
+<!--FORM INVENTORY-->
+<div class="md:pt-4 pt-8 w-full flex justify-center" >
+    <div class="w-full md:max-w-[85rem] md:pt-7"  id="frmInventory">
+            <div class="w-full">
+                <div id="loading-container">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+                        <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
+                            <div class="md:ml-0 flex justify-center items-center"> 
+                                <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="location.href='/supervisor_inventory'">+ Add Inventory log</button></div>
+                             <div class=" md:pl-0 md:w-[25rem] mx-5 h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                <input id="Search_form_inv" class="w-full h-full focus:outline-none rounded-lg px-2" type="text" placeholder="Search">
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="font-Inter w-full">       
+                        <div class="font-Inter w-full">       
+                            <table id="myTable" class="mt-5 w-full md:mt-10">
+                                <thead class="h-14 bg-[#D9D9D9] opacity-75 text-black md:mt-10 mdh-16 md:text-3xl">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Vehicle</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="w-full text-center text-sm md:text-2xl">
+                                    <!-- Rows will be populated here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                </div>
+
+                <div class="flex justify-center" >
+                    <div class="absolute top-44 md:w-[35rem]  w-[95%] md:py-10 bg-white border-2 border-black shadow-lg shadow-gray-500 font-Inter" id="inventorydetail" style="display: none;">
+                        <div>
+                            <table class="w-full font-Inter">
+                                <thead class="h-14 border-y-[1px] border-black">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic content will be inserted here -->
+                                </tbody>
+                            </table>
+                            <div class="flex justify-center underline underline-offset-2">
+                                <a href="#" onclick="exitinventorydetail()">close</a>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                </div>
+                
+        </div>
+                
+    </div>
 
 
 </body>

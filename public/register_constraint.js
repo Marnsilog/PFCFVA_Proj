@@ -2,8 +2,6 @@ function setMaxDateForBirthday(inputId, yearsBack) {
     const birthdayInput = document.getElementById(inputId);
     const today = new Date();
     const maxDate = new Date();
-
-    // Calculate the date specified years back
     maxDate.setFullYear(today.getFullYear() - yearsBack);
 
     const year = maxDate.getFullYear();
@@ -14,7 +12,7 @@ function setMaxDateForBirthday(inputId, yearsBack) {
 }
 
 function validateBirthday() {
-    const birthdayInput = document.getElementById('EditBirthday');
+    const birthdayInput = document.getElementById('dateOfBirth');
     const today = new Date();
     const selectedDate = new Date(birthdayInput.value);
 
@@ -32,14 +30,14 @@ function validateBirthday() {
     } 
 }
 
-setMaxDateForBirthday('EditBirthday', 18);
+setMaxDateForBirthday('dateOfBirth', 18);
 
 function removeNumbers(event) {
     const input = event.target;
     input.value = input.value.replace(/[0-9]/g, '');
 }
 
-function validateEmail(event) {
+function validateEmailS(event) {
 const input = event.target;
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -65,27 +63,19 @@ if (numericValue && !isValidPhilippineNumber) {
 }
 
 function validateYearsInService() {
-    const input = document.getElementById('EditYearsInService');
+    const input = document.getElementById('yearsInService');
+    
+    // Replace non-numeric characters with an empty string
     input.value = input.value.replace(/[^0-9]/g, '');
+    
+    // Convert the value to a number for comparison
+    const value = parseInt(input.value, 10);
+
+    // Check if the value is greater than 80
+    if (value > 80) {
+        input.setCustomValidity("Years in Service cannot exceed 80.");
+    } else {
+        input.setCustomValidity(""); // Clear the validation message if valid
+    }
 }
 
-document.getElementById('editProfileForm').addEventListener('submit', function (event) {
-    const oldPassword = document.getElementById('EditOldPassword').value;
-    const newPassword = document.getElementById('EditNewPassword').value;
-    const confirmPassword = document.getElementById('EditConfirmPassword').value;
-    if (oldPassword.trim() !== '') {
-        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-
-        if (!newPassword.match(passwordRegex)) {
-            alert('New password must be at least 8 characters long, contain at least one number, and one special character.');
-            event.preventDefault(); 
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            alert('New password and confirm password do not match.');
-            event.preventDefault(); // Prevent form submission
-            return;
-        }
-    }
-});

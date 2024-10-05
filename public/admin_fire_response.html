@@ -149,13 +149,13 @@
         <div class="flex md:justify-normal justify-between md:mx-0 mx-3 md:space-x-5 md:mt-0 mt-5">
             <div class="md:w-[25rem] w-64 h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                <input class="w-full h-full focus:outline-none px-2" placeholder="Search" type="text">
+                <input class="w-full h-full focus:outline-none px-2" placeholder="Search" type="text" id="searchbox">
                 <div style="cursor: pointer;" onclick="Incidentfilter()">
                     <svg xmlns="http://www.w3.org/2000/svg"  class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/></svg>
                 </div>
                
             </div>
-            <button onclick="location.href='admin_ics.html'" class="h-10 w-24 bg-[#BC0000] font-inter text-white text-lg font-semibold rounded-xl flex justify-center pt-[5px]"><p>ICS</p> <svg class="w-5 h-5 mt-[5px] ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"> <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="white"/>
+            <button onclick="location.href='/admin_ics'" class="h-10 w-24 bg-[#BC0000] font-inter text-white text-lg font-semibold rounded-xl flex justify-center pt-[5px]"><p>ICS</p> <svg class="w-5 h-5 mt-[5px] ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"> <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="white"/>
               </svg> 
               </button>
         </div>
@@ -248,7 +248,8 @@
                     </div>
                     <div class="w-full flex justify-center">
                         <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
-                        <p class="text-center" id="downloadLogs">Download Logs</p>
+                        <!-- <p class="text-center" id="downloadLogs">Download Logs</p> -->
+                        <button class="text-center" onclick="downloadLogs()">Download Logs</button>
                     </div>
                 </div>
                     <div class="flex justify-center mt-10">
@@ -277,4 +278,6 @@
 <script src="register.js" defer></script>
 <script src="profileImage.js" defer></script>
 <script src="_data_controller.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </html>

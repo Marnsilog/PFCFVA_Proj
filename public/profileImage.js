@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const profilePic = document.getElementById('profile-pic');
     const profilePicButton = document.getElementById('profile-pic-button');
     const loadingContainer = document.getElementById('loading-container');
-
+    const resPonsivepic = document.getElementById('resPonsivepic');
     function fetchProfilePic(element) {
         setTimeout(() => {
             loadingContainer.style.display = 'block';
@@ -25,4 +25,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchProfilePic(profilePic);
     fetchProfilePic(profilePicButton);
+    fetchProfilePic(resPonsivepic);
 });

@@ -11,6 +11,8 @@
     dutyH.classList.add('bg-red-700','text-white');
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-bla   ck');
+    //fetchVolunteers();
+    handledhSearch(); 
     }
 
   function showFireRes(){
@@ -23,6 +25,8 @@
     FireR.classList.add('bg-red-700','text-white');
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
+    fetchFireResponse();
+    handlefrSearch();
     }
 
     function toggleSetting() {
@@ -135,31 +139,74 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
 });
+//FOR LOADING CONFIGURATION
+window.addEventListener('load', function() {
+    if (window.location.pathname === '/supervisor_leaderboards') {
+        handledhSearch();
+        fetchVolunteers();
+    }else if (window.location.pathname === '/supervisor_inventory') {
+        loadsVehicleAssignments();
+        fetchAndDisplayInventory(); 
+        document.getElementById('supervisorSearch').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchAndDisplayInventorySearch(searchQuery); 
+        });
 
+        document.getElementById('vehStatus').addEventListener('change', function() {
+            const selectedStatus = this.value;
+            console.log("Dropdown changed: " + selectedStatus);  // Add this to debug
+            fetchAndDisplayInventorySearch(selectedStatus);
+        });
+    }else if(window.location.pathname === '/volunteer_leaderboards'){
+        handledhSearch();
+        fetchVolunteers();
+    }else if(window.location.pathname === '/supervisor_inventory_report'){
+        document.getElementById('Search_form_inv').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchInventory_form(searchQuery); 
+        });
+        fetchInventory_form();
+    }
+});
 //LEADERBOARDS CLIENT
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/auth/volunteers')
+function handledhSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchVolunteers(searchTerm);
+    });
+}
+function handlefrSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchFireResponse(searchTerm);
+    });
+}
+function fetchVolunteers(searchTerm = '') {
+    const url = searchTerm ? `/auth/volunteers?search=${encodeURIComponent(searchTerm)}` : '/auth/volunteers';
+    
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            //console.log(data); 
             const container = document.getElementById('Container');
 
-            // Build the table dynamically with the header and rows combined
+            // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
                     <table id="myTable2" class="text-start w-full px-4">
-                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
-                                <th class="text-center">Points</th>
+                                <th class="text-center">Hours</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm md:text-xl text-start font-Inter">
             `;
 
-            // Loop through the data and create table rows dynamically
+            // Loop through the data and create table rows
             data.forEach((volunteer, index) => {
-                // Set the color red for the first 10 volunteers
+                // Set the color red for the first 5 volunteers
                 const textColorClass = index < 5 ? 'text-red-500' : '';
 
                 tableHTML += `
@@ -172,17 +219,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     </tr>
                 `;
             });
+
             tableHTML += `
                         </tbody>
                     </table>
                 </div>
             `;
 
+            // Inject the generated table HTML into the container
             container.innerHTML = tableHTML;
         })
         .catch(error => console.error('Error fetching data:', error));
-});
-
+}
 
 function showDutyDetails(volunteerId) {
     fetch(`/auth/volunteer/${volunteerId}`)
@@ -206,18 +254,19 @@ function showDutyDetails(volunteerId) {
 function exitdtdetail() {
     document.getElementById('dutyhoursdetail').style.display = 'none';
 }
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/auth/fireresponse')
+function fetchFireResponse(searchTerm = '') {
+    const url = searchTerm ? `/auth/fireresponse?search=${encodeURIComponent(searchTerm)}` : '/auth/fireresponse';
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            //console.log(data); 
             const container = document.getElementById('Container2');
 
-            // Build the table dynamically with the header and rows combined
+            // Build the table HTML structure
             let tableHTML = `
-                <div class="w-full h-full max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
-                    <table id="myTable3" class="text-start   w-full px-4">
-                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16">
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                    <table id="myTable3" class="text-start w-full px-4">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white"">
                             <tr>
                                 <th class="text-start pl-5">Volunteers</th>
                                 <th class="text-center">Fire Response</th>
@@ -245,10 +294,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
+            // Inject the generated table HTML into the container
             container.innerHTML = tableHTML;
         })
         .catch(error => console.error('Error fetching data:', error));
-});
+}
+
 function showFireRe(volunteerId) {
     fetch(`/auth/fireresponse/${volunteerId}`)
         .then(response => response.json())
@@ -295,13 +346,12 @@ function loadsVehicleAssignments() {
         })
         .catch(error => console.error('Error loading vehicle assignments:', error));
 }
-
+// VEHICLE ASSIGNMENT LOADING
 async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
     try {
         const response = await fetch('/getVehicleAssignments');
         const vehicles = await response.json();
         
-        selectElement.innerHTML = '<option value="">All Vehicles</option>';
         
         if (vehicles && vehicles.length > 0) {
             vehicles.forEach(vehicle => {
@@ -315,6 +365,7 @@ async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
         console.error('Error loading vehicle assignments:', error);
     }
 }
+//DROWNDOWN 
 async function fetchAndDisplayInventory(selectedVehicle = '') {
     try {
         const response = await fetch(`/auth/inventory-supervisor?vehicleAssignment=${selectedVehicle}`);
@@ -327,34 +378,72 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
 
         inventoryItems.forEach(async (item) => {
             const inventoryDiv = document.createElement('div');
-            inventoryDiv.classList.add('max-w-[70rem]', 'w-full', 'h-full', 'space-y-5', 'inventory-item'); 
+            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
             inventoryDiv.setAttribute('data-item-id', item.itemId); 
             inventoryDiv.innerHTML = `
-                <div class="w-[95%] rounded-lg h-20 bg-[#DDDDDD] flex justify-between mx-6">
-                    <div class="flex justify-normal space-x-6">
-                        <img src="${item.itemImage}" class="h-14 w-14 rounded-lg mt-4 ml-2" alt="">
-                        <div class="Font-Inter mt-4 space-y-2">
-                            <p class="text-3xl font-bold">${item.itemName}</p>
+                <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
+                    <div class="w-full">
+                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
+                       
+                    </div>
+                     <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+                            <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
                         </div>
-                    </div>
-                    <div class="mt-2 pr-10">
-                        <p class="text-sm">Transfer to</p>
-                        <select class="h-7 pr-14 rounded-lg text-start" id="addvehicleAssignment-${item.itemId}"></select>
-                    </div>
+                   <div class="mt-2 pr-4 md:pr-10 w-full">
+                         <p class="text-sm">Transfer to</p>
+                         <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+                     </div>
                 </div>
             `;
             container.appendChild(inventoryDiv);
+        
             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
             await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
         });
+
+        
     } catch (error) {
         console.error('Error fetching inventory data:', error);
     }
 }
-window.onload = () => {
-    loadsVehicleAssignments();
-    fetchAndDisplayInventory(); 
-};
+//INVENTORY SEARCH
+async function fetchAndDisplayInventorySearch(search = '') {
+    try {
+        const response = await fetch(`/auth/inventory-supervisor-search?search=${search}`);
+        const inventoryItems = await response.json();
+        
+        const container = document.getElementById('inventoryContainer');
+        container.innerHTML = ''; 
+
+        inventoryItems.forEach(async (item) => {
+            const inventoryDiv = document.createElement('div');
+            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
+            inventoryDiv.setAttribute('data-item-id', item.itemId); 
+            inventoryDiv.innerHTML = `
+                <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
+                    <div class="w-full">
+                        <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
+                       
+                    </div>
+                     <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+                            <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
+                        </div>
+                   <div class="mt-2 pr-4 md:pr-10 w-full">
+                         <p class="text-sm">Transfer to</p>
+                         <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+                     </div>
+                </div>
+            `;
+            container.appendChild(inventoryDiv);
+        
+            const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
+            await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
+        });
+
+    } catch (error) {
+        console.error('Error fetching inventory data:', error);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
@@ -375,10 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     inventoryItems.push({ itemID, vehicleAssignment });
                 }
             });
-
-            console.log('Inventory items being sent:', inventoryItems);
-
-            // Send the collected items to the server
             try {
                 const response = await fetch('/auth/inventory-supervisor/log', {
                     method: 'POST',
@@ -393,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(result.message);
                     window.location.href = result.redirect;
                 } else {
-                    alert('Error: ' + result.message);
+                    alert(result.message);
                 }
             } catch (error) {
                 console.error('Error saving inventory data:', error);
@@ -403,6 +488,88 @@ document.addEventListener('DOMContentLoaded', () => {
     } 
 });
 
+//INVENTORY FORM
+function fetchInventory_form(searchTerm = '') {  
+    const url = new URL('/auth/inventory2', window.location.origin);
+    url.searchParams.append('search', searchTerm); 
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory data:', data);
+            const tbody = document.querySelector('#myTable tbody');
+            tbody.innerHTML = ''; 
+
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="4">No results found</td>';
+                tbody.appendChild(row);
+            } else {
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
+
+                    row.innerHTML = `
+                        <td>${item.checked_date || 'N/A'}</td>
+                        <td>${item.checked_time || 'N/A'}</td>
+                        <td>${item.vehicle || 'N/A'}</td>
+                        <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.logID})">See details</a></td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+            }
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}
+
+function seeinventory(logID) {
+    console.log(`Fetching details for itemID: ${logID}`); // Debug log
+    fetch(`/auth/inventory2/detail/${logID}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory details:', data); // Debug log for fetched details
+            const inventoryDetailDiv = document.getElementById('inventorydetail');
+            const tbody = inventoryDetailDiv.querySelector('tbody');
+            tbody.innerHTML = ''; 
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No details available</td></tr>'; // Handle no data case
+                inventoryDetailDiv.style.display = 'block';
+                return;
+            }
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('text-center', 'h-10');
+
+                row.innerHTML = `
+                    <td>${item.itemName || 'N/A'}</td>
+                    <td>${item.changeFrom || 'N/A'}</td>
+                     <td>${item.changeTo || 'N/A'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+            inventoryDetailDiv.style.display = 'block';
+        })
+        .catch(err => console.error('Error fetching inventory details:', err));
+}
+
+function exitinventorydetail() {
+    const inventoryDetailDiv = document.getElementById('inventorydetail');
+    inventoryDetailDiv.style.display = 'none';
+}
 
 
 

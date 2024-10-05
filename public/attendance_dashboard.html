@@ -120,14 +120,109 @@
                             <p class="font-semibold" id="ActivityPoints">0</p>
                             <p>Activity</p>
                         </div>
+
+
                     </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="promptButton" class="bg-[#930D0D] text-white text-lg rounded-lg font-bold py-2 px-4">
+                            Enter RFID Manually
+                        </button>
+                    </div>
+                    
+
                     
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+
+//DON'T TOUCH
+        document.getElementById('promptButton').addEventListener('click', function() {
+            // Trigger the prompt to get manual RFID
+            const manualRFID = prompt("Please enter the RFID:", "");
+        
+            if (manualRFID) {
+                // Call the existing function that handles RFID scan
+                handleManualRFID(manualRFID); // Function to process RFID
+            } else {
+                console.log("RFID input was cancelled or empty.");
+            }
+        });
+        
+        // Function to handle manual RFID scan and trigger the existing attendance logic
+        function handleManualRFID(rfid) {
+            document.getElementById('rfidText').textContent = rfid;
+            console.log('Handling Manual RFID scan:', rfid);
+        
+            fetch('/recordTimeIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rfid: rfid })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        // If Time In already exists, try recording Time Out
+                        return fetch('/recordTimeOut', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ rfid: rfid })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error recording Time Out');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById('TimeOut').textContent = data.timeOut; 
+                            fetchProfileData(rfid);  // Fetch updated profile data
+                            fetchRecentAttendance(); // Fetch updated attendance logs
+                            timeOutAudio.play();  // Play Time Out audio feedback
+                        });
+                    } else {
+                        throw new Error('Error recording attendance');
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle Time In success
+                if (data.timeIn) {
+                    document.getElementById('TimeIn').textContent = data.timeIn;
+                    document.getElementById('TimeOut').textContent = '--:--';  // Clear Time Out
+                    fetchProfileData(rfid);  // Fetch updated profile data
+                    fetchRecentAttendance(); // Fetch updated attendance logs
+                    timeInAudio.play();  // Play Time In audio feedback
+                }
+            })
+            .catch(error => {
+                console.error('Error processing RFID:', error);
+            });
+        }
+
+
+
+//// DON'T TOUC THE CODE ABOVE THIS LINE XXX
+ //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+//XXXXXXXXXXXXXXX END XXXXXXXXXXXXXXXXXXX
+
+
+</script>
+        
+        
+    
 </body>
 <script src="module_attendance.js" defer></script>
 <script src="admin.js" defer></script>
+
 </html>

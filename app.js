@@ -595,6 +595,12 @@ app.get('/getVehicleAssignments', (req, res) => {
     });
 });
 
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 app.get('/getEquipment', (req, res) => {
     const vehicleAssignment = req.query.vehicleAssignment;
     let sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
@@ -799,6 +805,65 @@ app.put('/updateEquipment', (req, res) => {
 });
 
 
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+// POST route for saving ICS logs
+app.post('/saveICSLogs', async (req, res) => {
+    try {
+        const {
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,
+            chatLogs,
+            remarks
+        } = req.body;
+
+        // Construct the SQL query
+        const query = `
+            INSERT INTO tbl_ics_logs 
+            (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        // Insert the data into the database
+        await db.query(query, [
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,      // This should be a JSON string containing the attendees (callSign and name)
+            chatLogs,        // The chat log as a text
+            remarks
+        ]);
+
+        res.json({ success: true, message: 'ICS logs saved successfully.' });
+    } catch (error) {
+        console.error('Error saving ICS logs:', error);
+        res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
+    }
+});
+
+
+
+
+
+
+
+
 const pages = require('./routes/pages');
 app.use('/', pages);
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
@@ -812,7 +877,7 @@ app.use('/img', express.static(path.join(__dirname, 'public/img')));
 //     console.log(`Server started on port ${PORT}`);
 // });
 
-
+//server instead of app for HTTP || wag baguhin.
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

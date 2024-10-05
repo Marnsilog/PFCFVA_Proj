@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         day: 'numeric'
                     }) : '-';
                     row.innerHTML = `
-                        <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                        <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
                         <td>${record.callSign}</td>
                         <td>${dateFormattedTimeIn}</td>
                         <td>${record.timeIn}</td>
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
             row.innerHTML = `
-              <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+              <td >${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
               <td>${record.callSign}</td>
               <td>${rank}</td>
               <td>${record.dutyHours}</td>

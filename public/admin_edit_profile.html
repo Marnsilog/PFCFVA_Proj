@@ -147,8 +147,7 @@
 
                         <div class="mt-24">
                             <label for="profilePicture"></label>
-                            <input type="file" id="profilePicture" name="profilePicture" required>
-                                
+                            <input type="file" id="profilePicture" name="profilePicture" >
                         </div>
                           
                     </div>
@@ -159,20 +158,23 @@
                             <div class="md:flex md:justify-between w-full space-y-3 md:space-x-0">
                                 <div>
                                     <p>Lastname</p>
-                                    <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Last Name" name="lastName" id="EditLastName">
+                                    <input  class="bg-white w-80 h-10 md:px-4 border border-black" 
+                                    type="text" placeholder="Last Name" name="lastName" id="EditLastName" 
+                                    oninput="removeNumbers(event)">
                                 </div>
             
                                 <div>
                                     <p>First Name</p>
                                     <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="First Name" name="firstName" id="EditFirstName">
+                                    type="text" placeholder="First Name" name="firstName" id="EditFirstName"
+                                    oninput="removeNumbers(event)">
                                 </div>
             
                                 <div>
                                     <p>Middle Name</p>
                                     <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Middle Name" name="middleName" id="EditMiddleName">
+                                    type="text" placeholder="Middle Name" name="middleName" id="EditMiddleName"
+                                    oninput="removeNumbers(event)">
                                 </div>
                             </div>
             
@@ -185,62 +187,94 @@
             
                                 <div>
                                     <p>Email Address</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="Email Address" name="emailAddress" id="EditEmailAddress">
+                                    <input class="bg-white w-80 h-10 md:px-4 border border-black" 
+                                    type="email" placeholder="Email Address" name="emailAddress" id="EditEmailAddress" 
+                                    oninput="validateEmail(event)">
                                 </div>
             
                                 <div>
                                     <p>Contact Number</p>
                                     <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="Contact Number" name="contactNumber" id="EditContactNumber">
-                                </div>
-                            </div>
-            
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <p>Old Password</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="password" placeholder="Old Password" name="oldPassword" id="EditOldPassword">
-                                </div>
-            
-                                <div>
-                                    <p>New Password</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="password" placeholder="New Password" name="" id="EditNewPassword">
-                                </div>
-            
-                                <div >
-                                    <p>Confirm Password</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="password" placeholder="Confirm Password" name="newPassword" id="EditConfirmPassword">
+                                        type="text" placeholder="Contact Number" name="contactNumber" id="EditContactNumber" 
+                                        oninput="validateContactNumber(event)">
                                 </div>
                             </div>
                             
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <p>Civil Status</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="Civil Status" name="civilStatus" id="EditCivilStatus">
+                               <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
+                                    <div>
+                                        <p>Old Password</p>
+                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                                        type="password" placeholder="Old Password" name="oldPassword" id="EditOldPassword">
+                                    </div>
+                
+                                    <div>
+                                        <p>New Password</p>
+                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                                        type="password" placeholder="New Password" name="" id="EditNewPassword">
+                                    </div>
+                
+                                    <div >
+                                        <p>Confirm Password</p>
+                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
+                                        type="password" placeholder="Confirm Password" name="newPassword" id="EditConfirmPassword">
+                                    </div>
                                 </div>
+                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
+                             
+                                <div>
+                                    <!-- <input class="block" type="text" id="" placeholder="Gender" name="gender"> -->
+                                    <p>Civil Status</p>
+                                    <select class="bg-white md:w-80 w-full h-10 md:px-4 border border-black" name="civilStatus" id="EditCivilStatus">
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Seperated">Seperated</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                            </div>
             
                                 <div>
                                     <p>Nationality</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="Nationality" name="nationality" id="EditNationality">
+                                    <select class="bg-white w-80 h-10 px-4 border border-black" name="nationality" id="EditNationality" >
+                                        <option value="" disabled selected></option>
+                                        <option value="Filipino">Filipino</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="American">American</option>
+                                        <option value="Canadian">Canadian</option>
+                                        <option value="British">British</option>
+                                        <option value="Indian">Indian</option>
+                                        <option value="Japanese">Japanese</option>
+                                        <option value="Korean">Korean</option>
+                                        <option value="German">German</option>
+                                        <option value="French">French</option>
+                                        <option value="Australian">Australian</option>
+                                        <option value="Brazilian">Brazilian</option>
+                                        
+                                    </select>
                                 </div>
             
                                 <div>
                                     <p>Blood Type</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="BloodType" name="bloodType" id="EditBloodType">
+                                    <!-- <input class="bg-white w-80 h-10 px-4 border border-black" 
+                                    type="text" placeholder="BloodType" name="bloodType" id="EditBloodType"> -->
+                                    <select class="bg-white w-80 h-10 px-4 border border-black" name="bloodType" id="EditBloodType">
+                                        <option value="" disabled selected> </option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
                                 </div>
                             </div>
                            
                             <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
                                 <div>
-                                        <label class="block" for="birthdaytime">Birthday (date and time):</label>
-                                        <input class="bg-white w-80 h-10 px-4 border border-black" type="date" id="EditBirthday" name="birthday">
-                                    
+                                    <label class="block" for="birthdaytime">Birthday:</label>
+                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
+                                           type="date" id="EditBirthday" name="birthday" oninput="validateBirthday()">
                                 </div>
             
                                 <div>
@@ -264,21 +298,32 @@
                                 <div>
                                     <p>Emergency Contact Person</p>
                                     <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Emergency Contact Person" name="emergencyContactPerson" id="EditEmergencyContactPerson">
+                                    type="text" placeholder="Emergency Contact Person" name="emergencyContactPerson" id="EditEmergencyContactPerson" oninput="removeNumbers(event)">
                                 </div>
             
                                 <div>
                                     <p>Emergency Contact Number</p>
                                     <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Emergency Contact Number" name="emergencyContactNumber" id="EditEmergencyContactNumber">
+                                    type="text" placeholder="Emergency Contact Number" name="emergencyContactNumber" id="EditEmergencyContactNumber" oninput="validateContactNumber(event)">
                                 </div>
                             </div>   
                             
                             <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
                                 <div>
                                     <p>Highest Educational Attainment</p>
-                                    <input class="bg-white md:w-[25rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Highest Educational Attainment" name="highestEducationalAttainment" id="EditHighestEducationalAttainment">
+                                    <select class="bg-white md:w-[25rem] w-full h-10 px-4 border border-black" 
+                                            name="highestEducationalAttainment" 
+                                            id="EditHighestEducationalAttainment">
+                                        <option value="">Select Educational Attainment</option>
+                                        <option value="Some Elementary">Some Elementary</option>
+                                        <option value="Elementary Graduate">Elementary Graduate</option>
+                                        <option value="Some High School">Some High School</option>
+                                        <option value="High School Graduate">High School Graduate</option>
+                                        <option value="Some College">Some College</option>
+                                        <option value="College Graduate">College Graduate</option>
+                                        <option value="Postgraduate">Postgraduate</option>
+                                        <option value="Others">Others</option>
+                                    </select>
                                 </div>
             
                                 <div>
@@ -288,9 +333,13 @@
                                 </div>
             
                                 <div>
-                                    <p>Years in service</p>
+                                    <p>Years in Service</p>
                                     <input class="bg-white md:w-60 w-full h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Years in service" name="yearsInService" id="EditYearsInService">
+                                           type="text" 
+                                           placeholder="Years in service" 
+                                           name="yearsInService" 
+                                           id="EditYearsInService" 
+                                           oninput="validateYearsInService()" required>
                                 </div>
                             </div>     
 
@@ -309,7 +358,7 @@
                             </div> 
 
                             <div class="flex justify-end pb-14 pt-12 space-x-5">
-                                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]" onclick="location.href='admin_main_profile'">Cancel</button>
+                                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]" onclick="location.href='volunteer_main_profile'">Cancel</button>
                                 <button type="submit" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
                             </div>      
                         </div>
@@ -324,10 +373,11 @@
    
 </div>
 
+
 </body>
 </div>
 <script src="super_profiler.js" defer></script>
 <script src="admin.js" defer></script>
-<script src="admin_modules.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="constraint.js"></script>
 </html>

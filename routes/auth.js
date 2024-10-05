@@ -239,7 +239,7 @@ module.exports = (db, db2) => {
             }
     
             const user = checkUsernameResult[0];
-            let profilePicturePath = user.profileImage;
+            let profilePicturePath = user.idPicture;
     
             // Handling password update
             if (oldPassword) {
@@ -468,8 +468,18 @@ module.exports = (db, db2) => {
         }
     });
     router.get('/volunteers', (req, res) => {
-        const query = 'SELECT accountID AS id, firstName AS name, dutyHours AS points FROM tbl_accounts ORDER BY dutyHours DESC';
-        db.query(query, (err, results) => {
+        const search = req.query.search || ''; 
+        const query = `
+            SELECT accountID AS id, firstName AS name, dutyHours AS points 
+            FROM tbl_accounts 
+            WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
+            ORDER BY dutyHours DESC
+        `;
+    
+        // Prepare the search pattern for SQL LIKE
+        const searchPattern = `%${search}%`;
+    
+        db.query(query, [searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern], (err, results) => {
             if (err) {
                 console.error('Error fetching volunteer data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -515,19 +525,27 @@ module.exports = (db, db2) => {
         });
     });
     
-    
-    
-    
     router.get('/fireresponse', (req, res) => {
-        const query = 'SELECT accountID as id, firstName as name, fireResponsePoints as points FROM tbl_accounts ORDER BY fireResponsePoints DESC';
-        db.query(query, (err, results) => {
+        const searchTerm = req.query.search || ''; // Get search term from query parameter
+        const query = `
+            SELECT accountID AS id, firstName AS name, fireResponsePoints AS points 
+            FROM tbl_accounts 
+            WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
+            ORDER BY fireResponsePoints DESC
+        `;
+        
+        const searchPattern = `%${searchTerm}%`; // Prepare the search pattern for SQL LIKE
+    
+        db.query(query, [searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern], (err, results) => {
             if (err) {
-                console.error('Error fetching volunteer data:', err);
+                console.error('Error fetching fire response data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
             }
             res.json(results);
         });
     });
+    
+    
     router.get('/fireresponse/:id', (req, res) => {
         const volunteerId = req.params.id;
         if (isNaN(volunteerId)) {
@@ -596,6 +614,30 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.get('/inventory-search', (req, res) => {
+        try {
+            const search = req.query.search || ''; 
+    
+            const query = `
+                SELECT itemID AS id, itemName AS name, itemImage, Status FROM tbl_inventory 
+                WHERE itemName LIKE ? OR vehicleAssignment LIKE ? OR status LIKE ? OR itemStatus LIKE ?
+            `;
+    
+            const searchParam = `%${search}%`; 
+    
+            db.query(query, [searchParam, searchParam, searchParam, searchParam], (err, results) => {
+                if (err) {
+                    console.error('Error fetching inventory:', err);
+                    return res.status(500).json({ error: 'Failed to fetch inventory' });
+                }
+    
+                res.json(results); 
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            res.status(500).json({ error: 'An unexpected error occurred' });
+        }
+    });
     
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
@@ -606,31 +648,54 @@ module.exports = (db, db2) => {
             connection = await db2.getConnection(); 
             await connection.beginTransaction();
             
-            for (const item of items) {
-                const { itemID, status, remarks } = item;
-                const [currentStatusResult] = await connection.query(
-                    'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
-                    [itemID]
-                );
-                const currentStatus = currentStatusResult[0]?.Status;
+            const [dateExpirationResult] = await connection.query(
+                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?', 
+                [username]
+            );
     
-                if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
-                    await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
-                        [itemID, username, currentStatus, status, remarks]
-                    );
-    
-                    // Update the inventory status
-                    await connection.query(
-                        'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
-                        [status, itemID]
-                    );
-                }
+            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+            console.log('Date Expiration:', dateExpiration);
+            if(dateExpiration === null){
+                dateExpiration = "noway";
+                //console.log('Date Expiration:', dateExpiration);
             }
     
-            await connection.commit();
-            res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            // Proceed if dateExpiration is null, empty, or in the future
+            if (dateExpiration === "noway" || new Date(dateExpiration) > new Date()) {
+               
+                for (const item of items) {
+                    const { itemID, status, remarks } = item;
+                    const [currentStatusResult] = await connection.query(
+                        'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
+                        [itemID]
+                    );
+    
+                    const currentStatus = currentStatusResult[0]?.Status;
+    
+                    if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
+                        await connection.query(
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change status', ?, ?, NOW(), ?)`, 
+                            [itemID, username, currentStatus, status, remarks]
+                        );
+                        await connection.query(
+                            'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
+                            [status, itemID]
+                        );
+                    }
+                }
+    
+                // Increment inventory points and update expiration date
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+    
+                await connection.commit();
+                res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            } else {
+                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+            }
             
         } catch (err) {
             console.error('Database error:', err);
@@ -643,24 +708,80 @@ module.exports = (db, db2) => {
         }
     });
     
+    
+    // router.post('/inventory/log', async (req, res) => {
+    //     const items = req.body; 
+    //     const username = req.session.user?.username; 
+    //     let connection;
+    
+    //     try {
+    //         connection = await db2.getConnection(); 
+    //         await connection.beginTransaction();
+    //         const [dateExpiration] = await connection.query(
+    //             'SELECT dateExpiration FROM tbl_accounts WHERE username = ?', 
+    //             [username]
+    //         ); if(dateExpiration>datatimenow ){
+    //             for (const item of items) {
+    //                 const { itemID, status, remarks } = item;
+    //                 const [currentStatusResult] = await connection.query(
+    //                     'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
+    //                     [itemID]
+    //                 );
+                   
+    //                 const currentStatus = currentStatusResult[0]?.Status;
+                   
+    //                     if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
+    //                         await connection.query(
+    //                             `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
+    //                             VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
+    //                             [itemID, username, currentStatus, status, remarks]
+    //                         );
+                            
+    //                         // Update the inventory status
+    //                         await connection.query(
+    //                             'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
+    //                             [status, itemID]
+    //                         );
+    //                     }
+                    
+                   
+    //             }
+        
+    //         }
+          
+    //         await connection.commit();
+    //         res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
+            
+    //     } catch (err) {
+    //         console.error('Database error:', err);
+            
+    //         // Rollback the transaction if any operation fails
+    //         if (connection) await connection.rollback();
+    //         res.status(500).json({ message: 'Server error' });
+    //     } finally {
+    //         if (connection) connection.release();
+    //     }
+    // });
+    
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
-        const query = `
-                                    SELECT il.itemID, 
-                    DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
-                    DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
-                    iv.vehicleAssignment AS vehicle
-                FROM 
-                    tbl_inventory_logs il
-                JOIN 
-                    tbl_inventory iv ON iv.ItemID = il.itemID
-                WHERE 
-                    il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
-                ORDER BY 
-                    il.dateAndTimeChecked DESC  -- Sort by date and time checked, most recent first
-                LIMIT 0, 25;`;
+        const search = req.query.search || ''; 
     
-        db.query(query, [ username], (err, results) => {
+        const query = `
+            SELECT il.itemID,
+                   il.logID, 
+                   DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                   DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                   iv.vehicleAssignment AS vehicle
+            FROM tbl_inventory_logs il
+            JOIN tbl_inventory iv ON iv.ItemID = il.itemID
+            WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+              AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
+            ORDER BY il.dateAndTimeChecked DESC 
+            LIMIT 0, 25;`;
+    
+        // Use '%' wildcard for LIKE search
+        db.query(query, [username, `%${search}%`, `%${search}%`], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -668,14 +789,16 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-    router.get('/inventory2/detail/:itemID', (req, res) => {
-        const itemID = req.params.itemID;
+    router.get('/inventory2/detail/:logID', (req, res) => {
+        const logID = req.params.logID;
         const query = `
-            SELECT itemName, status,vehicleAssignment FROM tbl_inventory  WHERE itemID = ?;
-        `;
+          SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
+            FROM tbl_inventory_logs il
+            JOIN tbl_inventory i ON il.itemID = i.itemID
+            WHERE il.logID = ?;
+            `;
 
-        db.query(query, [itemID], (err, results) => {
+        db.query(query, [logID], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory details:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -700,6 +823,26 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    //__search INV
+    router.get('/inventory-supervisor-search', (req, res) => {
+        const search = req.query.search;
+        const searchParam = `%${search}%`; 
+        const query = `
+            SELECT itemId, itemName, itemImage, vehicleAssignment 
+            FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR status LIKE ?) 
+            AND itemStatus = 'Available'
+        `;
+        
+        db.query(query, [searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Error fetching inventory data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            res.json(results);
+        });
+    });
+    
     router.post('/inventory-supervisor/log', async (req, res) => {
         const items = req.body;
         const username = req.session.user?.username;
@@ -708,31 +851,50 @@ module.exports = (db, db2) => {
         try {
             connection = await db2.getConnection();
             await connection.beginTransaction();
-            
-            for (const item of items) {
-                const { itemID, vehicleAssignment } = item;
-                const [currentVehicleAssignmentResult] = await connection.query(
-                    'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-                    [itemID]
-                );
-                const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+            const [dateExpirationResult] = await connection.query(
+                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
+                [username]
+            );
     
-                if (currentVehicleAssignment !== vehicleAssignment) {
-                    await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-                        [itemID, username, currentVehicleAssignment, vehicleAssignment] 
-                    );
-                    await connection.query(
-                        'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-                        [vehicleAssignment, itemID]
-                    );
-                }
+            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+            console.log('Date Expiration:', dateExpiration);
+            if (dateExpiration === null) {
+                dateExpiration = "noway"; // Custom placeholder for null expiration
             }
     
-            await connection.commit();
-            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_dashboard' });
-            
+            // Proceed if dateExpiration is null, empty, or in the future
+            if (dateExpiration === "noway" || new Date(dateExpiration) > new Date()) {
+                for (const item of items) {
+                    const { itemID, vehicleAssignment } = item;
+                    const [currentVehicleAssignmentResult] = await connection.query(
+                        'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+                        [itemID]
+                    );
+                    const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+                    if (currentVehicleAssignment !== vehicleAssignment) {
+                        await connection.query(
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+                            [itemID, username, currentVehicleAssignment, vehicleAssignment]
+                        );
+                        await connection.query(
+                            'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+                            [vehicleAssignment, itemID]
+                        );
+                    }
+                }
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+    
+                await connection.commit();
+                res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+            } else {
+                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+            }
+    
         } catch (err) {
             console.error('Database error:', err);
             if (connection) await connection.rollback();
@@ -741,6 +903,48 @@ module.exports = (db, db2) => {
             if (connection) connection.release();
         }
     });
+    
+    // router.post('/inventory-supervisor/log', async (req, res) => {
+    //     const items = req.body;
+    //     const username = req.session.user?.username;
+    //     let connection;
+    
+    //     try {
+    //         connection = await db2.getConnection();
+    //         await connection.beginTransaction();
+            
+    //         for (const item of items) {
+    //             const { itemID, vehicleAssignment } = item;
+    //             const [currentVehicleAssignmentResult] = await connection.query(
+    //                 'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+    //                 [itemID]
+    //             );
+    //             const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+    //             if (currentVehicleAssignment !== vehicleAssignment) {
+    //                 await connection.query(
+    //                     `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+    //                     VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+    //                     [itemID, username, currentVehicleAssignment, vehicleAssignment] 
+    //                 );
+    //                 await connection.query(
+    //                     'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+    //                     [vehicleAssignment, itemID]
+    //                 );
+    //             }
+    //         }
+    
+    //         await connection.commit();
+    //         res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+            
+    //     } catch (err) {
+    //         console.error('Database error:', err);
+    //         if (connection) await connection.rollback();
+    //         res.status(500).json({ message: 'Server error' });
+    //     } finally {
+    //         if (connection) connection.release();
+    //     }
+    // });
     router.get('/admin-inventory/log', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
                 a.firstName AS volunteer_name, 
@@ -787,6 +991,31 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.get('/equipment/:id', (req, res) => {
+        const itemId = parseInt(req.params.id, 10); // Convert string to integer
+        
+        const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
+        db.query(query, [itemId], (error, results) => {
+            if (error) {
+                console.error('Error fetching equipment data:', error);
+                return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+            }
+            
+            if (results.length === 0) {
+                return res.status(404).json({ success: false, message: 'Equipment not found' });
+            }
+    
+            const equipment = results[0];
+    
+            // If the equipment image is not found, use the default image
+            const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
+
+            
+            res.json({ success: true, data: { ...equipment, itemImagePath } });
+        });
+    });
+    
+    
     
     return router;
 };

@@ -117,8 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (document.getElementById('EditContactNumber')) {
                 document.getElementById('EditContactNumber').value = data.mobileNumber;
             }
-
-            // Add similar checks for the rest of the fields
             if (document.getElementById('EditCivilStatus')) {
                 document.getElementById('EditCivilStatus').value = data.civilStatus;
             }
@@ -185,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateDashboard(data) {
         const fields = [
+            { key: "fullName", element: "ResponsiveName", fallback: 'N/A' },
             { key: "fullName", element: "DashboardFullName", fallback: 'N/A' },
             { key: "accountType", element: "DashboardAccountType", fallback: 'N/A' },
             { key: "dutyHours", element: "DashboardDutyHours", fallback: '0' },

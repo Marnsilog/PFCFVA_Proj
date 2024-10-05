@@ -141,98 +141,44 @@
             <div class="font-Inter text-black">
                 <p class="font-bold md:text-4xl text-xl md:text-start text-center">Incident Command System (ICS)</p>
                 <div class="md:mt-2 mt-7 flex justify-start font-semibold md:text-base text-sm">
-                    <p class="mr-2">FIRE CHIEF:</p>
+                    <!-- <p class="mr-2">FIRE CHIEF:</p> -->
+                    <p class="mr-2">HEADQUARTERS:</p>
                     <p id="supervisorName"> STAG 11, Marniel C. Corsiga</p>
                 </div>
                 
             </div>
 
+            <div class="w-full flex justify-end py-2 md:px-0 px-5">
+                <button class="bg-[#494848] px-7 py-3 rounded-lg text-white text-lg font-semibold" onclick="location.href='/admin_fire_response'">Back</button>
+            </div>
+            
                        <div class="flex justify-center md:mt-5 mt-2"> 
                             <div class="max-w-[70rem] w-full mx-2 md:mx-0">
-                                <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" type="text" placeholder="Type message here..."></textarea>
+                                <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" id="messageBox" type="text" placeholder="Type message here..."></textarea>
                             </div>
                        </div>
                        <div class="flex justify-end md:pr-0 pr-5">
-                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md">SEND MESSAGE</button>
+                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
                        </div>
 
-                       <div class="w-full h-32 md:mt-16 mt-5 md:px-0 px-3 ">
-                            <div class="flex justify-start">
-                                <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl "><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div>
-                                <!-- <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl"><p class="text-center pt-2 font-Inter font-[700]">LOGS</p></div> -->
+                    
+
+                            <!-- CHAT LOGS DISPLAY AREA -->
+                    <div class="w-full h-32 md:mt-16 mt-5 md:px-0 px-3">
+                        <div class="flex justify-start">
+                            <div class="bg-[#F3F3F3] w-32 h-10 rounded-t-xl">
+                                <p class="text-center pt-2 font-Inter font-[700]">LOGS</p>
                             </div>
-                        
-                            <div  class="bg-[#F3F3F3] w-full md:pb-14">
-                                <div class="md:max-h-[38rem] max-h-[30rem]  overflow-y-auto"> 
-                                    <table class="text-center pt-10 " >
-                                    <thead class="mt-10">
-                                        <tr>
-                                            <th> </th>
-                                            <th> </th>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody class="w-auto md:text-lg text-sm font-Inter font-bold">
-                                    
-                                        <tr class="max-h-48 h-auto  text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                        
-                                        <tr class="max-h-48 h-auto  text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-            
-                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  md:mt-0 text-[#00A110]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM HQ PREVO 13: Bilisan nyo, hindi pa fire out. Balik ulit agad. Iwan nyo na si PROBI 13 dito.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:55 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-[#202D9C]">
-                                            <td class="text-start md:pl-7 pl-2  w-3/4 ">MESSAGE FROM OIC ECHO 817 PUMPER 77: Nasira po hose ng truck namin, need bumalik.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:54 AM</span></td>
-                                        </tr>
-                                        <tr class="max-h-48 h-auto  text-black">
-                                            <td class="text-start md:pl-7 pl-2 w-3/4 ">ECHO 1 has been ordered to standdown.</td>
-                                            <td class="text-end md:mx-14 pr-2  md:pr-14">04/11/24 <br><span>2:45 AM</span></td>
-                                        </tr>
-                                     
-                                    </tbody>
-                                </table>
-                            </div>
-                               
-                            </div>
-                            <div class="w-full flex justify-end py-10">
-                                <button class="bg-[#494848] px-7 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='admin_fire_response.html'">Back</button>
-                            </div>
+                        </div>
+
+                        <!-- Chat log dynamically populated here -->
+                        <div class="bg-[#F3F3F3] w-full md:pb-14" id="chatSystem">
+                            <div class="md:max-h-[38rem] max-h-[30rem] overflow-y-auto"></div>
+                        </div>
+                    </div>
+                            <!-- <div class="w-full flex justify-end py-10">
+                                <button class="bg-[#494848] px-7 py-3  rounded-lg text-white text-lg font-semibold" onclick="location.href='/admin_fire_response'">Back</button>
+                            </div> -->
                            
 
                        </div>
@@ -258,8 +204,56 @@
 
 </body>
 </div>
+
+<script>
+// Function to fetch and display supervisor's name and call sign in ics.html
+async function populateSupervisorName() {
+    try {
+        // Fetch the profile data of the logged-in user
+        const response = await fetch('/auth/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+            const fullName = result.data.fullName;
+            const callSign = result.data.callSign;
+
+            // Populate the supervisorName field with FullName [CallSign]
+            const supervisorNameElement = document.getElementById('supervisorName');
+            if (supervisorNameElement) {
+                supervisorNameElement.textContent = `${fullName} [${callSign}]`;
+            }
+        } else {
+            console.error('Error fetching supervisor name:', result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Call the function when ics.html is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('supervisorName')) {
+        populateSupervisorName(); // Populate supervisor's name when the page loads
+    }
+});
+
+
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
 <script src="admin.js" defer></script>
 <script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="chat.js" defer></script>
 </html>

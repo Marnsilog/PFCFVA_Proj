@@ -171,8 +171,8 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody class="w-full text-center md:text-2xl text-sm">
-                    <tr class="border-t-2 border-b-2 border-black md:h-16 h-8">
+                <tbody class="w-full text-center md:text-2xl text-sm" id="icsLogs">
+                    <!-- <tr class="border-t-2 border-b-2 border-black md:h-16 h-8">
                         <td>Marc David Pardines</td>
                         <td>09/25/23</td>
                         <td>4hr:30min</td>
@@ -185,7 +185,7 @@
                         <td>4hr:30min</td>
                         <td><a href="#"onclick="inciform()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
                           </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -201,50 +201,54 @@
                     <p class="font-bold text-2xl md:text-3xl">Incident Log</p>
                     <div class="flex justify-start md:mt-10 mt-2">
                         <p class="font-bold mr-20">Supervisor</p>
-                        <p>Marc David Pardines</p>
+                        <p id="supervisorName"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[4rem]">Incident Date</p>
-                        <p>April 10, 2024</p>
+                        <p id="incidentDate"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[53px]">Dispatch Time</p>
-                        <p>10:00 am</p>
+                        <p id="dispatchTime"></p>
                     </div>
                     <div class="flex justify-start">
-                        <p class="mr-[75px]">Time Arrival</p>
-                        <p>04:30 am</p>
+                        <p class="mr-[75px]">Alarm Status</p>
+                        <p id="alarmStatus"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[104px]">Location</p>
-                        <p>Northwest Taguig City</p>
+                        <p id="location"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[47px]">Who requested<br>
                             the response?</p>
-                        <p>Caller</p>
+                        <p id="whoRequested"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[72px]">Type of Fire</p>
-                        <p>Residential</p>
+                        <p id="fireType"></p>
                     </div>
                     <div class="flex justify-start">
                         <p class="mr-[62px]">Vehicle Used</p>
-                        <p>Pumper 72</p>
+                        <p id="vehicleUsed"></p>
                     </div>
                     <div class="flex justify-star">
                         <p class="mr-[80px]">Responder</p>
-                        <p>Marniel Corsiga<br>
-                            Maria Joanalynn Mariano<br>
-                            Dinesh Anne Pangan</p>
+                        <p id="responders"></p>
                     </div>
+
+                    <div class="flex justify-star">
+                        <p class="mr-[80px]">Chat Logs</p>
+                        <p id="chatLogs"></p>
+                    </div>
+                    
                     <div class="flex justify-start">
                         <p class="mr-[95px]">Remarks</p>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam aliquid consequatur culpa natus optio vel earum commodi illum totam quia qui sed iusto, iste voluptatibus dolor necessitatibus eius excepturi quaerat.</p>
+                        <p id="remarks"></p>
                     </div>
                     <div class="w-full flex justify-center">
                         <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
-                        <p class="text-center">Download Logs</p>
+                        <p class="text-center" id="downloadLogs">Download Logs</p>
                     </div>
                 </div>
                     <div class="flex justify-center mt-10">
@@ -264,8 +268,13 @@
 </div>
 </body>
 </div>
+
+<script>
+
+</script>
 <script src="admin.js" defer></script>
 <script src="admin_modules.js" defer></script>
 <script src="register.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="_data_controller.js" defer></script>
 </html>

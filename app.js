@@ -858,7 +858,41 @@ app.post('/saveICSLogs', async (req, res) => {
 });
 
 
+app.get('/getIcsLogs', (req, res) => {
+    const query = 'SELECT icsID, supervisorName, incidentDate, dispatchTime FROM tbl_ics_logs';  // Added icsID
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to fetch ICS logs' });
+        }
+        res.json(results);
+    });
+});
 
+
+// Route to fetch specific incident log by icsID
+app.get('/getIncidentLog/:icsID', (req, res) => {
+    const icsID = req.params.icsID;
+    
+    // Define the SQL query to fetch the log for the given icsID
+    const sql = `SELECT supervisorName, incidentDate, dispatchTime, alarmStatus, location, 
+                        whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks 
+                 FROM tbl_ics_logs WHERE icsID = ?`;
+
+    db.query(sql, [icsID], (err, results) => {
+        if (err) {
+            console.error('Error fetching incident log:', err);  // Log the error for debugging
+            return res.status(500).json({ error: 'Failed to fetch incident log' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Incident log not found' });  // Handle case where no log is found
+        }
+
+        // Return the incident log details as JSON
+        res.json(results[0]);
+    });
+});
 
 
 

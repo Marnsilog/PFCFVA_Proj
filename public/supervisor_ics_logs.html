@@ -114,7 +114,7 @@
                     <div class="max-w-[90rem] w-full">
                         <div class="mt-12">
                                 <div class="flex justify-between">
-                                    <div class=""> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600" onclick="AddFireResponse()">+ Start fire response operation</button></div>
+                                    <div class=""> <button class="w-72 h-10 font-semibold rounded-lg font-kadwa border-2 border-black hover:border-gray-600" onclick="location.href='/supervisor_fire_response'">+ Start fire response operation</button></div>
                                     <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-[1px] rounded-lg border-black flex justify-normal md:mx-0 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                                         <input class="w-full h-full px-2 focus:outline-none" type="text" placeholder="Search">
@@ -127,87 +127,99 @@
                         
                                 <div class="font-Inter">
                                     <table class="mt-10 w-full text-center" >
-                                        <thead class="bg-[#209AAD]  text-white mt-10 h-16 rounded-t-full text-3xl ">
+                                        <thead class="bg-[#D9D9D9]  text-black mt-10 h-16 rounded-t-full text-3xl ">
                                             <tr>
+                                                <th>Name</th>
                                                 <th>Date</th>
                                                 <th>Time</th>
-                                                <th> </th>
+                                                <th></th>
                                             </tr>
                                         </thead>
-                                        <tbody class="w-full text-center text-2xl">
+                                        <tbody class="w-full text-center text-2xl" id="icsLogs">
                                             <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>2024-05-08</td>
-                                                <td>10:00 AM</td>
-                                                <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                                                <td>Name here</td>
+                                                <td>Date Here</td>
+                                                <td>Time Here</td>
+                                                <td><a href="#"onclick="seedetails()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
+                                                </td>
                                             </tr>
                                             <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>2024-05-09</td>
-                                                <td>2:30 PM</td>
-                                                <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                                                <td>Name here</td>
+                                                <td>Date Here</td>
+                                                <td>Time Here</td>
+                                                <td><a href="#"onclick="seedetails()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
+                                                </td>
                                             </tr>
                                             <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>2024-05-10</td>
-                                                <td>9:15 AM</td>
-                                                <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
+                                                <td>Name here</td>
+                                                <td>Date Here</td>
+                                                <td>Time Here</td>
+                                                <td><a href="#"onclick="seedetails()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
+                                                </td>
                                             </tr>
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
-                                                <td>2024-05-11</td>
-                                                <td>4:00 PM</td>
-                                                <td> <a href="#" class="underline underline-offset-1" onclick="seedetails()">See details</a> </td>
-                                            </tr>
+                                        
                         
                                         </tbody>
                                     </table>
                                     </div>
-                                    <!-- FIRE LOGS WHEN YOU PRESS SEE DETAIL -->
-                                    <div class="absolute top-[10rem] left-[30rem] font-Inter border border-black bg-white" id="firelog" style="display: none;">
-                                        <div class="mx-32 mt-16 mb-12 pr-10 max-w-[32rem] text-balance">
-                                            <p class="text-2xl font-[800]">Fire Response Log</p>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[128px]">Incident Date </p> 
-                                                <p id="Incidentdate">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[119px]">Dispatch Time</p> 
-                                                <p id="Dispatchdate">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[163px]">Location</p> 
-                                                <p id="location">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[129px]">Alarm Status</p> 
-                                                <p id="AlarmStat">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[90px]">Who requested <br>the fire response?</p> 
-                                                <p id="whoreq">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[138px]">Type of Fire</p> 
-                                                <p id="typeoffire">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[128px]">Vehicle Used</p> 
-                                                <p id="vehused">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[143px]">Responder</p> 
-                                                <p id="responder">Name--------</p>
-                                            </div>
-                                            <div class="flex items-start pt-8">
-                                                <p class="font-semibold mr-[142px]">Supervisor</p> 
-                                                <p id="supervisor">Name--------</p>
-                                            </div>
-                        
-                                                <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
-                                                <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
-                        
-                                            <div class="text-center pt-16"><a href="#" class="underline underline-offset-1 " onclick="fireclose()">close</a>
-                                            </div>
-                                            
+                                    
+
+                                <!-- FIRE LOGS WHEN YOU PRESS SEE DETAIL -->
+                                <div class="absolute top-[10rem] left-[30rem] font-Inter border border-black bg-white" id="incidentLog" style="display: none;">
+                                    <div class="mx-32 mt-16 mb-12 pr-10 max-w-[32rem] text-balance">
+                                        <p class="text-2xl font-[800]">Fire Response Log</p>
+
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[128px]">Incident Date </p> 
+                                            <p id="incidentDate">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[119px]">Dispatch Time</p> 
+                                            <p id="dispatchTime">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[163px]">Location</p> 
+                                            <p id="location">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[129px]">Alarm Status</p> 
+                                            <p id="alarmStatus">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[90px]">Who requested <br>the fire response?</p> 
+                                            <p id="whoRequested">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[138px]">Type of Fire</p> 
+                                            <p id="fireType">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[128px]">Vehicle Used</p> 
+                                            <p id="vehicleUsed">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[143px]">Responders</p> 
+                                            <p id="responder">Name--------</p>
+                                        </div>
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[142px]">Supervisor</p> 
+                                            <p id="supervisorName">Name--------</p>
+                                        </div>
+
+                                        <div class="flex items-start pt-8">
+                                            <p class="font-semibold mr-[142px]">ChatLogs</p> 
+                                            <p id="chatLogs">Chat logs here...</p>
+                                        </div>
+
+                                        <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
+                                        <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
+
+                                        <div class="text-center pt-16">
+                                            <a href="#" class="underline underline-offset-1 " onclick="fireclose()">close</a>
                                         </div>
                                     </div>
+                                </div>
+
                         </div>
                     </div>
                 </div>
@@ -216,6 +228,19 @@
 
 </body>
 </div>
+
+<script>
+function seedetails() {
+    // Display the incident log div
+    document.getElementById("incidentLog").style.display = "block";
+}
+
+function fireclose() {
+    // Hide the incident log div
+    document.getElementById("incidentLog").style.display = "none";
+}
+</script>
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="_data_controller.js" defer></script>
 </html>

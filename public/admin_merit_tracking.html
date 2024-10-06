@@ -114,7 +114,7 @@
        
     </div>
 <!-- SETTINGS -->
-<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold z-50" id="Setting" style="display: none;">
     <div class="bg-white rounded-lg border-[1px] border-black w-64">
         <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='/admin_main_profile'"><p>My Profile</p></div>
         <div class="bg-black h-[2px]"></div>
@@ -129,11 +129,12 @@
     </div>
 </div>
     <!-- FORM VOLUNTEER || changed to MERIT TRACKING -->
+    <div id="loading-container" style="display: none;">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
  <div class="flex justify-center w-full font-Inter" >
-    <div class="md:max-w-[90rem] w-full md:mt-14 md:space-y-7 space-y-3" id="SummaryVolunteer">
-        <div id="loading-container" style="display: none;">
-            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-        </div>
+    <div class="md:max-w-[90rem] w-full md:mt-7 md:space-y-7 space-y-3" id="SummaryVolunteer">
+
             <div class="md:flex justify-between">
                 <p class="md:text-4xl font-bold md:text-start text-center text-2xl w-full">Merit Tracking</p>
                 <div class="md:flex justify-end md:mt-5 mt-7 static md:mx-0 md:max-w-[110rem] w-full px-3">
@@ -146,31 +147,28 @@
                 </div>
             </div>
             <!-- <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 bg-[#E9E8E8] px-2 py-[5px] rounded-lg" style="cursor: pointer;" onclick="summarySorting()"> -->
+                <!-- IMMA PUT THIS SOON -->
             <div class="ml-2 md:ml-0 flex justify-between w-28 h-10 px-2 py-[5px]">
-                <!-- <p class="text-lg">Sort by</p> -->
                 <select class="border-[1px] border-black w-[17rem] h-7 rounded-lg" id="sortByMeritTracking" required>
                     <option value="" disabled selected>Sort By:</option>
-                    <option value="">All</option>
-                    <option value="">Name</option>
-                    <option value="">Call Sign</option>
-                    <option value="">Rank</option>
-                    <option value="">Duty Hours</option>
-                    <option value="">Cumulative Duty Hours</option>
-                    <option value="">Fire Response</option>
-                    <option value="">Inventory</option>
-                    <option value="">Activity</option>
-
+                    <option value="All">All</option>
+                    <option value="Name">Name</option>
+                    <option value="CallSign">Call Sign</option>
+                    <option value="Rank">Rank</option>
+                    <option value="DutyHours">Duty Hours</option>
+                    <option value="CumulativeDutyHours">Cumulative Duty Hours</option>
+                    <option value="FireResponse">Fire Response</option>
+                    <option value="Inventory">Inventory</option>
+                    <option value="Activity">Activity</option>
                 </select>
-                <!-- <div>
-                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
-                </div> -->
+                
             </div>
 
             <div class="w-full flex justify-center ">
-                <div class="max-w-[120rem] w-full">
-                    <div class="font-Inter md:w-full w-[60rem] md:mt-0 mt-7 overflow-y-auto max-h-[35rem]">
+                <div class=" w-full max-w-[95%] md:overflow-x-hidden overflow-x-scroll border-2 border-black">
+                    <div class="font-Inter md:w-full w-[60rem] overflow-y-auto max-h-[55vh] md:max-h-[35rem] ">
                         <table class="w-full  text-center ">
-                            <thead class="md:text-lg text-sm bg-[#D6D6D6] border-t-2 border-b-2 border-black sticky top-0 z-10">
+                            <thead class="md:text-lg text-sm bg-[#D6D6D6] border-b-2 border-black sticky top-0 z-10">
                                 <tr class="md:h-10 font-[500]">
                                     <th class="md:static sticky-col bg-[#D6D6D6]">Name</th>
                                     <th>Call Sign</th>

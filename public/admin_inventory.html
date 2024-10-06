@@ -21,7 +21,7 @@
     }
 
     .fade-in-up {
-        animation: fadeInUp 0.5s forwards; /* Adjust duration as needed */
+        animation: fadeInUp 0.5s forwards; 
     }
 </style>
 <div>
@@ -67,7 +67,7 @@
         </div>
         
         <!-- RESPONSIVE SETTINGS -->
-        <div class="w-full flex justify-end sticky-col relative z-50">
+        <div class="w-full flex justify-end sticky-col absolute z-50">
             <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
                 <div class="ml-3 flex justify-start mr-3" onclick="location.href='/admin_main_profile'" style="cursor: pointer;">
                     <img  id="resPonsivepic" class="h-10 w-10" >
@@ -126,38 +126,37 @@
             </div>
         </div>
         <!-- SETTINGS -->
-<div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
-    <div class="bg-white rounded-lg border-[1px] border-black w-64">
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='/admin_main_profile'"><p>My Profile</p></div>
-        <div class="bg-black h-[2px]"></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_register'"><p>Register</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_rank_up'"><p>Rank Up</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_rank_configuration'"><p>Ranks Configuration</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_volunteer_configuration'"><p>Volunteer Accounts Configuration</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_inventory_status_logs'"><p>Inventory Logs</p></div>
-        <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/attendance_dashboard'"><p>Attendance Module</p></div>
-        <div class="bg-black h-[2px]"></div>
-        <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
-    </div>
-</div>
+        <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+            <div class="bg-white rounded-lg border-[1px] border-black w-64">
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;" onclick="location.href='/admin_main_profile'"><p>My Profile</p></div>
+                <div class="bg-black h-[2px]"></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_register'"><p>Register</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_rank_up'"><p>Rank Up</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_rank_configuration'"><p>Ranks Configuration</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_volunteer_configuration'"><p>Volunteer Accounts Configuration</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/admin_inventory_status_logs'"><p>Inventory Logs</p></div>
+                <div class="pl-12 py-3 hover:bg-gray-500" style="cursor: pointer;"  onclick="location.href='/attendance_dashboard'"><p>Attendance Module</p></div>
+                <div class="bg-black h-[2px]"></div>
+                <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
+            </div>
+        </div>
 
 <!--FORM INVENTORY NEW-->
 <div id="frmInventory">
-    <div class="w-full flex justify-center select-none">
+    <div id="loading-container" style="display: none;">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div class="w-full flex justify-center  mt-2 select-none">
         <div class="max-w-[80rem] w-full space-y-5">
-            <div id="loading-container" style="display: none;">
-                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-            </div>
+            
             <div class="md:flex justify-between mt-7">
                 <p class="md:text-4xl font-bold md:text-start text-center text-2xl">Equipment</p>
-                <div class="md:flex justify-end mt-10 static md:mx-0 md:max-w-[110rem] w-full px-3 ">
-                   
-                </div>
             </div>
-            <div class="flex justify-between md:mx-0 mx-3">
+            
+            <div class="md:flex md:justify-between md:mx-0 mx-3 space-y-3 md:space-y-0">
                 <div>
-                    <select class="h-9 pr-20 rounded-lg md:border-[2px] border-[1px] border-black text-start" id="sortVehicleAssignment"> <!-- Marked change: Added sort select element -->
-                        <option value="">All Vehicles</option> <!-- Marked change: Corrected values -->
+                    <select class="md:h-9 h-7 pr-20 rounded-lg md:border-[2px] border-[1px] border-black text-start" id="sortVehicleAssignment"> 
+                        <option value="">All Vehicles</option>
                         <option value="Engine 72">Engine 72</option>
                         <option value="Water Tender 72">Water Tender 72</option>
                         <option value="Pumper 72">Pumper 72</option>
@@ -175,22 +174,28 @@
                 <button class="w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button> -->
                 
             </div>
-            <div id="equipmentContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto">
-                <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
-                    <div id="equipmentGrid" class="w-full font-Inter space-y-3">
-                        <!-- <div class="w-full bg-gray-300 h-28 mx-3 rounded-xl flex justify-between">
-                            <div class="flex justify-normal space-x-5 py-2">
-                                <p class="py-8 ml-5 text-3xl">1</p>
-                                <img src="img/ex1.jpg" class="object-fill w-24 h-24 rounded-md">
-                                <p class="py-8 ml-5 text-2xl font-bold">Name</p>
-                                <p class="py-8 ml-5 text-xl font-[300] pl-6">Engine 72</p>
-                            </div>
-                            <div class="flex justify-normal space-x-10 mr-10 py-8">
-                                <svg class="w-10 h-10 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="red" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+            <div id="equipmentContainer" class="w-full flex justify-center md:h-full" >
+                <div class="md:max-w-[70rem] max-w-[95%]  md:w-full container mx-1 overflow-y-auto md:overflow-y-hidden">
+                    <div id="equipmentGrid" class="w-full h-full font-Inter space-y-3 overflow-x-auto md:max-h-[60vh] max-h-[50vh]">
 
-                                <svg class="w-8 h-8 cursor-pointer mt-2" onclick="edit()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
+                        <!-- <div class="md:w-full w-full bg-gray-300 h-14 md:h-28 rounded-xl flex justify-between md:mx-0">
+                            <div class="flex justify-normal space-x-5 py-2">
+                                <p class="md:py-8 md:ml-5 ml-3 text-xl py-2 md:text-3xl">1</p> 
+                                <img src="img/ex1.jpg"class="object-fill w-10 h-10 md:w-24 md:h-24 rounded-md" alt="Equipment Image">
+                               <div class="md:w-full w-fulls flex justify-start md:justify-between">
+                                <p class="md:py-8 py-2 md:ml-5 text-sm md:text-2xl font-bold">dawdwadw</p> 
+                                <p class="md:py-8 py-2 md:ml-5 text-sm md:text-xl font-[300] pl-6">dawdwa</p>
+                               </div>
+                            </div>
+                            <div class="flex justify-normal md:space-x-5 space-x-1 mr-2 py-2 md:mr-10 md:py-8">
+                        
+                                <svg xmlns="http://www.w3.org/2000/svg" class="md:w-10 md:h-10 w-7 h-7 cursor-pointer mt-1" onclick="moveToTrash('${item.itemID}')" viewBox="0 -960 960 960" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                <svg class="md:w-10 md:h-10 w-5 h-6 cursor-pointer mt-[5px] md:mt-2" onclick="editEquipment('${item.itemID}')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
                             </div>
                         </div> -->
+                       
+
+
 
                         
                        
@@ -198,51 +203,48 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <div  class="flex justify-center w-full font-Inter">
-                <form id="addEquipmentForm" class="hidden absolute top-80 w-76 h-96 bg-white border-[1px] border-black pt-5 space-y-7" enctype="multipart/form-data">
-                    <h2 class="text-2xl text-center font-bold">Add New Equipment</h2>
-                    <div class="flex justify-start pl-10">
+            <form  id="addEquipmentForm"  class="hidden justify-center w-full font-Inter" enctype="multipart/form-data">
+                <div class=" absolute md:top-80 top-20  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7" >
+                    <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
+                    <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
                         <p class="font-semibold text-md mr-2">Item Name:</p>
-                        <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="itemName" name="itemName" required>
+                        <input class="w-48 md:w-72 h-7 border-black border-[1px] focus:outline-none md:px-2" type="text" id="itemName" name="itemName" required>
                     </div>
                     
-                    <div class="flex justify-start pl-10">
-                        <p class="mr-2 font-semibold text-md">Vehicle Assignment:</p>
-                        <select class="border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
+                    <div class="flex justify-center md:justify-start pl-10">
+                        <p class="mr-2 font-semibold md:mt-0 mt-1 text-sm md:text-md">Vehicle Assignment:</p>
+                        <select class="md:w-auto w-20 border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
                         </select>
                     </div>
                 
-                    <div class="flex justify-start pl-10">
-                        <p class="font-semibold text-md">Date Acquired:</p>
-                        <input class="border-[1px] border-black rounded-md ml-2 w-48 pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                    <div class="flex justify-center md:justify-start md:pl-10 md:mr-0 mr-2">
+                        <p class="font-semibold text-sm md:text-md">Date Acquired:</p>
+                        <input class="border-[1px] border-black rounded-md ml-2 w-48 md:pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
                     </div>
                 
-                    <div class="flex justify-start pl-10">
-                        <p class="mr-2 font-semibold text-md">Upload Image:</p>
+                    <div class="md:flex inline-block md:justify-start pl-5 md:pl-10">
+                        <p class="mr-2 font-semibold text-sm">Upload Image:</p>
                         <input type="file" id="itemImage" name="itemImage" accept="image/*">
                     </div>
                 
-                    <div class="flex justify-center space-x-10">
-                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
-                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
+                    <div class="flex justify-center space-x-5 md:space-x-10 md:pt-0 pt-5">
+                        <button class="w-16  md:w-24 h-10 bg-[#930D0D] text-white text-sm md:text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
+                        <button class="w-16 md:w-24 h-10 bg-white text-[#930D0D] text-sm md:text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
                     </div>
-                </form>
+                </div>
                 
-            </div>
+            </form>
 
             <div  class="flex justify-center w-full font-Inter">
-                <form id="addVehicleForm" class="hidden absolute top-80 w-76 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
+                <form id="addVehicleForm" class="hidden absolute top-44 md:top-80 w-[90%] md:w-96 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
                     <h2 class="text-2xl text-center font-bold">Add New Vehicle</h2>
                     <div class="flex justify-start mx-5">
                         <p class="font-semibold text-md mr-2">Vehicle Name:</p>
                         <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="vehicleName" name="vehicleName" required>
                     </div>
                     <div class="flex justify-center space-x-10">
-                        <button class="w-24 h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
-                        <button class="w-24 h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeVehicleForm()">Close</button>
+                        <button class="w-16 h-8 md:w-24 md:h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                        <button class="w-16 h-8 md:w-24 md:h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeVehicleForm()">Close</button>
                     </div>
                 </form>
             </div>
@@ -250,10 +252,23 @@
 
            
             <!-- Trash Container (Initially hidden, using inline styles now) -->
-            <div id="trashContainer" class="w-full flex justify-center md:h-full h-screen overflow-y-auto" style="display: none;">
-                <div class="md:max-w-[70rem] max-w-[13rem] w-full container mx-1">
-                    <div id="trashGrid" class="w-full font-Inter space-y-3">
-                        <!-- Trash Grid Content Here -->
+            <div id="trashContainer" class="w-full flex justify-center md:h-full" style="display: none;">
+                <div class="md:max-w-[70rem] max-w-[95%]  md:w-full container mx-1 overflow-y-auto md:overflow-y-hidden">
+                    <div id="trashGrid" class="w-full h-full font-Inter space-y-3 overflow-x-auto md:max-h-[60vh] max-h-[50vh]">
+                         <!-- Trash Grid Content Here -->
+                        <div class=" w-full bg-gray-300 h-14 md:h-28 rounded-xl  md:mx-0 px-10">
+                            <div class="flex justify-between w-full space-x-5 py-2">
+                                <img src="img/ex1.jpg" class="object-fill w-10 h-10 md:w-24 md:h-24 rounded-md" alt="Trashed Equipment Image">
+                                <p class="md:py-7 ml-5 py-1 text-xl md:text-3xl">adwdaw</p>
+                                <div class="md:py-6">
+                                    <svg class="w-8 h-8 md:w-10 md:h-10 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="red" onclick="deleteFromTrash('${item.itemID}')">
+                                        <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                                    </svg>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -283,7 +298,7 @@
     <div id="invedit" style="display: none;">
         <input type="hidden" id="itemId">
         <div class="flex justify-center w-full">
-            <div class="top-72 absolute h-96 w-96 rounded-xl border-2 border-black bg-white pt-3 font-Inter">
+            <div class="top-32 md:top-72 absolute h-96 w-96 rounded-xl border-2 border-black bg-white pt-3 font-Inter">
                 <div class="w-full flex justify-end">
                     <a href="#" class="font-Inter text-xl mr-3" onclick="exitinvedit()">X</a>
                 </div>
@@ -314,23 +329,21 @@
         </div>
     </div>
 
-    <div class="fixed bottom-10 right-10">
+    <div class="fixed bottom-5 right-5 md:bottom-10 md:right-10">
         <div>
             <div id="inventorySetting" style="display: none;">
                 <div class="flex flex-col space-y-4">
-                    <button class="select-none w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
-                    <button class="select-none w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleTrashForm()" id="btnTrash">Trash</button>
-                    <button class="select-none w-48 h-10 bg-[#930D0D] text-white text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
+                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
+                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleTrashForm()" id="btnTrash">Trash</button>
+                    <button class="select-none md:px-0 px-1 w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-sm md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
                 </div>
             </div>
            
             
             <div class="w-full flex justify-end cursor-pointer" onclick="showSettings()">
-                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="w-14 h-14" fill="#930D0D"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="w-10 h-10 md:w-14 md:h-14" fill="#930D0D"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
             </div>
         </div>
-      
-        
     </div>
     
 </div>

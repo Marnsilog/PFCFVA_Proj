@@ -130,55 +130,99 @@ document.addEventListener('DOMContentLoaded', function() {
 //Merit Tracking Nav
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/volunteerDetails')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        const volunteerDetails = document.getElementById('volunteerDetails');
-        const searchBox = document.getElementById('volunteerSearchBox'); // Added search box reference
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const volunteerDetails = document.getElementById('volunteerDetails');
+            const searchBox = document.getElementById('volunteerSearchBox');
+            const sortByMeritTracking = document.getElementById('sortByMeritTracking'); // Reference to the sort dropdown
 
-        // Function to display the data
-        function displayData(records) { // Added displayData function
-          volunteerDetails.innerHTML = ''; // Clear existing data
-          records.forEach(record => {
-            const row = document.createElement('tr');
-            const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
-            row.innerHTML = `
-              <td >${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-              <td>${record.callSign}</td>
-              <td>${rank}</td>
-              <td>${record.dutyHours}</td>
-              <td>${record.cumulativeDutyHours}</td>
-              <td>${record.fireResponsePoints}</td>
-              <td>${record.inventoryPoints}</td>
-              <td>${record.activityPoints}</td>
-              
-            `;
-            volunteerDetails.appendChild(row);
-          });
-        }
+            // Function to display the data
+            function displayData(records) {
+                volunteerDetails.innerHTML = ''; // Clear existing data
+                records.forEach(record => {
+                    const row = document.createElement('tr');
+                    const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
+                    row.innerHTML = `
+                        <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                        <td>${record.callSign}</td>
+                        <td>${rank}</td>
+                        <td>${record.dutyHours}</td>
+                        <td>${record.cumulativeDutyHours}</td>
+                        <td>${record.fireResponsePoints}</td>
+                        <td>${record.inventoryPoints}</td>
+                        <td>${record.activityPoints}</td>
+                    `;
+                    volunteerDetails.appendChild(row);
+                });
+            }
 
-        //removed from td
-        //<td>${record.accountType}</td>
+            // Initial display of data
+            displayData(data);
 
-        // Initial display of data
-        displayData(data); // Call displayData with initial data
+            // Add event listener to search box
+            searchBox.addEventListener('input', function() {
+                const searchTerm = searchBox.value.toLowerCase();
+                const filteredData = data.filter(record => {
+                    const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+                    return fullName.includes(searchTerm);
+                });
+                displayData(filteredData); // Call displayData with filtered data
+            });
 
-        // Add event listener to search box
-        searchBox.addEventListener('input', function() { // Added event listener
-          const searchTerm = searchBox.value.toLowerCase();
-          const filteredData = data.filter(record => {
-            const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
-            return fullName.includes(searchTerm);
-          });
-          displayData(filteredData); // Call displayData with filtered data
+            // Add event listener to sort dropdown
+            sortByMeritTracking.addEventListener('change', function() {
+                const sortBy = sortByMeritTracking.value;
+                let sortedData;
+
+                // Sort the data based on selected option
+                switch (sortBy) {
+                    case 'Name':
+                        sortedData = data.sort((a, b) => {
+                            const nameA = `${a.firstName} ${a.middleInitial}. ${a.lastName}`.toLowerCase();
+                            const nameB = `${b.firstName} ${b.middleInitial}. ${b.lastName}`.toLowerCase();
+                            return nameA.localeCompare(nameB);
+                        });
+                        break;
+                    case 'CallSign':
+                        sortedData = data.sort((a, b) => a.callSign.localeCompare(b.callSign));
+                        break;
+                    case 'Rank':
+                        sortedData = data.sort((a, b) => {
+                            const rankA = a.callSign.replace(/\d/g, '').toLowerCase(); // Remove numbers for rank
+                            const rankB = b.callSign.replace(/\d/g, '').toLowerCase();
+                            return rankA.localeCompare(rankB);
+                        });
+                        break;
+                    case 'DutyHours':
+                        sortedData = data.sort((a, b) => a.dutyHours - b.dutyHours);
+                        break;
+                    case 'CumulativeDutyHours':
+                        sortedData = data.sort((a, b) => a.cumulativeDutyHours - b.cumulativeDutyHours);
+                        break;
+                    case 'FireResponse':
+                        sortedData = data.sort((a, b) => a.fireResponsePoints - b.fireResponsePoints);
+                        break;
+                    case 'Inventory':
+                        sortedData = data.sort((a, b) => a.inventoryPoints - b.inventoryPoints);
+                        break;
+                    case 'Activity':
+                        sortedData = data.sort((a, b) => a.activityPoints - b.activityPoints);
+                        break;
+                    default:
+                        sortedData = data; // No sorting
+                }
+
+                displayData(sortedData); // Call displayData with sorted data
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching volunteer details:', error);
         });
-      })
-      .catch(error => {
-        console.error('Error fetching account details:', error);
-      });
-  });
+});
+
 

@@ -25,6 +25,21 @@ function toggleSetting() {
     }
     addLine('prof');
 }
+
+function showSettings() {
+
+    var profileForm = document.getElementById('inventorySetting');
+    
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+     
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+    addLine('prof');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
     const circles = document.querySelectorAll('.colorCircle');

@@ -138,9 +138,9 @@
         <div class="w-full mt-7">
             <p class="font-Inter font-bold md:text-3xl text-2xl md:text-start text-center">Edit Profile</p>
           
-                <form  action="/auth/edit-profile" method="POST" enctype="multipart/form-data"  class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5" id="editProfileForm">
+                <form  action="/auth/edit-volunteer" method="POST" enctype="multipart/form-data"  class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5" id="editProfileForm">
                     <div class="flex justify-normal ml-5 md:ml-0 md:pt-9 md:py-5 space-x-8">
-                        <div class="md:ml-12"> <img src="img/user.png" id="profile-pic" class="w-24 h-24 md:w-48 md:h-48 rounded-full"></div>
+                        <div class="md:ml-12"> <img src="img/user.png" id="volunteer-pic" class="w-24 h-24 md:w-48 md:h-48 rounded-full"></div>
 
                         <div class="mt-24">
                             <label for="profilePicture"></label>
@@ -150,7 +150,6 @@
                     </div>
                     <input type="hidden" id="EditRFID" name="rfid">
                     <input type="hidden" id="HiddenUsername" name="username">
-                    <input type="hidden" id="accountID " name="accountID ">
                     <div class="w-full flex justify-center">
                         <div class="md:space-y-5 md:w-full space-y-3 md:space-x-0">
                             <div class="md:flex md:justify-between w-full space-y-3 md:space-x-0">
@@ -374,7 +373,8 @@
 
 </body>
 </div>
-<script src="super_profiler.js" defer></script>
+<!-- <script src="super_profiler.js" defer></script> -->
+<script src="admin_modules.js" defer></script>
 <script src="admin.js" defer></script>
 <script src="profileImage.js" defer></script>
 <script src="constraint.js"></script>

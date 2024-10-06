@@ -256,120 +256,120 @@ function passEye2() {
         
     });
     //register, clear form
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('registerForm');
-        const clearButton = document.getElementById('clearButton');
-        const callSignSelect = document.getElementById('callSign');
-        const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
-        if (clearButton) {
-            clearButton.addEventListener('click', function() {
-                clearForm(form);
-            });
-        } else {
-            return;
-        }
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const form = document.getElementById('registerForm');
+    //     const clearButton = document.getElementById('clearButton');
+    //     const callSignSelect = document.getElementById('callSign');
+    //     const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
+    //     if (clearButton) {
+    //         clearButton.addEventListener('click', function() {
+    //             clearForm(form);
+    //         });
+    //     } else {
+    //         return;
+    //     }
     
-        function clearForm(form) {
-            Array.from(form.elements).forEach(element => {
-                switch(element.type) {
-                    case 'text':
-                    case 'password':
-                    case 'textarea':
-                    case 'email':
-                    case 'number':
-                    case 'date':
-                    case 'tel':
-                        element.value = '';
-                        break;
-                    case 'radio':
-                    case 'checkbox':
-                        element.checked = false;
-                        break;
-                    case 'select-one':
-                    case 'select-multiple':
-                        element.selectedIndex = -1;
-                        break;
-                    default:
-                        break;
-                }
-            });
+    //     function clearForm(form) {
+    //         Array.from(form.elements).forEach(element => {
+    //             switch(element.type) {
+    //                 case 'text':
+    //                 case 'password':
+    //                 case 'textarea':
+    //                 case 'email':
+    //                 case 'number':
+    //                 case 'date':
+    //                 case 'tel':
+    //                     element.value = '';
+    //                     break;
+    //                 case 'radio':
+    //                 case 'checkbox':
+    //                     element.checked = false;
+    //                     break;
+    //                 case 'select-one':
+    //                 case 'select-multiple':
+    //                     element.selectedIndex = -1;
+    //                     break;
+    //                 default:
+    //                     break;
+    //             }
+    //         });
     
-            // Reset callSign select to its initial state
-            if (callSignSelect) {
-                callSignSelect.disabled = true;
-                if (tooltipText) {
-                    tooltipText.classList.remove('hidden');
-                }
-            }
-        }
-    });
+    //         // Reset callSign select to its initial state
+    //         if (callSignSelect) {
+    //             callSignSelect.disabled = true;
+    //             if (tooltipText) {
+    //                 tooltipText.classList.remove('hidden');
+    //             }
+    //         }
+    //     }
+    // });
     
     
-    //register, dont allow numbers
-    document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
+    // //register, dont allow numbers
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
     
-        numberFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) { // Check if the field exists
-                field.addEventListener('keypress', function(event) {
-                    if (/[a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                });
-            } 
-        });
-    });
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { // Check if the field exists
+    //             field.addEventListener('keypress', function(event) {
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
     
-    //register, don't allow letters for specific fields
-    document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = [
-            'contactNumber', 
-            'emergencyContactNumber', 
-            'dutyHours', 
-            'fireResponse', 
-            'activityPoints', 
-            'inventoryPoints', 
-            'yearsInService'
-        ];
+    // //register, don't allow letters for specific fields
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = [
+    //         'contactNumber', 
+    //         'emergencyContactNumber', 
+    //         'dutyHours', 
+    //         'fireResponse', 
+    //         'activityPoints', 
+    //         'inventoryPoints', 
+    //         'yearsInService'
+    //     ];
     
-        numberFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) { 
-                field.addEventListener('keypress', function(event) {
-                    // Prevent input of letters
-                    if (/[a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                });
-            } 
-        });
-    });
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { 
+    //             field.addEventListener('keypress', function(event) {
+    //                 // Prevent input of letters
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
     //auto format
-    document.addEventListener('DOMContentLoaded', function() {
-        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
     
-        // Function to capitalize the first letter of each word
-        function capitalizeWords(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
+    //     // Function to capitalize the first letter of each word
+    //     function capitalizeWords(str) {
+    //         return str.replace(/\b\w/g, function(char) {
+    //             return char.toUpperCase();
+    //         });
+    //     }
     
-        nameFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
+    //     nameFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
     
-            // Format text as the user types
-            field.addEventListener('input', function() {
-                field.value = capitalizeWords(field.value);
-            });
+    //         // Format text as the user types
+    //         field.addEventListener('input', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
     
-            // Format text when the user leaves the input field
-            field.addEventListener('blur', function() {
-                field.value = capitalizeWords(field.value);
-            });
-        });
-    });
+    //         // Format text when the user leaves the input field
+    //         field.addEventListener('blur', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
+    //     });
+    // });
      //handle accountType/callSign
      document.addEventListener('DOMContentLoaded', function() {
         const accountTypeSelect = document.getElementById('accountType');
@@ -492,6 +492,4 @@ function passEye2() {
     });
 
 
-    
-    
-    
+

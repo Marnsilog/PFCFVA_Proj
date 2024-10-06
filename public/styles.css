@@ -1177,6 +1177,10 @@ video {
   margin-top: 9px;
 }
 
+.mt-0{
+  margin-top: 0px;
+}
+
 .block{
   display: block;
 }
@@ -1632,6 +1636,10 @@ video {
 
 .w-\[70rem\]{
   width: 70rem;
+}
+
+.w-\[55rem\]{
+  width: 55rem;
 }
 
 .min-w-full{

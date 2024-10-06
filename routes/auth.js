@@ -190,11 +190,10 @@ module.exports = (db, db2) => {
             }
     
             const { password, ...volunteerData } = result[0]; 
-            console.log(volunteerData);
+            //console.log(volunteerData);
             res.json(volunteerData); 
         });
     });
-    
 
     router.post('/edit-profile', (req, res) => {
         //console.log('Uploaded files:', req.files);  // Log uploaded files

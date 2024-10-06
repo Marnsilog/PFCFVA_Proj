@@ -202,16 +202,12 @@ function fetchVolunteerData() {
                 EditOtherAffiliation: data.otherAffiliation
             };
 
-            // Set profile picture
-            element.src = data.profilePicPath && data.profilePicPath.length > 0 ? data.profilePicPath : 'img/user.png'; 
-
-            // Populate fields
+            element.src = data.idPicture || 'img/user.png'; 
             Object.keys(fields).forEach(id => {
                 const field = document.getElementById(id);
                 if (field) {
-                    field.value = fields[id] || ''; // Set to an empty string if undefined
+                    field.value = fields[id] || '';
                 } 
-                // Else warning is suppressed to avoid console clutter
             });
         })
         .catch(error => {

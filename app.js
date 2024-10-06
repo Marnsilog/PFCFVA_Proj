@@ -602,83 +602,56 @@ app.get('/getVehicleAssignments', (req, res) => {
 
 
 app.get('/getEquipment', (req, res) => {
-    const vehicleAssignment = req.query.vehicleAssignment;
-    let sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus != "trash"';
-    const params = []; 
-    if (vehicleAssignment && vehicleAssignment !== '') {
-        sql += ' AND vehicleAssignment = ?';
-        params.push(vehicleAssignment); 
-    }
+    try {
+        const search = req.query.search || ''; 
+        const query = `
+            SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+            AND itemStatus = 'Available'
+        `;
 
-    db.query(sql, params, (err, results) => {
-        if (err) {
-            console.error('Failed to retrieve equipment:', err);
-            res.status(500).json({ error: 'Failed to retrieve equipment' });
-        } else {
-            res.json(results);
-        }
-    });
+        const searchParam = `%${search}%`;
+
+        db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Failed to retrieve equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve equipment' });
+            }
+            //console.log(results);
+            res.json(results); // Send results back as JSON
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).json({ error: 'An unexpected error occurred' });
+    }
 });
+
+
 
 
 app.get('/getTrashedEquipment', (req, res) => {
-    const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemStatus = "trash"';
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Failed to retrieve trashed equipment:', err);
-            res.status(500).json({ error: 'Failed to retrieve trashed equipment' });
-        } else {
-            res.json(results);
-        }
-    });
+    try {
+        const search = req.query.search || ''; 
+        const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+
+        const searchParam = `%${search}%`;
+
+        // Pass search parameters in an array
+        db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Failed to retrieve equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve equipment' });
+            }
+            //console.log(results);
+            res.json(results); // Send results back as JSON
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).json({ error: 'An unexpected error occurred' });
+    }
 });
 
 
-//HINDI GUMAGANA!
-//delete equipment route
-// app.delete('/deleteEquipment/:itemName', (req, res) => {
-//     const itemName = req.params.itemName;
-
-//     // First, retrieve the image path from the database
-//     const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
-//     db.query(getImagePathQuery, [itemName], (err, results) => {
-//         if (err) {
-//             console.error('Error retrieving image path:', err);
-//             return res.status(500).json({ error: 'Failed to retrieve image path.' });
-//         }
-
-//         if (results.length === 0) {
-//             return res.status(404).json({ error: 'Equipment not found.' });
-//         }
-
-//         const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-
-//         // Delete the image file
-//         fs.unlink(imagePath, (err) => {
-//             if (err) {
-//                 console.error('Failed to delete image file:', err);
-//                 return res.status(500).json({ error: 'Failed to delete image file.' });
-//             }
-
-//             // Proceed to delete the database entry
-//             const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-//             db.query(sql, [itemName], (err, result) => {
-//                 if (err) {
-//                     console.error('Error deleting equipment:', err);
-//                     return res.status(500).json({ error: 'Failed to delete equipment.' });
-//                 }
-
-//                 if (result.affectedRows === 0) {
-//                     return res.status(404).json({ error: 'Equipment not found.' });
-//                 }
-
-//                 res.status(200).json({ message: 'Equipment deleted successfully.' });
-//             });
-//         });
-//     });
-// });
-
-// Move equipment to trash (soft delete, no image deletion)
 app.put('/moveToTrash/:itemID', (req, res) => {
     const itemID = req.params.itemID;
 
@@ -693,46 +666,6 @@ app.put('/moveToTrash/:itemID', (req, res) => {
         res.status(200).json({ message: 'Equipment moved to trash successfully.' });
     });
 });
-
-
-// Permanently delete equipment from trash
-// app.delete('/deleteFromTrash/:itemName', (req, res) => {
-//     const itemName = req.params.itemName;
-
-//     // First, retrieve the image path from the database
-//     const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemName = ?';
-//     db.query(getImagePathQuery, [itemName], (err, results) => {
-//         if (err) {
-//             console.error('Error retrieving image path:', err);
-//             return res.status(500).json({ error: 'Failed to retrieve image path.' });
-//         }
-
-//         if (results.length === 0) {
-//             return res.status(404).json({ error: 'Equipment not found.' });
-//         }
-
-//         const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-
-//         // Delete the image file
-//         fs.unlink(imagePath, (err) => {
-//             if (err) {
-//                 console.error('Failed to delete image file:', err);
-//                 return res.status(500).json({ error: 'Failed to delete image file.' });
-//             }
-
-//             // Proceed to delete the database entry
-//             const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-//             db.query(sql, [itemName], (err, result) => {
-//                 if (err) {
-//                     console.error('Error deleting equipment:', err);
-//                     return res.status(500).json({ error: 'Failed to delete equipment.' });
-//                 }
-
-//                 res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
-//             });
-//         });
-//     });
-// });
 
 
 app.delete('/deleteFromTrash/:itemID', (req, res) => {
@@ -839,7 +772,7 @@ app.put('/updateEquipment', (req, res) => {
                     console.error('Error moving file:', err);
                     return res.status(500).send({ success: false, message: 'Error saving item image' });
                 }
-                itemImagePath = `/uploads/${uniqueFileName}`;
+                itemImagePath = `uploads/${uniqueFileName}`;
                 if (currentImagePath) {
                     const existingImagePath = path.join(__dirname, 'public', currentImagePath);
                     if (fs.existsSync(existingImagePath)) {

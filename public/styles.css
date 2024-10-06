@@ -690,6 +690,10 @@ video {
   top: 5rem;
 }
 
+.top-32{
+  top: 8rem;
+}
+
 .top-36{
   top: 9rem;
 }
@@ -702,10 +706,6 @@ video {
   top: 1.25rem;
 }
 
-.top-72{
-  top: 18rem;
-}
-
 .top-\[10rem\]{
   top: 10rem;
 }
@@ -716,14 +716,6 @@ video {
 
 .top-\[90px\]{
   top: 90px;
-}
-
-.top-40{
-  top: 10rem;
-}
-
-.top-32{
-  top: 8rem;
 }
 
 .z-10{
@@ -1418,6 +1410,10 @@ video {
   max-height: 60vh;
 }
 
+.max-h-\[70vh\]{
+  max-height: 70vh;
+}
+
 .min-h-\[20rem\]{
   min-height: 20rem;
 }
@@ -1622,6 +1618,22 @@ video {
   width: 100%;
 }
 
+.w-\[70vh\]{
+  width: 70vh;
+}
+
+.w-\[60vh\]{
+  width: 60vh;
+}
+
+.w-\[80\%\]{
+  width: 80%;
+}
+
+.w-\[70rem\]{
+  width: 70rem;
+}
+
 .min-w-full{
   min-width: 100%;
 }
@@ -1664,6 +1676,10 @@ video {
 
 .max-w-lg{
   max-width: 32rem;
+}
+
+.max-w-\[50vh\]{
+  max-width: 50vh;
 }
 
 .flex-1{
@@ -1966,6 +1982,10 @@ video {
 
 .border-t-2{
   border-top-width: 2px;
+}
+
+.border-t-\[1px\]{
+  border-top-width: 1px;
 }
 
 .border-none{
@@ -2349,16 +2369,6 @@ video {
 .py-\[5px\]{
   padding-top: 5px;
   padding-bottom: 5px;
-}
-
-.py-6{
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
-.py-7{
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
 }
 
 .pb-14{
@@ -2978,12 +2988,12 @@ video {
     top: 16rem;
   }
 
-  .md\:top-80{
-    top: 20rem;
-  }
-
   .md\:top-72{
     top: 18rem;
+  }
+
+  .md\:top-80{
+    top: 20rem;
   }
 
   .md\:col-end-4{
@@ -3211,6 +3221,10 @@ video {
     margin-top: 7px;
   }
 
+  .md\:ml-10{
+    margin-left: 2.5rem;
+  }
+
   .md\:block{
     display: block;
   }
@@ -3391,6 +3405,10 @@ video {
     width: 18rem;
   }
 
+  .md\:w-8{
+    width: 2rem;
+  }
+
   .md\:w-80{
     width: 20rem;
   }
@@ -3447,6 +3465,10 @@ video {
     width: 35rem;
   }
 
+  .md\:w-\[370px\]{
+    width: 370px;
+  }
+
   .md\:w-\[40rem\]{
     width: 40rem;
   }
@@ -3469,10 +3491,6 @@ video {
 
   .md\:w-full{
     width: 100%;
-  }
-
-  .md\:w-8{
-    width: 2rem;
   }
 
   .md\:max-w-\[100rem\]{
@@ -3728,6 +3746,11 @@ video {
     padding-bottom: 1.25rem;
   }
 
+  .md\:py-6{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
   .md\:py-7{
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
@@ -3738,9 +3761,9 @@ video {
     padding-bottom: 2rem;
   }
 
-  .md\:py-6{
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+  .md\:px-20{
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 
   .md\:pb-14{

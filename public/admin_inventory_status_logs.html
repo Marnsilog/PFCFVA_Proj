@@ -135,49 +135,63 @@
         <div id="loading-container" style="display: none;">
             <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
         </div>
-        <div class="flex justify-between w-full px-20 font-Inter pt-14">
+        <div class="md:flex md:justify-between w-full md:px-20 font-Inter p-5 md:pt-14">
             <div>
-                <p class="text-4xl font-bold">Inventory Logs</p>
-                <p>Total Item: <span>0000</span> </p>
+                <p class="md:text-4xl text-center md:text-start text-xl font-bold">Inventory Logs</p>
+                <!-- <p>Total Item: <span>0000</span> </p> --> 
             </div>
-            <div class="md:pl-0 md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512">
-                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-                </svg>
-                <input class="w-full h-full focus:outline-none px-2" type="text" id="inventorySearchBox" placeholder="Search">
-                <div style="cursor: pointer;" onclick="summaryfilter()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] mr-[5px] mx-2" viewBox="0 0 512 512">
-                        <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"/>
-                    </svg>
+            <div class="md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                <input class="w-full h-full focus:outline-none px-2 rounded-lg" placeholder="Search" id="inventorySearchBox" type="text">
+            </div>
+        </div>
+        <div class="w-full flex md:justify-start justify-center">
+            <div class="w-full mx-5 md:w-[370px] h-8 border-[1px] border-black flex justify-center font-Inter md:mt-8 md:ml-10 rounded-md">
+                <div class="w-[70%] h-full bg-[#930D0D] rounded-l-md">
+                    <p class="text-center text-white text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs'">Status logs</p>
+                </div>
+                <div class="w-full bg-white rounded-r-md">
+                    <p class="text-center text-black text-sm mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass'">Vehicle Assignment Logs</p>
                 </div>
             </div>
         </div>
-
-        <div class="w-[370px] h-8 border-[1px] border-black flex justify-center font-Inter mt-8 ml-10 rounded-md">
-            <div class="w-[70%] h-full bg-[#930D0D] rounded-l-md"><p class="text-center text-white text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs'">Status logs</p></div>
-            <div class="w-full bg-white rounded-r-md"><p class="text-center text-black text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass'">Vehicle Assignment Logs</p></div>
+        
+        <div class="overflow-x-auto md:w-full w-full border-2 border-black mt-5">
+            <div class="overflow-y-auto md:max-h-[35rem] max-h-[50vh] ">
+                <table class="md:w-full w-[70rem] text-center" >
+                    <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] ">
+                        <tr class="text-sm md:text-lg h-8">
+                            <th></th>
+                            <th class="">Item</th>
+                            <th>Volunteer Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Vehicle</th>
+                            <th>from Status</th>
+                            <th>to Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-log" class="font-[500] space-y-2">
+                      <!-- <tr class="md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500">
+                        <td><div class="flex justify-center"><img src="img/ex1.jpg" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
+                        <td>5</td>
+                        <td>Corsiga Marniel</td>
+                        <td>January 20 2024</td>
+                        <td>12:00pm</td>
+                        <td>${row.vehicle}</td>
+                        <td>good</td>
+                        <td>bad</td>
+                        <td class="w-72 break-words ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus eaque accusamus ipsam tenetur porro, saepe sed modi </td>
+                      </tr>
+                 -->
+                      
+                    </tbody>
+                    
+                </table>
+            </div>
         </div>
 
-        <div class=" overflow-y-auto max-h-[35rem]">
-            <table class="md:w-full w-[60rem] text-center mt-5" >
-                <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] border-t-2 border-b-2 border-black">
-                    <tr class="text-lg ">
-                        <th></th>
-                        <th class="py-2 bg-[#D6D6D6]">Item</th>
-                        <th>Volunteer Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Vehicle</th>
-                        <th>from Status</th>
-                        <th>to Status</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody id="inventory-log" class="font-[500] ">
-                    <!-- Data will be injected here -->
-                </tbody>
-            </table>
-        </div>
        
     </div>
 

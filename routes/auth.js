@@ -99,46 +99,7 @@ module.exports = (db, db2) => {
             });
         });
     });
-    router.post('/addEquipment', (req, res) => {
-        const { itemName, vehicleAssignment, dateAcquired } = req.body;
-        let itemImagePath = null;
-        if (req.files && req.files.itemImage) {
-            const itemImage = req.files.itemImage;
-            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
-            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
-    
-            itemImage.mv(uploadPath, (err) => {
-                if (err) {
-                    console.error('Error moving file:', err);
-                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
-                }
-    
-                itemImagePath = `uploads/${uniqueFileName}`;
-                insertEquipment();
-            });
-        } else {
-            // No image uploaded, proceed with inserting data into the database
-            insertEquipment();
-        }
-    
-        function insertEquipment() {
-            const query = `
-                INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
-                VALUES (?, ?, ?, ?)
-            `;
-            const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
-    
-            db.query(query, queryParams, (error, results) => {
-                if (error) {
-                    console.error('Error inserting equipment data:', error);
-                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
-                }
-    
-                res.send({ success: true, message: 'Equipment added successfully.' });
-            });
-        }
-    });
-    
+
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     
@@ -1036,7 +997,45 @@ module.exports = (db, db2) => {
         });
     });
     
-
+    router.post('/addEquipment', (req, res) => {
+        const { itemName, vehicleAssignment, dateAcquired } = req.body;
+        let itemImagePath = null;
+        if (req.files && req.files.itemImage) {
+            const itemImage = req.files.itemImage;
+            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+    
+            itemImage.mv(uploadPath, (err) => {
+                if (err) {
+                    console.error('Error moving file:', err);
+                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+                }
+    
+                itemImagePath = `uploads/${uniqueFileName}`;
+                insertEquipment();
+            });
+        } else {
+            // No image uploaded, proceed with inserting data into the database
+            insertEquipment();
+        }
+    
+        function insertEquipment() {
+            const query = `
+                INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+                VALUES (?, ?, ?, ?)
+            `;
+            const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+    
+            db.query(query, queryParams, (error, results) => {
+                if (error) {
+                    console.error('Error inserting equipment data:', error);
+                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+                }
+    
+                res.send({ success: true, message: 'Equipment added successfully.' });
+            });
+        }
+    });
     return router;
 };
 

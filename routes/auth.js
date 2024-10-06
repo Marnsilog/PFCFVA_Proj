@@ -125,7 +125,7 @@ module.exports = (db, db2) => {
                         permission: user.accountType,
                         profilePicPath: user.idPicture 
                     };
-                    console.log(user.username);
+                    console.log(`${user.username} has logged into the server`);
                     //console.log(user.idPicture);
                     let redirectUrl;
                     if (user.accountType === 'Admin') {

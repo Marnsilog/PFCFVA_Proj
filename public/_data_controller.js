@@ -98,8 +98,9 @@ function fetchIncidentLog(icsID) {
 
 function downloadLogs() {
     // Get the data from the form fields
-    const supervisorName = document.getElementById('supervisorName').innerText.trim().replace(/\s+/g, '_'); // Replace spaces with underscores
-    const incidentDate = document.getElementById('incidentDate').innerText.trim();
+    const supervisorName = document.getElementById('supervisorName')?.innerText.trim().replace(/\s+/g, '_') || 'Unknown_Supervisor';
+const incidentDate = document.getElementById('incidentDate')?.innerText.trim() || 'Unknown_Date';
+
 
     // Format the date in YYYY-MM-DD
     const formattedDate = new Date(incidentDate).toISOString().split('T')[0];

@@ -136,7 +136,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="w-full text-center text-2xl" id="icsLogs">
-                                            <tr class="border-t-2 border-b-2 border-black h-16">
+                                            <!-- <tr class="border-t-2 border-b-2 border-black h-16">
                                                 <td>Name here</td>
                                                 <td>Date Here</td>
                                                 <td>Time Here</td>
@@ -157,7 +157,7 @@
                                                 <td><a href="#"onclick="seedetails()"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a>
                                                 </td>
                                             </tr>
-                                        
+                                         -->
                         
                                         </tbody>
                                     </table>
@@ -199,7 +199,7 @@
                                         </div>
                                         <div class="flex items-start pt-8">
                                             <p class="font-semibold mr-[143px]">Responders</p> 
-                                            <p id="responder">Name--------</p>
+                                            <p id="responders">Name--------</p>
                                         </div>
                                         <div class="flex items-start pt-8">
                                             <p class="font-semibold mr-[142px]">Supervisor</p> 
@@ -214,6 +214,12 @@
                                         <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
                                         <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
 
+                                        <div class="w-full flex justify-center">
+                                            <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
+                                            <!-- <p class="text-center" id="downloadLogs">Download Logs</p> -->
+                                            <button class="text-center" onclick="downloadLogs()">Download Logs</button>
+                                        </div>
+                                        
                                         <div class="text-center pt-16">
                                             <a href="#" class="underline underline-offset-1 " onclick="fireclose()">close</a>
                                         </div>

@@ -229,43 +229,55 @@ function handleICSFormPage() {
     document.getElementById('vehicleUsed').value = vehicleUsed;
 }
 
-// document.getElementById('submitLogs').addEventListener('click', function () {
-//     // Prepare the data
-//     const data = {
-//         supervisorName: document.getElementById('supervisorName').textContent,
+
+
+
+// document.getElementById('submitLogs').addEventListener('click', function() {
+//     // Retrieve the attendees stored in sessionStorage
+//     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+//     // Convert attendees array into a string format
+//     const formattedResponders = attendees.map(attendee => `[${attendee.callSign}] ${attendee.name}`).join(', ');
+
+//     // Gather the rest of the form data
+//     const formData = {
+//         supervisorName: sessionStorage.getItem('supervisorName'),
 //         incidentDate: document.getElementById('incidentDate').value,
 //         dispatchTime: document.getElementById('dispatchTime').value,
 //         location: document.getElementById('location').value,
 //         alarmStatus: document.getElementById('alarmStatus').value,
 //         whoRequested: document.getElementById('whoRequested').value,
 //         fireType: document.getElementById('fireType').value,
-//         vehicleUsed: document.getElementById('vehicleUsed').value,
-//         responders: sessionStorage.getItem('attendees'),  // Send as JSON
-//         chatLogs: document.getElementById('chatLogs').value,
+//         vehicleUsed: sessionStorage.getItem('selectedVehicle'),
+//         responders: formattedResponders,  // Use the formatted string here
+//         chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
 //         remarks: document.getElementById('remarks').value
 //     };
 
-//     // Send a POST request to the server
+//     // Send this form data to the backend route for saving in the database
 //     fetch('/saveICSLogs', {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json',
 //         },
-//         body: JSON.stringify(data)
+//         body: JSON.stringify(formData)
 //     })
 //     .then(response => response.json())
-//     .then(result => {
-//         if (result.success) {
-//             alert('ICS Logs saved successfully!');
-//             window.location.href = '/supervisor_ics_logs';  // Redirect to the logs page
+//     .then(data => {
+//         if (data.success) {
+//             alert('Logs saved successfully');
+//             // Optionally redirect or clear form fields
 //         } else {
-//             alert('Error saving ICS logs.');
+//             console.error('Error saving logs:', data.message);
 //         }
 //     })
-//     .catch(error => console.error('Error:', error));
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
 // });
 
-document.getElementById('submitLogs').addEventListener('click', function() {
+
+document.getElementById('submitLogs').addEventListener('click', function(event) {
     // Retrieve the attendees stored in sessionStorage
     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
 
@@ -273,9 +285,10 @@ document.getElementById('submitLogs').addEventListener('click', function() {
     const formattedResponders = attendees.map(attendee => `[${attendee.callSign}] ${attendee.name}`).join(', ');
 
     // Gather the rest of the form data
+    const incidentDate = document.getElementById('incidentDate').value;
     const formData = {
         supervisorName: sessionStorage.getItem('supervisorName'),
-        incidentDate: document.getElementById('incidentDate').value,
+        incidentDate: incidentDate,
         dispatchTime: document.getElementById('dispatchTime').value,
         location: document.getElementById('location').value,
         alarmStatus: document.getElementById('alarmStatus').value,
@@ -286,6 +299,13 @@ document.getElementById('submitLogs').addEventListener('click', function() {
         chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
         remarks: document.getElementById('remarks').value
     };
+
+    // Validation: Check if incidentDate is empty
+    if (!incidentDate) {
+        alert('Please select an Incident Date before submitting the form.');
+        event.preventDefault();  // Prevent form submission if validation fails
+        return;  // Stop further execution if incidentDate is missing
+    }
 
     // Send this form data to the backend route for saving in the database
     fetch('/saveICSLogs', {
@@ -308,8 +328,6 @@ document.getElementById('submitLogs').addEventListener('click', function() {
         console.error('Error:', error);
     });
 });
-
-
 
 
 // Function to display the selected vehicle in a paragraph on the ICS form page

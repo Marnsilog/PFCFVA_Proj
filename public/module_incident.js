@@ -286,28 +286,36 @@ document.getElementById('submitLogs').addEventListener('click', function(event) 
 
     // Gather the rest of the form data
     const incidentDate = document.getElementById('incidentDate').value;
+    const dispatchTime = document.getElementById('dispatchTime').value;
+
     const formData = {
         supervisorName: sessionStorage.getItem('supervisorName'),
         incidentDate: incidentDate,
-        dispatchTime: document.getElementById('dispatchTime').value,
+        dispatchTime: dispatchTime,
         location: document.getElementById('location').value,
         alarmStatus: document.getElementById('alarmStatus').value,
         whoRequested: document.getElementById('whoRequested').value,
         fireType: document.getElementById('fireType').value,
         vehicleUsed: sessionStorage.getItem('selectedVehicle'),
-        responders: formattedResponders,  // Use the formatted string here
+        responders: formattedResponders,
         chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
         remarks: document.getElementById('remarks').value
     };
 
-    // Validation: Check if incidentDate is empty
+    // Validation: Check if incidentDate or dispatchTime is empty
     if (!incidentDate) {
         alert('Please select an Incident Date before submitting the form.');
-        event.preventDefault();  // Prevent form submission if validation fails
-        return;  // Stop further execution if incidentDate is missing
+        event.preventDefault();  // Prevent form submission
+        return;  // Stop further execution
     }
 
-    // Send this form data to the backend route for saving in the database
+    if (!dispatchTime) {
+        alert('Please enter a Dispatch Time before submitting the form.');
+        event.preventDefault();  // Prevent form submission
+        return;  // Stop further execution
+    }
+
+    // Proceed with form submission if validation passes
     fetch('/saveICSLogs', {
         method: 'POST',
         headers: {
@@ -319,7 +327,8 @@ document.getElementById('submitLogs').addEventListener('click', function(event) 
     .then(data => {
         if (data.success) {
             alert('Logs saved successfully');
-            // Optionally redirect or clear form fields
+            // Redirect to the logs page after successful submission
+            window.location.href = '/supervisor_ics_logs';  
         } else {
             console.error('Error saving logs:', data.message);
         }
@@ -328,6 +337,7 @@ document.getElementById('submitLogs').addEventListener('click', function(event) 
         console.error('Error:', error);
     });
 });
+
 
 
 // Function to display the selected vehicle in a paragraph on the ICS form page

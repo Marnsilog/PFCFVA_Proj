@@ -1418,6 +1418,10 @@ video {
   max-height: 3rem;
 }
 
+.max-h-\[25rem\]{
+  max-height: 25rem;
+}
+
 .min-h-\[20rem\]{
   min-height: 20rem;
 }
@@ -1970,6 +1974,10 @@ video {
 
 .border-t-2{
   border-top-width: 2px;
+}
+
+.border-t-0{
+  border-top-width: 0px;
 }
 
 .border-none{

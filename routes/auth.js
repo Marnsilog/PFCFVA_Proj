@@ -820,80 +820,23 @@ module.exports = (db, db2) => {
         }
     });
     
-    
-    
-    // router.post('/inventory/log', async (req, res) => {
-    //     const items = req.body; 
-    //     const username = req.session.user?.username; 
-    //     let connection;
-    
-    //     try {
-    //         connection = await db2.getConnection(); 
-    //         await connection.beginTransaction();
-    //         const [dateExpiration] = await connection.query(
-    //             'SELECT dateExpiration FROM tbl_accounts WHERE username = ?', 
-    //             [username]
-    //         ); if(dateExpiration>datatimenow ){
-    //             for (const item of items) {
-    //                 const { itemID, status, remarks } = item;
-    //                 const [currentStatusResult] = await connection.query(
-    //                     'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
-    //                     [itemID]
-    //                 );
-                   
-    //                 const currentStatus = currentStatusResult[0]?.Status;
-                   
-    //                     if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
-    //                         await connection.query(
-    //                             `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
-    //                             VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?),'change status', ?, ?, NOW(), ?)`, 
-    //                             [itemID, username, currentStatus, status, remarks]
-    //                         );
-                            
-    //                         // Update the inventory status
-    //                         await connection.query(
-    //                             'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
-    //                             [status, itemID]
-    //                         );
-    //                     }
-                    
-                   
-    //             }
-        
-    //         }
-          
-    //         await connection.commit();
-    //         res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
-            
-    //     } catch (err) {
-    //         console.error('Database error:', err);
-            
-    //         // Rollback the transaction if any operation fails
-    //         if (connection) await connection.rollback();
-    //         res.status(500).json({ message: 'Server error' });
-    //     } finally {
-    //         if (connection) connection.release();
-    //     }
-    // });
-    
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
         const search = req.query.search || ''; 
     
         const query = `
-            SELECT il.itemID,
-                   il.logID, 
-                   DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
-                   DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
-                   iv.vehicleAssignment AS vehicle
-            FROM tbl_inventory_logs il
-            JOIN tbl_inventory iv ON iv.ItemID = il.itemID
-            WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
-              AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
-            ORDER BY il.dateAndTimeChecked DESC 
-            LIMIT 0, 25;`;
-    
-        // Use '%' wildcard for LIKE search
+                SELECT il.itemID,
+                    il.logID, 
+                    DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                    DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                    iv.vehicleAssignment AS vehicle
+                FROM tbl_inventory_logs il
+                JOIN tbl_inventory iv ON iv.ItemID = il.itemID
+                WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+                AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
+                GROUP BY DATE(il.dateAndTimeChecked) -- Group by the date part
+                ORDER BY il.dateAndTimeChecked DESC 
+                LIMIT 0, 25;`;
         db.query(query, [username, `%${search}%`, `%${search}%`], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
@@ -902,16 +845,21 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    router.get('/inventory2/detail/:logID', (req, res) => {
-        const logID = req.params.logID;
+    router.get('/inventory2/detail/:checked_date', (req, res) => {
+        const checked_date = req.params.checked_date;
+        console.log(checked_date);
+        const username = req.session.user?.username; 
+    
+        // Use DATE() to compare only the date part
         const query = `
-          SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
+            SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
             FROM tbl_inventory_logs il
             JOIN tbl_inventory i ON il.itemID = i.itemID
-            WHERE il.logID = ?;
-            `;
-
-        db.query(query, [logID], (err, results) => {
+            WHERE DATE(il.dateAndTimeChecked) = ? AND il.accountID = (select accountID from tbl_accounts where username = ?);
+        `;
+    
+        // Combine parameters into a single array
+        db.query(query, [checked_date, username], (err, results) => {
             if (err) {
                 console.error('Error fetching inventory details:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -919,6 +867,55 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
+    
+    
+    // router.get('/inventory2', (req, res) => {
+    //     const username = req.session.user?.username; 
+    //     const search = req.query.search || ''; 
+    
+    //     const query = `
+    //         SELECT il.itemID,
+    //                il.logID, 
+    //                DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+    //                DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+    //                iv.vehicleAssignment AS vehicle
+    //         FROM tbl_inventory_logs il
+    //         JOIN tbl_inventory iv ON iv.ItemID = il.itemID
+    //         WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
+    //           AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
+    //         ORDER BY il.dateAndTimeChecked DESC 
+    //         LIMIT 0, 25;`;
+    
+    //     // Use '%' wildcard for LIKE search
+    //     db.query(query, [username, `%${search}%`, `%${search}%`], (err, results) => {
+    //         if (err) {
+    //             console.error('Error fetching inventory data:', err);
+    //             return res.status(500).json({ error: 'Error fetching data' });
+    //         }
+    //         res.json(results);
+    //     });
+    // });
+    // router.get('/inventory2/detail/:checked_date', (req, res) => {
+    //     const checked_date = req.params.checked_date;
+    //     const query = `
+    //       SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
+    //         FROM tbl_inventory_logs il
+    //         JOIN tbl_inventory i ON il.itemID = i.itemID
+    //         WHERE il.dateAndTimeChecked = ?;
+    //         `;
+
+    //     db.query(query, [checked_date], (err, results) => {
+    //         if (err) {
+    //             console.error('Error fetching inventory details:', err);
+    //             return res.status(500).json({ error: 'Error fetching data' });
+    //         }
+    //         res.json(results);
+    //     });
+    // });
+
+
+
 
     //FOR SUPERVISOR INV
     router.get('/inventory-supervisor', (req, res) => {
@@ -956,74 +953,74 @@ module.exports = (db, db2) => {
         });
     });
     
-    router.post('/inventory-supervisor/log', async (req, res) => {
-        const items = req.body;
-        const username = req.session.user?.username;
-        let connection;
-    
-        try {
-            connection = await db2.getConnection();
-            await connection.beginTransaction();
-    
-            const [dateExpirationResult] = await connection.query(
-                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
+router.post('/inventory-supervisor/log', async (req, res) => {
+    const items = req.body;
+    const username = req.session.user?.username;
+    let connection;
+
+    try {
+        connection = await db2.getConnection();
+        await connection.beginTransaction();
+
+        const [dateExpirationResult] = await connection.query(
+            'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
+            [username]
+        );
+
+        let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+        console.log('Date Expiration:', dateExpiration);
+
+        // Convert dateExpiration to a Date object for comparison
+        const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
+
+        // Check if 24 hours have passed since dateExpiration
+        const currentTime = new Date();
+        const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+
+        // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
+        if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
+            for (const item of items) {
+                const { itemID, vehicleAssignment } = item;
+                const [currentVehicleAssignmentResult] = await connection.query(
+                    'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+                    [itemID]
+                );
+                const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+
+                if (currentVehicleAssignment !== vehicleAssignment) {
+                    await connection.query(
+                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+                        [itemID, username, currentVehicleAssignment, vehicleAssignment]
+                    );
+                    await connection.query(
+                        'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+                        [vehicleAssignment, itemID]
+                    );
+                }
+            }
+
+            // Increment inventory points and update expiration date
+            await connection.query(
+                'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
                 [username]
             );
-    
-            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
-            console.log('Date Expiration:', dateExpiration);
-    
-            // Convert dateExpiration to a Date object for comparison
-            const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
-    
-            // Check if 24 hours have passed since dateExpiration
-            const currentTime = new Date();
-            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
-    
-            // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
-            if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
-                for (const item of items) {
-                    const { itemID, vehicleAssignment } = item;
-                    const [currentVehicleAssignmentResult] = await connection.query(
-                        'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-                        [itemID]
-                    );
-                    const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
-    
-                    if (currentVehicleAssignment !== vehicleAssignment) {
-                        await connection.query(
-                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-                            [itemID, username, currentVehicleAssignment, vehicleAssignment]
-                        );
-                        await connection.query(
-                            'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-                            [vehicleAssignment, itemID]
-                        );
-                    }
-                }
-    
-                // Increment inventory points and update expiration date
-                await connection.query(
-                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
-                    [username]
-                );
-    
-                await connection.commit();
-                res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
-            } else {
-                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
-            }
-    
-        } catch (err) {
-            console.error('Database error:', err);
-            if (connection) await connection.rollback();
-            res.status(500).json({ message: 'Server error' });
-        } finally {
-            if (connection) connection.release();
+
+            await connection.commit();
+            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+        } else {
+            res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
         }
-    });
-    
+
+    } catch (err) {
+        console.error('Database error:', err);
+        if (connection) await connection.rollback();
+        res.status(500).json({ message: 'Server error' });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
     
     // router.post('/inventory-supervisor/log', async (req, res) => {
     //     const items = req.body;

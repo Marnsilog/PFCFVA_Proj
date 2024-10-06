@@ -765,14 +765,16 @@ module.exports = (db, db2) => {
     
             let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
             console.log('Date Expiration:', dateExpiration);
-            if(dateExpiration === null){
-                dateExpiration = "noway";
-                //console.log('Date Expiration:', dateExpiration);
-            }
     
-            // Proceed if dateExpiration is null, empty, or in the future
-            if (dateExpiration === "noway" || new Date(dateExpiration) > new Date()) {
-               
+            // Convert dateExpiration to a Date object for comparison
+            const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
+    
+            // Check if 24 hours have passed since dateExpiration
+            const currentTime = new Date();
+            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+    
+            // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
+            if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
                 for (const item of items) {
                     const { itemID, status, remarks } = item;
                     const [currentStatusResult] = await connection.query(
@@ -817,6 +819,7 @@ module.exports = (db, db2) => {
             if (connection) connection.release();
         }
     });
+    
     
     
     // router.post('/inventory/log', async (req, res) => {

@@ -432,9 +432,10 @@ function passEye2() {
     
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
                 
                 tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
                     <td>${row.item}</td>
                     <td>${row.volunteer_name}</td>
                     <td>${new Date(row.checked_date).toLocaleDateString()}</td>
@@ -442,8 +443,7 @@ function passEye2() {
                     <td>${row.vehicle}</td>
                     <td>${row.from_vehicle}</td>
                     <td>${row.change_to}</td>
-                    <td class="w-72 break-words overflow-auto">${row.remarks}</td>
-
+                    <td class="w-72 break-words">${row.remarks}</td>
                 `;
                 
                 tbody.appendChild(tr);
@@ -472,20 +472,21 @@ function passEye2() {
     
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
                 
                 tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
                     <td>${row.item}</td>
                     <td>${row.volunteer_name}</td>
                     <td>${new Date(row.checked_date).toLocaleDateString()}</td>
                     <td>${row.checked_time}</td>
-                    <td>${row.vehicle}</td>
                     <td>${row.from_vehicle}</td>
                     <td>${row.change_to}</td>
                 `;
                 
                 tbody.appendChild(tr);
             });
+            
         })
         .catch(error => console.error('Error fetching inventory log data:', error));
     });

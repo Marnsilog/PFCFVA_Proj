@@ -11,32 +11,65 @@ function toggleEquipmentForm() {
     }
 }
 document.getElementById('addEquipmentForm').addEventListener('submit', function (event) {
-    var form = document.getElementById('addEquipmentForm');
-    var addForm = document.getElementById('addForm');
     event.preventDefault();
-
+    
     const formData = new FormData(this);
 
     fetch('/auth/addEquipment', {
         method: 'POST',
         body: formData,
     })
-    .then((response) => response.json())
+    .then((response) => {
+        if (!response.ok) {
+            // If the response is not OK, throw an error
+            return response.json().then(errData => {
+                throw new Error(errData.message || 'Failed to add equipment.');
+            });
+        }
+        return response.json();
+    })
     .then((data) => {
         if (data.success) {
             alert('Equipment successfully added.'); 
             document.getElementById('addEquipmentForm').reset();
-            addForm.style.display = 'none';
             loadEquipment();
         } else {
-            alert('Failed to add equipment.'); 
+            alert('Failed to add equipment: ' + data.message); 
         }
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('Failed to add equipment.');
+        alert('Failed to add equipment: ' + error.message);
     });
 });
+
+// document.getElementById('addEquipmentForm').addEventListener('submit', function (event) {
+//     var form = document.getElementById('addEquipmentForm');
+//     var addForm = document.getElementById('addForm');
+//     event.preventDefault();
+
+//     const formData = new FormData(this);
+
+//     fetch('/auth/addEquipment', {
+//         method: 'POST',
+//         body: formData,
+//     })
+//     .then((response) => response.json())
+//     .then((data) => {
+//         if (data.success) {
+//             alert('Equipment successfully added.'); 
+//             document.getElementById('addEquipmentForm').reset();
+//             addForm.style.display = 'none';
+//             loadEquipment();
+//         } else {
+//             alert('Failed to add equipment.'); 
+//         }
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error);
+//         alert('Failed to add equipment.');
+//     });
+// });
 
   
 //CLOSE FOR Add equipment

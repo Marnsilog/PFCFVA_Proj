@@ -1255,10 +1255,7 @@ const util = require('util');
 const query = util.promisify(db.query).bind(db);
 router.post('/reset-password', async (req, res) => {
     try {
-        //console.log("Request body:", req.body);
         const { token, password } = req.body;
-        //console.log("password:",password)
-        //console.log("Received token from request:", token);
     
         if (!token || !password) {
             return res.status(400).json({ message: 'Token and password are required.' });
@@ -1268,9 +1265,6 @@ router.post('/reset-password', async (req, res) => {
         console.log("Executing SQL:", sql, "with parameters:", [token, Date.now()]);
 
         const result = await query(sql, [token, Date.now()]);
-        //console.log("Query Result:", result); // Log the result
-  
-        // Check if the result is structured as expected
         if (!Array.isArray(result) || result.length === 0) {
             return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
         }

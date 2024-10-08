@@ -99,6 +99,10 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
     event.preventDefault();
 
     const email = event.target.email.value;
+    const loadingContainer = document.getElementById('loading-container');
+
+    // Show loading spinner
+    loadingContainer.style.display = 'block';
 
     try {
         const response = await fetch('/auth/send-email', {
@@ -106,22 +110,26 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email }) 
+            body: JSON.stringify({ email })
         });
 
         const data = await response.json();
 
         if (response.ok) {
             alert(data.message);
-            window.location.href = '/login'; 
+            loadingContainer.style.display = 'none';
+            window.location.href = '/login';
         } else {
-            alert(data.message)
+            alert(data.message);
         }
     } catch (err) {
-        
         alert('An error occurred. Please try again later.');
+    } finally {
+        // Hide loading spinner once the request completes
+        loadingContainer.style.display = 'none';
     }
 });
+
 
 
 

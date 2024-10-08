@@ -952,6 +952,34 @@ app.get('/getIncidentLog/:icsID', (req, res) => {
 
 
 
+//RANKUP
+
+app.get('/eligibleRanks', (req, res) => {
+    const sql = `
+        SELECT 
+            a.firstName,
+            a.middleInitial,
+            a.lastName,
+            a.callSign,
+            a.dutyHours,
+            a.fireResponsePoints
+        FROM tbl_accounts a
+        WHERE 
+            (a.callSign = 'Aspirant' AND a.dutyHours >= 100 AND a.fireResponsePoints >= 0) OR
+            (a.callSign = 'Probationary' AND a.dutyHours >= 1000 AND a.fireResponsePoints >= 10) OR
+            (a.callSign = 'Echo' AND a.dutyHours >= 2000 AND a.fireResponsePoints >= 20)
+        ORDER BY a.lastName, a.firstName
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error retrieving eligible accounts:', err);
+            return res.status(500).json({ error: 'Error retrieving eligible accounts' });
+        }
+
+        res.json(results);
+    });
+});
 
 
 const pages = require('./routes/pages');

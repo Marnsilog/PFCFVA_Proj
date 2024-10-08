@@ -1,18 +1,18 @@
 
 //ADD EQUIPMENT FORM TOGGLE
 function toggleEquipmentForm() {
-    var form = document.getElementById('addEquipmentForm');
-    if (form.classList.contains('hidden')) {
-        form.classList.remove('hidden'); 
-        form.classList.add('flex'); 
+    var addForm = document.getElementById('addForm');
+    if (addForm.style.display === 'none' || v.style.display === '') {
+     
+        addForm.style.display = 'block';
     } else {
-        form.classList.add('hidden'); 
-        form.classList.remove('flex');
+      
+        addForm.style.display = 'none';
     }
 }
 document.getElementById('addEquipmentForm').addEventListener('submit', function (event) {
     var form = document.getElementById('addEquipmentForm');
-   
+    var addForm = document.getElementById('addForm');
     event.preventDefault();
 
     const formData = new FormData(this);
@@ -26,7 +26,7 @@ document.getElementById('addEquipmentForm').addEventListener('submit', function 
         if (data.success) {
             alert('Equipment successfully added.'); 
             document.getElementById('addEquipmentForm').reset();
-            form.classList.add('hidden'); 
+            addForm.style.display = 'none';
             loadEquipment();
         } else {
             alert('Failed to add equipment.'); 
@@ -41,8 +41,8 @@ document.getElementById('addEquipmentForm').addEventListener('submit', function 
   
 //CLOSE FOR Add equipment
 function closeForm() {
-    var form = document.getElementById('addEquipmentForm');
-    form.classList.add('hidden'); 
+    var addForm = document.getElementById('addForm');
+    addForm.style.display = 'none';
 }
 
 //TRASH EQUIPMENT TOGGLE
@@ -493,15 +493,14 @@ function saveEquipment() {
     const updatedVehicleAssignment = document.getElementById('editvehicleAssignment').value;
     const itemImageFile = document.getElementById('editImage').files[0];
     
-    const itemId = document.getElementById('itemId').value; // Get the stored itemId
-
+    const itemId = document.getElementById('itemId').value; 
     const formData = new FormData();
     formData.append('updatedItemName', updatedItemName);
     formData.append('updatedVehicleAssignment', updatedVehicleAssignment);
     formData.append('itemImage', itemImageFile);
     formData.append('itemId', itemId); 
     
-    fetch('/updateEquipment', {
+    fetch('/auth/updateEquipment', {
         method: 'PUT',
         body: formData
     })
@@ -510,7 +509,7 @@ function saveEquipment() {
         if (data.message) {
             alert(data.message);
             loadEquipment();
-            document.getElementById('invedit').style.display = 'none';
+            exitinvedit();
         } else {
             alert('Update failed');
         }
@@ -524,6 +523,12 @@ function saveEquipment() {
 
 
 function exitinvedit(){
+
+        document.getElementById('itemId').value = '';
+        document.getElementById('editImage').value = ''; // Resets the file input
+        document.getElementById('itemImageadsd').src = ''; // Reset the image source
+        document.getElementById('editvehicleAssignment').selectedIndex = 0; // Resets the select to the first option
+        document.getElementById('name').value = '';
     var invedit = document.getElementById('invedit');
     invedit.style.display = 'none';
 

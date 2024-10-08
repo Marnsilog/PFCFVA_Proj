@@ -737,82 +737,82 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
 
 
 //edit equip route
-app.put('/updateEquipment', (req, res) => {
-    const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
-    let itemImagePath = null;
+// app.put('/updateEquipment', (req, res) => {
+//     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+//     let itemImagePath = null;
 
-    // Step 1: Get the current image path from the database
-    const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-    db.query(getCurrentImagePathSql, [itemId], (err, results) => {
-        if (err) {
-            console.error('Error retrieving current image path:', err);
-            return res.status(500).send({ success: false, message: 'Error retrieving current image' });
-        }
+//     // Step 1: Get the current image path from the database
+//     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+//     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
+//         if (err) {
+//             console.error('Error retrieving current image path:', err);
+//             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
+//         }
 
-        // If item not found, send a 404 error
-        if (results.length === 0) {
-            return res.status(404).send({ success: false, message: 'Item not found' });
-        }
+//         // If item not found, send a 404 error
+//         if (results.length === 0) {
+//             return res.status(404).send({ success: false, message: 'Item not found' });
+//         }
 
-        // Get the current image path
-        const currentImagePath = results[0].itemImage;
+//         // Get the current image path
+//         const currentImagePath = results[0].itemImage;
 
-        // Step 2: Check if a new image is uploaded
-        if (req.files && req.files.itemImage) {
-            const itemImage = req.files.itemImage;
-            const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
-            const uploadDir = path.join(__dirname, 'public/uploads');
-            const uploadPath = path.join(uploadDir, uniqueFileName);
+//         // Step 2: Check if a new image is uploaded
+//         if (req.files && req.files.itemImage) {
+//             const itemImage = req.files.itemImage;
+//             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+//             const uploadDir = path.join(__dirname, 'public/uploads');
+//             const uploadPath = path.join(uploadDir, uniqueFileName);
             
-            if (!fs.existsSync(uploadDir)) {
-                fs.mkdirSync(uploadDir, { recursive: true });
-            }
-            itemImage.mv(uploadPath, (err) => {
-                if (err) {
-                    console.error('Error moving file:', err);
-                    return res.status(500).send({ success: false, message: 'Error saving item image' });
-                }
-                itemImagePath = `uploads/${uniqueFileName}`;
-                if (currentImagePath) {
-                    const existingImagePath = path.join(__dirname, 'public', currentImagePath);
-                    if (fs.existsSync(existingImagePath)) {
-                        fs.unlink(existingImagePath, (err) => {
-                            if (err) {
-                                console.error('Error deleting existing image:', err);
-                                return res.status(500).send({ success: false, message: 'Error deleting existing image' });
-                            }
-                            updateDatabase();
-                        });
-                    } else {
-                        updateDatabase();
-                    }
-                } else {
-                    updateDatabase();
-                }
-            });
-        } else {
-            updateDatabase();
-        }
-    });
+//             if (!fs.existsSync(uploadDir)) {
+//                 fs.mkdirSync(uploadDir, { recursive: true });
+//             }
+//             itemImage.mv(uploadPath, (err) => {
+//                 if (err) {
+//                     console.error('Error moving file:', err);
+//                     return res.status(500).send({ success: false, message: 'Error saving item image' });
+//                 }
+//                 itemImagePath = `uploads/${uniqueFileName}`;
+//                 if (currentImagePath) {
+//                     const existingImagePath = path.join(__dirname, 'public', currentImagePath);
+//                     if (fs.existsSync(existingImagePath)) {
+//                         fs.unlink(existingImagePath, (err) => {
+//                             if (err) {
+//                                 console.error('Error deleting existing image:', err);
+//                                 return res.status(500).send({ success: false, message: 'Error deleting existing image' });
+//                             }
+//                             updateDatabase();
+//                         });
+//                     } else {
+//                         updateDatabase();
+//                     }
+//                 } else {
+//                     updateDatabase();
+//                 }
+//             });
+//         } else {
+//             updateDatabase();
+//         }
+//     });
 
-    function updateDatabase() {
-        const sql = `
-            UPDATE tbl_inventory
-            SET itemName = ?, 
-            vehicleAssignment = ?,
-            itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
-            WHERE itemID = ?
-        `;
+//     function updateDatabase() {
+//         const sql = `
+//             UPDATE tbl_inventory
+//             SET itemName = ?, 
+//             vehicleAssignment = ?,
+//             itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+//             WHERE itemID = ?
+//         `;
 
-        db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
-            if (err) {
-                console.error('Database update error:', err);
-                return res.status(500).json({ error: 'Failed to update equipment' });
-            }
-            res.status(200).json({ message: 'Equipment updated successfully' });
-        });
-    }
-});
+//         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+//             if (err) {
+//                 console.error('Database update error:', err);
+//                 return res.status(500).json({ error: 'Failed to update equipment' });
+//             }
+//             res.status(200).json({ message: 'Equipment updated successfully' });
+//         });
+//     }
+// });
 
 // app.put('/updateEquipment', (req, res) => {
 //     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;

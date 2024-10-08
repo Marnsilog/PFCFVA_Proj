@@ -1546,10 +1546,6 @@ video {
   width: 20rem;
 }
 
-.w-\[20vh\]{
-  width: 20vh;
-}
-
 .w-\[22rem\]{
   width: 22rem;
 }
@@ -1564,6 +1560,10 @@ video {
 
 .w-\[30\%\]{
   width: 30%;
+}
+
+.w-\[30vh\]{
+  width: 30vh;
 }
 
 .w-\[32rem\]{
@@ -1630,12 +1630,8 @@ video {
   width: 100%;
 }
 
-.w-60{
-  width: 15rem;
-}
-
-.w-\[30vh\]{
-  width: 30vh;
+.w-44{
+  width: 11rem;
 }
 
 .min-w-full{
@@ -2493,10 +2489,6 @@ video {
   padding-top: 6px;
 }
 
-.pt-10{
-  padding-top: 2.5rem;
-}
-
 .text-left{
   text-align: left;
 }
@@ -2615,6 +2607,10 @@ video {
 
 .font-semibold{
   font-weight: 600;
+}
+
+.uppercase{
+  text-transform: uppercase;
 }
 
 .lowercase{

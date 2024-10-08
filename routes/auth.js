@@ -6,6 +6,9 @@ const upload = multer();
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer'); 
+const crypto = require('crypto');
+
 
 module.exports = (db, db2) => {
     router.post('/register', (req, res) => {
@@ -868,8 +871,6 @@ module.exports = (db, db2) => {
         });
     });
     
-    
-    
     // router.get('/inventory2', (req, res) => {
     //     const username = req.session.user?.username; 
     //     const search = req.query.search || ''; 
@@ -1193,6 +1194,104 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             });
         }
     });
+
+    
+    router.post('/send-email', async (req, res) => {
+        try {
+            const { email } = req.body;
+    
+            // Check if the user exists
+            const user = await db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [email]);
+            if (!user || user.length === 0) {
+                return res.status(400).json({ message: 'No account with that email found.' });
+            }
+    
+            const token = crypto.randomBytes(20).toString('hex');
+            const expireTime = Date.now() + 3600000; // 1 hour expiration
+            await db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE emailAddress = ?', [token, expireTime, email]);
+    
+            // Create the reset link
+            const resetLink = `http://${req.headers.host}/auth/reset-password/${token}`;
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD,
+                },
+            });
+    
+            const mailOptions = {
+                to: email,
+                from: process.env.EMAIL,
+                subject: 'Password Reset',
+                text: `You are receiving this because you (or someone else) requested the reset of your account's password.\n\n` +
+                      `Please click the following link, or copy and paste it into your browser to complete the process:\n\n` +
+                      `${resetLink}\n\n` +
+                      `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+            };
+    
+            // Send the email
+            await transporter.sendMail(mailOptions);
+    
+            // Return success response
+            res.status(200).json({ message: 'Reset link sent to your email.' });
+        } catch (err) {
+            console.error('Error sending email:', err);
+            res.status(500).json({ message: 'Internal server error.' });
+        }
+    });
+
+    router.get('/reset-password/:token', (req, res) => {
+        const token = req.params.token;
+        //console.log("Received token:", token); 
+        res.sendFile(path.join(__dirname, '..', 'public', 'reset_pass.html'), {
+            headers: {
+                'token': token 
+            }
+        });
+    });
+    
+const util = require('util');
+const query = util.promisify(db.query).bind(db);
+router.post('/reset-password', async (req, res) => {
+    try {
+        //console.log("Request body:", req.body);
+        const { token, password } = req.body;
+        //console.log("password:",password)
+        //console.log("Received token from request:", token);
+    
+        if (!token || !password) {
+            return res.status(400).json({ message: 'Token and password are required.' });
+        }
+
+        const sql = 'SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?';
+        console.log("Executing SQL:", sql, "with parameters:", [token, Date.now()]);
+
+        const result = await query(sql, [token, Date.now()]);
+        //console.log("Query Result:", result); // Log the result
+  
+        // Check if the result is structured as expected
+        if (!Array.isArray(result) || result.length === 0) {
+            return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
+        }
+  
+        const user = result[0];
+    
+        const hashedPassword = await bcrypt.hash(password, 10);
+    
+        await query(
+            'UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID  = ?',
+            [hashedPassword, user.accountID ]
+        );
+    
+        res.status(200).json({ message: 'Your password has been updated. You can now log in.', redirectTo: '/' });
+    } catch (error) {
+        console.error('Error resetting password:', error.message || error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
+
+  
     return router;
 };
 

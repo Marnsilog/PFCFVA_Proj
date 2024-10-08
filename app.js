@@ -959,8 +959,7 @@ app.use('/', pages);
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.use('/profilePicture', express.static(path.join(__dirname, 'profilePicture')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
-
-
+app.use('/public', express.static(path.join(__dirname, 'public')));
 // //port
 // const PORT = 3000;
 // app.listen(PORT, () => {

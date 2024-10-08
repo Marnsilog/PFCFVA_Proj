@@ -18,6 +18,12 @@ const http = require('http');  // Added for HTTP server creation
 // const MySQLStore = require('express-mysql-session')(session);
 const mysql2 = require('mysql2/promise');
 const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: 'duhumw72j',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 
 
@@ -601,7 +607,32 @@ app.get('/getVehicleAssignments', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-app.get('/getEquipment', (req, res) => {
+// app.get('/getEquipment', (req, res) => {
+//     try {
+//         const search = req.query.search || ''; 
+//         const query = `
+//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
+//             WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+//             AND itemStatus = 'Available'
+//         `;
+
+//         const searchParam = `%${search}%`;
+
+//         db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
+//             if (err) {
+//                 console.error('Failed to retrieve equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
+//             }
+//             //console.log(results);
+//             res.json(results); // Send results back as JSON
+//         });
+//     } catch (error) {
+//         console.error('Unexpected error:', error);
+//         res.status(500).json({ error: 'An unexpected error occurred' });
+//     }
+// });
+
+app.get('/getEquipment', (req, res) => { 
     try {
         const search = req.query.search || ''; 
         const query = `
@@ -617,14 +648,20 @@ app.get('/getEquipment', (req, res) => {
                 console.error('Failed to retrieve equipment:', err);
                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
             }
-            //console.log(results);
-            res.json(results); // Send results back as JSON
+
+            const equipment = results.map(item => ({
+                ...item,
+                itemImage: cloudinary.url(item.itemImage) 
+            }));
+
+            res.json(equipment);
         });
     } catch (error) {
         console.error('Unexpected error:', error);
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
+
 
 
 

@@ -663,30 +663,60 @@ app.get('/getEquipment', (req, res) => {
 });
 
 
-
-
-
-app.get('/getTrashedEquipment', (req, res) => {
+app.get('/getTrashedEquipment', (req, res) => { 
     try {
         const search = req.query.search || ''; 
-        const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+        const query = `
+            SELECT itemID, itemName, itemImage, vehicleAssignment 
+            FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+            AND itemStatus = 'trash'
+        `;
 
         const searchParam = `%${search}%`;
 
-        // Pass search parameters in an array
-        db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+        db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
             if (err) {
-                console.error('Failed to retrieve equipment:', err);
-                return res.status(500).json({ error: 'Failed to retrieve equipment' });
+                console.error('Failed to retrieve trashed equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve trashed equipment' });
             }
-            //console.log(results);
-            res.json(results); // Send results back as JSON
+
+            const trashedEquipment = results.map(item => ({
+                ...item,
+                itemImage: cloudinary.url(item.itemImage) 
+            }));
+
+            res.json(trashedEquipment);
         });
     } catch (error) {
         console.error('Unexpected error:', error);
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
+
+
+
+// app.get('/getTrashedEquipment', (req, res) => {
+//     try {
+//         const search = req.query.search || ''; 
+//         const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+
+//         const searchParam = `%${search}%`;
+
+//         // Pass search parameters in an array
+//         db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+//             if (err) {
+//                 console.error('Failed to retrieve equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
+//             }
+//             //console.log(results);
+//             res.json(results); // Send results back as JSON
+//         });
+//     } catch (error) {
+//         console.error('Unexpected error:', error);
+//         res.status(500).json({ error: 'An unexpected error occurred' });
+//     }
+// });
 
 
 app.put('/moveToTrash/:itemID', (req, res) => {

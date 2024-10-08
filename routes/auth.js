@@ -1285,12 +1285,15 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(result);
         });
     });
+
     router.post('/addEquipment', async (req, res) => {
-        // Handle file upload errors
+        const { itemName, vehicleAssignment, dateAcquired } = req.body;
+        let itemImagePath = null;
+    
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
     
-            // Check for file size
+            // Check for file size limit
             if (itemImage.size > 5 * 1024 * 1024) { // Example limit of 5 MB
                 return res.status(400).json({ success: false, message: 'File size exceeds limit.' });
             }
@@ -1298,7 +1301,7 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             // Process the image
             const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
             const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
-            
+    
             try {
                 await sharp(itemImage.data)
                     .resize(500)
@@ -1322,6 +1325,24 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             return res.status(500).json({ success: false, message: 'Error inserting equipment data.' });
         }
     });
+    
+    async function insertEquipment(itemName, vehicleAssignment, dateAcquired, itemImagePath) {
+        const query = `
+            INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+            VALUES (?, ?, ?, ?)
+        `;
+        const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+    
+        return new Promise((resolve, reject) => {
+            db.query(query, queryParams, (error, results) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results);
+            });
+        });
+    }
+    
     
     // router.post('/addEquipment', (req, res) => {
     //     const { itemName, vehicleAssignment, dateAcquired } = req.body;

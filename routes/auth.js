@@ -9,7 +9,13 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer'); 
 const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2;
 
+cloudinary.config({
+    cloud_name: 'duhumw72j',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 module.exports = (db, db2) => {
     router.post('/register', (req, res) => {
@@ -1241,28 +1247,60 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(results);
         });
     });
-    router.get('/equipment/:id', (req, res) => {
-        const itemId = parseInt(req.params.id, 10); // Convert string to integer
+
+    // router.get('/equipment/:id', (req, res) => {
+    //     const itemId = parseInt(req.params.id, 10); // Convert string to integer
         
-        const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
-        db.query(query, [itemId], (error, results) => {
-            if (error) {
-                console.error('Error fetching equipment data:', error);
-                return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
-            }
+    //     const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
+    //     db.query(query, [itemId], (error, results) => {
+    //         if (error) {
+    //             console.error('Error fetching equipment data:', error);
+    //             return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+    //         }
             
-            if (results.length === 0) {
-                return res.status(404).json({ success: false, message: 'Equipment not found' });
-            }
+    //         if (results.length === 0) {
+    //             return res.status(404).json({ success: false, message: 'Equipment not found' });
+    //         }
     
-            const equipment = results[0];
+    //         const equipment = results[0];
     
-            // If the equipment image is not found, use the default image
-            const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
+    //         // If the equipment image is not found, use the default image
+    //         const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
 
             
-            res.json({ success: true, data: { ...equipment, itemImagePath } });
-        });
+    //         res.json({ success: true, data: { ...equipment, itemImagePath } });
+    //     });
+    // });
+    
+    router.get('/equipment/:id', async (req, res) => {
+        try {
+            const itemId = parseInt(req.params.id, 10); // Convert string to integer
+            
+            const query = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemID = ?';
+            db.query(query, [itemId], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching equipment data:', error);
+                    return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+                }
+                
+                if (results.length === 0) {
+                    return res.status(404).json({ success: false, message: 'Equipment not found' });
+                }
+    
+                const equipment = results[0];
+    
+                // Generate the Cloudinary URL
+                const itemImagePath = equipment.itemImage 
+                    ? cloudinary.url(equipment.itemImage) 
+                    : 'https://your-cloudinary-default-image-url.com/default.jpg'; // Default image URL if no image is found
+    
+                // Return the equipment data along with the image URL
+                res.json({ success: true, data: { ...equipment, itemImagePath } });
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            res.status(500).json({ success: false, message: 'An unexpected error occurred' });
+        }
     });
     
     router.get('/getMembers', (req, res) => {
@@ -1289,46 +1327,52 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
-    
+
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
-    
-            // Check for file size limit (e.g., 50 MB)
-            if (itemImage.size > 50 * 1024 * 1024) { // Adjust the size limit as necessary
+            if (itemImage.size > 50 * 1024 * 1024) {
                 return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
             }
-    
-            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
-            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
-    
+
             try {
-                // Process and save the image
+                const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
+
                 await sharp(itemImage.data)
-                    .resize(500) // Resize as necessary
-                    .toFormat('jpeg') // You can also change this to 'png' if you prefer
-                    .jpeg({ quality: 70 }) // Adjust quality if needed
-                    .toFile(uploadPath);
-    
-                itemImagePath = `uploads/${uniqueFileName}`;
+                    .resize({ width: 800 })
+                    .jpeg({ quality: 80 }) 
+                    .toFile(tempFilePath);
+
+                // Upload the resized image to Cloudinary
+                const uniqueFileName = `${itemName}_${Date.now()}`;
+                const result = await cloudinary.uploader.upload(tempFilePath, {
+                    folder: 'uploads',
+                    public_id: uniqueFileName,
+                });
+
+                // Get the secure URL from Cloudinary
+                itemImagePath = result.secure_url;
+
+                // Clean up the temp file after upload
+                fs.unlinkSync(tempFilePath);
             } catch (error) {
-                console.error('Error processing image:', error);
-                return res.status(500).json({ success: false, message: 'Error processing image.' });
+                console.error('Error uploading image to Cloudinary:', error);
+                return res.status(500).json({ success: false, message: 'Error uploading image.' });
             }
         }
-    
+
         // Insert equipment data into the database
         const query = `
             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
             VALUES (?, ?, ?, ?)
         `;
         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
-    
+
         db.query(query, queryParams, (error, results) => {
             if (error) {
                 console.error('Error inserting equipment data:', error);
                 return res.status(500).json({ success: false, message: 'Internal Server Error' });
             }
-    
+
             res.json({ success: true, message: 'Equipment added successfully.' });
         });
     });
@@ -1380,12 +1424,12 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     //     }
     // });
 
-    router.put('/updateEquipment', (req, res) => {
+    router.put('/updateEquipment', async (req, res) => {
         const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
         let itemImagePath = null;
-
+    
         const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-        db.query(getCurrentImagePathSql, [itemId], (err, results) => {
+        db.query(getCurrentImagePathSql, [itemId], async (err, results) => {
             if (err) {
                 console.error('Error retrieving current image path:', err);
                 return res.status(500).send({ success: false, message: 'Error retrieving current image' });
@@ -1394,59 +1438,56 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 return res.status(404).send({ success: false, message: 'Item not found' });
             }
             const currentImagePath = results[0].itemImage;
+    
             if (req.files && req.files.itemImage) {
                 const itemImage = req.files.itemImage;
-                const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
-                const uploadDir = path.join(__dirname, '../public/uploads');
-                const uploadPath = path.join(uploadDir, uniqueFileName);
-                
-                // Ensure upload directory exists
-                if (!fs.existsSync(uploadDir)) {
-                    fs.mkdirSync(uploadDir, { recursive: true });
+    
+                if (itemImage.size > 50 * 1024 * 1024) {
+                    return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
                 }
     
-
-                sharp(itemImage.data)
-                    .resize(500) // Resize to a width of 800px (adjust as necessary)
-                    .toFormat('jpeg') // Convert to JPEG format
-                    .jpeg({ quality: 80 }) // Set JPEG quality to 80%
-                    .toFile(uploadPath, (err) => {
-                        if (err) {
-                            console.error('Error processing image:', err);
-                            return res.status(500).send({ success: false, message: 'Error saving item image' });
-                        }
+                try {
+                    // Resize the image and save it temporarily before uploading to Cloudinary
+                    const tempFilePath = path.join(__dirname, 'temp', `${updatedItemName}_${Date.now()}_resized.jpg`);
     
-                        itemImagePath = `uploads/${uniqueFileName}`;
-                        // Step 3: Delete the old image if it exists
-                        if (currentImagePath) {
-                            const existingImagePath = path.join(__dirname, '../public', currentImagePath);
-                            if (fs.existsSync(existingImagePath)) {
-                                fs.unlink(existingImagePath, (err) => {
-                                    if (err) {
-                                        console.error('Error deleting existing image:', err);
-                                        return res.status(500).send({ success: false, message: 'Error deleting existing image' });
-                                    }
-                                    updateDatabase();
-                                });
-                            } else {
-                                updateDatabase();
-                            }
-                        } else {
-                            updateDatabase();
-                        }
+                    await sharp(itemImage.data)
+                        .resize({ width: 800 }) // Adjust the width as necessary
+                        .jpeg({ quality: 80 })
+                        .toFile(tempFilePath);
+    
+                    // Upload the resized image to Cloudinary
+                    const uniqueFileName = `${updatedItemName}_${Date.now()}`;
+                    const result = await cloudinary.uploader.upload(tempFilePath, {
+                        folder: 'uploads',
+                        public_id: uniqueFileName,
                     });
-            } else {
-                // No new image uploaded, just update the database
-                updateDatabase();
-            }
-        });
     
-        function updateDatabase() {
+                    // Get the secure URL from Cloudinary
+                    itemImagePath = result.secure_url;
+    
+                    // Clean up the temp file after upload
+                    fs.unlinkSync(tempFilePath);
+    
+                    // Step 3: Delete the old image if it exists
+                    if (currentImagePath) {
+                        const existingImagePublicId = currentImagePath.split('/').pop().split('.')[0]; // Extract public ID from the URL
+                        await cloudinary.uploader.destroy(existingImagePublicId);
+                    }
+                } catch (error) {
+                    console.error('Error uploading image to Cloudinary:', error);
+                    return res.status(500).json({ success: false, message: 'Error uploading image.' });
+                }
+            } else {
+                // No new image uploaded, just retain the current image path
+                itemImagePath = currentImagePath;
+            }
+    
+            // Update the database with the new data
             const sql = `
                 UPDATE tbl_inventory
                 SET itemName = ?, 
                     vehicleAssignment = ?,
-                    itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+                    itemImage = ?
                 WHERE itemID = ?
             `;
     
@@ -1457,8 +1498,88 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 }
                 res.status(200).json({ success: true, message: 'Equipment updated successfully' });
             });
-        }
+        });
     });
+    
+    // router.put('/updateEquipment', (req, res) => {
+    //     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+    //     let itemImagePath = null;
+
+    //     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+    //     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
+    //         if (err) {
+    //             console.error('Error retrieving current image path:', err);
+    //             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
+    //         }
+    //         if (results.length === 0) {
+    //             return res.status(404).send({ success: false, message: 'Item not found' });
+    //         }
+    //         const currentImagePath = results[0].itemImage;
+    //         if (req.files && req.files.itemImage) {
+    //             const itemImage = req.files.itemImage;
+    //             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+    //             const uploadDir = path.join(__dirname, '../public/uploads');
+    //             const uploadPath = path.join(uploadDir, uniqueFileName);
+                
+    //             // Ensure upload directory exists
+    //             if (!fs.existsSync(uploadDir)) {
+    //                 fs.mkdirSync(uploadDir, { recursive: true });
+    //             }
+    
+
+    //             sharp(itemImage.data)
+    //                 .resize(500) // Resize to a width of 800px (adjust as necessary)
+    //                 .toFormat('jpeg') // Convert to JPEG format
+    //                 .jpeg({ quality: 80 }) // Set JPEG quality to 80%
+    //                 .toFile(uploadPath, (err) => {
+    //                     if (err) {
+    //                         console.error('Error processing image:', err);
+    //                         return res.status(500).send({ success: false, message: 'Error saving item image' });
+    //                     }
+    
+    //                     itemImagePath = `uploads/${uniqueFileName}`;
+    //                     // Step 3: Delete the old image if it exists
+    //                     if (currentImagePath) {
+    //                         const existingImagePath = path.join(__dirname, '../public', currentImagePath);
+    //                         if (fs.existsSync(existingImagePath)) {
+    //                             fs.unlink(existingImagePath, (err) => {
+    //                                 if (err) {
+    //                                     console.error('Error deleting existing image:', err);
+    //                                     return res.status(500).send({ success: false, message: 'Error deleting existing image' });
+    //                                 }
+    //                                 updateDatabase();
+    //                             });
+    //                         } else {
+    //                             updateDatabase();
+    //                         }
+    //                     } else {
+    //                         updateDatabase();
+    //                     }
+    //                 });
+    //         } else {
+    //             // No new image uploaded, just update the database
+    //             updateDatabase();
+    //         }
+    //     });
+    
+    //     function updateDatabase() {
+    //         const sql = `
+    //             UPDATE tbl_inventory
+    //             SET itemName = ?, 
+    //                 vehicleAssignment = ?,
+    //                 itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+    //             WHERE itemID = ?
+    //         `;
+    
+    //         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+    //             if (err) {
+    //                 console.error('Database update error:', err);
+    //                 return res.status(500).json({ success: false, message: 'Failed to update equipment' });
+    //             }
+    //             res.status(200).json({ success: true, message: 'Equipment updated successfully' });
+    //         });
+    //     }
+    // });
     
     
     router.post('/send-email', async (req, res) => {

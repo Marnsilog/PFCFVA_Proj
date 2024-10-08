@@ -1285,35 +1285,178 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(result);
         });
     });
+
+
     
-    router.post('/addEquipment', (req, res) => {
+    // router.post('/addEquipment', (req, res) => {
+    //     const { itemName, vehicleAssignment, dateAcquired } = req.body;
+    //     let itemImagePath = null;
+    
+    //     if (req.files && req.files.itemImage) {
+    //         const itemImage = req.files.itemImage;
+    //         const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+    //         const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+    
+    //         sharp(itemImage.data)
+    //             .resize(500) // Resize to a width of 800px (adjust as necessary)
+    //             .toFormat('jpeg') // Convert to JPEG format (you can change this based on your requirement)
+    //             .jpeg({ quality: 80 }) // Set JPEG quality to 80%
+    //             .toFile(uploadPath, (err, info) => {
+    //                 if (err) {
+    //                     console.error('Error processing image:', err);
+    //                     return res.status(500).send({ success: false, message: 'Internal Server Error' });
+    //                 }
+    
+    //                 itemImagePath = `uploads/${uniqueFileName}`;
+    //                 insertEquipment();
+    //             });
+    //     } else {
+    //         // No image uploaded, proceed with inserting data into the database
+    //         insertEquipment();
+    //     }
+    
+    //     function insertEquipment() {
+    //         const query = `
+    //             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+    //             VALUES (?, ?, ?, ?)
+    //         `;
+    //         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+    
+    //         db.query(query, queryParams, (error, results) => {
+    //             if (error) {
+    //                 console.error('Error inserting equipment data:', error);
+    //                 return res.status(500).send({ success: false, message: 'Internal Server Error' });
+    //             }
+    
+    //             res.send({ success: true, message: 'Equipment added successfully.' });
+    //         });
+    //     }
+    // });
+
+    // router.put('/updateEquipment', (req, res) => {
+    //     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+    //     let itemImagePath = null;
+
+    //     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+    //     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
+    //         if (err) {
+    //             console.error('Error retrieving current image path:', err);
+    //             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
+    //         }
+    //         if (results.length === 0) {
+    //             return res.status(404).send({ success: false, message: 'Item not found' });
+    //         }
+    //         const currentImagePath = results[0].itemImage;
+    //         if (req.files && req.files.itemImage) {
+    //             const itemImage = req.files.itemImage;
+    //             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+    //             const uploadDir = path.join(__dirname, '../public/uploads');
+    //             const uploadPath = path.join(uploadDir, uniqueFileName);
+                
+    //             // Ensure upload directory exists
+    //             if (!fs.existsSync(uploadDir)) {
+    //                 fs.mkdirSync(uploadDir, { recursive: true });
+    //             }
+    
+
+    //             sharp(itemImage.data)
+    //                 .resize(500) // Resize to a width of 800px (adjust as necessary)
+    //                 .toFormat('jpeg') // Convert to JPEG format
+    //                 .jpeg({ quality: 80 }) // Set JPEG quality to 80%
+    //                 .toFile(uploadPath, (err) => {
+    //                     if (err) {
+    //                         console.error('Error processing image:', err);
+    //                         return res.status(500).send({ success: false, message: 'Error saving item image' });
+    //                     }
+    
+    //                     itemImagePath = `uploads/${uniqueFileName}`;
+    //                     // Step 3: Delete the old image if it exists
+    //                     if (currentImagePath) {
+    //                         const existingImagePath = path.join(__dirname, '../public', currentImagePath);
+    //                         if (fs.existsSync(existingImagePath)) {
+    //                             fs.unlink(existingImagePath, (err) => {
+    //                                 if (err) {
+    //                                     console.error('Error deleting existing image:', err);
+    //                                     return res.status(500).send({ success: false, message: 'Error deleting existing image' });
+    //                                 }
+    //                                 updateDatabase();
+    //                             });
+    //                         } else {
+    //                             updateDatabase();
+    //                         }
+    //                     } else {
+    //                         updateDatabase();
+    //                     }
+    //                 });
+    //         } else {
+    //             // No new image uploaded, just update the database
+    //             updateDatabase();
+    //         }
+    //     });
+    
+    //     function updateDatabase() {
+    //         const sql = `
+    //             UPDATE tbl_inventory
+    //             SET itemName = ?, 
+    //                 vehicleAssignment = ?,
+    //                 itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+    //             WHERE itemID = ?
+    //         `;
+    
+    //         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+    //             if (err) {
+    //                 console.error('Database update error:', err);
+    //                 return res.status(500).json({ success: false, message: 'Failed to update equipment' });
+    //             }
+    //             res.status(200).json({ success: true, message: 'Equipment updated successfully' });
+    //         });
+    //     }
+    // });
+    
+    // Timeout function
+    router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
     
-        if (req.files && req.files.itemImage) {
-            const itemImage = req.files.itemImage;
-            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
-            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+        try {
+            if (req.files && req.files.itemImage) {
+                const itemImage = req.files.itemImage;
+                const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+                const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
     
-            sharp(itemImage.data)
-                .resize(500) // Resize to a width of 800px (adjust as necessary)
-                .toFormat('jpeg') // Convert to JPEG format (you can change this based on your requirement)
-                .jpeg({ quality: 80 }) // Set JPEG quality to 80%
-                .toFile(uploadPath, (err, info) => {
-                    if (err) {
-                        console.error('Error processing image:', err);
-                        return res.status(500).send({ success: false, message: 'Internal Server Error' });
-                    }
-    
-                    itemImagePath = `uploads/${uniqueFileName}`;
-                    insertEquipment();
+                // Use sharp to process the image
+                await new Promise((resolve, reject) => {
+                    sharp(itemImage.data)
+                        .resize(500) // Resize to a width of 500px (adjust as necessary)
+                        .toFormat('jpeg') // Convert to JPEG format
+                        .jpeg({ quality: 70 }) // Set JPEG quality to 70%
+                        .toFile(uploadPath, (err) => {
+                            if (err) {
+                                console.error('Error processing image:', err);
+                                reject(new Error('Error processing image.'));
+                            } else {
+                                itemImagePath = `uploads/${uniqueFileName}`;
+                                resolve();
+                            }
+                        });
                 });
-        } else {
-            // No image uploaded, proceed with inserting data into the database
-            insertEquipment();
-        }
+            }
     
-        function insertEquipment() {
+            // Proceed with inserting data into the database
+            await insertEquipment(itemName, vehicleAssignment, dateAcquired, itemImagePath);
+    
+            // Respond with success
+            res.json({ success: true, message: 'Equipment added successfully.' });
+    
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: error.message });
+        }
+    });
+    
+    // Helper function to insert equipment into the database
+    function insertEquipment(itemName, vehicleAssignment, dateAcquired, itemImagePath) {
+        return new Promise((resolve, reject) => {
             const query = `
                 INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
                 VALUES (?, ?, ?, ?)
@@ -1323,95 +1466,60 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             db.query(query, queryParams, (error, results) => {
                 if (error) {
                     console.error('Error inserting equipment data:', error);
-                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+                    reject(new Error('Error inserting equipment data.'));
+                } else {
+                    resolve(results);
                 }
-    
-                res.send({ success: true, message: 'Equipment added successfully.' });
             });
-        }
-    });
-
-    router.put('/updateEquipment', (req, res) => {
-        const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
-        let itemImagePath = null;
-
-        const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-        db.query(getCurrentImagePathSql, [itemId], (err, results) => {
-            if (err) {
-                console.error('Error retrieving current image path:', err);
-                return res.status(500).send({ success: false, message: 'Error retrieving current image' });
-            }
-            if (results.length === 0) {
-                return res.status(404).send({ success: false, message: 'Item not found' });
-            }
-            const currentImagePath = results[0].itemImage;
-            if (req.files && req.files.itemImage) {
-                const itemImage = req.files.itemImage;
-                const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
-                const uploadDir = path.join(__dirname, '../public/uploads');
-                const uploadPath = path.join(uploadDir, uniqueFileName);
-                
-                // Ensure upload directory exists
-                if (!fs.existsSync(uploadDir)) {
-                    fs.mkdirSync(uploadDir, { recursive: true });
-                }
-    
-                // Use sharp to compress and save the new image
-                sharp(itemImage.data)
-                    .resize(500) // Resize to a width of 800px (adjust as necessary)
-                    .toFormat('jpeg') // Convert to JPEG format
-                    .jpeg({ quality: 80 }) // Set JPEG quality to 80%
-                    .toFile(uploadPath, (err) => {
-                        if (err) {
-                            console.error('Error processing image:', err);
-                            return res.status(500).send({ success: false, message: 'Error saving item image' });
-                        }
-    
-                        itemImagePath = `uploads/${uniqueFileName}`;
-                        // Step 3: Delete the old image if it exists
-                        if (currentImagePath) {
-                            const existingImagePath = path.join(__dirname, '../public', currentImagePath);
-                            if (fs.existsSync(existingImagePath)) {
-                                fs.unlink(existingImagePath, (err) => {
-                                    if (err) {
-                                        console.error('Error deleting existing image:', err);
-                                        return res.status(500).send({ success: false, message: 'Error deleting existing image' });
-                                    }
-                                    updateDatabase();
-                                });
-                            } else {
-                                updateDatabase();
-                            }
-                        } else {
-                            updateDatabase();
-                        }
-                    });
-            } else {
-                // No new image uploaded, just update the database
-                updateDatabase();
-            }
         });
+    };
     
-        function updateDatabase() {
-            const sql = `
-                UPDATE tbl_inventory
-                SET itemName = ?, 
-                    vehicleAssignment = ?,
-                    itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
-                WHERE itemID = ?
-            `;
-    
-            db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
-                if (err) {
-                    console.error('Database update error:', err);
-                    return res.status(500).json({ success: false, message: 'Failed to update equipment' });
-                }
-                res.status(200).json({ success: true, message: 'Equipment updated successfully' });
-            });
-        }
-    });
-    
-    
+// router.post('/addEquipment', (req, res) => {
+//     const { itemName, vehicleAssignment, dateAcquired } = req.body;
+//     let itemImagePath = null;
+
+//     if (req.files && req.files.itemImage) {
+//         const itemImage = req.files.itemImage;
+//         const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+//         const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+
+//         sharp(itemImage.data)
+//             .resize(500) // Resize to a width of 500px (adjust as necessary)
+//             .toFormat('jpeg') // Convert to JPEG format
+//             .jpeg({ quality: 70 }) // Set JPEG quality to 70%
+//             .toFile(uploadPath, (err) => {
+//                 if (err) {
+//                     console.error('Error processing image:', err);
+//                     return res.status(500).json({ success: false, message: 'Error processing image.' });
+//                 }
+
+//                 itemImagePath = `uploads/${uniqueFileName}`;
+//                 insertEquipment();
+//             });
+//     } else {
+//         // No image uploaded, proceed with inserting data into the database
+//         insertEquipment();
+//     }
+
+//     function insertEquipment() {
+//         const query = `
+//             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+//             VALUES (?, ?, ?, ?)
+//         `;
+//         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+
+//         db.query(query, queryParams, (error, results) => {
+//             if (error) {
+//                 console.error('Error inserting equipment data:', error);
+//                 return res.status(500).json({ success: false, message: 'Error inserting equipment data.' });
+//             }
+
+//             res.json({ success: true, message: 'Equipment added successfully.' });
+//         });
+//     }
+// });
+
+
     router.post('/send-email', async (req, res) => {
         try {
             const { email } = req.body;

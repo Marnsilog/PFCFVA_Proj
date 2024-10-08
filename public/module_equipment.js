@@ -12,7 +12,7 @@ function toggleEquipmentForm() {
 }
 document.getElementById('addEquipmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
-    
+
     const formData = new FormData(this);
 
     fetch('/auth/addEquipment', {
@@ -20,8 +20,8 @@ document.getElementById('addEquipmentForm').addEventListener('submit', function 
         body: formData,
     })
     .then((response) => {
+        // Check if the response is OK
         if (!response.ok) {
-            // If the response is not OK, throw an error
             return response.json().then(errData => {
                 throw new Error(errData.message || 'Failed to add equipment.');
             });
@@ -32,6 +32,7 @@ document.getElementById('addEquipmentForm').addEventListener('submit', function 
         if (data.success) {
             alert('Equipment successfully added.'); 
             document.getElementById('addEquipmentForm').reset();
+            addForm.style.display = 'none';
             loadEquipment();
         } else {
             alert('Failed to add equipment: ' + data.message); 
@@ -42,6 +43,7 @@ document.getElementById('addEquipmentForm').addEventListener('submit', function 
         alert('Failed to add equipment: ' + error.message);
     });
 });
+
 
 // document.getElementById('addEquipmentForm').addEventListener('submit', function (event) {
 //     var form = document.getElementById('addEquipmentForm');

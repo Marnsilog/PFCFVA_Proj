@@ -1293,22 +1293,22 @@ router.post('/inventory-supervisor/log', async (req, res) => {
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
     
-            // Check for file size limit
-            if (itemImage.size > 5 * 1024 * 1024) { // Example limit of 5 MB
-                return res.status(400).json({ success: false, message: 'File size exceeds limit.' });
+            // Check for file size limit (e.g., 50 MB)
+            if (itemImage.size > 50 * 1024 * 1024) { // Adjust the size limit as necessary
+                return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
             }
     
-            // Process the image
             const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
             const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
     
             try {
+                // Process and save the image
                 await sharp(itemImage.data)
-                    .resize(500)
-                    .toFormat('jpeg')
-                    .jpeg({ quality: 70 })
+                    .resize(500) // Resize as necessary
+                    .toFormat('jpeg') // You can also change this to 'png' if you prefer
+                    .jpeg({ quality: 70 }) // Adjust quality if needed
                     .toFile(uploadPath);
-                    
+    
                 itemImagePath = `uploads/${uniqueFileName}`;
             } catch (error) {
                 console.error('Error processing image:', error);
@@ -1316,32 +1316,23 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             }
         }
     
-        // Insert equipment into the database
-        try {
-            await insertEquipment(itemName, vehicleAssignment, dateAcquired, itemImagePath);
-            return res.json({ success: true, message: 'Equipment added successfully.' });
-        } catch (error) {
-            console.error('Error inserting equipment data:', error);
-            return res.status(500).json({ success: false, message: 'Error inserting equipment data.' });
-        }
-    });
-    
-    async function insertEquipment(itemName, vehicleAssignment, dateAcquired, itemImagePath) {
+        // Insert equipment data into the database
         const query = `
             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
             VALUES (?, ?, ?, ?)
         `;
         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
     
-        return new Promise((resolve, reject) => {
-            db.query(query, queryParams, (error, results) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(results);
-            });
+        db.query(query, queryParams, (error, results) => {
+            if (error) {
+                console.error('Error inserting equipment data:', error);
+                return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            }
+    
+            res.json({ success: true, message: 'Equipment added successfully.' });
         });
-    }
+    });
+    
     
     
     // router.post('/addEquipment', (req, res) => {

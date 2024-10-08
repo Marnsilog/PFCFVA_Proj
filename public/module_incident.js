@@ -1,6 +1,5 @@
 
-
-
+let selectedMembers = [];
 document.addEventListener('DOMContentLoaded', function() {
     // Code for fire_response.html
     if (document.getElementById('confirmAttendanceBtn')) {
@@ -73,10 +72,11 @@ function fetchCurrentPresent() {
 
             data.forEach(record => {
                 const row = document.createElement('tr');
+                row.classList.add('text-sm', 'md:text-2xl');
                 row.innerHTML = `
-                    <td class="py-2 px-4 border-b">${record.callSign}</td>
-                    <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                    <td class="py-2 px-4 border-b text-center">
+                    <td class="py-2 md:px-4 border-b">${record.callSign}</td>
+                    <td class="py-2 md:px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                    <td class="py-2 md:px-4 border-b text-center">
                         <a href="#" onclick="removeFromTable(this)">
                             <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
                         </a>
@@ -112,12 +112,12 @@ function handleICSPage() {
             <td class="py-2 px-4 border-b">${attendee.name}</td>
             <td><input type="checkbox"></td>
             <td>00:00:00</td> <!-- Placeholder for timer -->
-            <td><a class="text-3xl text-red-700 font-bold mr-4" href="#" onclick="removeAttendee(${index})">x</a></td>
+            <td><a class="text-3xl text-red-700 font-bold mr-4" href="#" onclick="removeFromTable(this)">x</a></td>
         `;
         icsAttendeesDiv.appendChild(row);
     });
 
-    // Get the selected vehicle from sessionStorage and display it in vehicleName
+    // Get the selected vehicle from sessionStorage and display it in vehicleNames
     const vehicleName = sessionStorage.getItem('selectedVehicle');
     if (vehicleName) {
         document.getElementById('vehicleName').textContent = vehicleName;  // Set the vehicle name in the ICS page
@@ -146,42 +146,6 @@ function loadVehicleAssignments() {
         })
         .catch(error => console.error('Error loading vehicle assignments:', error));
 }
-
-
-// // Function to fetch and display supervisor's name and call sign in ics.html
-// async function populateSupervisorName() {
-//     try {
-//         // Fetch the profile data of the logged-in user
-//         const response = await fetch('/auth/profile', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`Error: ${response.status} - ${response.statusText}`);
-//         }
-
-//         const result = await response.json();
-
-//         if (result.success) {
-//             const fullName = result.data.fullName;
-//             const callSign = result.data.callSign;
-
-//             // Populate the supervisorName field with FullName [CallSign]
-//             const supervisorNameElement = document.getElementById('supervisorName');
-//             if (supervisorNameElement) {
-//                 supervisorNameElement.textContent = `${fullName} [${callSign}]`;
-//             }
-//         } else {
-//             console.error('Error fetching supervisor name:', result.message);
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// }
-
 
 // Function to fetch and display supervisor's name and call sign in ics.html
 async function populateSupervisorName() {
@@ -221,9 +185,6 @@ async function populateSupervisorName() {
     }
 }
 
-
-
-
 // Call the function when ics.html is loaded
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('supervisorName')) {
@@ -231,18 +192,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we are on the ICS form page
     if (document.getElementById('responders')) {
         handleICSFormPage();
     }
 });
-
-
-
 
 // Function to handle the ICS Form page (supervisor_ics_form.html)
 function handleICSFormPage() {
@@ -277,46 +232,52 @@ function handleICSFormPage() {
 
 
 
+// document.getElementById('submitLogs').addEventListener('click', function() {
+//     // Retrieve the attendees stored in sessionStorage
+//     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
 
-// document.getElementById('submitLogs').addEventListener('click', function () {
-//     // Prepare the data
-//     const data = {
-//         supervisorName: document.getElementById('supervisorName').textContent,
+//     // Convert attendees array into a string format
+//     const formattedResponders = attendees.map(attendee => `[${attendee.callSign}] ${attendee.name}`).join(', ');
+
+//     // Gather the rest of the form data
+//     const formData = {
+//         supervisorName: sessionStorage.getItem('supervisorName'),
 //         incidentDate: document.getElementById('incidentDate').value,
 //         dispatchTime: document.getElementById('dispatchTime').value,
 //         location: document.getElementById('location').value,
 //         alarmStatus: document.getElementById('alarmStatus').value,
 //         whoRequested: document.getElementById('whoRequested').value,
 //         fireType: document.getElementById('fireType').value,
-//         vehicleUsed: document.getElementById('vehicleUsed').value,
-//         responders: sessionStorage.getItem('attendees'),  // Send as JSON
-//         chatLogs: document.getElementById('chatLogs').value,
+//         vehicleUsed: sessionStorage.getItem('selectedVehicle'),
+//         responders: formattedResponders,  // Use the formatted string here
+//         chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
 //         remarks: document.getElementById('remarks').value
 //     };
 
-//     // Send a POST request to the server
+//     // Send this form data to the backend route for saving in the database
 //     fetch('/saveICSLogs', {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json',
 //         },
-//         body: JSON.stringify(data)
+//         body: JSON.stringify(formData)
 //     })
 //     .then(response => response.json())
-//     .then(result => {
-//         if (result.success) {
-//             alert('ICS Logs saved successfully!');
-//             window.location.href = '/supervisor_ics_logs';  // Redirect to the logs page
+//     .then(data => {
+//         if (data.success) {
+//             alert('Logs saved successfully');
+//             // Optionally redirect or clear form fields
 //         } else {
-//             alert('Error saving ICS logs.');
+//             console.error('Error saving logs:', data.message);
 //         }
 //     })
-//     .catch(error => console.error('Error:', error));
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
 // });
 
 
-
-document.getElementById('submitLogs').addEventListener('click', function() {
+document.getElementById('submitLogs').addEventListener('click', function(event) {
     // Retrieve the attendees stored in sessionStorage
     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
 
@@ -324,21 +285,37 @@ document.getElementById('submitLogs').addEventListener('click', function() {
     const formattedResponders = attendees.map(attendee => `[${attendee.callSign}] ${attendee.name}`).join(', ');
 
     // Gather the rest of the form data
+    const incidentDate = document.getElementById('incidentDate').value;
+    const dispatchTime = document.getElementById('dispatchTime').value;
+
     const formData = {
         supervisorName: sessionStorage.getItem('supervisorName'),
-        incidentDate: document.getElementById('incidentDate').value,
-        dispatchTime: document.getElementById('dispatchTime').value,
+        incidentDate: incidentDate,
+        dispatchTime: dispatchTime,
         location: document.getElementById('location').value,
         alarmStatus: document.getElementById('alarmStatus').value,
         whoRequested: document.getElementById('whoRequested').value,
         fireType: document.getElementById('fireType').value,
         vehicleUsed: sessionStorage.getItem('selectedVehicle'),
-        responders: formattedResponders,  // Use the formatted string here
+        responders: formattedResponders,
         chatLogs: sessionStorage.getItem('storedChatLogs') ? JSON.parse(sessionStorage.getItem('storedChatLogs')).join('\n') : '',
         remarks: document.getElementById('remarks').value
     };
 
-    // Send this form data to the backend route for saving in the database
+    // Validation: Check if incidentDate or dispatchTime is empty
+    if (!incidentDate) {
+        alert('Please select an Incident Date before submitting the form.');
+        event.preventDefault();  // Prevent form submission
+        return;  // Stop further execution
+    }
+
+    if (!dispatchTime) {
+        alert('Please enter a Dispatch Time before submitting the form.');
+        event.preventDefault();  // Prevent form submission
+        return;  // Stop further execution
+    }
+
+    // Proceed with form submission if validation passes
     fetch('/saveICSLogs', {
         method: 'POST',
         headers: {
@@ -350,7 +327,8 @@ document.getElementById('submitLogs').addEventListener('click', function() {
     .then(data => {
         if (data.success) {
             alert('Logs saved successfully');
-            // Optionally redirect or clear form fields
+            // Redirect to the logs page after successful submission
+            window.location.href = '/supervisor_ics_logs';  
         } else {
             console.error('Error saving logs:', data.message);
         }
@@ -359,7 +337,6 @@ document.getElementById('submitLogs').addEventListener('click', function() {
         console.error('Error:', error);
     });
 });
-
 
 
 
@@ -375,5 +352,103 @@ function displaySelectedVehicle() {
 
 // Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    displaySelectedVehicle(); // Display the vehicle on the ICS form page
+    displaySelectedVehicle(); 
 });
+
+
+//Corsiga Add
+// Declare selectedMembers at a higher scope
+
+
+function fetchMembers(Name) {
+    let url = '/auth/getMembers';
+    if (Name) {
+        url += `?search=${encodeURIComponent(Name)}`;
+    }
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('addPersonICS');
+            tableBody.innerHTML = ''; 
+
+            data.forEach(member => {
+                const row = document.createElement('tr');
+                const checkboxId = `checkbox-${member.callSign}`;
+                row.innerHTML = `
+                    <td class="text-center">${member.callSign}</td>
+                    <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
+                    <td class="">
+                        <div class="w-full flex justify-center">
+                            <input type="checkbox" id="${checkboxId}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                const checkbox = document.getElementById(checkboxId);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedMembers.push({
+                            callSign: member.callSign,
+                            name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
+                        });
+                    } else {
+                        selectedMembers = selectedMembers.filter(m => m.callSign !== member.callSign);
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching members:', error));
+}
+
+function submitSelectedMembers() {
+    const currentPresentDiv = document.getElementById('currentPresent');
+    selectedMembers.forEach(member => {
+        const row = document.createElement('tr');
+        row.classList.add('text-sm', 'md:text-2xl');
+        row.innerHTML = `
+            <td class="py-2 md:px-4 border-b">${member.callSign}</td>
+            <td class="py-2 md:px-4 border-b">${member.name}</td>
+            <td class="py-2 md:px-4 border-b text-center">
+                <a href="#" onclick="removeFromTable(this)">
+                    <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
+                </a>
+            </td>
+        `;
+        currentPresentDiv.appendChild(row);
+    });
+
+    selectedMembers = [];
+    var profileForm = document.getElementById('addPer');
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+}
+
+
+
+
+function showAddperson(){
+    
+    var profileForm = document.getElementById('addPer');
+    
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+        
+        fetchMembers();
+        document.getElementById('searchPerson').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchMembers(searchQuery);
+        });
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+}
+function canaddPerson(){
+var canAdd = document.getElementById('addPer');
+canAdd.style.display = 'none';
+}

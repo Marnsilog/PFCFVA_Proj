@@ -82,7 +82,8 @@ const adminRoutes = [
     'admin_rank_up',
     'admin_register',
     'admin_volunteer_configuration',
-    'attendance_dashboard'
+    'attendance_dashboard',
+    'admin_edit_volunter'
 ];
 
 adminRoutes.forEach(route => {
@@ -107,6 +108,11 @@ volunteer.forEach(route => {
         res.sendFile(path.join(__dirname, '..', 'public', `${route}.html`));
     });
 });
+
+// router.get('/admin_edit_volunteer/:accountID', (req, res) => {
+//     const accountID = req.params.accountID;
+//     res.render('admin_edit_volunteer', { accountID }); // Render without the leading '/'
+// });
 
 router.get('/get-username', isAuthenticated, (req, res) => {
     res.json({ username: req.session.user.username });

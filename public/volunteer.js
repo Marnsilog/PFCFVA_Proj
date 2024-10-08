@@ -163,12 +163,12 @@ function fetchInventory_form(searchTerm = '') {
                 data.forEach(item => {
                     const row = document.createElement('tr');
                     row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
+                   // console.log(item.checked_date);
 
                     row.innerHTML = `
                         <td>${item.checked_date || 'N/A'}</td>
-                        <td>${item.checked_time || 'N/A'}</td>
                         <td>${item.vehicle || 'N/A'}</td>
-                        <td><a class="underline underline-offset-1 md:text-xl" href="#" onclick="seeinventory(${item.logID})">See details</a></td>
+                        <td><a class="underline underline-offset-1 md:text-xl" href="#"onclick="seeinventory('${item.checked_date}')"">See details</a></td>
                     `;
 
                     tbody.appendChild(row);
@@ -227,6 +227,7 @@ function fetchAndDisplayInventoryforsearch(searchQuery = '') {
         })
         .catch(err => console.error('Error fetching inventory data:', err));
 }
+
 function fetchAndDisplayInventory(vehicleName) {
     let url = '/auth/inventory'; 
 
@@ -363,10 +364,10 @@ async function fetchInventoryData() {
     }
 }
 
-
-function seeinventory(logID) {
-    console.log(`Fetching details for itemID: ${logID}`); // Debug log
-    fetch(`/auth/inventory2/detail/${logID}`)
+//DETAILS
+function seeinventory(checked_date) {
+    console.log(`Fetching details for itemID: ${checked_date}`); 
+    fetch(`/auth/inventory2/detail/${checked_date}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -374,13 +375,13 @@ function seeinventory(logID) {
             return response.json();
         })
         .then(data => {
-            console.log('Fetched inventory details:', data); // Debug log for fetched details
+            console.log('Fetched inventory details:', data); 
             const inventoryDetailDiv = document.getElementById('inventorydetail');
             const tbody = inventoryDetailDiv.querySelector('tbody');
             tbody.innerHTML = ''; 
 
             if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3">No details available</td></tr>'; // Handle no data case
+                tbody.innerHTML = '<tr><td colspan="3">No details available</td></tr>';
                 inventoryDetailDiv.style.display = 'block';
                 return;
             }

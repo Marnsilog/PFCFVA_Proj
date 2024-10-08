@@ -25,6 +25,21 @@ function toggleSetting() {
     }
     addLine('prof');
 }
+
+function showSettings() {
+
+    var profileForm = document.getElementById('inventorySetting');
+    
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+     
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+    addLine('prof');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
     const circles = document.querySelectorAll('.colorCircle');
@@ -241,120 +256,120 @@ function passEye2() {
         
     });
     //register, clear form
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('registerForm');
-        const clearButton = document.getElementById('clearButton');
-        const callSignSelect = document.getElementById('callSign');
-        const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
-        if (clearButton) {
-            clearButton.addEventListener('click', function() {
-                clearForm(form);
-            });
-        } else {
-            return;
-        }
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const form = document.getElementById('registerForm');
+    //     const clearButton = document.getElementById('clearButton');
+    //     const callSignSelect = document.getElementById('callSign');
+    //     const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
+    //     if (clearButton) {
+    //         clearButton.addEventListener('click', function() {
+    //             clearForm(form);
+    //         });
+    //     } else {
+    //         return;
+    //     }
     
-        function clearForm(form) {
-            Array.from(form.elements).forEach(element => {
-                switch(element.type) {
-                    case 'text':
-                    case 'password':
-                    case 'textarea':
-                    case 'email':
-                    case 'number':
-                    case 'date':
-                    case 'tel':
-                        element.value = '';
-                        break;
-                    case 'radio':
-                    case 'checkbox':
-                        element.checked = false;
-                        break;
-                    case 'select-one':
-                    case 'select-multiple':
-                        element.selectedIndex = -1;
-                        break;
-                    default:
-                        break;
-                }
-            });
+    //     function clearForm(form) {
+    //         Array.from(form.elements).forEach(element => {
+    //             switch(element.type) {
+    //                 case 'text':
+    //                 case 'password':
+    //                 case 'textarea':
+    //                 case 'email':
+    //                 case 'number':
+    //                 case 'date':
+    //                 case 'tel':
+    //                     element.value = '';
+    //                     break;
+    //                 case 'radio':
+    //                 case 'checkbox':
+    //                     element.checked = false;
+    //                     break;
+    //                 case 'select-one':
+    //                 case 'select-multiple':
+    //                     element.selectedIndex = -1;
+    //                     break;
+    //                 default:
+    //                     break;
+    //             }
+    //         });
     
-            // Reset callSign select to its initial state
-            if (callSignSelect) {
-                callSignSelect.disabled = true;
-                if (tooltipText) {
-                    tooltipText.classList.remove('hidden');
-                }
-            }
-        }
-    });
+    //         // Reset callSign select to its initial state
+    //         if (callSignSelect) {
+    //             callSignSelect.disabled = true;
+    //             if (tooltipText) {
+    //                 tooltipText.classList.remove('hidden');
+    //             }
+    //         }
+    //     }
+    // });
     
     
-    //register, dont allow numbers
-    document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
+    // //register, dont allow numbers
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
     
-        numberFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) { // Check if the field exists
-                field.addEventListener('keypress', function(event) {
-                    if (/[a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                });
-            } 
-        });
-    });
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { // Check if the field exists
+    //             field.addEventListener('keypress', function(event) {
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
     
-    //register, don't allow letters for specific fields
-    document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = [
-            'contactNumber', 
-            'emergencyContactNumber', 
-            'dutyHours', 
-            'fireResponse', 
-            'activityPoints', 
-            'inventoryPoints', 
-            'yearsInService'
-        ];
+    // //register, don't allow letters for specific fields
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = [
+    //         'contactNumber', 
+    //         'emergencyContactNumber', 
+    //         'dutyHours', 
+    //         'fireResponse', 
+    //         'activityPoints', 
+    //         'inventoryPoints', 
+    //         'yearsInService'
+    //     ];
     
-        numberFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) { 
-                field.addEventListener('keypress', function(event) {
-                    // Prevent input of letters
-                    if (/[a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                    }
-                });
-            } 
-        });
-    });
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { 
+    //             field.addEventListener('keypress', function(event) {
+    //                 // Prevent input of letters
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
     //auto format
-    document.addEventListener('DOMContentLoaded', function() {
-        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
     
-        // Function to capitalize the first letter of each word
-        function capitalizeWords(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
+    //     // Function to capitalize the first letter of each word
+    //     function capitalizeWords(str) {
+    //         return str.replace(/\b\w/g, function(char) {
+    //             return char.toUpperCase();
+    //         });
+    //     }
     
-        nameFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
+    //     nameFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
     
-            // Format text as the user types
-            field.addEventListener('input', function() {
-                field.value = capitalizeWords(field.value);
-            });
+    //         // Format text as the user types
+    //         field.addEventListener('input', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
     
-            // Format text when the user leaves the input field
-            field.addEventListener('blur', function() {
-                field.value = capitalizeWords(field.value);
-            });
-        });
-    });
+    //         // Format text when the user leaves the input field
+    //         field.addEventListener('blur', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
+    //     });
+    // });
      //handle accountType/callSign
      document.addEventListener('DOMContentLoaded', function() {
         const accountTypeSelect = document.getElementById('accountType');
@@ -417,9 +432,10 @@ function passEye2() {
     
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
                 
                 tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
                     <td>${row.item}</td>
                     <td>${row.volunteer_name}</td>
                     <td>${new Date(row.checked_date).toLocaleDateString()}</td>
@@ -427,8 +443,7 @@ function passEye2() {
                     <td>${row.vehicle}</td>
                     <td>${row.from_vehicle}</td>
                     <td>${row.change_to}</td>
-                    <td class="w-72 break-words overflow-auto">${row.remarks}</td>
-
+                    <td class="w-72 break-words">${row.remarks}</td>
                 `;
                 
                 tbody.appendChild(tr);
@@ -457,25 +472,24 @@ function passEye2() {
     
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
                 
                 tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill mt-2" alt=""></div></td>
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
                     <td>${row.item}</td>
                     <td>${row.volunteer_name}</td>
                     <td>${new Date(row.checked_date).toLocaleDateString()}</td>
                     <td>${row.checked_time}</td>
-                    <td>${row.vehicle}</td>
                     <td>${row.from_vehicle}</td>
                     <td>${row.change_to}</td>
                 `;
                 
                 tbody.appendChild(tr);
             });
+            
         })
         .catch(error => console.error('Error fetching inventory log data:', error));
     });
 
 
-    
-    
-    
+

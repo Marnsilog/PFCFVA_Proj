@@ -734,7 +734,6 @@ app.put('/moveToTrash/:itemID', (req, res) => {
     });
 });
 
-
 app.delete('/deleteFromTrash/:itemID', (req, res) => {
     const { itemID } = req.params;
     const { password } = req.body;
@@ -755,12 +754,12 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
             if (err || !isMatch) {
                 return res.status(401).json({ error: 'Incorrect password' });
             }
+
             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
 
             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
 
             db.query(getImagePathQuery, [itemID], (err, results) => {
-
                 if (err) {
                     console.error('Error executing query:', err);
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
@@ -770,34 +769,106 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-                fs.unlink(imagePath, (err) => {
+                const imagePath = results[0].itemImage; // Assuming the imagePath contains the Cloudinary public_id or URL
+
+                // Extract the public_id from the imagePath (if it's a full URL)
+                const publicId = imagePath.split('/').pop().split('.')[0]; // Example for extracting public_id from the URL
+
+                // Delete the image from Cloudinary
+                cloudinary.uploader.destroy(publicId, (err, result) => {
                     if (err) {
-                        console.error('Failed to delete image file:', err);
-                        return res.status(500).json({ error: 'Failed to delete image file' });
+                        console.error('Failed to delete image from Cloudinary:', err);
+                        return res.status(500).json({ error: 'Failed to delete image from Cloudinary' });
                     }
+
+                    // Delete logs related to this itemID
                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
                     db.query(deleteLog, [itemID], (err) => {
                         if (err) {
-                            console.log('Failed to delete log:', err);
+                            console.error('Failed to delete log:', err);
                         }
-                
+
+                        // Delete the item from the inventory
                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
                         db.query(deleteQuery, [itemID], (err) => {
                             if (err) {
                                 console.error('Failed to delete item:', err);
                                 return res.status(500).json({ error: 'Failed to delete equipment' });
                             }
-                
+
                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
                         });
                     });
                 });
-                
             });
         });
     });
 });
+
+
+// app.delete('/deleteFromTrash/:itemID', (req, res) => {
+//     const { itemID } = req.params;
+//     const { password } = req.body;
+//     const username = req.session.user?.username;
+
+//     if (!username) {
+//         return res.status(401).json({ error: 'Unauthorized' });
+//     }
+
+//     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+//     db.query(getPasswordQuery, [username], (err, results) => {
+//         if (err || results.length === 0) {
+//             return res.status(500).json({ error: 'Error retrieving password' });
+//         }
+
+//         const hashedPassword = results[0].password;
+//         bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+//             if (err || !isMatch) {
+//                 return res.status(401).json({ error: 'Incorrect password' });
+//             }
+//             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+
+//             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
+
+//             db.query(getImagePathQuery, [itemID], (err, results) => {
+
+//                 if (err) {
+//                     console.error('Error executing query:', err);
+//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
+//                 }
+
+//                 if (results.length === 0) {
+//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
+//                 }
+
+//                 const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+//                 fs.unlink(imagePath, (err) => {
+//                     if (err) {
+//                         console.error('Failed to delete image file:', err);
+//                         return res.status(500).json({ error: 'Failed to delete image file' });
+//                     }
+//                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
+//                     db.query(deleteLog, [itemID], (err) => {
+//                         if (err) {
+//                             console.log('Failed to delete log:', err);
+//                         }
+                
+//                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
+//                         db.query(deleteQuery, [itemID], (err) => {
+//                             if (err) {
+//                                 console.error('Failed to delete item:', err);
+//                                 return res.status(500).json({ error: 'Failed to delete equipment' });
+//                             }
+                
+//                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+//                         });
+//                     });
+//                 });
+                
+//             });
+//         });
+//     });
+// });
 
 
 

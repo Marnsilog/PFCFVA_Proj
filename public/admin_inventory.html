@@ -42,19 +42,18 @@
                         <li id="vol" class="md:mt-12"><a href="/admin_merit_tracking">Merit Tracking</a></li>
                         <li id="inc" class="md:mt-12"><a href="/admin_fire_response">Fire Response</a></li>
                         <li id="inV" class="md:mt-12 underline underline-offset-8"><a href="/admin_inventory">Inventory</a></li>
-                        <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                        <!-- <li class="md:mt-12"><a href="#"><i class="fa-regular fa-bell"></i></a></li> -->
                         <li class="md:mt-6">
                             <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                         </li>
                     </ul>
                 </nav>
         <div class="flex justify-start space-x-3 mr-2">
-            <div>
-                <!-- FOR NOTIFICATION -->
-                <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                    <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
-                  </i></a>
-            </div>
+        <!-- <div>
+            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+              </i></a>
+        </div> -->
     
          
                 <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
@@ -146,6 +145,9 @@
     <div id="loading-container" style="display: none;">
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     </div>
+    <div id="loading-container2" style="display: none;">
+        <div class="lds-ellipsis2"><div></div><div></div><div></div><div></div></div>
+    </div>
     <div class="w-full flex justify-center  mt-2 select-none">
         <div class="max-w-[80rem] w-full space-y-5">
             
@@ -203,37 +205,39 @@
                     </div>
                 </div>
             </div>
-            <form  id="addEquipmentForm"  class="hidden justify-center w-full font-Inter" enctype="multipart/form-data">
-                <div class=" absolute md:top-80 top-20  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7" >
-                    <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
-                    <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
-                        <p class="font-semibold text-md mr-2">Item Name:</p>
-                        <input class="w-48 md:w-72 h-7 border-black border-[1px] focus:outline-none md:px-2" type="text" id="itemName" name="itemName" required>
+            <div id="addForm" class="w-full" style="display: none;">
+                <form  id="addEquipmentForm"  class="w-full flex justify-center" enctype="multipart/form-data">
+                    <div class=" absolute md:top-80 top-20 w-[90%]  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7" >
+                        <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
+                        <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
+                            <p class="font-semibold text-md mr-2">Item Name:</p>
+                            <input class="w-48 md:w-72 h-7 border-black border-[1px] focus:outline-none md:px-2" type="text" id="itemName" name="itemName" required>
+                        </div>
+                        
+                        <div class="flex justify-center md:justify-start md:pl-10">
+                            <p class="mr-2 font-semibold md:mt-0 mt-1 text-sm md:text-md">Vehicle Assignment:</p>
+                            <select class="md:w-auto w-32 border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
+                            </select>
+                        </div>
+                    
+                        <div class="flex justify-center md:justify-start md:pl-10 md:mr-0 mr-2">
+                            <p class="font-semibold text-sm md:text-md">Date Acquired:</p>
+                            <input class="border-[1px] border-black rounded-md ml-2 w-48 md:pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                        </div>
+                    
+                        <div class="md:flex inline-block md:justify-start pl-5 md:pl-10">
+                            <p class="mr-2 font-semibold text-sm">Upload Image:</p>
+                            <input class="w-[60%]" type="file" id="itemImage" name="itemImage" accept="image/*">
+                        </div>
+                    
+                        <div class="flex justify-center space-x-5 md:space-x-10 md:pt-0 pt-5">
+                            <button class="w-16  md:w-24 h-10 bg-[#930D0D] text-white text-sm md:text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
+                            <button class="w-16 md:w-24 h-10 bg-white text-[#930D0D] text-sm md:text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
+                        </div>
                     </div>
                     
-                    <div class="flex justify-center md:justify-start pl-10">
-                        <p class="mr-2 font-semibold md:mt-0 mt-1 text-sm md:text-md">Vehicle Assignment:</p>
-                        <select class="md:w-auto w-20 border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
-                        </select>
-                    </div>
-                
-                    <div class="flex justify-center md:justify-start md:pl-10 md:mr-0 mr-2">
-                        <p class="font-semibold text-sm md:text-md">Date Acquired:</p>
-                        <input class="border-[1px] border-black rounded-md ml-2 w-48 md:pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
-                    </div>
-                
-                    <div class="md:flex inline-block md:justify-start pl-5 md:pl-10">
-                        <p class="mr-2 font-semibold text-sm">Upload Image:</p>
-                        <input type="file" id="itemImage" name="itemImage" accept="image/*">
-                    </div>
-                
-                    <div class="flex justify-center space-x-5 md:space-x-10 md:pt-0 pt-5">
-                        <button class="w-16  md:w-24 h-10 bg-[#930D0D] text-white text-sm md:text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
-                        <button class="w-16 md:w-24 h-10 bg-white text-[#930D0D] text-sm md:text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
-                    </div>
-                </div>
-                
-            </form>
+                </form>
+            </div>
 
             <div  class="flex justify-center w-full font-Inter">
                 <form id="addVehicleForm" class="hidden absolute top-44 md:top-80 w-[90%] md:w-96 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
@@ -333,9 +337,9 @@
         <div>
             <div id="inventorySetting" style="display: none;">
                 <div class="flex flex-col space-y-4">
-                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+ADD Vehicle</button>
+                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+Add Vehicle</button>
                     <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleTrashForm()" id="btnTrash">Trash</button>
-                    <button class="select-none md:px-0 px-1 w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-sm md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+ADD EQUIPMENT</button>
+                    <button class="select-none md:px-0 px-1 w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-sm md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+Add Equipment</button>
                 </div>
             </div>
            

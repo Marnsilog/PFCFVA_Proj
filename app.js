@@ -18,6 +18,12 @@ const http = require('http');  // Added for HTTP server creation
 // const MySQLStore = require('express-mysql-session')(session);
 const mysql2 = require('mysql2/promise');
 const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: 'duhumw72j',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 
 
@@ -601,7 +607,32 @@ app.get('/getVehicleAssignments', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-app.get('/getEquipment', (req, res) => {
+// app.get('/getEquipment', (req, res) => {
+//     try {
+//         const search = req.query.search || ''; 
+//         const query = `
+//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
+//             WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+//             AND itemStatus = 'Available'
+//         `;
+
+//         const searchParam = `%${search}%`;
+
+//         db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
+//             if (err) {
+//                 console.error('Failed to retrieve equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
+//             }
+//             //console.log(results);
+//             res.json(results); // Send results back as JSON
+//         });
+//     } catch (error) {
+//         console.error('Unexpected error:', error);
+//         res.status(500).json({ error: 'An unexpected error occurred' });
+//     }
+// });
+
+app.get('/getEquipment', (req, res) => { 
     try {
         const search = req.query.search || ''; 
         const query = `
@@ -617,8 +648,13 @@ app.get('/getEquipment', (req, res) => {
                 console.error('Failed to retrieve equipment:', err);
                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
             }
-            //console.log(results);
-            res.json(results); // Send results back as JSON
+
+            const equipment = results.map(item => ({
+                ...item,
+                itemImage: cloudinary.url(item.itemImage) 
+            }));
+
+            res.json(equipment);
         });
     } catch (error) {
         console.error('Unexpected error:', error);
@@ -627,29 +663,60 @@ app.get('/getEquipment', (req, res) => {
 });
 
 
-
-
-app.get('/getTrashedEquipment', (req, res) => {
+app.get('/getTrashedEquipment', (req, res) => { 
     try {
         const search = req.query.search || ''; 
-        const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+        const query = `
+            SELECT itemID, itemName, itemImage, vehicleAssignment 
+            FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+            AND itemStatus = 'trash'
+        `;
 
         const searchParam = `%${search}%`;
 
-        // Pass search parameters in an array
-        db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+        db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
             if (err) {
-                console.error('Failed to retrieve equipment:', err);
-                return res.status(500).json({ error: 'Failed to retrieve equipment' });
+                console.error('Failed to retrieve trashed equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve trashed equipment' });
             }
-            //console.log(results);
-            res.json(results); // Send results back as JSON
+
+            const trashedEquipment = results.map(item => ({
+                ...item,
+                itemImage: cloudinary.url(item.itemImage) 
+            }));
+
+            res.json(trashedEquipment);
         });
     } catch (error) {
         console.error('Unexpected error:', error);
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
+
+
+
+// app.get('/getTrashedEquipment', (req, res) => {
+//     try {
+//         const search = req.query.search || ''; 
+//         const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+
+//         const searchParam = `%${search}%`;
+
+//         // Pass search parameters in an array
+//         db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+//             if (err) {
+//                 console.error('Failed to retrieve equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
+//             }
+//             //console.log(results);
+//             res.json(results); // Send results back as JSON
+//         });
+//     } catch (error) {
+//         console.error('Unexpected error:', error);
+//         res.status(500).json({ error: 'An unexpected error occurred' });
+//     }
+// });
 
 
 app.put('/moveToTrash/:itemID', (req, res) => {
@@ -666,7 +733,6 @@ app.put('/moveToTrash/:itemID', (req, res) => {
         res.status(200).json({ message: 'Equipment moved to trash successfully.' });
     });
 });
-
 
 app.delete('/deleteFromTrash/:itemID', (req, res) => {
     const { itemID } = req.params;
@@ -688,12 +754,12 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
             if (err || !isMatch) {
                 return res.status(401).json({ error: 'Incorrect password' });
             }
+
             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
 
             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
 
             db.query(getImagePathQuery, [itemID], (err, results) => {
-
                 if (err) {
                     console.error('Error executing query:', err);
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
@@ -703,34 +769,106 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-                fs.unlink(imagePath, (err) => {
+                const imagePath = results[0].itemImage; // Assuming the imagePath contains the Cloudinary public_id or URL
+
+                // Extract the public_id from the imagePath (if it's a full URL)
+                const publicId = imagePath.split('/').pop().split('.')[0]; // Example for extracting public_id from the URL
+
+                // Delete the image from Cloudinary
+                cloudinary.uploader.destroy(publicId, (err, result) => {
                     if (err) {
-                        console.error('Failed to delete image file:', err);
-                        return res.status(500).json({ error: 'Failed to delete image file' });
+                        console.error('Failed to delete image from Cloudinary:', err);
+                        return res.status(500).json({ error: 'Failed to delete image from Cloudinary' });
                     }
+
+                    // Delete logs related to this itemID
                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
                     db.query(deleteLog, [itemID], (err) => {
                         if (err) {
-                            console.log('Failed to delete log:', err);
+                            console.error('Failed to delete log:', err);
                         }
-                
+
+                        // Delete the item from the inventory
                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
                         db.query(deleteQuery, [itemID], (err) => {
                             if (err) {
                                 console.error('Failed to delete item:', err);
                                 return res.status(500).json({ error: 'Failed to delete equipment' });
                             }
-                
+
                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
                         });
                     });
                 });
-                
             });
         });
     });
 });
+
+
+// app.delete('/deleteFromTrash/:itemID', (req, res) => {
+//     const { itemID } = req.params;
+//     const { password } = req.body;
+//     const username = req.session.user?.username;
+
+//     if (!username) {
+//         return res.status(401).json({ error: 'Unauthorized' });
+//     }
+
+//     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+//     db.query(getPasswordQuery, [username], (err, results) => {
+//         if (err || results.length === 0) {
+//             return res.status(500).json({ error: 'Error retrieving password' });
+//         }
+
+//         const hashedPassword = results[0].password;
+//         bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+//             if (err || !isMatch) {
+//                 return res.status(401).json({ error: 'Incorrect password' });
+//             }
+//             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+
+//             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
+
+//             db.query(getImagePathQuery, [itemID], (err, results) => {
+
+//                 if (err) {
+//                     console.error('Error executing query:', err);
+//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
+//                 }
+
+//                 if (results.length === 0) {
+//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
+//                 }
+
+//                 const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+//                 fs.unlink(imagePath, (err) => {
+//                     if (err) {
+//                         console.error('Failed to delete image file:', err);
+//                         return res.status(500).json({ error: 'Failed to delete image file' });
+//                     }
+//                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
+//                     db.query(deleteLog, [itemID], (err) => {
+//                         if (err) {
+//                             console.log('Failed to delete log:', err);
+//                         }
+                
+//                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
+//                         db.query(deleteQuery, [itemID], (err) => {
+//                             if (err) {
+//                                 console.error('Failed to delete item:', err);
+//                                 return res.status(500).json({ error: 'Failed to delete equipment' });
+//                             }
+                
+//                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+//                         });
+//                     });
+//                 });
+                
+//             });
+//         });
+//     });
+// });
 
 
 

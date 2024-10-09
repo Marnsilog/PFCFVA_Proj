@@ -25,19 +25,18 @@
                             <li id="fireS" class="md:mt-12 "><a href="/supervisor_fire_response">Fire Response</a></li>
                             <li id="leadB" class="md:mt-12 "><a href="/supervisor_leaderboards">Leaderboards</a></li>
                             <li id="inV" class="md:mt-12 "><a href="/supervisor_inventory">Inventory</a></li>
-                            <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                            <!-- <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li> -->
                             <li class="md:mt-6">
                                 <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                             </li>
                         </ul>
                      </nav>
                 <div class="flex justify-start space-x-3 mr-2">
-                    <div>
-                        <!-- FOR NOTIFICATION -->
-                        <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                            <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
-                          </i></a>
-                    </div>
+        <!-- <div>
+            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+              </i></a>
+        </div> -->
             
                  
                         <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
@@ -165,68 +164,72 @@
                                     
 
                                 <!-- FIRE LOGS WHEN YOU PRESS SEE DETAIL -->
-                                <div class="absolute top-[10rem] left-[30rem] font-Inter border border-black bg-white" id="incidentLog" style="display: none;">
-                                    <div class="mx-32 mt-16 mb-12 pr-10 max-w-[32rem] text-balance">
-                                        <p class="text-2xl font-[800]">Fire Response Log</p>
-
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[128px]">Incident Date </p> 
-                                            <p id="incidentDate">Name--------</p>
+                                 <div class="w-full flex justify-end md:justify-center" id="incidentLog" style="display: none;" >
+                                    <div class="absolute top-[8rem] md:top-[8rem] font-Inter border border-black bg-white" >
+                                        <div class="md:mx-10 md:mt-5 md:mb-12 md:max-w-[25rem] text-balance h-auto max-h-[70vh] overflow-y-auto mx-5">
+                                            <p class="text-2xl font-[800]">Fire Response Log</p>
+    
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[128px]">Incident Date </p> 
+                                                <p id="incidentDate">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px]  md:mr-[119px]">Dispatch Time</p> 
+                                                <p id="dispatchTime">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[80px] md:mr-[163px]">Location</p> 
+                                                <p id="location">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[129px]">Alarm Status</p> 
+                                                <p id="alarmStatus">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[20px] md:mr-[90px]">Who requested <br>the fire response?</p> 
+                                                <p id="whoRequested">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[138px]">Type of Fire</p> 
+                                                <p id="fireType">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[128px]">Vehicle Used</p> 
+                                                <p id="vehicleUsed">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[143px]">Responders</p> 
+                                                <p id="responders">Name--------</p>
+                                            </div>
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[142px]">Supervisor</p> 
+                                                <p id="supervisorName">Name--------</p>
+                                            </div>
+    
+                                            <div class="flex items-start pt-8">
+                                                <p class="font-semibold mr-[50px] md:mr-[142px]">ChatLogs</p> 
+                                                <p id="chatLogs">Chat logs here...</p>
+                                            </div>
+    
+                                            <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
+                                            <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
+    
+                                            <div class="w-full flex justify-center">
+                                                <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
+                                                <!-- <p class="text-center" id="downloadLogs">Download Logs</p> -->
+                                                <button class="text-center" onclick="downloadLogs()">Download Logs</button>
+                                            </div>
+                                           
                                         </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[119px]">Dispatch Time</p> 
-                                            <p id="dispatchTime">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[163px]">Location</p> 
-                                            <p id="location">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[129px]">Alarm Status</p> 
-                                            <p id="alarmStatus">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[90px]">Who requested <br>the fire response?</p> 
-                                            <p id="whoRequested">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[138px]">Type of Fire</p> 
-                                            <p id="fireType">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[128px]">Vehicle Used</p> 
-                                            <p id="vehicleUsed">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[143px]">Responders</p> 
-                                            <p id="responders">Name--------</p>
-                                        </div>
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[142px]">Supervisor</p> 
-                                            <p id="supervisorName">Name--------</p>
-                                        </div>
-
-                                        <div class="flex items-start pt-8">
-                                            <p class="font-semibold mr-[142px]">ChatLogs</p> 
-                                            <p id="chatLogs">Chat logs here...</p>
-                                        </div>
-
-                                        <p class="font-semibold mr-[8rem] pt-8">Remarks:</p> 
-                                        <p class="" id="remarks">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ea numquam atque! Voluptatum corrupti magnam velit nostrum facere reiciendis numquam omnis earum iste nisi dolor aliquam, quae pariatur praesentium maxime!</p>
-
+                                         
                                         <div class="w-full flex justify-center">
-                                            <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
-                                            <!-- <p class="text-center" id="downloadLogs">Download Logs</p> -->
-                                            <button class="text-center" onclick="downloadLogs()">Download Logs</button>
-                                        </div>
-                                        
-                                        <div class="text-center pt-16">
                                             <a href="#" class="underline underline-offset-1 " onclick="fireclose()">close</a>
                                         </div>
                                     </div>
-                                </div>
+    
+                                    </div>
+                                 </div>
 
-                        </div>
                     </div>
                 </div>
                 </div>

@@ -108,11 +108,10 @@ function handleICSPage() {
     attendees.forEach((attendee, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="py-2 px-4 border-b">${attendee.callSign}</td>
-            <td class="py-2 px-4 border-b">${attendee.name}</td>
+            <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>
+            <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>
             <td><input type="checkbox"></td>
             <td>00:00:00</td> <!-- Placeholder for timer -->
-            <td><a class="text-3xl text-red-700 font-bold mr-4" href="#" onclick="removeFromTable(this)">x</a></td>
         `;
         icsAttendeesDiv.appendChild(row);
     });

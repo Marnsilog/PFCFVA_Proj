@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
-    <link href="./aron.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCVA || Dashboard</title>
 </head>
@@ -15,6 +15,7 @@
         <div class="fixed w-full bg-rosered bg-opacity-70 h-20 md:h-28">
             <div>
                 <div class="px-7 py-5 opacity-40" id="homepageSec">
+
                     <div class="mt-2 md:absolute md:mt-32">
                         <P class="text-white text-base font-JockeyOne || md:text-5xl md:pl-96">Parañaque Filipino - Chinese Fire Volunteer Association</P>
                         <p class="text-white text-4xl leading-tight font-AdventPro mt-44 || md:mt-32 md:text-8xl md:leading-tight">"Sa pag iwas sa sunog, <br>hindi ka nag iisa!"</p>
@@ -33,11 +34,11 @@
                             <li class="font-Inter list-none inline-block px-14 hover:text-gray-400"><a href="#">Contact Us</a></li> -->
                         </ul>
                     </nav>
-                    <button id="menu-toggle" class="absolute md:hidden text-white focus:outline-none right-5 top-[90px]">
+                    <!-- <button id="menu-toggle" class="absolute md:hidden text-white focus:outline-none right-5 top-[90px]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
-                    </button>
+                    </button> -->
                 </div>
                 <div class="md:hidden mt-4 p-5 absolute top-16 w-full bg-white text-black text-center bg-opacity-70" id="mobile-menu" style="display: none;">
                     <a href="#" class="block py-2 px-4">Home</a>
@@ -48,8 +49,11 @@
                     <a href="#" class="block py-2 px-4">Contact Us</a> -->
                 </div>
             </div>
+
             <div class="md:grid md:grid-cols-3">
+                
                 <div class="bg-gray-200 text-black rounded-xl mt-[12rem] absolute top-0 w-80 h-[330px] ml-7 || md:right-24 md:w-96 md:h-96 mx-5 md:mt-[15rem] md:col-end-4" style="display: none;" id="form">
+                    
                     <div class="text-right mx-5 py-2">
                         <a class="text-2xl font-bold px-4" id="cancel" href="#">x</a>
                     </div>
@@ -93,13 +97,16 @@
                             <div id="error-message" style="display:none; color: red;"></div>
                         </form>
                         
-                        <form id="forgotPasswordForm" style="display: none;">
+                        <form id="reset-password-form" style="display: none;">
+                            <div id="loading-container" style="display: none;">
+                                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            </div>
                             <div class="space-y-2 font-Istok text-xs">
                                 <div>
-                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="email" placeholder="Enter your email" id="forgotPasswordEmail">
+                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="email" placeholder="Enter your email" name="email" id="email">
                                 </div>
                                 <div class="mt-5 md:mt-0">
-                                    <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Reset Password</button>
+                                    <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Send Email</button>
                                 </div>
                                 <div class="pl-[110px] || md:text-right md:px-16">
                                     <a class="text-xs text-gray-400" href="#" id="backToLoginLink">Back to Login</a>

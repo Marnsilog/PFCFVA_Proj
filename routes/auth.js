@@ -2,10 +2,20 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: './.env' });
 const multer = require('multer');
+const sharp = require('sharp');
 const upload = multer(); 
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer'); 
+const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: 'duhumw72j',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 module.exports = (db, db2) => {
     router.post('/register', (req, res) => {
@@ -195,8 +205,143 @@ module.exports = (db, db2) => {
         });
     });
 
-    router.post('/edit-profile', (req, res) => {
-        //console.log('Uploaded files:', req.files);  // Log uploaded files
+    // router.post('/edit-profile', (req, res) => {
+    //     //console.log('Uploaded files:', req.files);  // Log uploaded files
+    //     const {
+    //         lastName, firstName, middleName, emailAddress, contactNumber,
+    //         oldPassword, newPassword, civilStatus, nationality, bloodType,
+    //         birthday, gender, currentAddress, emergencyContactPerson,
+    //         emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+    //         yearsInService, skillsTraining, otherAffiliation
+    //     } = req.body;
+    
+    //     const username = req.session.user?.username;
+    //     if (!username) {
+    //         return res.status(400).send('User not found in session');
+    //     }
+    
+    //     const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
+    //     db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+    //         if (checkUsernameErr) {
+    //             console.error('Error checking username:', checkUsernameErr);
+    //             return res.status(500).send({ success: false, message: 'Error checking username' });
+    //         }
+    
+    //         if (checkUsernameResult.length === 0) {
+    //             return res.status(400).send({ success: false, message: 'User not found' });
+    //         }
+    
+    //         const user = checkUsernameResult[0];
+    //         let profilePicturePath = user.idPicture;
+    
+    //         // Handling password update
+    //         if (oldPassword) {
+    //             bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
+    //                 if (compareErr || !isMatch) {
+    //                     return res.status(400).send({ success: false, message: 'Old password is incorrect' });
+    //                 }
+    
+    //                 if (newPassword) {
+    //                     bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+    //                         if (hashErr) {
+    //                             console.error('Error hashing new password:', hashErr);
+    //                             return res.status(500).send({ success: false, message: 'Error hashing new password' });
+    //                         }
+    //                         handleProfilePictureUpdate(hash);
+    //                     });
+    //                 } else {
+    //                     handleProfilePictureUpdate(user.password);
+    //                 }
+    //             });
+    //         } else {
+    //             handleProfilePictureUpdate(user.password);
+    //         }
+    
+    //         // Function to handle profile picture upload and update profile
+    //         function handleProfilePictureUpdate(password) {
+    //             if (req.files && req.files.profilePicture) {
+    //                 const profilePicture = req.files.profilePicture;
+    //                 const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
+    //                 const uploadDir = path.join(__dirname, '../profilePicture');
+    //                 const uploadPath = path.join(uploadDir, uniqueFileName);
+    
+    //                 // Ensure the directory exists
+    //                 if (!fs.existsSync(uploadDir)) {
+    //                     fs.mkdirSync(uploadDir, { recursive: true });
+    //                 }
+    
+    //                 // Log and move the file
+    //                 profilePicture.mv(uploadPath, (err) => {
+    //                     if (err) {
+    //                         console.error('Error moving file:', err);
+    //                         return res.status(500).send({ success: false, message: 'Error saving profile picture' });
+    //                     }
+    
+    //                     //console.log('File successfully uploaded to:', uploadPath);
+    //                     profilePicturePath = `profilePicture/${uniqueFileName}`;
+    //                     updateUserDetails(password, profilePicturePath); // Update with new picture
+    //                 });
+    //             } else {
+    //                 updateUserDetails(password, profilePicturePath); // Update without new picture
+    //             }
+    //         }
+    
+    //         // Function to execute the update query
+    //         function updateUserDetails(password, profilePicturePath) {
+    //             const updateQuery = `
+    //                 UPDATE tbl_accounts SET 
+    //                     lastName = ?, 
+    //                     firstName = ?, 
+    //                     middleName = ?, 
+    //                     emailAddress = ?, 
+    //                     mobileNumber = ?, 
+    //                     password = ?, 
+    //                     civilStatus = ?, 
+    //                     nationality = ?, 
+    //                     bloodType = ?, 
+    //                     dateOfBirth = ?, 
+    //                     gender = ?, 
+    //                     currentAddress = ?, 
+    //                     emergencyContactPerson = ?, 
+    //                     emergencyContactNumber = ?, 
+    //                     highestEducationalAttainment = ?, 
+    //                     nameOfCompany = ?, 
+    //                     yearsInService = ?, 
+    //                     skillsTraining = ?, 
+    //                     otherAffiliation = ?, 
+    //                     idPicture = ? 
+    //                 WHERE username = ?
+    //             `;
+    
+    //             const values = [
+    //                 lastName, firstName, middleName, emailAddress, contactNumber,
+    //                 password, civilStatus, nationality, bloodType,
+    //                 birthday, gender, currentAddress, emergencyContactPerson,
+    //                 emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+    //                 yearsInService, skillsTraining, otherAffiliation,
+    //                 profilePicturePath,
+    //                 username
+    //             ];
+    
+    //             db.query(updateQuery, values, (updateErr, updateResult) => {
+    //                 if (updateErr) {
+    //                     console.error('Error updating profile:', updateErr);
+    //                     return res.status(500).send({ success: false, message: 'Error updating profile' });
+    //                 }
+    //                 let accountType =  req.session.user.permission;;
+    //                 if (accountType === 'Admin') {
+    //                     res.redirect('/admin_main_profile');
+    //                 } else if (accountType === 'Supervisor') {
+    //                     res.redirect('/supervisor_main_profile');
+    //                 } else if (accountType === 'Volunteer') {
+    //                     res.redirect('/volunteer_main_profile');
+    //                 }
+                  
+    //             });
+    //         }
+    //     });
+    // });
+    router.post('/edit-profile', async (req, res) => {
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,
             oldPassword, newPassword, civilStatus, nationality, bloodType,
@@ -223,8 +368,6 @@ module.exports = (db, db2) => {
     
             const user = checkUsernameResult[0];
             let profilePicturePath = user.idPicture;
-    
-            // Handling password update
             if (oldPassword) {
                 bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
                     if (compareErr || !isMatch) {
@@ -247,30 +390,29 @@ module.exports = (db, db2) => {
                 handleProfilePictureUpdate(user.password);
             }
     
-            // Function to handle profile picture upload and update profile
-            function handleProfilePictureUpdate(password) {
+            async function handleProfilePictureUpdate(password) {
                 if (req.files && req.files.profilePicture) {
                     const profilePicture = req.files.profilePicture;
                     const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
                     const uploadDir = path.join(__dirname, '../profilePicture');
                     const uploadPath = path.join(uploadDir, uniqueFileName);
     
-                    // Ensure the directory exists
                     if (!fs.existsSync(uploadDir)) {
                         fs.mkdirSync(uploadDir, { recursive: true });
                     }
     
-                    // Log and move the file
-                    profilePicture.mv(uploadPath, (err) => {
-                        if (err) {
-                            console.error('Error moving file:', err);
-                            return res.status(500).send({ success: false, message: 'Error saving profile picture' });
-                        }
-    
-                        //console.log('File successfully uploaded to:', uploadPath);
+                    try {
+                        await sharp(profilePicture.data)
+                            .resize({ width: 500 }) 
+                            .toFormat('jpeg', { quality: 60 })
+                            .toFile(uploadPath);
+                        
                         profilePicturePath = `profilePicture/${uniqueFileName}`;
                         updateUserDetails(password, profilePicturePath); // Update with new picture
-                    });
+                    } catch (err) {
+                        console.error('Error processing image:', err);
+                        return res.status(500).send({ success: false, message: 'Error processing image' });
+                    }
                 } else {
                     updateUserDetails(password, profilePicturePath); // Update without new picture
                 }
@@ -318,7 +460,7 @@ module.exports = (db, db2) => {
                         console.error('Error updating profile:', updateErr);
                         return res.status(500).send({ success: false, message: 'Error updating profile' });
                     }
-                    let accountType =  req.session.user.permission;;
+                    let accountType = req.session.user.permission;
                     if (accountType === 'Admin') {
                         res.redirect('/admin_main_profile');
                     } else if (accountType === 'Supervisor') {
@@ -326,138 +468,136 @@ module.exports = (db, db2) => {
                     } else if (accountType === 'Volunteer') {
                         res.redirect('/volunteer_main_profile');
                     }
-                  
                 });
             }
         });
     });
-
-    router.post('/edit-volunteer', (req, res) => {
-        //console.log('Uploaded files:', req.files);  // Log uploaded files
-        const {
-            lastName, firstName, middleName, emailAddress, contactNumber,
-            oldPassword, newPassword, civilStatus, nationality, bloodType,
-            birthday, gender, currentAddress, emergencyContactPerson,
-            emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
-            yearsInService, skillsTraining, otherAffiliation
-        } = req.body;
+    // router.post('/edit-volunteer', (req, res) => {
+    //     //console.log('Uploaded files:', req.files);  // Log uploaded files
+    //     const {
+    //         lastName, firstName, middleName, emailAddress, contactNumber,
+    //         oldPassword, newPassword, civilStatus, nationality, bloodType,
+    //         birthday, gender, currentAddress, emergencyContactPerson,
+    //         emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+    //         yearsInService, skillsTraining, otherAffiliation
+    //     } = req.body;
     
-        const username = req.body.username;
+    //     const username = req.body.username;
     
-        const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
-        db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
-            if (checkUsernameErr) {
-                console.error('Error checking username:', checkUsernameErr);
-                return res.status(500).send({ success: false, message: 'Error checking username' });
-            }
+    //     const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
+    //     db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+    //         if (checkUsernameErr) {
+    //             console.error('Error checking username:', checkUsernameErr);
+    //             return res.status(500).send({ success: false, message: 'Error checking username' });
+    //         }
     
-            if (checkUsernameResult.length === 0) {
-                return res.status(400).send({ success: false, message: 'User not found' });
-            }
+    //         if (checkUsernameResult.length === 0) {
+    //             return res.status(400).send({ success: false, message: 'User not found' });
+    //         }
     
-            const user = checkUsernameResult[0];
-            let profilePicturePath = user.idPicture;
+    //         const user = checkUsernameResult[0];
+    //         let profilePicturePath = user.idPicture;
     
-            // Handling password update
-            if (oldPassword) {
-                bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
-                    if (compareErr || !isMatch) {
-                        return res.status(400).send({ success: false, message: 'Old password is incorrect' });
-                    }
+    //         // Handling password update
+    //         if (oldPassword) {
+    //             bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
+    //                 if (compareErr || !isMatch) {
+    //                     return res.status(400).send({ success: false, message: 'Old password is incorrect' });
+    //                 }
     
-                    if (newPassword) {
-                        bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-                            if (hashErr) {
-                                console.error('Error hashing new password:', hashErr);
-                                return res.status(500).send({ success: false, message: 'Error hashing new password' });
-                            }
-                            handleProfilePictureUpdate(hash);
-                        });
-                    } else {
-                        handleProfilePictureUpdate(user.password);
-                    }
-                });
-            } else {
-                handleProfilePictureUpdate(user.password);
-            }
+    //                 if (newPassword) {
+    //                     bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+    //                         if (hashErr) {
+    //                             console.error('Error hashing new password:', hashErr);
+    //                             return res.status(500).send({ success: false, message: 'Error hashing new password' });
+    //                         }
+    //                         handleProfilePictureUpdate(hash);
+    //                     });
+    //                 } else {
+    //                     handleProfilePictureUpdate(user.password);
+    //                 }
+    //             });
+    //         } else {
+    //             handleProfilePictureUpdate(user.password);
+    //         }
     
-            // Function to handle profile picture upload and update profile
-            function handleProfilePictureUpdate(password) {
-                if (req.files && req.files.profilePicture) {
-                    const profilePicture = req.files.profilePicture;
-                    const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
-                    const uploadDir = path.join(__dirname, '../profilePicture');
-                    const uploadPath = path.join(uploadDir, uniqueFileName);
+    //         // Function to handle profile picture upload and update profile
+    //         function handleProfilePictureUpdate(password) {
+    //             if (req.files && req.files.profilePicture) {
+    //                 const profilePicture = req.files.profilePicture;
+    //                 const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
+    //                 const uploadDir = path.join(__dirname, '../profilePicture');
+    //                 const uploadPath = path.join(uploadDir, uniqueFileName);
     
-                    // Ensure the directory exists
-                    if (!fs.existsSync(uploadDir)) {
-                        fs.mkdirSync(uploadDir, { recursive: true });
-                    }
+    //                 // Ensure the directory exists
+    //                 if (!fs.existsSync(uploadDir)) {
+    //                     fs.mkdirSync(uploadDir, { recursive: true });
+    //                 }
     
-                    // Log and move the file
-                    profilePicture.mv(uploadPath, (err) => {
-                        if (err) {
-                            console.error('Error moving file:', err);
-                            return res.status(500).send({ success: false, message: 'Error saving profile picture' });
-                        }
+    //                 // Log and move the file
+    //                 profilePicture.mv(uploadPath, (err) => {
+    //                     if (err) {
+    //                         console.error('Error moving file:', err);
+    //                         return res.status(500).send({ success: false, message: 'Error saving profile picture' });
+    //                     }
     
-                        //console.log('File successfully uploaded to:', uploadPath);
-                        profilePicturePath = `profilePicture/${uniqueFileName}`;
-                        updateUserDetails(password, profilePicturePath); // Update with new picture
-                    });
-                } else {
-                    updateUserDetails(password, profilePicturePath); // Update without new picture
-                }
-            }
+    //                     //console.log('File successfully uploaded to:', uploadPath);
+    //                     profilePicturePath = `profilePicture/${uniqueFileName}`;
+    //                     updateUserDetails(password, profilePicturePath); // Update with new picture
+    //                 });
+    //             } else {
+    //                 updateUserDetails(password, profilePicturePath); // Update without new picture
+    //             }
+    //         }
     
-            // Function to execute the update query
-            function updateUserDetails(password, profilePicturePath) {
-                const updateQuery = `
-                    UPDATE tbl_accounts SET 
-                        lastName = ?, 
-                        firstName = ?, 
-                        middleName = ?, 
-                        emailAddress = ?, 
-                        mobileNumber = ?, 
-                        password = ?, 
-                        civilStatus = ?, 
-                        nationality = ?, 
-                        bloodType = ?, 
-                        dateOfBirth = ?, 
-                        gender = ?, 
-                        currentAddress = ?, 
-                        emergencyContactPerson = ?, 
-                        emergencyContactNumber = ?, 
-                        highestEducationalAttainment = ?, 
-                        nameOfCompany = ?, 
-                        yearsInService = ?, 
-                        skillsTraining = ?, 
-                        otherAffiliation = ?, 
-                        idPicture = ? 
-                    WHERE username = ?
-                `;
+    //         // Function to execute the update query
+    //         function updateUserDetails(password, profilePicturePath) {
+    //             const updateQuery = `
+    //                 UPDATE tbl_accounts SET 
+    //                     lastName = ?, 
+    //                     firstName = ?, 
+    //                     middleName = ?, 
+    //                     emailAddress = ?, 
+    //                     mobileNumber = ?, 
+    //                     password = ?, 
+    //                     civilStatus = ?, 
+    //                     nationality = ?, 
+    //                     bloodType = ?, 
+    //                     dateOfBirth = ?, 
+    //                     gender = ?, 
+    //                     currentAddress = ?, 
+    //                     emergencyContactPerson = ?, 
+    //                     emergencyContactNumber = ?, 
+    //                     highestEducationalAttainment = ?, 
+    //                     nameOfCompany = ?, 
+    //                     yearsInService = ?, 
+    //                     skillsTraining = ?, 
+    //                     otherAffiliation = ?, 
+    //                     idPicture = ? 
+    //                 WHERE username = ?
+    //             `;
     
-                const values = [
-                    lastName, firstName, middleName, emailAddress, contactNumber,
-                    password, civilStatus, nationality, bloodType,
-                    birthday, gender, currentAddress, emergencyContactPerson,
-                    emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
-                    yearsInService, skillsTraining, otherAffiliation,
-                    profilePicturePath,
-                    username
-                ];
+    //             const values = [
+    //                 lastName, firstName, middleName, emailAddress, contactNumber,
+    //                 password, civilStatus, nationality, bloodType,
+    //                 birthday, gender, currentAddress, emergencyContactPerson,
+    //                 emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+    //                 yearsInService, skillsTraining, otherAffiliation,
+    //                 profilePicturePath,
+    //                 username
+    //             ];
     
-                db.query(updateQuery, values, (updateErr, updateResult) => {
-                    if (updateErr) {
-                        console.error('Error updating profile:', updateErr);
-                        return res.status(500).send({ success: false, message: 'Error updating profile' });
-                    }
-                    res.redirect('/admin_volunteer_configuration');
+    //             db.query(updateQuery, values, (updateErr, updateResult) => {
+    //                 if (updateErr) {
+    //                     console.error('Error updating profile:', updateErr);
+    //                     return res.status(500).send({ success: false, message: 'Error updating profile' });
+    //                 }
+    //                 res.redirect('/admin_volunteer_configuration');
                     
-                });
-            }
-        });
-    });
+    //             });
+    //         }
+    //     });
+    // });
     
 
     // router.get('/get-profilePic', (req, res) => {
@@ -868,8 +1008,6 @@ module.exports = (db, db2) => {
         });
     });
     
-    
-    
     // router.get('/inventory2', (req, res) => {
     //     const username = req.session.user?.username; 
     //     const search = req.query.search || ''; 
@@ -1109,28 +1247,60 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(results);
         });
     });
-    router.get('/equipment/:id', (req, res) => {
-        const itemId = parseInt(req.params.id, 10); // Convert string to integer
+
+    // router.get('/equipment/:id', (req, res) => {
+    //     const itemId = parseInt(req.params.id, 10); // Convert string to integer
         
-        const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
-        db.query(query, [itemId], (error, results) => {
-            if (error) {
-                console.error('Error fetching equipment data:', error);
-                return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
-            }
+    //     const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
+    //     db.query(query, [itemId], (error, results) => {
+    //         if (error) {
+    //             console.error('Error fetching equipment data:', error);
+    //             return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+    //         }
             
-            if (results.length === 0) {
-                return res.status(404).json({ success: false, message: 'Equipment not found' });
-            }
+    //         if (results.length === 0) {
+    //             return res.status(404).json({ success: false, message: 'Equipment not found' });
+    //         }
     
-            const equipment = results[0];
+    //         const equipment = results[0];
     
-            // If the equipment image is not found, use the default image
-            const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
+    //         // If the equipment image is not found, use the default image
+    //         const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
 
             
-            res.json({ success: true, data: { ...equipment, itemImagePath } });
-        });
+    //         res.json({ success: true, data: { ...equipment, itemImagePath } });
+    //     });
+    // });
+    
+    router.get('/equipment/:id', async (req, res) => {
+        try {
+            const itemId = parseInt(req.params.id, 10); // Convert string to integer
+            
+            const query = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE itemID = ?';
+            db.query(query, [itemId], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching equipment data:', error);
+                    return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+                }
+                
+                if (results.length === 0) {
+                    return res.status(404).json({ success: false, message: 'Equipment not found' });
+                }
+    
+                const equipment = results[0];
+    
+                // Generate the Cloudinary URL
+                const itemImagePath = equipment.itemImage 
+                    ? cloudinary.url(equipment.itemImage) 
+                    : 'https://your-cloudinary-default-image-url.com/default.jpg'; // Default image URL if no image is found
+    
+                // Return the equipment data along with the image URL
+                res.json({ success: true, data: { ...equipment, itemImagePath } });
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            res.status(500).json({ success: false, message: 'An unexpected error occurred' });
+        }
     });
     
     router.get('/getMembers', (req, res) => {
@@ -1153,46 +1323,355 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(result);
         });
     });
-    
-    router.post('/addEquipment', (req, res) => {
+
+    router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
+
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
-            const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
-            const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
-    
-            itemImage.mv(uploadPath, (err) => {
-                if (err) {
-                    console.error('Error moving file:', err);
-                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
-                }
-    
-                itemImagePath = `uploads/${uniqueFileName}`;
-                insertEquipment();
-            });
-        } else {
-            // No image uploaded, proceed with inserting data into the database
-            insertEquipment();
+            if (itemImage.size > 50 * 1024 * 1024) {
+                return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+            }
+
+            try {
+                const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
+
+                await sharp(itemImage.data)
+                    .resize({ width: 300 })
+                    .jpeg({ quality: 40 }) 
+                    .toFile(tempFilePath);
+
+                // Upload the resized image to Cloudinary
+                const uniqueFileName = `${itemName}_${Date.now()}`;
+                const result = await cloudinary.uploader.upload(tempFilePath, {
+                    folder: 'uploads',
+                    public_id: uniqueFileName,
+                });
+
+                // Get the secure URL from Cloudinary
+                itemImagePath = result.secure_url;
+
+                // Clean up the temp file after upload
+                fs.unlinkSync(tempFilePath);
+            } catch (error) {
+                console.error('Error uploading image to Cloudinary:', error);
+                return res.status(500).json({ success: false, message: 'Error uploading image.' });
+            }
         }
+
+        // Insert equipment data into the database
+        const query = `
+            INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+            VALUES (?, ?, ?, ?)
+        `;
+        const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+
+        db.query(query, queryParams, (error, results) => {
+            if (error) {
+                console.error('Error inserting equipment data:', error);
+                return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            }
+
+            res.json({ success: true, message: 'Equipment added successfully.' });
+        });
+    });
     
-        function insertEquipment() {
-            const query = `
-                INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
-                VALUES (?, ?, ?, ?)
-            `;
-            const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
     
-            db.query(query, queryParams, (error, results) => {
-                if (error) {
-                    console.error('Error inserting equipment data:', error);
-                    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+    
+    // router.post('/addEquipment', (req, res) => {
+    //     const { itemName, vehicleAssignment, dateAcquired } = req.body;
+    //     let itemImagePath = null;
+    
+    //     if (req.files && req.files.itemImage) {
+    //         const itemImage = req.files.itemImage;
+    //         const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
+    //         const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
+    
+    //         sharp(itemImage.data)
+    //             .resize(500) // Resize to a width of 800px (adjust as necessary)
+    //             .toFormat('jpeg') // Convert to JPEG format (you can change this based on your requirement)
+    //             .jpeg({ quality: 80 }) // Set JPEG quality to 80%
+    //             .toFile(uploadPath, (err, info) => {
+    //                 if (err) {
+    //                     console.error('Error processing image:', err);
+    //                     return res.status(500).send({ success: false, message: 'Internal Server Error' });
+    //                 }
+    
+    //                 itemImagePath = `uploads/${uniqueFileName}`;
+    //                 insertEquipment();
+    //             });
+    //     } else {
+    //         // No image uploaded, proceed with inserting data into the database
+    //         insertEquipment();
+    //     }
+    
+    //     function insertEquipment() {
+    //         const query = `
+    //             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
+    //             VALUES (?, ?, ?, ?)
+    //         `;
+    //         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
+    
+    //         db.query(query, queryParams, (error, results) => {
+    //             if (error) {
+    //                 console.error('Error inserting equipment data:', error);
+    //                 return res.status(500).send({ success: false, message: 'Internal Server Error' });
+    //             }
+    
+    //             res.send({ success: true, message: 'Equipment added successfully.' });
+    //         });
+    //     }
+    // });
+
+    router.put('/updateEquipment', async (req, res) => {
+        const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+        let itemImagePath = null;
+    
+        const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+        db.query(getCurrentImagePathSql, [itemId], async (err, results) => {
+            if (err) {
+                console.error('Error retrieving current image path:', err);
+                return res.status(500).send({ success: false, message: 'Error retrieving current image' });
+            }
+            if (results.length === 0) {
+                return res.status(404).send({ success: false, message: 'Item not found' });
+            }
+            const currentImagePath = results[0].itemImage;
+    
+            if (req.files && req.files.itemImage) {
+                const itemImage = req.files.itemImage;
+    
+                if (itemImage.size > 50 * 1024 * 1024) {
+                    return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
                 }
     
-                res.send({ success: true, message: 'Equipment added successfully.' });
+                try {
+                    // Resize the image and save it temporarily before uploading to Cloudinary
+                    const tempFilePath = path.join(__dirname, 'temp', `${updatedItemName}_${Date.now()}_resized.jpg`);
+    
+                    await sharp(itemImage.data)
+                        .resize({ width: 800 }) // Adjust the width as necessary
+                        .jpeg({ quality: 80 })
+                        .toFile(tempFilePath);
+    
+                    // Upload the resized image to Cloudinary
+                    const uniqueFileName = `${updatedItemName}_${Date.now()}`;
+                    const result = await cloudinary.uploader.upload(tempFilePath, {
+                        folder: 'uploads',
+                        public_id: uniqueFileName,
+                    });
+    
+                    // Get the secure URL from Cloudinary
+                    itemImagePath = result.secure_url;
+    
+                    // Clean up the temp file after upload
+                    fs.unlinkSync(tempFilePath);
+    
+                    // Step 3: Delete the old image if it exists
+                    if (currentImagePath) {
+                        const existingImagePublicId = currentImagePath.split('/').pop().split('.')[0]; // Extract public ID from the URL
+                        await cloudinary.uploader.destroy(existingImagePublicId);
+                    }
+                } catch (error) {
+                    console.error('Error uploading image to Cloudinary:', error);
+                    return res.status(500).json({ success: false, message: 'Error uploading image.' });
+                }
+            } else {
+                // No new image uploaded, just retain the current image path
+                itemImagePath = currentImagePath;
+            }
+    
+            // Update the database with the new data
+            const sql = `
+                UPDATE tbl_inventory
+                SET itemName = ?, 
+                    vehicleAssignment = ?,
+                    itemImage = ?
+                WHERE itemID = ?
+            `;
+    
+            db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+                if (err) {
+                    console.error('Database update error:', err);
+                    return res.status(500).json({ success: false, message: 'Failed to update equipment' });
+                }
+                res.status(200).json({ success: true, message: 'Equipment updated successfully' });
             });
+        });
+    });
+    
+    // router.put('/updateEquipment', (req, res) => {
+    //     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+    //     let itemImagePath = null;
+
+    //     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+    //     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
+    //         if (err) {
+    //             console.error('Error retrieving current image path:', err);
+    //             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
+    //         }
+    //         if (results.length === 0) {
+    //             return res.status(404).send({ success: false, message: 'Item not found' });
+    //         }
+    //         const currentImagePath = results[0].itemImage;
+    //         if (req.files && req.files.itemImage) {
+    //             const itemImage = req.files.itemImage;
+    //             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+    //             const uploadDir = path.join(__dirname, '../public/uploads');
+    //             const uploadPath = path.join(uploadDir, uniqueFileName);
+                
+    //             // Ensure upload directory exists
+    //             if (!fs.existsSync(uploadDir)) {
+    //                 fs.mkdirSync(uploadDir, { recursive: true });
+    //             }
+    
+
+    //             sharp(itemImage.data)
+    //                 .resize(500) // Resize to a width of 800px (adjust as necessary)
+    //                 .toFormat('jpeg') // Convert to JPEG format
+    //                 .jpeg({ quality: 80 }) // Set JPEG quality to 80%
+    //                 .toFile(uploadPath, (err) => {
+    //                     if (err) {
+    //                         console.error('Error processing image:', err);
+    //                         return res.status(500).send({ success: false, message: 'Error saving item image' });
+    //                     }
+    
+    //                     itemImagePath = `uploads/${uniqueFileName}`;
+    //                     // Step 3: Delete the old image if it exists
+    //                     if (currentImagePath) {
+    //                         const existingImagePath = path.join(__dirname, '../public', currentImagePath);
+    //                         if (fs.existsSync(existingImagePath)) {
+    //                             fs.unlink(existingImagePath, (err) => {
+    //                                 if (err) {
+    //                                     console.error('Error deleting existing image:', err);
+    //                                     return res.status(500).send({ success: false, message: 'Error deleting existing image' });
+    //                                 }
+    //                                 updateDatabase();
+    //                             });
+    //                         } else {
+    //                             updateDatabase();
+    //                         }
+    //                     } else {
+    //                         updateDatabase();
+    //                     }
+    //                 });
+    //         } else {
+    //             // No new image uploaded, just update the database
+    //             updateDatabase();
+    //         }
+    //     });
+    
+    //     function updateDatabase() {
+    //         const sql = `
+    //             UPDATE tbl_inventory
+    //             SET itemName = ?, 
+    //                 vehicleAssignment = ?,
+    //                 itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+    //             WHERE itemID = ?
+    //         `;
+    
+    //         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+    //             if (err) {
+    //                 console.error('Database update error:', err);
+    //                 return res.status(500).json({ success: false, message: 'Failed to update equipment' });
+    //             }
+    //             res.status(200).json({ success: true, message: 'Equipment updated successfully' });
+    //         });
+    //     }
+    // });
+    
+    
+    router.post('/send-email', async (req, res) => {
+        try {
+            const { email } = req.body;
+    
+            // Check if the user exists
+            const user = await db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [email]);
+            if (!user || user.length === 0) {
+                return res.status(400).json({ message: 'No account with that email found.' });
+            }
+    
+            const token = crypto.randomBytes(20).toString('hex');
+            const expireTime = Date.now() + 3600000; // 1 hour expiration
+            await db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE emailAddress = ?', [token, expireTime, email]);
+    
+            // Create the reset link
+            const resetLink = `http://${req.headers.host}/auth/reset-password/${token}`;
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD,
+                },
+            });
+    
+            const mailOptions = {
+                to: email,
+                from: process.env.EMAIL,
+                subject: 'Password Reset',
+                text: `You are receiving this because you (or someone else) requested the reset of your account's password.\n\n` +
+                      `Please click the following link, or copy and paste it into your browser to complete the process:\n\n` +
+                      `${resetLink}\n\n` +
+                      `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+            };
+    
+            // Send the email
+            await transporter.sendMail(mailOptions);
+    
+            // Return success response
+            res.status(200).json({ message: 'Reset link sent to your email.' });
+        } catch (err) {
+            console.error('Error sending email:', err);
+            res.status(500).json({ message: 'Internal server error.' });
         }
     });
+
+    router.get('/reset-password/:token', (req, res) => {
+        const token = req.params.token;
+        //console.log("Received token:", token); 
+        res.sendFile(path.join(__dirname, '..', 'public', 'reset_pass.html'), {
+            headers: {
+                'token': token 
+            }
+        });
+    });
+    
+const util = require('util');
+const query = util.promisify(db.query).bind(db);
+router.post('/reset-password', async (req, res) => {
+    try {
+        const { token, password } = req.body;
+    
+        if (!token || !password) {
+            return res.status(400).json({ message: 'Token and password are required.' });
+        }
+
+        const sql = 'SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?';
+        console.log("Executing SQL:", sql, "with parameters:", [token, Date.now()]);
+
+        const result = await query(sql, [token, Date.now()]);
+        if (!Array.isArray(result) || result.length === 0) {
+            return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
+        }
+  
+        const user = result[0];
+    
+        const hashedPassword = await bcrypt.hash(password, 10);
+    
+        await query(
+            'UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID  = ?',
+            [hashedPassword, user.accountID ]
+        );
+    
+        res.status(200).json({ message: 'Your password has been updated. You can now log in.', redirectTo: '/' });
+    } catch (error) {
+        console.error('Error resetting password:', error.message || error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
+
+  
     return router;
 };
 

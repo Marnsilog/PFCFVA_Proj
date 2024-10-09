@@ -720,7 +720,7 @@ module.exports = (db, db2) => {
     router.get('/volunteers', (req, res) => {
         const search = req.query.search || ''; 
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours AS points 
+            SELECT accountID AS id, firstName AS name, dutyHours AS points
             FROM tbl_accounts 
             WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
             ORDER BY dutyHours DESC
@@ -744,7 +744,7 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, 
+            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
@@ -768,6 +768,7 @@ module.exports = (db, db2) => {
                 fireResponsePoints: results[0].fireResponsePoints,
                 inventoryPoints: results[0].inventoryPoints,
                 activityPoints: results[0].activityPoints,
+                callSign: results[0].callSign,
                 image: profilePicPath  
             };
     
@@ -802,7 +803,7 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, 
+            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
@@ -826,6 +827,7 @@ module.exports = (db, db2) => {
                 fireResponsePoints: results[0].fireResponsePoints,
                 inventoryPoints: results[0].inventoryPoints,
                 activityPoints: results[0].activityPoints,
+                callSign: results[0].callSign,
                 image: profilePicPath  
             };
     

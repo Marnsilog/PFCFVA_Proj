@@ -238,7 +238,7 @@ function showDutyDetails(volunteerId) {
             document.getElementById('dutyhoursdetail').style.display = 'block';
 
             document.querySelector('#detailName').textContent = volunteerDetails.name;
-            document.querySelector('#detailID').textContent = volunteerDetails.id;
+            document.querySelector('#detailID').textContent = volunteerDetails.callSign;
             document.querySelector('#dutyHours').textContent = volunteerDetails.dutyHours;
             document.querySelector('#fireResponse').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
@@ -306,7 +306,7 @@ function showFireRe(volunteerId) {
             document.getElementById('frdetail').style.display = 'block';
 
             document.querySelector('#detailName2').textContent = volunteerDetails.name;
-            document.querySelector('#detailID2').textContent = volunteerDetails.id;
+            document.querySelector('#detailID2').textContent = volunteerDetails.callSign;
             document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
             document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
@@ -565,6 +565,8 @@ function fetchInventory_form(searchTerm = '') {
 //         .catch(err => console.error('Error fetching inventory data:', err));
 // }
 
+
+//
 function seeinventory(logID) {
     console.log(`Fetching details for itemID: ${logID}`); // Debug log
     fetch(`/auth/inventory2/detail/${logID}`)

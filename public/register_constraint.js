@@ -79,3 +79,105 @@ function validateYearsInService() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const clearButton = document.getElementById('clearButton');
+    const callSignSelect = document.getElementById('callSign');
+    const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
+    if (clearButton) {
+        clearButton.addEventListener('click', function() {
+            clearForm(form);
+        });
+    } else {
+        return;
+    }
+
+    function clearForm(form) {
+        Array.from(form.elements).forEach(element => {
+            switch(element.type) {
+                case 'text':
+                case 'password':
+                case 'textarea':
+                case 'email':
+                case 'number':
+                case 'date':
+                case 'tel':
+                    element.value = '';
+                    break;
+                case 'radio':
+                case 'checkbox':
+                    element.checked = false;
+                    break;
+                case 'select-one':
+                case 'select-multiple':
+                    element.selectedIndex = -1;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // Reset callSign select to its initial state
+        if (callSignSelect) {
+            callSignSelect.disabled = true;
+            if (tooltipText) {
+                tooltipText.classList.remove('hidden');
+            }
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const accountTypeSelect = document.getElementById('accountType');
+    const callSignSelect = document.getElementById('callSign');
+    
+    // Define options to disable for each account type
+    const volunteerOptionsToDisable = ['ECHO', 'ECHO800', 'ECHO900', 'PREVO'];
+    const supervisorOptionsToDisable = ['ASPIRANT', 'PROBATIONARY'];
+    
+    const tooltipText = document.getElementById('tooltip');
+
+    // Listen for account type changes
+    accountTypeSelect.addEventListener('change', function() {
+        const selectedAccountType = accountTypeSelect.value;
+
+        if (selectedAccountType) {
+            callSignSelect.disabled = false;  // Enable call sign select
+            tooltipText.classList.add('hidden');  // Hide tooltip
+        } else {
+            callSignSelect.disabled = true;  // Disable call sign select
+            tooltipText.classList.remove('hidden');  // Show tooltip
+        }
+
+        // Reset all options to enabled first
+        const allOptions = callSignSelect.querySelectorAll('option');
+        allOptions.forEach(option => {
+            option.disabled = false;
+        });
+
+        // Disable specific options based on selected account type
+        if (selectedAccountType === 'Volunteer') {
+            volunteerOptionsToDisable.forEach(optionValue => {
+                const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                if (option) option.disabled = true;  // Disable option for Volunteer
+            });
+        } else if (selectedAccountType === 'Supervisor') {
+            supervisorOptionsToDisable.forEach(optionValue => {
+                const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+                if (option) option.disabled = true;  // Disable option for Supervisor
+            });
+        }
+    });
+
+    // Tooltip logic
+    callSignSelect.addEventListener('mouseover', function() {
+        if (callSignSelect.disabled) {
+            tooltipText.classList.remove('hidden');  // Show tooltip
+        }
+    });
+
+    callSignSelect.addEventListener('mouseout', function() {
+        tooltipText.classList.add('hidden');  // Hide tooltip
+    });
+});
+

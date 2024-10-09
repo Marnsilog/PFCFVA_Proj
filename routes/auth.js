@@ -1327,31 +1327,31 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
-
+    
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
             if (itemImage.size > 50 * 1024 * 1024) {
                 return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
             }
-
+    
             try {
                 const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
-
+    
                 await sharp(itemImage.data)
                     .resize({ width: 300 })
                     .jpeg({ quality: 40 }) 
                     .toFile(tempFilePath);
-
+    
                 // Upload the resized image to Cloudinary
                 const uniqueFileName = `${itemName}_${Date.now()}`;
                 const result = await cloudinary.uploader.upload(tempFilePath, {
                     folder: 'uploads',
                     public_id: uniqueFileName,
                 });
-
+    
                 // Get the secure URL from Cloudinary
                 itemImagePath = result.secure_url;
-
+    
                 // Clean up the temp file after upload
                 fs.unlinkSync(tempFilePath);
             } catch (error) {
@@ -1359,23 +1359,29 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 return res.status(500).json({ success: false, message: 'Error uploading image.' });
             }
         }
-
+    
         // Insert equipment data into the database
         const query = `
             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
             VALUES (?, ?, ?, ?)
         `;
         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
-
+    
         db.query(query, queryParams, (error, results) => {
             if (error) {
+                // Check if the error is related to duplicate entry
+                if (error.code === 'ER_DUP_ENTRY') {
+                    return res.status(400).json({ success: false, message: 'Item name already exists.' });
+                }
+    
                 console.error('Error inserting equipment data:', error);
                 return res.status(500).json({ success: false, message: 'Internal Server Error' });
             }
-
+    
             res.json({ success: true, message: 'Equipment added successfully.' });
         });
     });
+    
     
     
     

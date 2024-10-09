@@ -26,19 +26,18 @@
                             <li id="fireS" class="md:mt-12 underline underline-offset-8"><a href="/supervisor_fire_response">Fire Response</a></li>
                             <li id="leadB" class="md:mt-12 "><a href="/supervisor_leaderboards">Leaderboards</a></li>
                             <li id="inV" class="md:mt-12 "><a href="/supervisor_inventory">Inventory</a></li>
-                            <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li>
+                            <!-- <li class="md:mt-12 "><a href="#"><i class="fa-regular fa-bell"></i></a></li> -->
                             <li class="md:mt-6">
                                 <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
                             </li>
                         </ul>
                      </nav>
                 <div class="flex justify-start space-x-3 mr-2">
-                    <div>
-                        <!-- FOR NOTIFICATION -->
-                        <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                            <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
-                          </i></a>
-                    </div>
+        <!-- <div>
+            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+              </i></a>
+        </div> -->
             
                  
                         <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
@@ -111,10 +110,10 @@
                 <div id="loading-container" style="display: none;">
                     <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
-                <div class="w-full h-full flex justify-center pt-16 pb-32" >
+                <div class="w-full h-full flex justify-center pt-5 md:pt-16 pb-32" >
                     <div class="max-w-[75rem] w-full">
                         <div class="font-Inter text-black">
-                            <p class="font-bold text-4xl">Incident Command System (ICS)</p>
+                            <p class="font-bold text-lg md:text-start text-center md:text-4xl">Incident Command System (ICS)</p>
                             <div class="mt-2 flex justify-start font-semibold text-base">
                                 <p class="mr-2">OIC: </p>
                                 <p id="supervisorName">Name---------</p>
@@ -126,14 +125,14 @@
                             
                         </div>
                     
-                        <div  class="mt-9 flex justify-between text-xl text-white font-[500]" >
+                        <div  class="mt-9 flex justify-between text-sm md:text-xl text-white font-[500] w-full md:w-auto" >
     
                             <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
-                            <button class="bg-[#1C7D26] px-10 py-2  rounded-full" id="msgActivate">ACTIVATE</button>
-                            <button class="bg-[#E4A52A] px-10 py-2  rounded-full" id="msgInjured">INJURED</button>
-                            <button class="bg-[#DF0000] px-10 py-2  rounded-full" id="msgStandown">STANDOWN</button>
-                            <button class="bg-[#212D9C] px-10 py-2  rounded-full" id="msgFireOut">FIRE OUT</button>
-                            <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button>
+                            <button class="bg-[#1C7D26] md:w-auto w-[20%] md:px-10 md:py-2 rounded-full md:h-auto h-10" id="msgActivate">ACTIVATE</button>
+                            <button class="bg-[#E4A52A] md:w-auto w-[20%] md:px-10 md:py-2 rounded-full md:h-auto h-10" id="msgInjured">INJURED</button>
+                            <button class="bg-[#DF0000] md:w-auto w-[25%] md:px-10 md:py-2 rounded-full md:h-auto h-10" id="msgStandown">STANDOWN</button>
+                            <button class="bg-[#212D9C] md:w-auto w-[20%] md:px-10 md:py-2 rounded-full md:h-auto h-10" id="msgFireOut">FIRE OUT</button>
+                            <!-- <button class="bg-white border-2 border-black px-5 py-2 text-xl font-[500] rounded-md text-black" onclick="addthis1()">+</button> -->
     
                         </div>
                     
@@ -141,28 +140,27 @@
                                 <div class="font-Inter w-full" >
                         
                                     <table class="w-full text-center border-2 border-black" >
-                                        <thead class="bg-[#EED033]  text-black mt-10 h-16  text-2xl">
+                                        <thead class="bg-[#EED033]  text-black mt-10 md:h-16 text-sm  md:text-2xl">
                                             <tr>
                                                 <th>Call Sign</th>
                                                 <th>Name</th>
                                                 <th>Issue <br> Commands To</th>
                                                 <th>Timer</th>
-                                                <th>Remove</th>
                                             </tr>
                                         </thead>
                                         
-                                        <tbody class="w-auto text-center text-xl" id="icsAttendees">
+                                        <tbody class="w-full md:w-auto text-center text-sm md:text-xl" id="icsAttendees">
                                             <!-- ICS Attendees will be populated here by JavaScript -->
                                         </tbody>
                                         
                                     </table>
-                                    <div  class="mt-2 flex justify-between text-lg text-white font-[500]" >
+                                    <div  class="mt-2 flex justify-between text-sm md:text-lg text-white font-[500]" >
 
                                          <!-- Buttons Reserved for macro messages, send pre-defined messages when clicked -->
-                                        <button class="bg-[#1C7D26] px-10 py-5  rounded-lg leading-tight" id="msgBackUp">REQUEST<br> BACK UP</button>
-                                        <button class="bg-[#E4A52A] px-10 py-5  rounded-lg leading-tight" id="msgMedicalAssistance">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
-                                        <button class="bg-[#DF0000] px-10 py-5  rounded-lg leading-tight" id="msgResupplyWater">RESUPPLY <br> WATER TANK</button>
-                                        <button class="bg-[#212D9C] px-10 py-5  rounded-lg leading-tight" id="msgFallback">REQUEST <br> FALLBACK</button>
+                                        <button class="bg-[#1C7D26] md:px-10 md:py-5 md:w-auto w-[20%] px-2 rounded-lg leading-tight py-2" id="msgBackUp">REQUEST<br> BACK UP</button>
+                                        <button class="bg-[#E4A52A] md:px-10 md:py-5 md:w-auto w-[25%] px-2 rounded-lg leading-tight py-2" id="msgMedicalAssistance">REQUEST <br> MEDICAL <br>ASSISTANCE</button>
+                                        <button class="bg-[#DF0000] md:px-10 md:py-5 md:w-auto w-[25%] px-2 rounded-lg leading-tight" id="msgResupplyWater">RESUPPLY <br> WATER TANK</button>
+                                        <button class="bg-[#212D9C] md:px-10 md:py-5 md:w-auto w-[25%] px-2 rounded-lg leading-tight" id="msgFallback">REQUEST <br> FALLBACK</button>
                     
                                 </div>
     
@@ -174,7 +172,7 @@
                                             </div>
                                         </div>
                                         <div class="flex justify-end">
-                                            <button class="bg-[#CBC9C2] px-7 py-3 mt-16 text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
+                                            <button class="bg-[#CBC9C2] md:w-auto w-[30%] md:h-auto h-10 md:px-7 md:py-3 md:mt-16 mt-3 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
                                         </div>
 
                                         <!-- Chat logs -->

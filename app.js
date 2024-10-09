@@ -1110,6 +1110,31 @@ app.get('/getIncidentLog/:icsID', (req, res) => {
 
 //RANKUP
 
+
+// app.get('/rankUp', (req, res) => {
+//     const sql = `
+//         SELECT 
+//             a.firstName,
+//             a.middleInitial,
+//             a.lastName,
+//             a.callSign,
+//             a.dutyHours,
+//             a.fireResponsePoints
+//         FROM tbl_accounts a
+//         WHERE a.dutyHours >= 100
+//         AND a.callSign LIKE 'ASPIRANT%'
+//         ORDER BY a.lastName, a.firstName`;
+
+//     db.query(sql, (err, results) => {
+//         if (err) {
+//             res.status(500).send('Error retrieving account details');
+//             return;
+//         }
+//         res.json(results);
+//     }); 
+// });
+
+
 app.get('/rankUp', (req, res) => {
     const sql = `
         SELECT 
@@ -1120,7 +1145,12 @@ app.get('/rankUp', (req, res) => {
             a.dutyHours,
             a.fireResponsePoints
         FROM tbl_accounts a
-        WHERE a.dutyHours >= 100
+        WHERE 
+            (a.dutyHours >= 100 AND a.callSign LIKE 'ASPIRANT%')
+            OR 
+            (a.dutyHours >= 1000 AND a.callSign LIKE 'PROBATIONARY%' AND a.fireResponsePoints >= 20)
+            OR 
+            (a.dutyHours >= 2000 AND a.callSign LIKE 'ECHO9%' AND a.fireResponsePoints >= 20)
         ORDER BY a.lastName, a.firstName`;
 
     db.query(sql, (err, results) => {
@@ -1131,6 +1161,8 @@ app.get('/rankUp', (req, res) => {
         res.json(results);
     }); 
 });
+
+
 
 
 const pages = require('./routes/pages');

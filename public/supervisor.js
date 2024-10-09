@@ -238,7 +238,7 @@ function showDutyDetails(volunteerId) {
             document.getElementById('dutyhoursdetail').style.display = 'block';
 
             document.querySelector('#detailName').textContent = volunteerDetails.name;
-            document.querySelector('#detailID').textContent = volunteerDetails.id;
+            document.querySelector('#detailID').textContent = volunteerDetails.callSign;
             document.querySelector('#dutyHours').textContent = volunteerDetails.dutyHours;
             document.querySelector('#fireResponse').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
@@ -306,7 +306,7 @@ function showFireRe(volunteerId) {
             document.getElementById('frdetail').style.display = 'block';
 
             document.querySelector('#detailName2').textContent = volunteerDetails.name;
-            document.querySelector('#detailID2').textContent = volunteerDetails.id;
+            document.querySelector('#detailID2').textContent = volunteerDetails.callSign;
             document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
             document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
             document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
@@ -366,6 +366,7 @@ async function loadVehicleAssignment(itemId, selectElement, assignedVehicle) {
 }
 //DROWNDOWN 
 async function fetchAndDisplayInventory(selectedVehicle = '') {
+    
     try {
         const response = await fetch(`/auth/inventory-supervisor?vehicleAssignment=${selectedVehicle}`);
 
@@ -407,42 +408,86 @@ async function fetchAndDisplayInventory(selectedVehicle = '') {
 }
 //INVENTORY SEARCH
 async function fetchAndDisplayInventorySearch(search = '') {
+    var sortVehicleAssignment = document.getElementById("sortVehicleAssignment").value;
+    var vehStatus = document.getElementById("vehStatus").value;
+    //console.log(vehStatus);
+    const queryString = `/auth/inventory-supervisor-search?search=${encodeURIComponent(search)}&vehicleAssignment=${encodeURIComponent(sortVehicleAssignment)}&vehicleStat=${encodeURIComponent(vehStatus)}`;
+    
     try {
-        const response = await fetch(`/auth/inventory-supervisor-search?search=${search}`);
+        const response = await fetch(queryString);
         const inventoryItems = await response.json();
         
         const container = document.getElementById('inventoryContainer');
-        container.innerHTML = ''; 
+        container.innerHTML = ''; // Clear previous items
 
         inventoryItems.forEach(async (item) => {
             const inventoryDiv = document.createElement('div');
-            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
-            inventoryDiv.setAttribute('data-item-id', item.itemId); 
+            inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2', 'md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
+            inventoryDiv.setAttribute('data-item-id', item.itemId);
+
             inventoryDiv.innerHTML = `
                 <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
                     <div class="w-full">
                         <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
-                       
                     </div>
-                     <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
-                            <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
-                        </div>
-                   <div class="mt-2 pr-4 md:pr-10 w-full">
-                         <p class="text-sm">Transfer to</p>
-                         <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
-                     </div>
+                    <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+                        <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
+                    </div>
+                    <div class="mt-2 pr-4 md:pr-10 w-full">
+                        <p class="text-sm">Transfer to</p>
+                        <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+                    </div>
                 </div>
             `;
             container.appendChild(inventoryDiv);
-        
+            
+            // Load vehicle assignment options
             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
             await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
         });
-
     } catch (error) {
         console.error('Error fetching inventory data:', error);
     }
 }
+
+// async function fetchAndDisplayInventorySearch(search = '') {
+//     var vehStatus = document.getElementById("vehStatus").value;
+//     try {
+//         const response = await fetch(`/auth/inventory-supervisor-search?search=${search}?vehicleAssignment=${vehStatus}`);
+//         const inventoryItems = await response.json();
+        
+//         const container = document.getElementById('inventoryContainer');
+//         container.innerHTML = ''; 
+
+//         inventoryItems.forEach(async (item) => {
+//             const inventoryDiv = document.createElement('div');
+//             inventoryDiv.classList.add('w-full', 'h-full', 'space-y-2','md:space-y-5', 'inventory-item', 'p-0', 'md:p-0');
+//             inventoryDiv.setAttribute('data-item-id', item.itemId); 
+//             inventoryDiv.innerHTML = `
+//                 <div class="md:w-[95%] w-full rounded-lg h-16 md:h-20 bg-[#DDDDDD] flex justify-between md:mx-6">
+//                     <div class="w-full">
+//                         <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 rounded-lg md:mt-4 mt-1 ml-2 object-cover md:object-fill" alt="">
+                       
+//                     </div>
+//                      <div class="font-inter mt-4 space-y-1 md:space-y-2 w-full">
+//                             <p class="text-sm md:text-2xl font-semibold md:font-bold md:0 mx-3 break-all">${item.itemName}</p>
+//                         </div>
+//                    <div class="mt-2 pr-4 md:pr-10 w-full">
+//                          <p class="text-sm">Transfer to</p>
+//                          <select class="h-7 pr-14 rounded-lg text-start md:w-auto w-18" id="addvehicleAssignment-${item.itemId}"></select>
+//                      </div>
+//                 </div>
+//             `;
+//             container.appendChild(inventoryDiv);
+        
+//             const selectElement = document.getElementById(`addvehicleAssignment-${item.itemId}`);
+//             await loadVehicleAssignment(item.itemId, selectElement, item.vehicleAssignment);
+//         });
+
+//     } catch (error) {
+//         console.error('Error fetching inventory data:', error);
+//     }
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
@@ -565,6 +610,8 @@ function fetchInventory_form(searchTerm = '') {
 //         .catch(err => console.error('Error fetching inventory data:', err));
 // }
 
+
+//
 function seeinventory(logID) {
     console.log(`Fetching details for itemID: ${logID}`); // Debug log
     fetch(`/auth/inventory2/detail/${logID}`)

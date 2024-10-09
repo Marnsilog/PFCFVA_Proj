@@ -171,29 +171,33 @@
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                         <div>
                             <p>Account Type<span class="text-red-500 font-bold mr-1">*</span></p>
-                           
-                            <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType" required>
-                                <option value="" disabled selected> </option>
+                            <select class="border-[1px] border-black w-[17rem] h-7" id="accountType" required>
+                                <option value="" disabled selected>Select Account Type</option>
                                 <option value="Volunteer">Volunteer</option>
                                 <option value="Supervisor">Supervisor</option>
                                 <option value="Admin">Admin</option>
                             </select>
+                            <!-- <select class="border-[1px] border-black w-[17rem] h-7" name="" id="accountType" required>
+                                <option value="" disabled selected> </option>
+                                <option value="Volunteer">Volunteer</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Admin">Admin</option>
+                            </select> -->
                         </div>
                         <div >
                             <p>Call Sign <span class="text-red-500 font-bold mr-1">*</span></p>
                             <div class="border-[1px] border-black w-[17rem] h-7 md:h-7 flex justify-start">
                                 
-                                    <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" name="" id="callSign" required disabled>
-                                        <option value="" disabled selected> </option>
-                                        <option value="ASPIRANT">ASPIRANT</option>
-                                        <option value="PROBATIONARY">PROBATIONARY</option>
-                                        <option value="ECHO">ECHO</option>
-                                        <option value="ECHO800">ECHO800</option>
-                                        <option value="ECHO900">ECHO900</option>
-                                    </select>
-                                    <span class="tooltip-text absolute text-sm p-2 bg-green-500 text-white rounded hidden">
-                                        You have to choose an account type first
-                                    </span>
+                                <select class="border-r-[1px] border-gray-500 w-[70%] h-full md:h-auto" id="callSign" required disabled>
+                                    <option value="" disabled selected>Select Call Sign</option>
+                                    <option value="ASPIRANT">ASPIRANT</option>
+                                    <option value="PROBATIONARY">PROBATIONARY</option>
+                                    <option value="ECHO">ECHO</option>
+                                    <option value="ECHO800">ECHO800</option>
+                                    <option value="ECHO900">ECHO900</option>
+                                    <option value="PREVO">PREVO</option>
+                                </select>
+                                <span id="tooltip" class="hidden text-red-500">Please select an account type first</span>
                                 
                                 <input class="w-[30%] h-full ml-2" placeholder="#"  type="text" id="callSignNum" >
                             </div>

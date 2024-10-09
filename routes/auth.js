@@ -720,7 +720,7 @@ module.exports = (db, db2) => {
     router.get('/volunteers', (req, res) => {
         const search = req.query.search || ''; 
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours AS points 
+            SELECT accountID AS id, firstName AS name, dutyHours AS points
             FROM tbl_accounts 
             WHERE firstName LIKE ? OR lastName LIKE ? OR accountID LIKE ? OR username LIKE ? OR accountType LIKE ? OR callSign LIKE ? OR gender LIKE ?
             ORDER BY dutyHours DESC
@@ -744,7 +744,7 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, 
+            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
@@ -768,6 +768,7 @@ module.exports = (db, db2) => {
                 fireResponsePoints: results[0].fireResponsePoints,
                 inventoryPoints: results[0].inventoryPoints,
                 activityPoints: results[0].activityPoints,
+                callSign: results[0].callSign,
                 image: profilePicPath  
             };
     
@@ -802,7 +803,7 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, 
+            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
@@ -826,6 +827,7 @@ module.exports = (db, db2) => {
                 fireResponsePoints: results[0].fireResponsePoints,
                 inventoryPoints: results[0].inventoryPoints,
                 activityPoints: results[0].activityPoints,
+                callSign: results[0].callSign,
                 image: profilePicPath  
             };
     
@@ -1073,16 +1075,30 @@ module.exports = (db, db2) => {
     });
     //__search INV
     router.get('/inventory-supervisor-search', (req, res) => {
-        const search = req.query.search;
-        const searchParam = `%${search}%`; 
-        const query = `
-            SELECT itemId, itemName, itemImage, vehicleAssignment 
-            FROM tbl_inventory 
-            WHERE (itemName LIKE ? OR status LIKE ?) 
+        const search = req.query.search || '';
+        const vehicleAssignment = req.query.vehicleAssignment || ''; 
+        const vehicleStat = req.query.vehicleStat || '';
+        //console.log(vehicleAssignment);
+        const searchParam = `%${search}%`;
+        let query = `
+            SELECT itemId, itemName, itemImage, vehicleAssignment
+            FROM tbl_inventory
+            WHERE (itemName LIKE ? OR status LIKE ?)
             AND itemStatus = 'Available'
         `;
-        
-        db.query(query, [searchParam, searchParam], (err, results) => {
+        const params = [searchParam, searchParam];
+    
+        // Add vehicleAssignment condition only if it's provided
+        if (vehicleAssignment) {
+            query += ' AND vehicleAssignment = ?';
+            params.push(vehicleAssignment);
+        }
+        if (vehicleStat) {
+            query += ' AND status = ?';
+            params.push(vehicleStat);
+        }
+    
+        db.query(query, params, (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -1090,6 +1106,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     
 router.post('/inventory-supervisor/log', async (req, res) => {
     const items = req.body;
@@ -1327,31 +1344,31 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
-
+    
         if (req.files && req.files.itemImage) {
             const itemImage = req.files.itemImage;
             if (itemImage.size > 50 * 1024 * 1024) {
                 return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
             }
-
+    
             try {
                 const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
-
+    
                 await sharp(itemImage.data)
                     .resize({ width: 300 })
                     .jpeg({ quality: 40 }) 
                     .toFile(tempFilePath);
-
+    
                 // Upload the resized image to Cloudinary
                 const uniqueFileName = `${itemName}_${Date.now()}`;
                 const result = await cloudinary.uploader.upload(tempFilePath, {
                     folder: 'uploads',
                     public_id: uniqueFileName,
                 });
-
+    
                 // Get the secure URL from Cloudinary
                 itemImagePath = result.secure_url;
-
+    
                 // Clean up the temp file after upload
                 fs.unlinkSync(tempFilePath);
             } catch (error) {
@@ -1359,23 +1376,29 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 return res.status(500).json({ success: false, message: 'Error uploading image.' });
             }
         }
-
+    
         // Insert equipment data into the database
         const query = `
             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
             VALUES (?, ?, ?, ?)
         `;
         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
-
+    
         db.query(query, queryParams, (error, results) => {
             if (error) {
+                // Check if the error is related to duplicate entry
+                if (error.code === 'ER_DUP_ENTRY') {
+                    return res.status(400).json({ success: false, message: 'Item name already exists.' });
+                }
+    
                 console.error('Error inserting equipment data:', error);
                 return res.status(500).json({ success: false, message: 'Internal Server Error' });
             }
-
+    
             res.json({ success: true, message: 'Equipment added successfully.' });
         });
     });
+    
     
     
     

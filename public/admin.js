@@ -82,33 +82,17 @@ document.addEventListener('DOMContentLoaded', function() {
     frmIncident.style.display = 'none';
     InciSys.style.display = 'block';
   }
-function icsBack(){
-    var InciSys = document.getElementById('InciSys');
-    var frmIncident = document.getElementById('frmIncident');
-    frmIncident.style.display = 'block';
-    InciSys.style.display = 'none';
-}
-
-  function passEye() {
-    var x = document.getElementById("password");
-    var seen = document.getElementById('seen');
-    var unseen = document.getElementById('unseen');
-    if (x.type === "password") {
-        x.type = "text";
-        unseen.classList.remove('hidden');
-        seen.classList.add('hidden');
-
-    } else {
-        x.type = "password";
-        seen.classList.remove('hidden');
-        unseen.classList.add('hidden');
-       
+    function icsBack(){
+        var InciSys = document.getElementById('InciSys');
+        var frmIncident = document.getElementById('frmIncident');
+        frmIncident.style.display = 'block';
+        InciSys.style.display = 'none';
     }
-}      
-function passEye2() {
-        var x = document.getElementById("confirmPassword");
-        var seen = document.getElementById('seen2');
-        var unseen = document.getElementById('unseen2');
+
+    function passEye() {
+        var x = document.getElementById("password");
+        var seen = document.getElementById('seen');
+        var unseen = document.getElementById('unseen');
         if (x.type === "password") {
             x.type = "text";
             unseen.classList.remove('hidden');
@@ -118,33 +102,49 @@ function passEye2() {
             x.type = "password";
             seen.classList.remove('hidden');
             unseen.classList.add('hidden');
-           
-        }
-}    
         
-    // FORM VOLUNTEER ----------------------------------------------------->
-    function summarySorting(){
-        var summarySort = document.getElementById('summarySort');
-        if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
-         
-            summarySort.style.display = 'block';
-        } else {
-          
-            summarySort.style.display = 'none';
         }
-      }
-      
+    }      
+    function passEye2() {
+            var x = document.getElementById("confirmPassword");
+            var seen = document.getElementById('seen2');
+            var unseen = document.getElementById('unseen2');
+            if (x.type === "password") {
+                x.type = "text";
+                unseen.classList.remove('hidden');
+                seen.classList.add('hidden');
 
-      function cancelSort(){
-        var summarySort = document.getElementById('summarySort');
-        if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
-         
-            summarySort.style.display = 'block';
-        } else {
-          
-            summarySort.style.display = 'none';
-        }
-      }
+            } else {
+                x.type = "password";
+                seen.classList.remove('hidden');
+                unseen.classList.add('hidden');
+            
+            }
+    }    
+            
+        // FORM VOLUNTEER ----------------------------------------------------->
+    function summarySorting(){
+            var summarySort = document.getElementById('summarySort');
+            if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
+            
+                summarySort.style.display = 'block';
+            } else {
+            
+                summarySort.style.display = 'none';
+            }
+    }
+        
+
+    function cancelSort(){
+            var summarySort = document.getElementById('summarySort');
+            if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
+            
+                summarySort.style.display = 'block';
+            } else {
+            
+                summarySort.style.display = 'none';
+            }
+    }
     //FOR RANKS ----------------------------------------------------------->
   
     function  cancelRank(){
@@ -256,53 +256,7 @@ function passEye2() {
         
     });
     //register, clear form
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const form = document.getElementById('registerForm');
-    //     const clearButton = document.getElementById('clearButton');
-    //     const callSignSelect = document.getElementById('callSign');
-    //     const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
-    //     if (clearButton) {
-    //         clearButton.addEventListener('click', function() {
-    //             clearForm(form);
-    //         });
-    //     } else {
-    //         return;
-    //     }
-    
-    //     function clearForm(form) {
-    //         Array.from(form.elements).forEach(element => {
-    //             switch(element.type) {
-    //                 case 'text':
-    //                 case 'password':
-    //                 case 'textarea':
-    //                 case 'email':
-    //                 case 'number':
-    //                 case 'date':
-    //                 case 'tel':
-    //                     element.value = '';
-    //                     break;
-    //                 case 'radio':
-    //                 case 'checkbox':
-    //                     element.checked = false;
-    //                     break;
-    //                 case 'select-one':
-    //                 case 'select-multiple':
-    //                     element.selectedIndex = -1;
-    //                     break;
-    //                 default:
-    //                     break;
-    //             }
-    //         });
-    
-    //         // Reset callSign select to its initial state
-    //         if (callSignSelect) {
-    //             callSignSelect.disabled = true;
-    //             if (tooltipText) {
-    //                 tooltipText.classList.remove('hidden');
-    //             }
-    //         }
-    //     }
-    // });
+
     
     
     // //register, dont allow numbers
@@ -371,45 +325,45 @@ function passEye2() {
     //     });
     // });
      //handle accountType/callSign
-     document.addEventListener('DOMContentLoaded', function() {
-        const accountTypeSelect = document.getElementById('accountType');
-        const callSignSelect = document.getElementById('callSign');
-        const optionsToDisable = ['ECHO', 'ECHO800', 'ECHO900'];
-        const tooltipText = callSignSelect.nextElementSibling;
+    //  document.addEventListener('DOMContentLoaded', function() {
+    //     const accountTypeSelect = document.getElementById('accountType');
+    //     const callSignSelect = document.getElementById('callSign');
+    //     const optionsToDisable = ['ECHO', 'ECHO800', 'ECHO900'];
+    //     const tooltipText = callSignSelect.nextElementSibling;
 
-        accountTypeSelect.addEventListener('change', function() {
-            const selectedAccountType = accountTypeSelect.value;
-            if (selectedAccountType) {
-                callSignSelect.disabled = false;
-                tooltipText.classList.add('hidden');
-            } else {
-                callSignSelect.disabled = true;
-                tooltipText.classList.remove('hidden');
-            }
+    //     accountTypeSelect.addEventListener('change', function() {
+    //         const selectedAccountType = accountTypeSelect.value;
+    //         if (selectedAccountType) {
+    //             callSignSelect.disabled = false;
+    //             tooltipText.classList.add('hidden');
+    //         } else {
+    //             callSignSelect.disabled = true;
+    //             tooltipText.classList.remove('hidden');
+    //         }
 
-            if (selectedAccountType === 'Volunteer') {
-                optionsToDisable.forEach(optionValue => {
-                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
-                    option.disabled = true;
-                });
-            } else {
-                optionsToDisable.forEach(optionValue => {
-                    const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
-                    option.disabled = false;
-                });
-            }
-        });
+    //         if (selectedAccountType === 'Volunteer') {
+    //             optionsToDisable.forEach(optionValue => {
+    //                 const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+    //                 option.disabled = true;
+    //             });
+    //         } else {
+    //             optionsToDisable.forEach(optionValue => {
+    //                 const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
+    //                 option.disabled = false;
+    //             });
+    //         }
+    //     });
 
-        callSignSelect.addEventListener('mouseover', function() {
-            if (callSignSelect.disabled) {
-                tooltipText.classList.remove('hidden');
-            }
-        });
+    //     callSignSelect.addEventListener('mouseover', function() {
+    //         if (callSignSelect.disabled) {
+    //             tooltipText.classList.remove('hidden');
+    //         }
+    //     });
 
-        callSignSelect.addEventListener('mouseout', function() {
-            tooltipText.classList.add('hidden');
-        });
-    });
+    //     callSignSelect.addEventListener('mouseout', function() {
+    //         tooltipText.classList.add('hidden');
+    //     });
+    // });
 
 
     //ADMIN INVENTORY STATUS 

@@ -193,6 +193,8 @@
                             <th>Duty Hours</th>
                             <th>Fire Response</th>
                             <th>Status</th>
+                            <th></th>
+                            
                         </tr>
                     </thead>
                     <tbody class="font-[500]" id="rankUp">
@@ -222,7 +224,89 @@
 </div>
 <script>
     
-    document.addEventListener('DOMContentLoaded', function() {
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     fetch('/rankUp')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             const rankUpTable = document.getElementById('rankUp');
+
+//             // Function to display the data in the rankUp table
+//             function populateRankUpTable(records) {
+//                 rankUpTable.innerHTML = ''; // Clear existing data
+
+//                 records.forEach(record => {
+//                     const row = document.createElement('tr');
+//                     row.innerHTML = `
+//                       <td class="sticky-col bg-white">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+//     <td class="flex justify-center items-center space-x-2">
+//         <span>${record.callSign}</span>
+//         <button onclick="handleRankUp(${record.accountID})" class="focus:outline-none">
+//             <svg xmlns="http://www.w3.org/2000/svg" height="32" width="20" viewBox="0 0 320 512">
+//                 <path fill="#1ce31f" d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z"/>
+//             </svg>
+//         </button>
+//     </td>
+//     <td>${record.dutyHours} hours</td>
+//     <td>${record.fireResponsePoints}</td>
+//     <td class="py-2 flex justify-center">
+//         <div class="md:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div>
+//     </td>
+//                     `;
+//                     rankUpTable.appendChild(row);
+//                 });
+//             }
+
+//             // Initial display of the rankUp table with data directly from the backend
+//             populateRankUpTable(data);
+//         })
+//         .catch(error => {
+//             console.error('Error fetching volunteer details:', error);
+//         });
+// });
+
+// function handleRankUp(accountID, currentCallSign, dutyHours, fireResponsePoints) {
+//     fetch('/upgradeRank', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ 
+//             accountID, 
+//             currentCallSign, 
+//             dutyHours, 
+//             fireResponsePoints 
+//         }),
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             return response.json().then(errorData => {
+//                 throw new Error(errorData.error || 'Error during rank up');
+//             });
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         if (data.success) {
+//             alert("Successful Rank Up!");
+//             // Reload or update the table to reflect the change
+//             location.reload();
+//         } else {
+//             alert("Error during rank up: " + data.error);
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert("Error during rank up: " + error.message);
+//     });
+// }
+
+document.addEventListener('DOMContentLoaded', function() {
     fetch('/rankUp')
         .then(response => {
             if (!response.ok) {
@@ -241,7 +325,14 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="sticky-col bg-white">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                        <td>${record.callSign}</td>
+                        <td class="flex justify-center items-center space-x-2">
+                            <span>${record.callSign}</span>
+                            <button onclick="handleRankUp(${record.accountID}, '${record.callSign}', ${record.dutyHours}, ${record.fireResponsePoints})" class="focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="32" width="20" viewBox="0 0 320 512">
+                                    <path fill="#1ce31f" d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l256 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z"/>
+                                </svg>
+                            </button>
+                        </td>
                         <td>${record.dutyHours} hours</td>
                         <td>${record.fireResponsePoints}</td>
                         <td class="py-2 flex justify-center">
@@ -260,6 +351,41 @@
         });
 });
 
+function handleRankUp(accountID, currentCallSign, dutyHours, fireResponsePoints) {
+    fetch('/upgradeRank', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            accountID, 
+            currentCallSign, 
+            dutyHours, 
+            fireResponsePoints 
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Error during rank up');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert("Successful Rank Up!");
+            // Reload or update the table to reflect the change
+            location.reload();
+        } else {
+            alert("Error during rank up: " + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error during rank up: " + error.message);
+    });
+}
 
 
 </script>

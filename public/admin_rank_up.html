@@ -222,81 +222,44 @@
 </div>
 <script>
     
-//     document.addEventListener('DOMContentLoaded', function() {
-//     fetch('/volunteerDetails')
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             const rankUpTable = document.getElementById('rankUp');
+    document.addEventListener('DOMContentLoaded', function() {
+    fetch('/rankUp')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const rankUpTable = document.getElementById('rankUp');
 
-//             // Function to display the data in the rankUp table
-//             function populateRankUpTable(records) {
-//                 rankUpTable.innerHTML = ''; // Clear existing data
-//                 records.forEach(record => {
-//                     const row = document.createElement('tr');
-//                     row.innerHTML = `
-//                         <td class="sticky-col bg-white">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-//                         <td>${record.callSign}</td>
-//                         <td>${record.dutyHours} hours</td>
-//                         <td>${record.fireResponsePoints}</td>
-//                         <td class="py-2 flex justify-center">
-//                             <div class="md:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div>
-//                         </td>
-//                     `;
-//                     rankUpTable.appendChild(row);
-//                 });
-//             }
+            // Function to display the data in the rankUp table
+            function populateRankUpTable(records) {
+                rankUpTable.innerHTML = ''; // Clear existing data
 
-//             // Initial display of the rankUp table
-//             populateRankUpTable(data);
-//         })
-//         .catch(error => {
-//             console.error('Error fetching volunteer details:', error);
-//         });
-// });
+                records.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="sticky-col bg-white">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                        <td>${record.callSign}</td>
+                        <td>${record.dutyHours} hours</td>
+                        <td>${record.fireResponsePoints}</td>
+                        <td class="py-2 flex justify-center">
+                            <div class="md:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div>
+                        </td>
+                    `;
+                    rankUpTable.appendChild(row);
+                });
+            }
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchEligibleRanks();
+            // Initial display of the rankUp table with data directly from the backend
+            populateRankUpTable(data);
+        })
+        .catch(error => {
+            console.error('Error fetching volunteer details:', error);
+        });
 });
 
-async function fetchEligibleRanks() {
-    try {
-        const response = await fetch('/eligibleRanks');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const accounts = await response.json();
-        populateRankUpTable(accounts);
-    } catch (error) {
-        console.error('Error fetching eligible accounts:', error);
-    }
-}
-
-
-function populateRankUpTable(accounts) {
-    const tableBody = document.getElementById('rankUp');
-    tableBody.innerHTML = ''; // Clear existing rows
-
-    accounts.forEach(account => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="sticky-col bg-white">${account.fullName}</td>
-            <td>${account.callSign}</td>
-            <td>${account.dutyHours} hours</td>
-            <td>${account.fireResponse}</td>
-            <td class="py-2 flex justify-center">
-                <div class="md:h-8 w-24 py-[4px] rounded-xl bg-[#FF0000] text-white font-Inter">Pending</div>
-            </td>
-        `;
-
-        tableBody.appendChild(row);
-    });
-}
 
 
 </script>

@@ -456,47 +456,63 @@ app.get('/recentAttendance', (req, res) => {
 });
 
 
-//SELECT tbl_accounts (REFINED)
+// //SELECT tbl_accounts (REFINED)
+// app.get('/accountsAll', (req, res) => {
+//     const sql = `
+//         SELECT
+//             accountID,
+//             rfid,
+//             username,
+//             password,
+//             accountType,
+//             lastName,
+//             firstName,
+//             middleName,
+//             middleInitial,
+//             callSign,
+//             currentAddress,
+//             dateOfBirth,
+//             civilStatus,
+//             gender,
+//             nationality,
+//             bloodType,
+//             mobileNumber,
+//             emailAddress,
+//             emergencyContactPerson,
+//             emergencyContactNumber,
+//             highestEducationalAttainment,
+//             nameOfCompany,
+//             yearsInService,
+//             skillsTraining,
+//             otherAffiliation,
+//             idPicture,
+//             bioDataChecked,
+//             interviewChecked,
+//             fireResponsePoints,
+//             activityPoints,
+//             inventoryPoints,
+//             dutyHours,
+//             cumulativeDutyHours,
+//             rank,
+//             resetPasswordToken,
+//             resetPasswordExpires,
+//             status
+//         FROM tbl_accounts
+//         ORDER BY lastName ASC, firstName ASC, middleInitial ASC
+//     `;
+
+//     db.query(sql, (err, results) => {
+//         if (err) {
+//             res.status(500).send('Error retrieving accounts');
+//             return;
+//         }
+//         res.json(results);
+//     });
+// });
+
 app.get('/accountsAll', (req, res) => {
     const sql = `
-        SELECT
-            accountID,
-            rfid,
-            username,
-            password,
-            accountType,
-            lastName,
-            firstName,
-            middleName,
-            middleInitial,
-            callSign,
-            currentAddress,
-            dateOfBirth,
-            civilStatus,
-            gender,
-            nationality,
-            bloodType,
-            mobileNumber,
-            emailAddress,
-            emergencyContactPerson,
-            emergencyContactNumber,
-            highestEducationalAttainment,
-            nameOfCompany,
-            yearsInService,
-            skillsTraining,
-            otherAffiliation,
-            idPicture,
-            bioDataChecked,
-            interviewChecked,
-            fireResponsePoints,
-            activityPoints,
-            inventoryPoints,
-            dutyHours,
-            cumulativeDutyHours,
-            rank,
-            resetPasswordToken,
-            resetPasswordExpires,
-            status
+        SELECT *
         FROM tbl_accounts
         ORDER BY lastName ASC, firstName ASC, middleInitial ASC
     `;
@@ -509,6 +525,7 @@ app.get('/accountsAll', (req, res) => {
         res.json(results);
     });
 });
+
 
 
 //admin attendance shit
@@ -567,6 +584,7 @@ app.get('/volunteerDetails', (req, res) => {
         res.json(results);
     }); 
 });
+
 
 // Endpoint to get current attendees with timeInStatus = 1
 app.get('/getCurrentPresent', (req, res) => {
@@ -1092,7 +1110,7 @@ app.get('/getIncidentLog/:icsID', (req, res) => {
 
 //RANKUP
 
-app.get('/eligibleRanks', (req, res) => {
+app.get('/rankUp', (req, res) => {
     const sql = `
         SELECT 
             a.firstName,
@@ -1102,21 +1120,16 @@ app.get('/eligibleRanks', (req, res) => {
             a.dutyHours,
             a.fireResponsePoints
         FROM tbl_accounts a
-        WHERE 
-            (a.callSign = 'Aspirant' AND a.dutyHours >= 100 AND a.fireResponsePoints >= 0) OR
-            (a.callSign = 'Probationary' AND a.dutyHours >= 1000 AND a.fireResponsePoints >= 10) OR
-            (a.callSign = 'Echo' AND a.dutyHours >= 2000 AND a.fireResponsePoints >= 20)
-        ORDER BY a.lastName, a.firstName
-    `;
+        WHERE a.dutyHours >= 100
+        ORDER BY a.lastName, a.firstName`;
 
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('Error retrieving eligible accounts:', err);
-            return res.status(500).json({ error: 'Error retrieving eligible accounts' });
+            res.status(500).send('Error retrieving account details');
+            return;
         }
-
         res.json(results);
-    });
+    }); 
 });
 
 

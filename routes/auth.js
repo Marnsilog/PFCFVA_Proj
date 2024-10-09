@@ -1075,16 +1075,30 @@ module.exports = (db, db2) => {
     });
     //__search INV
     router.get('/inventory-supervisor-search', (req, res) => {
-        const search = req.query.search;
-        const searchParam = `%${search}%`; 
-        const query = `
-            SELECT itemId, itemName, itemImage, vehicleAssignment 
-            FROM tbl_inventory 
-            WHERE (itemName LIKE ? OR status LIKE ?) 
+        const search = req.query.search || '';
+        const vehicleAssignment = req.query.vehicleAssignment || ''; 
+        const vehicleStat = req.query.vehicleStat || '';
+        //console.log(vehicleAssignment);
+        const searchParam = `%${search}%`;
+        let query = `
+            SELECT itemId, itemName, itemImage, vehicleAssignment
+            FROM tbl_inventory
+            WHERE (itemName LIKE ? OR status LIKE ?)
             AND itemStatus = 'Available'
         `;
-        
-        db.query(query, [searchParam, searchParam], (err, results) => {
+        const params = [searchParam, searchParam];
+    
+        // Add vehicleAssignment condition only if it's provided
+        if (vehicleAssignment) {
+            query += ' AND vehicleAssignment = ?';
+            params.push(vehicleAssignment);
+        }
+        if (vehicleStat) {
+            query += ' AND status = ?';
+            params.push(vehicleStat);
+        }
+    
+        db.query(query, params, (err, results) => {
             if (err) {
                 console.error('Error fetching inventory data:', err);
                 return res.status(500).json({ error: 'Error fetching data' });
@@ -1092,6 +1106,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    
     
 router.post('/inventory-supervisor/log', async (req, res) => {
     const items = req.body;

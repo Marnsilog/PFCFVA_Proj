@@ -1360,7 +1360,7 @@ app.get('/rankUp', (req, res) => {
             a.middleInitial,
             a.lastName,
             a.callSign,
-            a.dutyHours,
+            a. FLOOR(cumulativeDutyHours / 60) AS dutyHours,
             a.fireResponsePoints
         FROM tbl_accounts a
         WHERE 

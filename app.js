@@ -536,11 +536,16 @@ app.post('/recordTimeOut', (req, res) => {
 });
 
 // TIMER TAB HERE
-cron.schedule('59 23 * * *', () => {
-    console.log('Logging out all users at 11:59 PM');
+cron.schedule('58 23 * * *', () => {
+    console.log('Logging out all users at 11:58 PM');
     logOutAllUsers();
 });
 
+// Schedule the cron job to run at midnight on the 1st day of each month
+cron.schedule('0 0 1 * *', () => {
+    console.log('Resetting duty hours at the beginning of the month');
+    resetDutyHours();
+  });
 
 function logOutAllUsers() {
     const getUsersQuery = `
@@ -621,7 +626,16 @@ function logOutAllUsers() {
     });
 }
 
-
+function resetDutyHours() {
+    const query = 'UPDATE tbl_accounts SET dutyHours = 0';
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error('Error running query:', error);
+      } else {
+        console.log('Duty hours reset successfully');
+      }
+    });
+  }
 
 // endpoint to record Time Out (working)
 // app.post('/recordTimeOut', (req, res) => {
@@ -849,30 +863,6 @@ app.get('/getVehicleAssignments', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-// app.get('/getEquipment', (req, res) => {
-//     try {
-//         const search = req.query.search || ''; 
-//         const query = `
-//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
-//             WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
-//             AND itemStatus = 'Available'
-//         `;
-
-//         const searchParam = `%${search}%`;
-
-//         db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
-//             if (err) {
-//                 console.error('Failed to retrieve equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
-//             }
-//             //console.log(results);
-//             res.json(results); // Send results back as JSON
-//         });
-//     } catch (error) {
-//         console.error('Unexpected error:', error);
-//         res.status(500).json({ error: 'An unexpected error occurred' });
-//     }
-// });
 
 app.get('/getEquipment', (req, res) => { 
     try {
@@ -938,27 +928,6 @@ app.get('/getTrashedEquipment', (req, res) => {
 
 
 
-// app.get('/getTrashedEquipment', (req, res) => {
-//     try {
-//         const search = req.query.search || ''; 
-//         const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
-
-//         const searchParam = `%${search}%`;
-
-//         // Pass search parameters in an array
-//         db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
-//             if (err) {
-//                 console.error('Failed to retrieve equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
-//             }
-//             //console.log(results);
-//             res.json(results); // Send results back as JSON
-//         });
-//     } catch (error) {
-//         console.error('Unexpected error:', error);
-//         res.status(500).json({ error: 'An unexpected error occurred' });
-//     }
-// });
 
 
 app.put('/moveToTrash/:itemID', (req, res) => {
@@ -1062,75 +1031,6 @@ function deleteFromDatabase(itemID, res) {
         });
     });
 }
-
-
-// app.delete('/deleteFromTrash/:itemID', (req, res) => {
-//     const { itemID } = req.params;
-//     const { password } = req.body;
-//     const username = req.session.user?.username;
-
-//     if (!username) {
-//         return res.status(401).json({ error: 'Unauthorized' });
-//     }
-
-//     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
-//     db.query(getPasswordQuery, [username], (err, results) => {
-//         if (err || results.length === 0) {
-//             return res.status(500).json({ error: 'Error retrieving password' });
-//         }
-
-//         const hashedPassword = results[0].password;
-//         bcrypt.compare(password, hashedPassword, (err, isMatch) => {
-//             if (err || !isMatch) {
-//                 return res.status(401).json({ error: 'Incorrect password' });
-//             }
-//             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-
-//             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
-
-//             db.query(getImagePathQuery, [itemID], (err, results) => {
-
-//                 if (err) {
-//                     console.error('Error executing query:', err);
-//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
-//                 }
-
-//                 if (results.length === 0) {
-//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
-//                 }
-
-//                 const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-//                 fs.unlink(imagePath, (err) => {
-//                     if (err) {
-//                         console.error('Failed to delete image file:', err);
-//                         return res.status(500).json({ error: 'Failed to delete image file' });
-//                     }
-//                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
-//                     db.query(deleteLog, [itemID], (err) => {
-//                         if (err) {
-//                             console.log('Failed to delete log:', err);
-//                         }
-                
-//                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
-//                         db.query(deleteQuery, [itemID], (err) => {
-//                             if (err) {
-//                                 console.error('Failed to delete item:', err);
-//                                 return res.status(500).json({ error: 'Failed to delete equipment' });
-//                             }
-                
-//                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
-//                         });
-//                     });
-//                 });
-                
-//             });
-//         });
-//     });
-// });
-
-
-
-
 
 //edit equip route
 app.put('/updateEquipment', (req, res) => {

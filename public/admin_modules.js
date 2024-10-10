@@ -180,31 +180,41 @@ function fetchVolunteerData() {
                 return;
             }
 
-            const dateOfBirth = new Date(data.dateOfBirth);
-            const formattedDate = dateOfBirth.toISOString().split('T')[0];
+            const dateOfBirth = data.dateOfBirth ? new Date(data.dateOfBirth) : null;
+            const formattedDate = dateOfBirth ? dateOfBirth.toISOString().split('T')[0] : '';
+            
+            let dutyHours = data.cumulativeDutyHours ? Math.round(data.cumulativeDutyHours / 60) : '';
 
+            const inventoryPoints = data.inventoryPoints || ''; // Assuming inventoryPoints is defined or part of data
+            
             const fields = {
-                HiddenUsername: data.username,
-                EditUsername: data.username,
-                EditLastName: data.lastName,
-                EditFirstName: data.firstName,
-                EditMiddleName: data.middleName,
-                EditEmailAddress: data.emailAddress,
-                EditContactNumber: data.mobileNumber,
-                EditCivilStatus: data.civilStatus,
-                EditNationality: data.nationality,
-                EditBloodType: data.bloodType,
-                EditBirthday: formattedDate,
-                EditGender: data.gender,
-                EditCurrentAddress: data.currentAddress,
-                EditEmergencyContactPerson: data.emergencyContactPerson,
-                EditEmergencyContactNumber: data.emergencyContactNumber,
-                EditHighestEducationalAttainment: data.highestEducationalAttainment,
-                EditNameOfCompany: data.nameOfCompany,
-                EditYearsInService: data.yearsInService,
-                EditSkillsTraining: data.skillsTraining,
-                EditOtherAffiliation: data.otherAffiliation
+                HiddenUsername: data.username || '',
+                EditaccountType: data.accountType || '',
+                EditUsername: data.username || '',
+                EditLastName: data.lastName || '',
+                EditFirstName: data.firstName || '',
+                EditMiddleName: data.middleName || '',
+                EditEmailAddress: data.emailAddress || '',
+                EditContactNumber: data.mobileNumber || '',
+                EditCivilStatus: data.civilStatus || '',
+                EditNationality: data.nationality || '',
+                EditBloodType: data.bloodType || '',
+                EditBirthday: formattedDate || '',
+                EditGender: data.gender || '',
+                EditCurrentAddress: data.currentAddress || '',
+                EditEmergencyContactPerson: data.emergencyContactPerson || '',
+                EditEmergencyContactNumber: data.emergencyContactNumber || '',
+                EditHighestEducationalAttainment: data.highestEducationalAttainment || '',
+                EditNameOfCompany: data.nameOfCompany || '',
+                EditYearsInService: data.yearsInService || '',
+                EditSkillsTraining: data.skillsTraining || '',
+                EditOtherAffiliation: data.otherAffiliation || '',
+                editDutyHours: dutyHours || '0',
+                editFireResponse: data.fireResponsePoints || '0',
+                editActivityPoints: data.activityPoints || '0',
+                editInventoryPoints: inventoryPoints || '0'
             };
+            
 
             element.src = data.idPicture || 'img/user.png'; 
             Object.keys(fields).forEach(id => {

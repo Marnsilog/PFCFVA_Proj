@@ -183,7 +183,8 @@ module.exports = (db, db2) => {
         });
     });
     router.get('/get-volunteer-data/:accountID', (req, res) => {
-        const accountID = req.params.accountID; // Get accountID from the route parameter
+        const accountID = req.params.accountID; 
+        console.log(`Fetching data for accountID: ${accountID}`);  // Add logging here
     
         if (!accountID) {
             return res.status(400).send('Volunteer account ID is required');
@@ -192,7 +193,7 @@ module.exports = (db, db2) => {
         const query = 'SELECT * FROM tbl_accounts WHERE accountID = ?';
         db.query(query, [accountID], (err, result) => {
             if (err) {
-                console.error('Error fetching volunteer data:', err);
+                console.error('Error fetching volunteer data from DB:', err);
                 return res.status(500).send('Error fetching volunteer data');
             }
             if (result.length === 0) {
@@ -200,10 +201,133 @@ module.exports = (db, db2) => {
             }
     
             const { password, ...volunteerData } = result[0]; 
-            //console.log(volunteerData);
+            //console.log('Fetched volunteer data:', volunteerData);  // Log the result
             res.json(volunteerData); 
         });
     });
+    
+    router.post('/edit-volunteer', async (req, res) => {
+        try {
+            const {
+                accountType, username2, lastName, firstName, middleName, emailAddress, contactNumber,
+                oldPassword, newPassword, civilStatus, nationality, bloodType,
+                birthday, gender, currentAddress, emergencyContactPerson,
+                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                yearsInService, skillsTraining, otherAffiliation, inventoryPoints, activityPoints, fireResponse, dutyHours
+            } = req.body;
+    
+            const username = req.body.username;
+    
+            const checkUsernameQuery = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+                if (checkUsernameErr) {
+                    console.error('Error checking username:', checkUsernameErr);
+                    return res.status(500).send({ success: false, message: 'Error checking username' });
+                }
+    
+                if (checkUsernameResult.length === 0) {
+                    return res.status(400).send({ success: false, message: 'User not found' });
+                }
+    
+                const user = checkUsernameResult[0];
+                let profilePicturePath = user.idPicture;
+    
+                // Handling password update
+                if (oldPassword) {
+                    bcrypt.compare(oldPassword, user.password, (compareErr, isMatch) => {
+                        if (compareErr || !isMatch) {
+                            return res.status(400).send({ success: false, message: 'Old password is incorrect' });
+                        }
+    
+                        if (newPassword) {
+                            bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+                                if (hashErr) {
+                                    console.error('Error hashing new password:', hashErr);
+                                    return res.status(500).send({ success: false, message: 'Error hashing new password' });
+                                }
+                                handleProfilePictureUpdate(hash);
+                            });
+                        } else {
+                            handleProfilePictureUpdate(user.password);
+                        }
+                    });
+                } else {
+                    handleProfilePictureUpdate(user.password);
+                }
+    
+                // Function to handle profile picture upload and update profile
+                function handleProfilePictureUpdate(password) {
+                    if (req.files && req.files.profilePicture) {
+                        const profilePicture = req.files.profilePicture;
+                        const uniqueFileName = `${username}_${Date.now()}_${profilePicture.name}`;
+                        const uploadDir = path.join(__dirname, '../profilePicture');
+                        const uploadPath = path.join(uploadDir, uniqueFileName);
+    
+                        // Ensure the directory exists
+                        if (!fs.existsSync(uploadDir)) {
+                            fs.mkdirSync(uploadDir, { recursive: true });
+                        }
+    
+                        // Log and move the file
+                        profilePicture.mv(uploadPath, (err) => {
+                            if (err) {
+                                console.error('Error moving file:', err);
+                                return res.status(500).send({ success: false, message: 'Error saving profile picture' });
+                            }
+    
+                            profilePicturePath = `profilePicture/${uniqueFileName}`;
+                            updateUserDetails(password, profilePicturePath); // Update with new picture
+                        });
+                    } else {
+                        updateUserDetails(password, profilePicturePath); // Update without new picture
+                    }
+                }
+    
+                const dutyHoursInMinutes = dutyHours ? Math.round(dutyHours * 60) : '';
+                // Function to execute the update query
+                function updateUserDetails(password, profilePicturePath) {
+                    const updateQuery = `
+                        UPDATE tbl_accounts SET accountType = ?, username = ?, lastName = ?, firstName = ?, 
+                            middleName = ?, emailAddress = ?, 
+                            mobileNumber = ?, password = ?, 
+                            civilStatus = ?, nationality = ?, 
+                            bloodType = ?, dateOfBirth = ?, 
+                            gender = ?, currentAddress = ?, 
+                            emergencyContactPerson = ?, emergencyContactNumber = ?, 
+                            highestEducationalAttainment = ?, nameOfCompany = ?, 
+                            yearsInService = ?, skillsTraining = ?, 
+                            otherAffiliation = ?, idPicture = ?, 
+                            cumulativeDutyHours = ROUND(?*60), fireResponsePoints = ?,
+                            activityPoints = ?, inventoryPoints = ?
+                        WHERE username = ?
+                    `;
+    
+                    const values = [
+                        accountType, username2, lastName, firstName, middleName, emailAddress, contactNumber,
+                        password, civilStatus, nationality, bloodType,
+                        birthday, gender, currentAddress, emergencyContactPerson,
+                        emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                        yearsInService, skillsTraining, otherAffiliation,
+                        profilePicturePath, dutyHours, fireResponse, activityPoints, inventoryPoints,
+                        username
+                    ];
+    
+                    db.query(updateQuery, values, (updateErr, updateResult) => {
+                        if (updateErr) {
+                            console.error('Error updating profile:', updateErr);
+                            return res.status(500).send({ success: false, message: 'Error updating profile' });
+                        }
+                        res.redirect('/admin_volunteer_configuration');
+                    });
+                }
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            res.status(500).send({ success: false, message: 'An unexpected error occurred' });
+        }
+    });
+    
+    
 
     router.post('/edit-profile', async (req, res) => {
         const {
@@ -1114,9 +1238,6 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json({ success: true, message: 'Equipment added successfully.' });
         });
     });
-    
-    
-    
     
     // router.post('/addEquipment', (req, res) => {
     //     const { itemName, vehicleAssignment, dateAcquired } = req.body;

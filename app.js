@@ -11,6 +11,7 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+const cron = require('node-cron');
 require('dotenv').config({ path: './.env' });
 const socketIo = require('socket.io');
 const http = require('http');  // Added for HTTP server creation
@@ -336,6 +337,7 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
     const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    
     db.query(sql, [rfid], (err, result) => {
         if (err) {
             res.status(500).send('Error retrieving user data');
@@ -345,17 +347,23 @@ app.get('/attendanceProfile', (req, res) => {
             res.status(404).send('User not found');
             return;
         }
+        
         const user = result[0];
+
+        const dutyHoursInMinutes = user.cumulativeDutyHours || 0; 
+        const dutyHours = Math.floor(dutyHoursInMinutes / 60); 
+
         res.json({
             fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
             callSign: user.callSign,
-            dutyHours: user.dutyHours,
+            dutyHours: dutyHours, 
             fireResponsePoints: user.fireResponsePoints,
             inventoryPoints: user.inventoryPoints,
             activityPoints: user.activityPoints
         });
     });
 });
+
 
 
 // endpoint to record Time In (working)
@@ -399,7 +407,6 @@ app.post('/recordTimeIn', (req, res) => {
     });
 });
 
-// endpoint to record Time Out (working)
 app.post('/recordTimeOut', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
@@ -416,23 +423,254 @@ app.post('/recordTimeOut', (req, res) => {
             res.status(404).send('User not found');
             return;
         }
+
         const accountID = result[0].accountID;
-        const updateAttendanceQuery = `UPDATE tbl_attendance 
-                                       SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
-                                       WHERE accountID = ? AND timeInStatus = 1 ORDER BY attendanceID DESC LIMIT 1`;
-        db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+
+        // Query to get the last time in record
+        const getLastTimeInQuery = `SELECT DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+                                        DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
+                                        DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
+                                        DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+                                    FROM tbl_attendance 
+                                    WHERE accountID = ? AND timeInStatus = 1 
+                                    ORDER BY attendanceID DESC 
+                                    LIMIT 1;
+                                    ;`;
+
+        db.query(getLastTimeInQuery, [accountID], (err, result) => {
             if (err) {
-                res.status(500).send('Error recording Time Out');
+                res.status(500).send('Error retrieving time in data');
                 return;
             }
-            if (result.affectedRows === 0) {
+
+            if (result.length === 0) {
                 res.status(400).send('No active Time In record found');
                 return;
             }
-            res.json({ timeOut, dateOfTimeOut });
+
+            const timeIn = result[0].timeIn; 
+            const dateOfTimeIn = result[0].dateOfTimeIn; 
+
+            const timeOut = result[0].timeOut; 
+            const dateOfTimeOut = result[0].dateOfTimeOut; 
+
+            // console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
+            // console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
+
+            const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
+            const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
+            // console.log('-- timeInDateTime: ', timeInDateTime)
+            // console.log('xx timeOutDateTime: ', timeOutDateTime)
+
+            
+            if (isNaN(timeInDateTime.getTime())) {
+                console.error('Invalid timeInDateTime:', timeInDateTime);
+                res.status(400).send('Invalid Time In data');
+                return;
+            }
+
+            // Calculate total minutes
+            const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
+
+            // Debug log for total minutes
+            // console.log(`Total Minutes: ${totalMinutes}`);
+
+            if (totalMinutes < 0) {
+                res.status(400).send('Time Out cannot be earlier than Time In');
+                return;
+            }
+
+            // Now get the duty hours and cumulative duty hours
+            const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+            db.query(getDutyHoursQuery, [accountID], (err, result) => {
+                if (err) {
+                    res.status(500).send('Error retrieving duty hours');
+                    return;
+                }
+
+                let oldDutyHours = result[0].dutyHours || 0; 
+                let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
+                const updatedDutyHours = oldDutyHours + totalMinutes;
+                const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+
+                const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                               SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+                                               WHERE accountID = ? AND timeInStatus = 1 
+                                               ORDER BY attendanceID DESC LIMIT 1`;
+
+                db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+                    if (err) {
+                        res.status(500).send('Error recording Time Out');
+                        return;
+                    }
+
+                    if (result.affectedRows === 0) {
+                        res.status(400).send('No active Time In record found');
+                        return;
+                    }
+
+                    // Now update both dutyHours and cumulativeDutyHours
+                    const updateDutyHoursQuery = `UPDATE tbl_accounts 
+                                                  SET dutyHours = ?, cumulativeDutyHours = ? 
+                                                  WHERE accountID = ?`;
+
+                    db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+                        if (err) {
+                            res.status(500).send('Error updating duty hours');
+                            console.log(err);
+                            return;
+                        }
+
+                        // Send the updated data back to the client
+                        res.json({
+                            timeOut,
+                            dateOfTimeOut,
+                            timeIn,
+                            dateOfTimeIn
+                        });
+                    });
+                });
+            });
         });
     });
 });
+
+// TIMER TAB HERE
+cron.schedule('58 23 * * *', () => {
+    console.log('Logging out all users at 11:58 PM');
+    logOutAllUsers();
+});
+
+// Schedule the cron job to run at midnight on the 1st day of each month
+cron.schedule('0 0 1 * *', () => {
+    console.log('Resetting duty hours at the beginning of the month');
+    resetDutyHours();
+  });
+
+function logOutAllUsers() {
+    const getUsersQuery = `
+        SELECT a.accountID, 
+              DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+              DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
+             DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
+             DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+        FROM tbl_accounts a
+        JOIN tbl_attendance t ON a.accountID = t.accountID
+        WHERE t.timeInStatus = 1;`;
+
+    db.query(getUsersQuery, (err, users) => {
+        if (err) {
+            console.error('Error retrieving users:', err);
+            return;
+        }
+
+        if (users.length === 0) {
+            console.log('No users to log out');
+            return;
+        }
+        console.log(`Retrieved ${users.length} active users with Time In status:`);
+
+        users.forEach(user => {
+            const accountID = user.accountID;
+            const timeIn = user.timeIn; 
+            const dateOfTimeIn = user.dateOfTimeIn; 
+            const timeOut = user.timeOut;
+            const dateOfTimeOut = user.dateOfTimeOut;
+            const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
+            const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
+            const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
+
+            if (totalMinutes < 0) {
+                console.error('Time Out cannot be earlier than Time In for accountID:', accountID);
+                return; 
+            }
+
+            const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+            db.query(getDutyHoursQuery, [accountID], (err, result) => {
+                if (err) {
+                    console.error('Error retrieving duty hours for accountID:', accountID, err);
+                    return;
+                }
+
+                let oldDutyHours = result[0].dutyHours || 0; 
+                let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
+                const updatedDutyHours = oldDutyHours + totalMinutes;
+                const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+                const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                               SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+                                               WHERE accountID = ? AND timeInStatus = 1 
+                                               ORDER BY attendanceID DESC LIMIT 1`;
+                
+                const timeOut = new Date().toTimeString().split(' ')[0]; // Get current time
+
+                db.query(updateAttendanceQuery, [timeOut, new Date().toISOString().split('T')[0], accountID], (err) => {
+                    if (err) {
+                        console.error('Error recording Time Out for accountID:', accountID, err);
+                        return;
+                    }
+                    const updateDutyHoursQuery = `UPDATE tbl_accounts 
+                                                  SET dutyHours = ?, cumulativeDutyHours = ? 
+                                                  WHERE accountID = ?`;
+
+                    db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+                        if (err) {
+                            console.error('Error updating duty hours for accountID:', accountID, err);
+                            return;
+                        }
+
+                        console.log(`Logged out accountID: ${accountID}, Total Minutes: ${totalMinutes}`);
+                    });
+                });
+            });
+        });
+    });
+}
+
+function resetDutyHours() {
+    const query = 'UPDATE tbl_accounts SET dutyHours = 0';
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.error('Error running query:', error);
+      } else {
+        console.log('Duty hours reset successfully');
+      }
+    });
+  }
+
+// endpoint to record Time Out (working)
+// app.post('/recordTimeOut', (req, res) => {
+//     const rfid = req.body.rfid;
+//     const currentTime = new Date();
+//     const timeOut = currentTime.toTimeString().split(' ')[0]; 
+//     const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+
+//     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error retrieving user data');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(404).send('User not found');
+//             return;
+//         }
+//         const accountID = result[0].accountID;
+//         const updateAttendanceQuery = `UPDATE tbl_attendance 
+//                                        SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+//                                        WHERE accountID = ? AND timeInStatus = 1 ORDER BY attendanceID DESC LIMIT 1`;
+//         db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+//             if (err) {
+//                 res.status(500).send('Error recording Time Out');
+//                 return;
+//             }
+//             if (result.affectedRows === 0) {
+//                 res.status(400).send('No active Time In record found');
+//                 return;
+//             }
+//             res.json({ timeOut, dateOfTimeOut });
+//         });
+//     });
+// });
 
 
 
@@ -625,30 +863,6 @@ app.get('/getVehicleAssignments', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-// app.get('/getEquipment', (req, res) => {
-//     try {
-//         const search = req.query.search || ''; 
-//         const query = `
-//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
-//             WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
-//             AND itemStatus = 'Available'
-//         `;
-
-//         const searchParam = `%${search}%`;
-
-//         db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
-//             if (err) {
-//                 console.error('Failed to retrieve equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
-//             }
-//             //console.log(results);
-//             res.json(results); // Send results back as JSON
-//         });
-//     } catch (error) {
-//         console.error('Unexpected error:', error);
-//         res.status(500).json({ error: 'An unexpected error occurred' });
-//     }
-// });
 
 app.get('/getEquipment', (req, res) => { 
     try {
@@ -714,27 +928,6 @@ app.get('/getTrashedEquipment', (req, res) => {
 
 
 
-// app.get('/getTrashedEquipment', (req, res) => {
-//     try {
-//         const search = req.query.search || ''; 
-//         const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
-
-//         const searchParam = `%${search}%`;
-
-//         // Pass search parameters in an array
-//         db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
-//             if (err) {
-//                 console.error('Failed to retrieve equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
-//             }
-//             //console.log(results);
-//             res.json(results); // Send results back as JSON
-//         });
-//     } catch (error) {
-//         console.error('Unexpected error:', error);
-//         res.status(500).json({ error: 'An unexpected error occurred' });
-//     }
-// });
 
 
 app.put('/moveToTrash/:itemID', (req, res) => {
@@ -760,7 +953,6 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
     if (!username) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-
     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
     db.query(getPasswordQuery, [username], (err, results) => {
         if (err || results.length === 0) {
@@ -768,7 +960,8 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
         }
 
         const hashedPassword = results[0].password;
-        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+
+        bcrypt.compare(password, hashedPassword, async (err, isMatch) => {
             if (err || !isMatch) {
                 return res.status(401).json({ error: 'Incorrect password' });
             }
@@ -783,114 +976,61 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                if (results.length === 0) {
-                    return res.status(500).json({ error: 'Failed to retrieve image path' });
+                if (results.length === 0 || !results[0].itemImage) {
+                    console.warn('No image found for itemID:', itemID);
+                    return deleteFromDatabase(itemID, res);
                 }
 
-                const imagePath = results[0].itemImage; // Assuming the imagePath contains the Cloudinary public_id or URL
+                const imagePath = results[0].itemImage;
 
-                // Extract the public_id from the imagePath (if it's a full URL)
-                const publicId = imagePath.split('/').pop().split('.')[0]; // Example for extracting public_id from the URL
+                try {
+                    const publicId = imagePath.startsWith('uploads/') 
+                        ? imagePath.split('uploads/')[1].split('.')[0]  // Extract after 'uploads/' and remove file extension
+                        : imagePath.split('/').pop().split('.')[0];     // Fallback if no 'uploads/' in path
 
-                // Delete the image from Cloudinary
-                cloudinary.uploader.destroy(publicId, (err, result) => {
-                    if (err) {
-                        console.error('Failed to delete image from Cloudinary:', err);
-                        return res.status(500).json({ error: 'Failed to delete image from Cloudinary' });
-                    }
-
-                    // Delete logs related to this itemID
-                    const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
-                    db.query(deleteLog, [itemID], (err) => {
-                        if (err) {
-                            console.error('Failed to delete log:', err);
-                        }
-
-                        // Delete the item from the inventory
-                        const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
-                        db.query(deleteQuery, [itemID], (err) => {
-                            if (err) {
-                                console.error('Failed to delete item:', err);
-                                return res.status(500).json({ error: 'Failed to delete equipment' });
+                    if (publicId) {
+                        cloudinary.uploader.destroy(`uploads/${publicId}`, (err, result) => {
+                            if (err || result.result === 'not found') {
+                                console.warn('Image not found in Cloudinary or deletion failed:', err || result.result);
                             }
 
-                            res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                            // Proceed with database deletion even if image deletion fails
+                            deleteFromDatabase(itemID, res);
                         });
-                    });
-                });
+                    } else {
+                        console.warn('Invalid imagePath or publicId for itemID:', itemID);
+                        // Proceed with database deletion
+                        deleteFromDatabase(itemID, res);
+                    }
+                } catch (error) {
+                    console.error('Error processing image deletion:', error);
+                    // Proceed with database deletion even if an error occurs during image processing
+                    deleteFromDatabase(itemID, res);
+                }
             });
         });
     });
 });
 
+function deleteFromDatabase(itemID, res) {
+    const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
+    
+    db.query(deleteLog, [itemID], (err) => {
+        if (err) {
+            console.error('Failed to delete log:', err);
+        }
+        const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
+        
+        db.query(deleteQuery, [itemID], (err) => {
+            if (err) {
+                console.error('Failed to delete item:', err);
+                return res.status(500).json({ error: 'Failed to delete equipment' });
+            }
 
-// app.delete('/deleteFromTrash/:itemID', (req, res) => {
-//     const { itemID } = req.params;
-//     const { password } = req.body;
-//     const username = req.session.user?.username;
-
-//     if (!username) {
-//         return res.status(401).json({ error: 'Unauthorized' });
-//     }
-
-//     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
-//     db.query(getPasswordQuery, [username], (err, results) => {
-//         if (err || results.length === 0) {
-//             return res.status(500).json({ error: 'Error retrieving password' });
-//         }
-
-//         const hashedPassword = results[0].password;
-//         bcrypt.compare(password, hashedPassword, (err, isMatch) => {
-//             if (err || !isMatch) {
-//                 return res.status(401).json({ error: 'Incorrect password' });
-//             }
-//             const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-
-//             console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
-
-//             db.query(getImagePathQuery, [itemID], (err, results) => {
-
-//                 if (err) {
-//                     console.error('Error executing query:', err);
-//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
-//                 }
-
-//                 if (results.length === 0) {
-//                     return res.status(500).json({ error: 'Failed to retrieve image path' });
-//                 }
-
-//                 const imagePath = path.join(__dirname, 'public', results[0].itemImage);
-//                 fs.unlink(imagePath, (err) => {
-//                     if (err) {
-//                         console.error('Failed to delete image file:', err);
-//                         return res.status(500).json({ error: 'Failed to delete image file' });
-//                     }
-//                     const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
-//                     db.query(deleteLog, [itemID], (err) => {
-//                         if (err) {
-//                             console.log('Failed to delete log:', err);
-//                         }
-                
-//                         const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
-//                         db.query(deleteQuery, [itemID], (err) => {
-//                             if (err) {
-//                                 console.error('Failed to delete item:', err);
-//                                 return res.status(500).json({ error: 'Failed to delete equipment' });
-//                             }
-                
-//                             res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
-//                         });
-//                     });
-//                 });
-                
-//             });
-//         });
-//     });
-// });
-
-
-
-
+            res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+        });
+    });
+}
 
 //edit equip route
 app.put('/updateEquipment', (req, res) => {
@@ -1120,7 +1260,7 @@ app.get('/rankUp', (req, res) => {
             a.middleInitial,
             a.lastName,
             a.callSign,
-            a.dutyHours,
+            a. FLOOR(cumulativeDutyHours / 60) AS dutyHours,
             a.fireResponsePoints
         FROM tbl_accounts a
         WHERE 

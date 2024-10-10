@@ -61,9 +61,9 @@ function handleRFIDScan(rfid) {
     .then(response => {
         if (!response.ok) {
             if (response.status === 400) {
-                // If Time In already exists, record Time Out instead
+                // If Time In already exists, try recording Time Out
                 return fetch('/recordTimeOut', {
-                    method: 'POST', // Logic to handle recording Time Out
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -71,40 +71,102 @@ function handleRFIDScan(rfid) {
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error('Error recording Time Out');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // Update Time Out display
+                    document.getElementById('TimeIn').textContent = data.timeIn;
+                    document.getElementById('DateIn').textContent = data.dateOfTimeIn;
                     document.getElementById('TimeOut').textContent = data.timeOut; 
-                    // Fetch updated profile data after recording Time Out
-                    fetchProfileData(rfid);
-                    fetchRecentAttendance();
-                    timeOutAudio.play();
+                    document.getElementById('DateOut').textContent = data.dateOfTimeOut;
+                    fetchProfileData(rfid); 
+                    fetchRecentAttendance(); 
+                    timeOutAudio.play();                         
+                    setTimeout(() => {
+                        location.reload();  
+                    }, 1000);  
                 });
             } else {
-                throw new Error('Network response was not ok');
+                throw new Error('Error recording attendance');
             }
         }
         return response.json();
     })
     .then(data => {
-        // Update Time In display
+        // Handle Time In success
         if (data.timeIn) {
-            document.getElementById('TimeIn').textContent = data.timeIn; 
-            // Clear Time Out fields if no Time Out record exists
-            document.getElementById('TimeOut').textContent = '--:--'; 
+            document.getElementById('TimeIn').textContent = data.timeIn;
+            document.getElementById('DateIn').textContent = data.dateOfTimeIn;
+            document.getElementById('TimeOut').textContent = '--:--';  
+           
+            fetchProfileData(rfid);  
+            fetchRecentAttendance(); 
+            timeInAudio.play(); 
         }
-        // Fetch updated profile data after recording Time In
-        fetchProfileData(rfid); // Fetch profile data after recording Time In
-        fetchRecentAttendance(); // Fetch recent attendance logs
-        timeInAudio.play();
     })
     .catch(error => {
-        console.error('Error recording attendance:', error);
+        console.error('Error processing RFID:', error);
     });
 }
+// function handleRFIDScan(rfid) {
+//     document.getElementById('rfidText').textContent = rfid;
+//     console.log('Handling RFID scan:', rfid);
+
+//     fetch('/recordTimeIn', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ rfid: rfid })
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             if (response.status === 400) {
+//                 // If Time In already exists, record Time Out instead
+//                 return fetch('/recordTimeOut', {
+//                     method: 'POST', // Logic to handle recording Time Out
+//                     headers: {
+//                         'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify({ rfid: rfid })
+//                 })
+//                 .then(response => {
+//                     if (!response.ok) {
+//                         throw new Error('Network response was not ok');
+//                     }
+//                     return response.json();
+//                 })
+//                 .then(data => {
+//                     // Update Time Out display
+//                     document.getElementById('TimeOut').textContent = data.timeOut; 
+//                     // Fetch updated profile data after recording Time Out
+//                     fetchProfileData(rfid);
+//                     fetchRecentAttendance();
+//                     timeOutAudio.play();
+//                 });
+//             } else {
+//                 throw new Error('Network response was not ok');
+//             }
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         // Update Time In display
+//         if (data.timeIn) {
+//             document.getElementById('TimeIn').textContent = data.timeIn; 
+//             // Clear Time Out fields if no Time Out record exists
+//             document.getElementById('TimeOut').textContent = '--:--'; 
+//         }
+//         // Fetch updated profile data after recording Time In
+//         fetchProfileData(rfid); // Fetch profile data after recording Time In
+//         fetchRecentAttendance(); // Fetch recent attendance logs
+//         timeInAudio.play();
+//     })
+//     .catch(error => {
+//         console.error('Error recording attendance:', error);
+//     });
+// }
 
 function fetchProfileData(rfid = '') {
     fetch(`/attendanceProfile?rfid=${rfid}`)
@@ -178,20 +240,29 @@ function fetchRecentAttendance() {
             attendanceLogs.innerHTML = ''; // Clear existing logs
             data.forEach(record => {
                 const row = document.createElement('tr');
-                const dateFormatted = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+
+                const dateInFormatted = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                }); // Format date to "Month Day, Year"
+                });
 
-                const timeInFormatted = record.timeIn.substring(0, 5); // Remove seconds from timeIn
-                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : '--:--'; // Remove seconds from timeOut
+                const dateOutFormatted = record.dateOfTimeOut 
+                    ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
+                    : ' '; 
+                const timeInFormatted = record.timeIn ? record.timeIn.substring(0, 5) : '--:--'; // Remove seconds from timeIn
+                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : ''; // Set to 'null' if timeOut is null
 
                 row.innerHTML = `
-                    <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                    <td class="py-2 px-4 border-b border-r">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
                     <td class="py-2 px-4 border-b border-r">${timeInFormatted}</td>
+                    <td class="py-2 px-4 border-b border-r">${dateInFormatted}</td>
                     <td class="py-2 px-4 border-b border-r">${timeOutFormatted}</td>
-                    <td class="py-2 px-4 border-b border-r">${dateFormatted}</td>
+                    <td class="py-2 px-4 border-b border-r">${dateOutFormatted}</td>
                 `;
                 attendanceLogs.appendChild(row);
             });
@@ -200,4 +271,5 @@ function fetchRecentAttendance() {
             console.error('Error fetching recent attendance logs:', error);
         });
 }
+
 

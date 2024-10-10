@@ -151,6 +151,7 @@ function openPasswordModal(itemID) {
 
 function closePasswordModal() {
     const passwordModal = document.getElementById("passwordModal");
+    document.getElementById('passwordInput').value = '';
     passwordModal.classList.add("hidden");
 }
 function handlePasswordConfirmation() {
@@ -173,13 +174,17 @@ function handlePasswordConfirmation() {
     })
     .then(data => {
         alert(data.message);
-        loadTrash();  // Reload the trash list after permanent deletion
-        closePasswordModal();  // Close the modal
+        loadTrash(); 
+        closePasswordModal();  
     })
     .catch(error => {
         console.error('Error deleting equipment from trash:', error);
         alert('Error deleting equipment from trash: ' + error.message);
+    })
+    .finally(() => {
+        document.getElementById('passwordInput').value = '';  
     });
+  
 }
 document.getElementById("confirmButton").addEventListener("click", handlePasswordConfirmation);
 
@@ -187,6 +192,7 @@ document.getElementById("cancelButton").addEventListener("click", closePasswordM
 
 function deleteFromTrash(itemID) {
     openPasswordModal(itemID); 
+   
 }
 
 

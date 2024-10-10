@@ -1195,8 +1195,8 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
     
                 await sharp(itemImage.data)
-                    .resize({ width: 300 })
-                    .jpeg({ quality: 40 }) 
+                    .resize({ width: 600 })
+                    .jpeg({ quality: 70 }) 
                     .toFile(tempFilePath);
     
                 // Upload the resized image to Cloudinary

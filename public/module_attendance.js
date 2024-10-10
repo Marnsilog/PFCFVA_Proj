@@ -178,20 +178,29 @@ function fetchRecentAttendance() {
             attendanceLogs.innerHTML = ''; // Clear existing logs
             data.forEach(record => {
                 const row = document.createElement('tr');
-                const dateFormatted = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+
+                const dateInFormatted = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                }); // Format date to "Month Day, Year"
+                });
 
-                const timeInFormatted = record.timeIn.substring(0, 5); // Remove seconds from timeIn
-                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : '--:--'; // Remove seconds from timeOut
+                const dateOutFormatted = record.dateOfTimeOut 
+                    ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
+                    : ' '; 
+                const timeInFormatted = record.timeIn ? record.timeIn.substring(0, 5) : '--:--'; // Remove seconds from timeIn
+                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : ''; // Set to 'null' if timeOut is null
 
                 row.innerHTML = `
-                    <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                    <td class="py-2 px-4 border-b border-r">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
                     <td class="py-2 px-4 border-b border-r">${timeInFormatted}</td>
+                    <td class="py-2 px-4 border-b border-r">${dateInFormatted}</td>
                     <td class="py-2 px-4 border-b border-r">${timeOutFormatted}</td>
-                    <td class="py-2 px-4 border-b border-r">${dateFormatted}</td>
+                    <td class="py-2 px-4 border-b border-r">${dateOutFormatted}</td>
                 `;
                 attendanceLogs.appendChild(row);
             });
@@ -200,4 +209,5 @@ function fetchRecentAttendance() {
             console.error('Error fetching recent attendance logs:', error);
         });
 }
+
 

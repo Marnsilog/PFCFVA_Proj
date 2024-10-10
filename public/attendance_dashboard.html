@@ -55,27 +55,24 @@
                 </div>
             </div> -->
 
-            <div class="px-36 my-10">
+            <div class="px-24 my-10">
                 <p class="font-Inter text-xl">Attendance Logs</p>
-                <div class="overflow-x-auto">
+                <div class="overflow-y-auto max-h-[35vh]">
                     <table class="min-w-full bg-white border border-gray-200">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 border-b">Name</th>
-                                <th class="py-2 px-4 border-b border-r">Time In</th>
-                                <th class="py-2 px-4 border-b border-r">Time Out</th>
-                                <th class="py-2 px-4 border-b border-r">Date</th>
+                                <th class="py-2 px-5 border-b bg-gray-200 sticky">Name</th>
+                                <th class="py-2 border-b border-r bg-gray-200 sticky">Time In</th>
+                                <th class="py-2 border-b border-r bg-gray-200 sticky">Date</th>
+                                <th class="py-2 border-b border-r bg-gray-200 sticky">Time Out</th>
+                                <th class="py-2 border-b border-r bg-gray-200 sticky">Date</th>
                             </tr>
                         </thead>
+                        <tbody id="attendanceLogs">
+                            <!-- Attendance logs will be appended here by JavaScript -->
+                        </tbody>
                     </table>
-                    <!-- Make the tbody section scrollable -->
-                    <div style="max-height: 300px; overflow-y: auto;"> <!-- Apply scrollable behavior to the div -->
-                        <table class="min-w-full bg-white border border-gray-200">
-                            <tbody id="attendanceLogs">
-                                <!-- Attendance logs will be appended here by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
+
                 </div>
             </div>
            
@@ -140,23 +137,22 @@
     <script>
 
 //DON'T TOUCH
-        document.getElementById('promptButton').addEventListener('click', function() {
-            // Trigger the prompt to get manual RFID
-            const manualRFID = prompt("Please enter the RFID:", "");
-        
-            if (manualRFID) {
-                // Call the existing function that handles RFID scan
-                handleManualRFID(manualRFID); // Function to process RFID
-            } else {
-                console.log("RFID input was cancelled or empty.");
-            }
-        });
-        
-        // Function to handle manual RFID scan and trigger the existing attendance logic
-        function handleManualRFID(rfid) {
+                document.getElementById('promptButton').addEventListener('click', function() {
+                    // Trigger the prompt to get manual RFID
+                    const manualRFID = prompt("Please enter the RFID:", "");
+                
+                    if (manualRFID) {
+                        // Call the existing function that handles RFID scan
+                        handleManualRFID(manualRFID); // Function to process RFID
+                    } else {
+                        console.log("RFID input was cancelled or empty.");
+                    }
+                });
+                
+                function handleManualRFID(rfid) {
             document.getElementById('rfidText').textContent = rfid;
             console.log('Handling Manual RFID scan:', rfid);
-        
+
             fetch('/recordTimeIn', {
                 method: 'POST',
                 headers: {
@@ -186,6 +182,11 @@
                             fetchProfileData(rfid);  // Fetch updated profile data
                             fetchRecentAttendance(); // Fetch updated attendance logs
                             timeOutAudio.play();  // Play Time Out audio feedback
+
+                            // Optionally refresh page after timeout or refresh parts of the page
+                            setTimeout(() => {
+                                location.reload();  // Refresh the entire page (optional)
+                            }, 1000);  // Refresh after 1 second (adjust as needed)
                         });
                     } else {
                         throw new Error('Error recording attendance');
@@ -197,16 +198,72 @@
                 // Handle Time In success
                 if (data.timeIn) {
                     document.getElementById('TimeIn').textContent = data.timeIn;
-                    document.getElementById('TimeOut').textContent = '--:--';  // Clear Time Out
-                    fetchProfileData(rfid);  // Fetch updated profile data
-                    fetchRecentAttendance(); // Fetch updated attendance logs
-                    timeInAudio.play();  // Play Time In audio feedback
+                    document.getElementById('TimeOut').textContent = '--:--';  
+                    fetchProfileData(rfid);  
+                    fetchRecentAttendance(); 
+                    timeInAudio.play(); 
                 }
             })
             .catch(error => {
                 console.error('Error processing RFID:', error);
             });
         }
+
+        // Function to handle manual RFID scan and trigger the existing attendance logic
+        // function handleManualRFID(rfid) {
+        //     document.getElementById('rfidText').textContent = rfid;
+        //     console.log('Handling Manual RFID scan:', rfid);
+        
+        //     fetch('/recordTimeIn', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({ rfid: rfid })
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             if (response.status === 400) {
+        //                 // If Time In already exists, try recording Time Out
+        //                 return fetch('/recordTimeOut', {
+        //                     method: 'POST',
+        //                     headers: {
+        //                         'Content-Type': 'application/json'
+        //                     },
+        //                     body: JSON.stringify({ rfid: rfid })
+        //                 })
+        //                 .then(response => {
+        //                     if (!response.ok) {
+        //                         throw new Error('Error recording Time Out');
+        //                     }
+        //                     return response.json();
+        //                 })
+        //                 .then(data => {
+        //                     document.getElementById('TimeOut').textContent = data.timeOut; 
+        //                     fetchProfileData(rfid);  // Fetch updated profile data
+        //                     fetchRecentAttendance(); // Fetch updated attendance logs
+        //                     timeOutAudio.play();  // Play Time Out audio feedback
+        //                 });
+        //             } else {
+        //                 throw new Error('Error recording attendance');
+        //             }
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         // Handle Time In success
+        //         if (data.timeIn) {
+        //             document.getElementById('TimeIn').textContent = data.timeIn;
+        //             document.getElementById('TimeOut').textContent = '--:--';  // Clear Time Out
+        //             fetchProfileData(rfid);  // Fetch updated profile data
+        //             fetchRecentAttendance(); // Fetch updated attendance logs
+        //             timeInAudio.play();  // Play Time In audio feedback
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Error processing RFID:', error);
+        //     });
+        // }
 
 
 

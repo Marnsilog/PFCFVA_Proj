@@ -760,7 +760,6 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
     if (!username) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-
     const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
     db.query(getPasswordQuery, [username], (err, results) => {
         if (err || results.length === 0) {
@@ -768,7 +767,8 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
         }
 
         const hashedPassword = results[0].password;
-        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+
+        bcrypt.compare(password, hashedPassword, async (err, isMatch) => {
             if (err || !isMatch) {
                 return res.status(401).json({ error: 'Incorrect password' });
             }
@@ -783,45 +783,61 @@ app.delete('/deleteFromTrash/:itemID', (req, res) => {
                     return res.status(500).json({ error: 'Failed to retrieve image path' });
                 }
 
-                if (results.length === 0) {
-                    return res.status(500).json({ error: 'Failed to retrieve image path' });
+                if (results.length === 0 || !results[0].itemImage) {
+                    console.warn('No image found for itemID:', itemID);
+                    return deleteFromDatabase(itemID, res);
                 }
 
-                const imagePath = results[0].itemImage; // Assuming the imagePath contains the Cloudinary public_id or URL
+                const imagePath = results[0].itemImage;
 
-                // Extract the public_id from the imagePath (if it's a full URL)
-                const publicId = imagePath.split('/').pop().split('.')[0]; // Example for extracting public_id from the URL
+                try {
+                    const publicId = imagePath.startsWith('uploads/') 
+                        ? imagePath.split('uploads/')[1].split('.')[0]  // Extract after 'uploads/' and remove file extension
+                        : imagePath.split('/').pop().split('.')[0];     // Fallback if no 'uploads/' in path
 
-                // Delete the image from Cloudinary
-                cloudinary.uploader.destroy(publicId, (err, result) => {
-                    if (err) {
-                        console.error('Failed to delete image from Cloudinary:', err);
-                        return res.status(500).json({ error: 'Failed to delete image from Cloudinary' });
-                    }
-
-                    // Delete logs related to this itemID
-                    const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
-                    db.query(deleteLog, [itemID], (err) => {
-                        if (err) {
-                            console.error('Failed to delete log:', err);
-                        }
-
-                        // Delete the item from the inventory
-                        const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
-                        db.query(deleteQuery, [itemID], (err) => {
-                            if (err) {
-                                console.error('Failed to delete item:', err);
-                                return res.status(500).json({ error: 'Failed to delete equipment' });
+                    if (publicId) {
+                        cloudinary.uploader.destroy(`uploads/${publicId}`, (err, result) => {
+                            if (err || result.result === 'not found') {
+                                console.warn('Image not found in Cloudinary or deletion failed:', err || result.result);
                             }
 
-                            res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+                            // Proceed with database deletion even if image deletion fails
+                            deleteFromDatabase(itemID, res);
                         });
-                    });
-                });
+                    } else {
+                        console.warn('Invalid imagePath or publicId for itemID:', itemID);
+                        // Proceed with database deletion
+                        deleteFromDatabase(itemID, res);
+                    }
+                } catch (error) {
+                    console.error('Error processing image deletion:', error);
+                    // Proceed with database deletion even if an error occurs during image processing
+                    deleteFromDatabase(itemID, res);
+                }
             });
         });
     });
 });
+
+function deleteFromDatabase(itemID, res) {
+    const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
+    
+    db.query(deleteLog, [itemID], (err) => {
+        if (err) {
+            console.error('Failed to delete log:', err);
+        }
+        const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
+        
+        db.query(deleteQuery, [itemID], (err) => {
+            if (err) {
+                console.error('Failed to delete item:', err);
+                return res.status(500).json({ error: 'Failed to delete equipment' });
+            }
+
+            res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
+        });
+    });
+}
 
 
 // app.delete('/deleteFromTrash/:itemID', (req, res) => {

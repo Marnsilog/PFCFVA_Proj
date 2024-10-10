@@ -11,6 +11,7 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+const cron = require('node-cron');
 require('dotenv').config({ path: './.env' });
 const socketIo = require('socket.io');
 const http = require('http');  // Added for HTTP server creation
@@ -336,6 +337,7 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
     const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
+    
     db.query(sql, [rfid], (err, result) => {
         if (err) {
             res.status(500).send('Error retrieving user data');
@@ -345,17 +347,23 @@ app.get('/attendanceProfile', (req, res) => {
             res.status(404).send('User not found');
             return;
         }
+        
         const user = result[0];
+
+        const dutyHoursInMinutes = user.cumulativeDutyHours || 0; 
+        const dutyHours = Math.floor(dutyHoursInMinutes / 60); 
+
         res.json({
             fullName: `${user.firstName} ${user.middleInitial}. ${user.lastName}`,
             callSign: user.callSign,
-            dutyHours: user.dutyHours,
+            dutyHours: dutyHours, 
             fireResponsePoints: user.fireResponsePoints,
             inventoryPoints: user.inventoryPoints,
             activityPoints: user.activityPoints
         });
     });
 });
+
 
 
 // endpoint to record Time In (working)
@@ -517,8 +525,8 @@ app.post('/recordTimeOut', (req, res) => {
                         res.json({
                             timeOut,
                             dateOfTimeOut,
-                            updatedDutyHours,
-                            updatedCumulativeDutyHours
+                            timeIn,
+                            dateOfTimeIn
                         });
                     });
                 });
@@ -527,7 +535,91 @@ app.post('/recordTimeOut', (req, res) => {
     });
 });
 
+// TIMER TAB HERE
+cron.schedule('59 23 * * *', () => {
+    console.log('Logging out all users at 11:59 PM');
+    logOutAllUsers();
+});
 
+
+function logOutAllUsers() {
+    const getUsersQuery = `
+        SELECT a.accountID, 
+              DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+              DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
+             DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
+             DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+        FROM tbl_accounts a
+        JOIN tbl_attendance t ON a.accountID = t.accountID
+        WHERE t.timeInStatus = 1;`;
+
+    db.query(getUsersQuery, (err, users) => {
+        if (err) {
+            console.error('Error retrieving users:', err);
+            return;
+        }
+
+        if (users.length === 0) {
+            console.log('No users to log out');
+            return;
+        }
+        console.log(`Retrieved ${users.length} active users with Time In status:`);
+
+        users.forEach(user => {
+            const accountID = user.accountID;
+            const timeIn = user.timeIn; 
+            const dateOfTimeIn = user.dateOfTimeIn; 
+            const timeOut = user.timeOut;
+            const dateOfTimeOut = user.dateOfTimeOut;
+            const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
+            const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
+            const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
+
+            if (totalMinutes < 0) {
+                console.error('Time Out cannot be earlier than Time In for accountID:', accountID);
+                return; 
+            }
+
+            const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+            db.query(getDutyHoursQuery, [accountID], (err, result) => {
+                if (err) {
+                    console.error('Error retrieving duty hours for accountID:', accountID, err);
+                    return;
+                }
+
+                let oldDutyHours = result[0].dutyHours || 0; 
+                let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
+                const updatedDutyHours = oldDutyHours + totalMinutes;
+                const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+                const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                               SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+                                               WHERE accountID = ? AND timeInStatus = 1 
+                                               ORDER BY attendanceID DESC LIMIT 1`;
+                
+                const timeOut = new Date().toTimeString().split(' ')[0]; // Get current time
+
+                db.query(updateAttendanceQuery, [timeOut, new Date().toISOString().split('T')[0], accountID], (err) => {
+                    if (err) {
+                        console.error('Error recording Time Out for accountID:', accountID, err);
+                        return;
+                    }
+                    const updateDutyHoursQuery = `UPDATE tbl_accounts 
+                                                  SET dutyHours = ?, cumulativeDutyHours = ? 
+                                                  WHERE accountID = ?`;
+
+                    db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+                        if (err) {
+                            console.error('Error updating duty hours for accountID:', accountID, err);
+                            return;
+                        }
+
+                        console.log(`Logged out accountID: ${accountID}, Total Minutes: ${totalMinutes}`);
+                    });
+                });
+            });
+        });
+    });
+}
 
 
 

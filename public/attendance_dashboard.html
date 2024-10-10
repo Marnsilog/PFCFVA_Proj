@@ -27,11 +27,13 @@
                 <div class="w-[32rem] h-36 border-[1px] border-black flex justify-normal font-Inter">
                     <div class="w-1/2 border-r-[1px] border-black pt-8">
                         <p class="text-center font-bold text-2xl"> TIME IN</p>
-                        <p class="text-center" id="TimeIn">--:--</p>
+                        <p class="text-center" id="DateIn"></p>
+                        <p class="text-center" id="TimeIn"></p>
                     </div>
                     <div class="w-1/2 pt-8">
                         <p class="text-center font-bold text-2xl"> TIME OUT</p>
-                        <p class="text-center" id="TimeOut">--:--</p>
+                        <p class="text-center" id="DateOut"></p>
+                        <p class="text-center" id="TimeOut"></p>
                     </div>
                 </div>
             </div>
@@ -148,8 +150,8 @@
                         console.log("RFID input was cancelled or empty.");
                     }
                 });
-                
-                function handleManualRFID(rfid) {
+    
+    function handleManualRFID(rfid) {
             document.getElementById('rfidText').textContent = rfid;
             console.log('Handling Manual RFID scan:', rfid);
 
@@ -178,15 +180,16 @@
                             return response.json();
                         })
                         .then(data => {
+                            document.getElementById('TimeIn').textContent = data.timeIn;
+                            document.getElementById('DateIn').textContent = data.dateOfTimeIn;
                             document.getElementById('TimeOut').textContent = data.timeOut; 
-                            fetchProfileData(rfid);  // Fetch updated profile data
-                            fetchRecentAttendance(); // Fetch updated attendance logs
-                            timeOutAudio.play();  // Play Time Out audio feedback
-
-                            // Optionally refresh page after timeout or refresh parts of the page
+                            document.getElementById('DateOut').textContent = data.dateOfTimeOut;
+                            fetchProfileData(rfid); 
+                            fetchRecentAttendance(); 
+                            timeOutAudio.play();                         
                             setTimeout(() => {
-                                location.reload();  // Refresh the entire page (optional)
-                            }, 1000);  // Refresh after 1 second (adjust as needed)
+                                location.reload();  
+                            }, 1000);  
                         });
                     } else {
                         throw new Error('Error recording attendance');
@@ -198,7 +201,9 @@
                 // Handle Time In success
                 if (data.timeIn) {
                     document.getElementById('TimeIn').textContent = data.timeIn;
+                    document.getElementById('DateIn').textContent = data.dateOfTimeIn;
                     document.getElementById('TimeOut').textContent = '--:--';  
+                   
                     fetchProfileData(rfid);  
                     fetchRecentAttendance(); 
                     timeInAudio.play(); 

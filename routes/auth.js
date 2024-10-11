@@ -1162,8 +1162,7 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     
     router.get('/getMembers', (req, res) => {
         const search = req.query.search || '';
-    
-        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts';
+        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts WHERE accountID NOT IN (SELECT accountID FROM tbl_attendance WHERE timeInStatus = 1)';
         
         if (search) {
           

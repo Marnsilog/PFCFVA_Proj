@@ -201,78 +201,80 @@
     </div>
 
     <!-- INCIDENT LOG -->
-    <div  id="incidentLog" style="display: none;">
-        <div class="w-full flex justify-center">
-            <div class="absolute top-20 md:top-44 md:w-[40rem] w-full h-auto bg-white border-[1px] border-black rounded-xl">
-                
-                <div class="ml-12 font-Inter mt-12 md:text-lg mb-[5rem] mx-10 md:space-y-5 space-y-3 text-base">
-                    <p class="font-bold text-2xl md:text-3xl">Incident Log</p>
-                    <div class="flex justify-start md:mt-10 mt-2">
-                        <p class="font-bold mr-20">Supervisor</p>
-                        <p id="supervisorName"></p>
+     <div class="w-full justify-center"id="incidentLog" style="display: none;">
+        <div class="w-full flex justify-center md:justify-center" >
+            <div class="absolute top-[8rem] md:top-[8rem] font-Inter border border-black bg-white">
+                <div class="md:mx-10 md:mt-5 md:mb-12 md:max-w-[25rem] text-balance h-auto max-h-[70vh] overflow-y-auto mx-5">
+                    <p class="text-2xl font-[800]">Incident Log</p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[128px]">Incident Date</p>
+                        <p id="incidentDate">Incident Date</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[4rem]">Incident Date</p>
-                        <p id="incidentDate"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[119px]">Dispatch Time</p>
+                        <p id="dispatchTime">Dispatch Time</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[53px]">Dispatch Time</p>
-                        <p id="dispatchTime"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[80px] md:mr-[163px]">Location</p>
+                        <p id="location">Location</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[75px]">Alarm Status</p>
-                        <p id="alarmStatus"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[129px]">Alarm Status</p>
+                        <p id="alarmStatus">Alarm Status</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[104px]">Location</p>
-                        <p id="location"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[20px] md:mr-[90px]">Who requested <br>the fire response?</p>
+                        <p id="whoRequested">Who requested</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[47px]">Who requested<br>
-                            the response?</p>
-                        <p id="whoRequested"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[138px]">Type of Fire</p>
+                        <p id="fireType">Fire Type</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[72px]">Type of Fire</p>
-                        <p id="fireType"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[128px]">Vehicle Used</p>
+                        <p id="vehicleUsed">Vehicle Used</p>
                     </div>
-                    <div class="flex justify-start">
-                        <p class="mr-[62px]">Vehicle Used</p>
-                        <p id="vehicleUsed"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[143px]">Responders</p>
+                        <p id="responders">Responders</p>
                     </div>
-                    <div class="flex justify-star">
-                        <p class="mr-[80px]">Responder</p>
-                        <p id="responders"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[142px]">Supervisor</p>
+                        <p id="supervisorName">Supervisor Name</p>
                     </div>
-
-                    <div class="flex justify-star">
-                        <p class="mr-[80px]">Chat Logs</p>
-                        <p id="chatLogs"></p>
+        
+                    <div class="flex items-start pt-8">
+                        <p class="font-semibold mr-[50px] md:mr-[142px]">Chat Logs</p>
+                        <p id="chatLogs">Chat logs here...</p>
                     </div>
-                    
-                    <div class="flex justify-start">
-                        <p class="mr-[95px]">Remarks</p>
-                        <p id="remarks"></p>
-                    </div>
+        
+                    <p class="font-semibold mr-[8rem] pt-8">Remarks:</p>
+                    <p id="remarks">Remarks here...</p>
+        
                     <div class="w-full flex justify-center">
                         <div style="cursor: pointer;" class="w-36 h-7 bg-[#D2D2D2] text-base rounded-lg border-[1px] border-black">
-                        <!-- <p class="text-center" id="downloadLogs">Download Logs</p> -->
-                        <button class="text-center" onclick="downloadLogs()">Download Logs</button>
+                            <button class="w-full text-center" onclick="downloadLogs()">Download Logs</button>
+                        </div>
+                    </div>
+        
+                    <div class="w-full flex justify-center mt-5">
+                        <a href="#" class="underline underline-offset-1" onclick="exitinc()">Close</a>
                     </div>
                 </div>
-                    <div class="flex justify-center mt-10">
-                        <a href="#" onclick="exitinc()" class="underline underline-offset-8"><p>close</p></a>
-                    </div>
-
-                   
-                    
-                </div>
-    
-                
             </div>
         </div>
+     </div>
 
-    </div>
+    
    
 </div>
 </body>

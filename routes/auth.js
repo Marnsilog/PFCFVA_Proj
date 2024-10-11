@@ -643,13 +643,13 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
+            SELECT accountID AS id, firstName AS name, FLOOR(dutyHours / 60) AS dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
         db.query(query, [volunteerId], (err, results) => {
             if (err) {
-                console.error('Error fetching volunteer details:', err);
+                console.error('Error fetching volunteer details:', err); 
                 return res.status(500).json({ error: 'Error fetching details' });
             }
             if (results.length === 0) {
@@ -1162,8 +1162,7 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     
     router.get('/getMembers', (req, res) => {
         const search = req.query.search || '';
-    
-        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts';
+        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts WHERE accountID NOT IN (SELECT accountID FROM tbl_attendance WHERE timeInStatus = 1)';
         
         if (search) {
           
@@ -1195,8 +1194,8 @@ router.post('/inventory-supervisor/log', async (req, res) => {
                 const tempFilePath = path.join(__dirname, 'temp', `${itemName}_${Date.now()}_resized.jpg`);
     
                 await sharp(itemImage.data)
-                    .resize({ width: 300 })
-                    .jpeg({ quality: 40 }) 
+                    .resize({ width: 600 })
+                    .jpeg({ quality: 70 }) 
                     .toFile(tempFilePath);
     
                 // Upload the resized image to Cloudinary

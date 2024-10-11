@@ -151,15 +151,15 @@
         <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
     </div>
 </div>
-
+<div class="fixed bg-black bg-opacity-50 h-full w-full z-20 top-0" id="loading-container2" style="display: none;">
+    <div class="lds-ellipsis2"><div></div><div></div><div></div><div></div></div>
+</div>
 <!--FORM INVENTORY NEW-->
 <div id="frmInventory">
     <div id="loading-container" style="display: none;">
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
     </div>
-    <div id="loading-container2" style="display: none;">
-        <div class="lds-ellipsis2"><div></div><div></div><div></div><div></div></div>
-    </div>
+
     <div class="w-full flex justify-center  mt-2 select-none">
         <div class="max-w-[80rem] w-full space-y-5">
             
@@ -217,9 +217,10 @@
                     </div>
                 </div>
             </div>
+
             <div id="addForm" class="w-full" style="display: none;">
                 <form  id="addEquipmentForm"  class="w-full flex justify-center" enctype="multipart/form-data">
-                    <div class=" absolute md:top-80 top-20 w-[90%]  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7" >
+                    <div class="absolute md:top-80 top-20 w-[90%]  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7 -20" >
                         <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
                         <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
                             <p class="font-semibold text-md mr-2">Item Name:</p>
@@ -349,9 +350,13 @@
         <div>
             <div id="inventorySetting" style="display: none;">
                 <div class="flex flex-col space-y-4">
-                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">+Add Vehicle</button>
-                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleTrashForm()" id="btnTrash">Trash</button>
-                    <button class="select-none md:px-0 px-1 w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-sm md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">+Add Equipment</button>
+                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300 flex justify-start md:py-2 pl-3 space-x-3 hover:bg-red-500" type="button" onclick="toggleVehicleForm()" id="btnAddVehicle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 -960 960 960"  fill="white"><path d="M80-80q-17 0-28.5-11.5T40-120v-320l85-203q7-17 22-27t33-10h360q18 0 33 10t22 27l85 203v320q0 17-11.5 28.5T640-80h-40q-17 0-28.5-11.5T560-120v-40H160v40q0 17-11.5 28.5T120-80H80Zm72-440h415l-33-80H186l-34 80Zm-32 280h480v-200H120v200Zm100-40q25 0 42.5-17.5T280-340q0-25-17.5-42.5T220-400q-25 0-42.5 17.5T160-340q0 25 17.5 42.5T220-280Zm280 0q25 0 42.5-17.5T560-340q0-25-17.5-42.5T500-400q-25 0-42.5 17.5T440-340q0 25 17.5 42.5T500-280Zm220 80v-344l-73-176H227l18-43q7-17 22-27t33-10h360q18 0 33 10t22 27l85 203v320q0 17-11.5 28.5T760-200h-40Zm120-120v-344l-73-176H347l18-43q7-17 22-27t33-10h360q18 0 33 10t22 27l85 203v320q0 17-11.5 28.5T880-320h-40Zm-480-20Z"/></svg><p>Add Vehicle</p></button>
+                    <button class="select-none w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-base md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300 flex justify-start md:py-2 pl-3 space-x-3 hover:bg-red-500" type="button" onclick="toggleTrashForm()" id="btnTrash">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 -960 960 960"  fill="white"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg><p>Trash</p></button>
+                    <button class="select-none md:px-0 px-1 w-23 h-8 md:w-48 md:h-10 bg-[#930D0D] text-white text-sm md:text-lg rounded-lg font-bold opacity-0 transform translate-y-4 transition-all duration-300 flex justify-start md:py-2 space-x-3 hover:bg-red-500" type="button" onclick="toggleEquipmentForm()" id="btnAddEquip">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 w-6 h-6" viewBox="0 -960 960 960"  fill="white"><path d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z"/></svg>
+                        <p>Add Equipment</p></button>
                 </div>
             </div>
            

@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Function to display the data
             function displayData(records) {
-                volunteerDetails.innerHTML = ''; // Clear existing data
+                volunteerDetails.innerHTML = ''; 
                 records.forEach(record => {
                     const row = document.createElement('tr');
                     const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign

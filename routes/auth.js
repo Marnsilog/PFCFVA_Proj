@@ -643,13 +643,13 @@ module.exports = (db, db2) => {
             return res.status(400).json({ error: 'Invalid volunteer ID' });
         }
         const query = `
-            SELECT accountID AS id, firstName AS name, dutyHours, callSign,
+            SELECT accountID AS id, firstName AS name, FLOOR(dutyHours / 60) AS dutyHours, callSign,
                 fireResponsePoints, inventoryPoints, activityPoints, 
                 idPicture AS profile_pic FROM tbl_accounts WHERE accountID = ?`;
     
         db.query(query, [volunteerId], (err, results) => {
             if (err) {
-                console.error('Error fetching volunteer details:', err);
+                console.error('Error fetching volunteer details:', err); 
                 return res.status(500).json({ error: 'Error fetching details' });
             }
             if (results.length === 0) {

@@ -734,12 +734,14 @@ module.exports = (db, db2) => {
     router.post('/inventory/log', async (req, res) => {
         const items = req.body; 
         const username = req.session.user?.username; 
+        let ischanged = false; // Use let since this is modified later
         let connection;
-    
+        
         try {
             connection = await db2.getConnection(); 
             await connection.beginTransaction();
             
+            // Get the expiration date from the accounts table
             const [dateExpirationResult] = await connection.query(
                 'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?', 
                 [username]
@@ -754,11 +756,13 @@ module.exports = (db, db2) => {
             // Check if 24 hours have passed since dateExpiration
             const currentTime = new Date();
             const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
-    
+            let vehicle = items[0].vehicleAssignment ? items[0].vehicleAssignment : 'All Vehicle';
             // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
             if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
                 for (const item of items) {
                     const { itemID, status, remarks } = item;
+                    
+                    // Get current status of the item from the inventory
                     const [currentStatusResult] = await connection.query(
                         'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
                         [itemID]
@@ -766,21 +770,43 @@ module.exports = (db, db2) => {
     
                     const currentStatus = currentStatusResult[0]?.Status;
     
+                    // If status changed, log the change and update the inventory
                     if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
                         await connection.query(
-                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks) 
-                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change status', ?, ?, NOW(), ?)`, 
-                            [itemID, username, currentStatus, status, remarks]
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks, vehicleAssignment) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change status', ?, ?, NOW(), ?, ?)`, 
+                            [itemID, username, currentStatus, status, remarks, vehicle]
                         );
                         await connection.query(
                             'UPDATE tbl_inventory SET Status = ? WHERE itemID = ?', 
                             [status, itemID]
                         );
+                        ischanged = true; // Set to true if any changes occur
                     }
                 }
     
+                if (!ischanged) {
+                    await connection.query(
+                        `INSERT INTO tbl_inventory_logs (accountID, changeLabel, dateAndTimeChecked, vehicleAssignment) 
+                        VALUES ((SELECT accountID FROM tbl_accounts WHERE username = ?), 'All Equipment are good', NOW(), ?)`, 
+                        [username, vehicle]
+                    );
+                    await connection.query(
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All Equipment status are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        [username]
+                    );
+                }else{
+                    await connection.query(
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("Equipment status changed", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        [username]
+                    );
+                }
+    
+                // Insert a notification for the admin
+
+    
                 // Increment inventory points and update expiration date
-                await connection.query(
+                await connection.query( 
                     'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
                     [username]
                 );
@@ -788,6 +814,11 @@ module.exports = (db, db2) => {
                 await connection.commit();
                 res.json({ message: 'Inventory statuses updated and logs created where applicable.', redirect: '/volunteer_form_inv' });
             } else {
+                // If 24 hours haven't passed, prevent further logs
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
                 res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
             }
             
@@ -798,9 +829,10 @@ module.exports = (db, db2) => {
             if (connection) await connection.rollback();
             res.status(500).json({ message: 'Server error' });
         } finally {
-            if (connection) connection.release();
+            if (connection) connection.release(); // Ensure connection is released
         }
     });
+    
     
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
@@ -946,77 +978,164 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
+    router.post('/inventory-supervisor/log', async (req, res) => {
+        const items = req.body;
+        let ischanged = false;
+        const username = req.session.user?.username;
+        let connection;
     
+        try {
+            connection = await db2.getConnection();
+            await connection.beginTransaction();
     
-router.post('/inventory-supervisor/log', async (req, res) => {
-    const items = req.body;
-    const username = req.session.user?.username;
-    let connection;
-
-    try {
-        connection = await db2.getConnection();
-        await connection.beginTransaction();
-
-        const [dateExpirationResult] = await connection.query(
-            'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
-            [username]
-        );
-
-        let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
-        console.log('Date Expiration:', dateExpiration);
-
-        // Convert dateExpiration to a Date object for comparison
-        const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
-
-        // Check if 24 hours have passed since dateExpiration
-        const currentTime = new Date();
-        const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
-
-        // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
-        if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
-            for (const item of items) {
-                const { itemID, vehicleAssignment } = item;
-                const [currentVehicleAssignmentResult] = await connection.query(
-                    'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-                    [itemID]
-                );
-                const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
-
-                if (currentVehicleAssignment !== vehicleAssignment) {
-                    await connection.query(
-                        `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-                        VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-                        [itemID, username, currentVehicleAssignment, vehicleAssignment]
-                    );
-                    await connection.query(
-                        'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-                        [vehicleAssignment, itemID]
-                    );
-                }
-            }
-
-            // Increment inventory points and update expiration date
-            await connection.query(
-                'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+            // Fetch the date of the last inventory expiration for the user
+            const [dateExpirationResult] = await connection.query(
+                'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
                 [username]
             );
-
-            await connection.commit();
-            res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
-        } else {
-            res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
-        }
-
-    } catch (err) {
-        console.error('Database error:', err);
-        if (connection) await connection.rollback();
-        res.status(500).json({ message: 'Server error' });
-    } finally {
-        if (connection) connection.release();
-    }
-});
-
+            let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+            console.log('Date Expiration:', dateExpiration);
     
+            const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
+            const currentTime = new Date();
+            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
+            let vehicle = items[0].vehAss ? items[0].vehAss : 'All Vehicle';
+            if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
+                for (const item of items) {
+                    const { itemID, vehicleAssignment } = item;
+    
+                    // Fetch current vehicle assignment for the item
+                    const [currentVehicleAssignmentResult] = await connection.query(
+                        'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+                        [itemID]
+                    );
+                    const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+    
+                    // Log and update the vehicle assignment if it has changed
+                    if (currentVehicleAssignment !== vehicleAssignment) {
+                        await connection.query(
+                            `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, vehicleAssignment) 
+                            VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW(), ?)`,
+                            [itemID, username, currentVehicleAssignment, vehicleAssignment, vehicle]
+                        );
+                        await connection.query(
+                            'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+                            [vehicleAssignment, itemID]
+                        );
+                        ischanged = true;
+                    }
+                }
+
+                if (!ischanged) {
+                    await connection.query(
+                        `INSERT INTO tbl_inventory_logs (accountID, changeLabel, dateAndTimeChecked, vehicleAssignment) 
+                        VALUES ((SELECT accountID FROM tbl_accounts WHERE username = ?), 'All Equipment are good', NOW(), ?)`, 
+                        [username, vehicle]
+                    );
+                    await connection.query(
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All Equipment vehicle Assignment are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        [username]
+                    );
+                }else{
+                    await connection.query(
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("Equipment Vehicle Transfered", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        [username]
+                    );
+                }
+    
+                // Update inventory points and expiration date
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+                
+                await connection.commit();
+                res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+            } else {
+                await connection.query(
+                    'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+                    [username]
+                );
+                res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+            }
+    
+        } catch (err) {
+            console.error('Database error:', err);
+            if (connection) await connection.rollback();
+            res.status(500).json({ message: 'Server error' });
+        } finally {
+            if (connection) connection.release();
+        }
+    });
+    
+    
+    // router.post('/inventory-supervisor/log', async (req, res) => {
+    //     const items = req.body;
+    //     const username = req.session.user?.username;
+    //     let connection;
+
+    //     try {
+    //         connection = await db2.getConnection();
+    //         await connection.beginTransaction();
+
+    //         const [dateExpirationResult] = await connection.query(
+    //             'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
+    //             [username]
+    //         );
+
+    //         let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
+    //         console.log('Date Expiration:', dateExpiration);
+    //         const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
+    //         const currentTime = new Date();
+    //         const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
+    //         if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
+    //             for (const item of items) {
+    //                 const { itemID, vehicleAssignment } = item;
+    //                 const [currentVehicleAssignmentResult] = await connection.query(
+    //                     'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
+    //                     [itemID]
+    //                 );
+    //                 const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
+
+    //                 if (currentVehicleAssignment !== vehicleAssignment) {
+    //                     await connection.query(
+    //                         `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
+    //                         VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
+    //                         [itemID, username, currentVehicleAssignment, vehicleAssignment]
+    //                     );
+    //                     await connection.query(
+    //                         'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
+    //                         [vehicleAssignment, itemID]
+    //                     );
+    //                 }
+    //             }
+    //             await connection.query(
+    //                 'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+    //                 [username]
+    //             );
+    //             await connection.query(
+    //                 'INSERT INTO tbl_notification purpose = "Inventory", target = "admin" created_at = NOW()', 
+    //                 [username]
+    //             );
+    //             await connection.commit();
+    //             res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
+    //         } else {
+    //             await connection.query(
+    //                 'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
+    //                 [username]
+    //             );
+    //             res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
+    //         }
+
+    //     } catch (err) {
+    //         console.error('Database error:', err);
+    //         if (connection) await connection.rollback();
+    //         res.status(500).json({ message: 'Server error' });
+    //     } finally {
+    //         if (connection) connection.release();
+    //     }
+    // });
+
     // router.post('/inventory-supervisor/log', async (req, res) => {
     //     const items = req.body;
     //     const username = req.session.user?.username;
@@ -1060,7 +1179,7 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     // });
     router.get('/admin-inventory/log', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
-                a.firstName AS volunteer_name, 
+                CONCAT(a.firstName, ' ', a.lastName) AS volunteer_name, 
                 DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
                 DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
                 iv.vehicleAssignment AS vehicle, 
@@ -1083,7 +1202,7 @@ router.post('/inventory-supervisor/log', async (req, res) => {
     });
     router.get('/admin-inventory/log2', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
-                a.firstName AS volunteer_name, 
+                CONCAT(a.firstName, ' ', a.lastName) AS volunteer_name, 
                 DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
                 DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
                 iv.vehicleAssignment AS vehicle, 
@@ -1104,7 +1223,25 @@ router.post('/inventory-supervisor/log', async (req, res) => {
             res.json(results);
         });
     });
-
+    router.get('/admin-inventory/log3', (req, res) => {
+        const query = `SELECT CONCAT(a.firstName, ' ', a.lastName) AS volunteer_name, 
+                        DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
+                        DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
+                        il.vehicleAssignment AS vehicle,
+                        il.changeLabel AS status 
+                    FROM tbl_inventory_logs il
+                    JOIN tbl_accounts a ON a.accountID = il.accountID
+                    WHERE il.changeLabel = 'All Equipment are good'
+                    ORDER BY il.dateAndTimeChecked DESC
+                    LIMIT 50;
+                    `;
+    
+        db.query(query, (err, results) => {
+            if (err) throw err;
+            //console.log(results); // Log the results to see if data is retrieved
+            res.json(results);
+        });
+    });
     // router.get('/equipment/:id', (req, res) => {
     //     const itemId = parseInt(req.params.id, 10); // Convert string to integer
         

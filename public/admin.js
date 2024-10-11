@@ -15,15 +15,26 @@ document.addEventListener('DOMContentLoaded', function () {
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');
-    
+    var notification = document.getElementById('notification');
     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-     
         profileForm.style.display = 'block';
+        notification.style.display = 'none';
     } else {
       
         profileForm.style.display = 'none';
     }
-    addLine('prof');
+}
+function toggleNotif(){
+    var notification = document.getElementById('notification');
+    var profileForm = document.getElementById('Setting');
+    
+    if (notification.style.display === 'none' || notification.style.display === '') {
+        notification.style.display = 'block';
+        profileForm.style.display = 'none';
+    } else {
+      
+        notification.style.display = 'none';
+    }
 }
 
 function showSettings() {
@@ -37,7 +48,6 @@ function showSettings() {
       
         profileForm.style.display = 'none';
     }
-    addLine('prof');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -406,6 +416,40 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching inventory log data:', error));
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log3')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log3');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                
+                tr.innerHTML = `
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.status}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
     //ADMIN VEHICLE STATUS
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/auth/admin-inventory/log2')

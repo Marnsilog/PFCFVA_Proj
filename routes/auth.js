@@ -792,7 +792,7 @@ module.exports = (db, db2) => {
                         [username, vehicle]
                     );
                     await connection.query(
-                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All Equipment status are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All equipments are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
                         [username]
                     );
                 }else{
@@ -831,6 +831,68 @@ module.exports = (db, db2) => {
         } finally {
             if (connection) connection.release(); // Ensure connection is released
         }
+    });
+    
+    router.post('/markNotificationRead/:notificationId', (req, res) => {
+        const notificationId = req.params.notificationId;
+        const username = req.session.user?.username;
+    
+        if (!username) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+    
+        // Check if the notification log already exists
+        const checkQuery = `SELECT * FROM tbl_notification_logs 
+                            WHERE notification_id = ? 
+                            AND accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)`;
+    
+        db.query(checkQuery, [notificationId, username], (err, results) => {
+            if (err) {
+                console.error('Error checking notification log:', err);
+                return res.status(500).json({ success: false, message: 'Error checking notification log' });
+            }
+    
+            // If the log exists, respond with success and do not insert
+            if (results.length > 0) {
+                return res.json({ success: true }); // No new log inserted, but success
+            }
+    
+            // If the log does not exist, insert a new record
+            const insertQuery = `INSERT INTO tbl_notification_logs (notification_id, accountID) 
+                                 VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?))`;
+            
+            db.query(insertQuery, [notificationId, username], (err, results) => {
+                if (err) {
+                    console.error('Error marking notification as read:', err);
+                    return res.status(500).json({ success: false, message: 'Error marking notification as read' });
+                }
+                
+                // Respond back with success
+                res.json({ success: true });
+            });
+        });
+    });
+    
+    
+    router.get('/notification', (req, res) => {
+        const username = req.session.user?.username; 
+        const permission = req.session.user?.permission;
+        const query = `SELECT n.notification_id, 
+    n.detail, DATE_FORMAT(n.created_at, '%H:%i') AS created_time,  -- Format time as HH:MM
+    DATE_FORMAT(n.created_at, '%m/%d/%Y') AS created_date,  -- Format date as MM/DD/YYYY
+    (SELECT CONCAT(a.firstName, ' ', a.lastName) FROM tbl_accounts a 
+     WHERE a.accountID = n.created_by) AS created_by, IF(l.notification_id IS NULL, 'unread', 'read') AS status
+    FROM tbl_notification n LEFT JOIN tbl_notification_logs l ON l.notification_id = n.notification_id
+    WHERE n.target = ? OR n.target = ? LIMIT 0, 25;`;
+    
+        db.query(query, [permission, username], (err, results) => {
+            if (err) {
+                console.error('Error fetching notification data:', err);
+                return res.status(500).json({ error: 'Error fetching data' });
+            }
+            //console.log(results);
+            res.json(results);
+        });
     });
     
     
@@ -1033,12 +1095,12 @@ module.exports = (db, db2) => {
                         [username, vehicle]
                     );
                     await connection.query(
-                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All Equipment vehicle Assignment are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("All equipments are good", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
                         [username]
                     );
                 }else{
                     await connection.query(
-                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("Equipment Vehicle Transfered", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+                        'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("Equipment vehicle transfered", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
                         [username]
                     );
                 }

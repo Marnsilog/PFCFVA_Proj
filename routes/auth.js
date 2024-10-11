@@ -878,12 +878,18 @@ module.exports = (db, db2) => {
         const username = req.session.user?.username; 
         const permission = req.session.user?.permission;
         const query = `SELECT n.notification_id, 
-    n.detail, DATE_FORMAT(n.created_at, '%H:%i') AS created_time,  -- Format time as HH:MM
-    DATE_FORMAT(n.created_at, '%m/%d/%Y') AS created_date,  -- Format date as MM/DD/YYYY
-    (SELECT CONCAT(a.firstName, ' ', a.lastName) FROM tbl_accounts a 
-     WHERE a.accountID = n.created_by) AS created_by, IF(l.notification_id IS NULL, 'unread', 'read') AS status
-    FROM tbl_notification n LEFT JOIN tbl_notification_logs l ON l.notification_id = n.notification_id
-    WHERE n.target = ? OR n.target = ? LIMIT 0, 25;`;
+                        n.detail, 
+                        DATE_FORMAT(n.created_at, '%H:%i') AS created_time, 
+                        DATE_FORMAT(n.created_at, '%m/%d/%Y') AS created_date,
+                        (SELECT CONCAT(a.firstName, ' ', a.lastName) FROM tbl_accounts a 
+                        WHERE a.accountID = n.created_by) AS created_by, 
+                        IF(l.notification_id IS NULL, 'unread', 'read') AS status
+                    FROM tbl_notification n 
+                    LEFT JOIN tbl_notification_logs l ON l.notification_id = n.notification_id
+                    WHERE n.target = ? OR n.target = ? 
+                    ORDER BY n.created_at DESC 
+                    LIMIT 0, 25;
+                    `;
     
         db.query(query, [permission, username], (err, results) => {
             if (err) {

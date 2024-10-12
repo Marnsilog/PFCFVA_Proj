@@ -27,9 +27,11 @@ function toggleSetting() {
 function toggleNotif(){
     var notification = document.getElementById('notification');
     var profileForm = document.getElementById('Setting');
+    var mobilemenu = document.getElementById('mobile-menu');
     
     if (notification.style.display === 'none' || notification.style.display === '') {
         notification.style.display = 'block';
+        mobilemenu.style.display = 'none';
         profileForm.style.display = 'none';
         loadNotifications();
     } else {
@@ -60,13 +62,13 @@ function loadNotifications() {
                 const notificationDiv = `
                     <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" 
                          onclick="markAsRead('${notification.notification_id}', '${notification.detail}')">
-                        <div class="flex justify-between w-full">
-                            <div class = "w-full pr-5">
-                             <p class="text-base ${fontWeight} w-full leading-tight">${message}</p>
-                             <p class="text-sm ">${notification.created_by}</p>
+                        <div class="flex justify-between w-full overflow-hidden"">
+                            <div class = "w-full pr-2">
+                             <p class="text-base ${fontWeight} w-full leading-tight overflow-hidden">${message}</p>
+                             <p class="text-sm overflow-hidden">${notification.created_by}</p>
                             </div>
                            
-                            <div class = "w-[20%]">
+                            <div class = "w-[25%] md:w-[20%] md:pr-0 pr-2">
                              <p class="text-sm">${notification.created_time}</p>
                              <p class="text-sm">${notification.created_date}</p>
                             </div>
@@ -320,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', function () {
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-    
+        const notification = document.getElementById('notification');
     
 
         menuToggle.addEventListener('click', function () {
@@ -328,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenu.style.display = 'none';
             } else {
                 mobileMenu.style.display = 'block';
+                notification.style.display = 'none';
             }
         });
     

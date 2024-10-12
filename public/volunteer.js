@@ -309,21 +309,32 @@ function cancelInventory() {
 function submitInventory() {
     const tbody = document.querySelector('#myTable2 tbody');
     const items = [];
-    
-    Array.from(tbody.children).forEach(row => {
+
+    // Loop over tbody children directly
+    for (const row of tbody.children) {
         const itemId = row.dataset.itemId;
+        const vehicleAssignment = document.getElementById('sortVehicleAssignment')?.value || ''; // Ensure vehicleAssignment exists
         const statusSelect = row.querySelector('select');
         const remarksTextarea = row.querySelector('textarea');
-        
-        if (itemId && statusSelect.value) {
-            items.push({
+
+        // Only add item if itemId and status are valid
+        if (itemId && statusSelect?.value) {
+            const item = {
                 itemID: itemId,
                 status: statusSelect.value,
-                remarks: remarksTextarea.value,
-            });
+                vehicleAssignment: vehicleAssignment, // Add vehicleAssignment
+            };
+
+            // Optionally add remarks only if present
+            if (remarksTextarea?.value) {
+                item.remarks = remarksTextarea.value;
+            }
+
+            items.push(item);
         }
-    });
-    
+    }
+
+    // Submit the collected inventory data
     fetch('/auth/inventory/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -331,7 +342,6 @@ function submitInventory() {
     })
     .then(response => {
         if (!response.ok) {
-            // If response is not ok, throw an error to be caught below
             return response.json().then(errData => {
                 throw new Error(errData.message || 'Failed to submit inventory');
             });
@@ -341,7 +351,7 @@ function submitInventory() {
     .then(data => {
         alert(data.message);
         if (data.redirect) {
-            window.location.href = data.redirect; 
+            window.location.href = data.redirect;
         }
     })
     .catch(error => {
@@ -349,6 +359,8 @@ function submitInventory() {
         alert(error.message || 'Failed to submit inventory. Check console for details.');
     });
 }
+
+
 
 
 async function fetchInventoryData() {

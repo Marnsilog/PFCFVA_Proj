@@ -501,11 +501,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const itemID = itemElement.getAttribute('data-item-id');
                 const selectElement = itemElement.querySelector('select');
                 const vehicleAssignment = selectElement.value;
+                const vehAss = document.getElementById('sortVehicleAssignment')?.value || ''; // Ensure vehicleAssignment exists
 
                 if (!vehicleAssignment) {
                     console.warn(`No vehicle assignment selected for itemID: ${itemID}`);
                 } else {
-                    inventoryItems.push({ itemID, vehicleAssignment });
+                    inventoryItems.push({ itemID, vehicleAssignment, vehAss });
                 }
             });
             try {

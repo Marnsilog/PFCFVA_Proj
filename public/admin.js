@@ -15,15 +15,106 @@ document.addEventListener('DOMContentLoaded', function () {
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');
-    
+    var notification = document.getElementById('notification');
     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-     
         profileForm.style.display = 'block';
+        notification.style.display = 'none';
     } else {
       
         profileForm.style.display = 'none';
     }
-    addLine('prof');
+}
+function toggleNotif(){
+    var notification = document.getElementById('notification');
+    var profileForm = document.getElementById('Setting');
+    
+    if (notification.style.display === 'none' || notification.style.display === '') {
+        notification.style.display = 'block';
+        profileForm.style.display = 'none';
+        loadNotifications();
+    } else {
+      
+        notification.style.display = 'none';
+    }
+}
+function loadNotifications() {
+    fetch('/auth/notification')
+        .then(response => response.json())
+        .then(notifications => {
+            const container = document.getElementById('notificationContainer');
+            container.innerHTML = '';  // Clear existing content
+
+            notifications.forEach(notification => {
+                const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
+                let message = notification.detail;
+                console.log(message);
+                if (notification.detail === 'All equipments are good') {
+                    message = 'A new Inventory Log has been submitted';
+                } else if (notification.detail === 'Equipment vehicle transfered') {
+                    message = 'A new Equipment transfer log has been submitted';
+                } else if (notification.detail === 'Equipment status changed') {
+                    message = 'A new Equipment status log has been submitted';
+                }
+                console.log(message);
+                // Generate the notification div with dynamic content
+                const notificationDiv = `
+                    <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" 
+                         onclick="markAsRead('${notification.notification_id}', '${notification.detail}')">
+                        <div class="flex justify-between w-full">
+                            <div class = "w-full pr-5">
+                             <p class="text-base ${fontWeight} w-full leading-tight">${message}</p>
+                             <p class="text-sm ">${notification.created_by}</p>
+                            </div>
+                           
+                            <div class = "w-[20%]">
+                             <p class="text-sm">${notification.created_time}</p>
+                             <p class="text-sm">${notification.created_date}</p>
+                            </div>
+                           
+                        </div>
+                       
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', notificationDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+        });
+}
+
+
+function markAsRead(notificationId, detail) {
+    fetch(`/auth/markNotificationRead/${notificationId}`, {
+        method: 'POST',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Notification marked as read');
+
+            // Handle redirection based on the notification detail
+
+        } else {
+            console.error('Failed to mark notification as read');
+        }
+        let href;
+        if (detail === 'All equipments are good') {
+            href = '/admin_inventory_logs';
+        } else if (detail === 'Equipment vehicle transfered'){
+            href = '/admin_inventory_vehicle_ass';
+        } else if (detail === 'Equipment status changed') {
+            href = '/admin_inventory_status_logs';
+        }
+
+        // Redirect the user if href is set
+        if (href) {
+            window.location.href = href; // Navigate to the specified page
+        }
+    })
+    .catch(error => {
+        console.error('Error marking notification as read:', error);
+    });
 }
 
 function showSettings() {
@@ -37,7 +128,6 @@ function showSettings() {
       
         profileForm.style.display = 'none';
     }
-    addLine('prof');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -406,6 +496,40 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching inventory log data:', error));
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log3')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log3');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                
+                tr.innerHTML = `
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.status}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
     //ADMIN VEHICLE STATUS
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/auth/admin-inventory/log2')
@@ -445,5 +569,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching inventory log data:', error));
     });
 
+//NOTIFICATION
 
 

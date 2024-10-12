@@ -28,20 +28,138 @@
     fetchFireResponse();
     handlefrSearch();
     }
+    function toggleNotif(){
+        var notification = document.getElementById('notification');
+        var profileForm = document.getElementById('Setting');
+        var mobilemenu = document.getElementById('mobile-menu');
+        
+        if (notification.style.display === 'none' || notification.style.display === '') {
+            notification.style.display = 'block';
+            mobilemenu.style.display = 'none';
+            profileForm.style.display = 'none';
+            loadNotifications();
+        } else {
+          
+            notification.style.display = 'none';
+        }
+    }
 
     function toggleSetting() {
 
         var profileForm = document.getElementById('Setting');
-        
+        var notification = document.getElementById('notification');
         if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-         
+            notification.style.display = 'none';
             profileForm.style.display = 'block';
         } else {
           
             profileForm.style.display = 'none';
         }
     }
+    
+    function loadNotifications() {
+        fetch('/auth/notification')
+            .then(response => response.json())
+            .then(notifications => {
+                const container = document.getElementById('notificationContainer');
+                container.innerHTML = '';  // Clear existing content
+    
+                if (notifications.length === 0) {
+                    container.innerHTML = '<p>No notifications available.</p>';
+                    return;
+                }
+    
+                notifications.forEach(notification => {
+                    const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
+                    let message = notification.detail;
+                    let name = notification.created_by || ''; // Fallback to empty string if null or empty
+    
+                    // Notification message mapping
+                    switch (notification.detail) {
+                        // case 'All equipments are good':
+                        //     message = 'A new Inventory Log has been submitted';
+                        //     break;
+                        // case 'Equipment vehicle transfered':
+                        //     message = 'A new Equipment transfer log has been submitted';
+                        //     break;
+                        // case 'Equipment status changed':
+                        //     message = 'A new Equipment status log has been submitted';
+                        //     break;
+                        case 'New account created':
+                            message = 'WELCOME TO PFCFVA WEBSITE! Mabuhay!';
+                            break;
+                    }
+    
+                    // Format time to HH:MM
+                    const [hours, minutes] = notification.created_time.split(':');
+                    const formattedTime = `${hours}:${minutes}`;
+    
+                    // Format date from 'MM/DD/YYYY' to 'DD/MM/YYYY'
+                    const [month, day, year] = notification.created_date.split('/');
+                    const formattedDate = `${day}/${month}/${year}`;
+    
+                    // Generate the notification div with dynamic content
+                    const notificationDiv = `
+                        <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" 
+                             onclick="markAsRead('${notification.notification_id}', '${notification.detail}')">
+                            <div class="flex justify-between w-full overflow-hidden">
+                                <div class="w-full pr-2">
+                                    <p class="text-base ${fontWeight} w-full leading-tight overflow-hidden">${message}</p>
+                                    <p class="text-sm overflow-hidden">${name}</p>
+                                </div>
+                                <div class="w-[25%] md:w-[20%] md:pr-0 pr-2">
+                                    <p class="text-sm">${formattedTime}</p>
+                                    <p class="text-sm">${formattedDate}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', notificationDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                const container = document.getElementById('notificationContainer');
+                container.innerHTML = '<p>Error loading notifications. Please try again later.</p>';
+            });
+    }
+    
+    function markAsRead(notificationId, detail) {
+        fetch(`/auth/markNotificationRead/${notificationId}`, {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Notification marked as read');
 
+            } else {
+                console.error('Failed to mark notification as read');
+            }
+                
+                let href;
+                switch (detail) {
+                    case 'New account created':
+                        href = '/volunteer_dashboard';
+                        break;
+                    // Uncomment and add more cases as needed
+                    // case 'All equipments are good':
+                    //     href = '/some_other_url';
+                    //     break;
+                    // case 'Equipment vehicle transferred':
+                    //     href = '/another_url';
+                    //     break;
+                }
+    
+                // Redirect the user if href is set
+                if (href) {
+                    window.location.href = href; // Navigate to the specified page
+                }
+        })
+        .catch(error => {
+            console.error('Error marking notification as read:', error);
+        });
+    }
 
 
 // FIRE RESPONSE ICS
@@ -109,35 +227,36 @@ document.addEventListener('DOMContentLoaded', function() {
 });
   
 
-//FOR RESPONSIVE
-document.addEventListener('DOMContentLoaded', function () {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-
-
-    menuToggle.addEventListener('click', function () {
-        if (mobileMenu.style.display === 'block') {
-            mobileMenu.style.display = 'none';
-        } else {
-            mobileMenu.style.display = 'block';
-        }
-    });
-
-    const mobileMenuItems = mobileMenu.querySelectorAll('a');
-    mobileMenuItems.forEach(function (item) {
-        item.addEventListener('click', function () {
-            mobileMenu.style.display = 'none';
-        });
-    });
-
-    document.addEventListener('click', function (event) {
-        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
-            mobileMenu.style.display = 'none';
-        }
-    });
+    //FOR RESPONSIVE ---------------------------------->
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const notification = document.getElementById('notification');
     
-});
+
+        menuToggle.addEventListener('click', function () {
+            if (mobileMenu.style.display === 'block') {
+                mobileMenu.style.display = 'none';
+            } else {
+                mobileMenu.style.display = 'block';
+                notification.style.display = 'none';
+            }
+        });
+    
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                mobileMenu.style.display = 'none';
+            });
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.style.display = 'none';
+            }
+        });
+        
+    });
 //FOR LOADING CONFIGURATION
 window.addEventListener('load', function() {
     if (window.location.pathname === '/supervisor_leaderboards') {

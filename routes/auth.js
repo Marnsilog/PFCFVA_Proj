@@ -1378,7 +1378,25 @@ module.exports = (db, db2) => {
             res.json(result);
         });
     });
-
+    router.get('/allPerson', (req, res) => {
+        const search = req.query.search || '';
+        let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts';
+        
+        if (search) {
+          
+            sql += ' WHERE callSign LIKE ? OR firstName LIKE ? OR lastName LIKE ?';
+        }
+    
+        const searchParam = `%${search}%`;
+    
+        db.query(sql, [searchParam, searchParam, searchParam], (err, result) => {
+            if (err) {
+                console.error('Error fetching members:', err);
+                return res.status(500).json({ error: 'Failed to retrieve members' });
+            }
+            res.json(result);
+        });
+    });
     router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
@@ -1729,7 +1747,105 @@ router.post('/reset-password', async (req, res) => {
     }
 });
 
-  
+router.post('/submit-activity', (req, res) => {
+    const { activityDate, activityTime, location, activityAssignment, activityDetail, responders } = req.body;
+    console.log(responders);
+    const username = req.session.user?.username;
+    const insertActivityQuery = `
+        INSERT INTO tbl_activity (date, time, location, vehicle_used, detail, added_by) 
+        VALUES (?, ?, ?, ?, ?, ?)`;
+
+    db.query(insertActivityQuery, [activityDate, activityTime, location, activityAssignment, activityDetail, username], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Failed to insert activity.' });
+        }
+
+        const activityID = result.insertId;
+        //console.log('THIS IS THE ID: ',activityID);
+        if (responders && responders.length > 0) {
+            const insertRespondersQuery = `INSERT INTO tbl_responders (activityID, accountID) VALUES ?`;
+            const responderValues = [];
+
+            const responderCalls = responders.map(responder => {
+                return new Promise((resolve, reject) => {
+                    const accountQuery = `SELECT accountID FROM tbl_accounts WHERE callsign = ?`;
+                    //console.log(`Looking up accountID for callSign: ${responder.callSign}`);
+                    db.query(accountQuery, [responder.callSign], (err, results) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if (results.length > 0) {
+                            const accountID = results[0].accountID;
+                            //console.log(`Found accountID ${accountID} for callSign: ${responder.callSign}`);
+                            responderValues.push([activityID, accountID]);
+                        } else {
+                            console.log(`No account found for callSign: ${responder.callSign}`);
+                        }
+                        resolve();
+                    });
+                });
+            });
+
+            // Wait for all account lookups to finish
+            Promise.all(responderCalls)
+                .then(() => {
+                    console.log(`Responder values length: ${responderValues.length}`);
+                    if (responderValues.length > 0) {
+                        // Insert all responders
+                        db.query(insertRespondersQuery, [responderValues], (err, result) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).json({ success: false, message: 'Failed to insert responders.' });
+                            }
+                            res.json({ success: true });
+                        });
+                    } else {
+                        res.json({ success: true }); // No responders to insert
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    return res.status(500).json({ success: false, message: 'Failed to retrieve account IDs for responders.' });
+                });
+        } else {
+            res.json({ success: true }); // No responders provided
+        }
+    });
+});
+
+router.get('/get-activities', (req, res) => {
+    const query = 'SELECT activityID, date, time, detail, location FROM tbl_activity ORDER BY date DESC';
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Failed to retrieve activities.' });
+        }
+        res.json({ success: true, activities: results });
+    });
+});
+
+router.get('/get-responders/:activityId', (req, res) => {
+    const activityId = req.params.activityId;
+    console.log(activityId);
+    const getRespondersQuery = `
+        SELECT CONCAT(a.firstName, ' ', a.lastName) AS name, a.callsign, r.accountID 
+        FROM tbl_responders r
+        JOIN tbl_accounts a ON r.accountID = a.accountID
+        WHERE r.activityID = ?`;
+
+    db.query(getRespondersQuery, [activityId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Failed to retrieve responders.' });
+        }
+        //console.log(results);
+        res.json({ success: true, responders: results });
+    });
+});
+
+
     return router;
 };
 

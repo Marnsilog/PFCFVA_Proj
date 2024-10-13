@@ -19,6 +19,7 @@ db.connect((err) => {
     console.log('MySQL connected');
 });
 
+
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -36,16 +37,25 @@ function hasPermission(requiredPermission) {
     };
 }
 
+router.get('/*', (req, res, next) => {
+    if (req.path.includes('.html')) {
+        // Redirect to the home page if .html is found in the URL
+        return res.redirect('/');
+    }
+    next(); // Continue to other routes if no .html is found
+});
 
+// Route for the home page
 router.get('/', (req, res) => {
     res.render('index');
 });
 
+// Route for the login page
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-
+// Supervisor routes
 const Supervisor = [
     'supervisor_dashboard',
     'supervisor_edit_profile',
@@ -56,8 +66,8 @@ const Supervisor = [
     'supervisor_inventory',
     'supervisor_main_profile',
     'supervisor_inventory_report',
-    'supervisor_leaderboards'
-
+    'supervisor_leaderboards',
+    'supervisor_activity'
 ];
 
 Supervisor.forEach(route => {

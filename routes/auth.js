@@ -1753,7 +1753,7 @@ router.post('/submit-activity', (req, res) => {
     const username = req.session.user?.username;
     const insertActivityQuery = `
         INSERT INTO tbl_activity (date, time, location, vehicle_used, detail, added_by) 
-        VALUES (?, ?, ?, ?, ?, ?)`;
+        VALUES (?, ?, ?, ?, ?, (select accountID from tbl_accounts where username = ?))`;
 
     db.query(insertActivityQuery, [activityDate, activityTime, location, activityAssignment, activityDetail, username], (err, result) => {
         if (err) {

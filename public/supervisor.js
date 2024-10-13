@@ -327,7 +327,7 @@ function fetchVolunteers(searchTerm = '') {
                             <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
                             <p>${volunteer.name}</p>
                         </td>
-                        <td class="text-center">${volunteer.points}</td>
+                        <td class="text-center">${volunteer.points||'0'}</td>
                     </tr>
                 `;
             });
@@ -396,7 +396,7 @@ function fetchFireResponse(searchTerm = '') {
                             <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
                             <p>${volunteer.name}</p>
                         </td>
-                        <td class="text-center">${volunteer.points}</td>
+                        <td class="text-center">${volunteer.points||'0'}</td>
                     </tr>
                 `;
             });

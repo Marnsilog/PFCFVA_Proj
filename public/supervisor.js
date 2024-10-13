@@ -81,7 +81,7 @@
                             message = 'WELCOME TO PFCFVA WEBSITE! Mabuhay!';
                             break;
                         case 'added activity Points':
-                            message = 'Congratulations! You Earn 1 activity points';
+                            message = 'Congratulations! You Earned 1 activity points';
                             break;
                     }
     

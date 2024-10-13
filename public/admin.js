@@ -64,7 +64,7 @@ function loadNotifications() {
                         message = 'A new Activity log has been submitted';
                         break;
                     case 'added activity Points':
-                        message = 'Congratulations! You Earn 1 activity points';
+                        message = 'Congratulations! You Earned 1 activity points';
                         break;
                     default:
                         console.warn('Unknown notification detail:', notification.detail);

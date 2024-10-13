@@ -49,7 +49,7 @@ function loadNotifications() {
             notifications.forEach(notification => {
                 const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                 let message = notification.detail;
-                console.log(message);
+                let from = notification.created_by;
                 switch (notification.detail) {
                     case 'All equipments are good':
                         message = 'A new Inventory Log has been submitted';
@@ -65,6 +65,7 @@ function loadNotifications() {
                         break;
                     case 'added activity Points':
                         message = 'Congratulations! You Earned 1 activity points';
+                        from = 'PFCFVA System';
                         break;
                     default:
                         console.warn('Unknown notification detail:', notification.detail);
@@ -78,7 +79,7 @@ function loadNotifications() {
                         <div class="flex justify-between w-full overflow-hidden"">
                             <div class = "w-full pr-2">
                              <p class="text-base ${fontWeight} w-full leading-tight overflow-hidden">${message}</p>
-                             <p class="text-sm overflow-hidden">${notification.created_by}</p>
+                             <p class="text-sm overflow-hidden">${from}</p>
                             </div>
                            
                             <div class = "w-[25%] md:w-[20%] md:pr-0 pr-2">

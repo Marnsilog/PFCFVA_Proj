@@ -82,6 +82,7 @@
                             break;
                         case 'added activity Points':
                             message = 'Congratulations! You Earned 1 activity points';
+                            name =  'PFCFVA System';
                             break;
                     }
     

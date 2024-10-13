@@ -1749,7 +1749,7 @@ router.post('/reset-password', async (req, res) => {
 
 router.post('/submit-activity', (req, res) => {
     const { activityDate, activityTime, location, activityAssignment, activityDetail, responders } = req.body;
-    console.log(responders);
+    //console.log(responders);
     const username = req.session.user?.username;
     const insertActivityQuery = `
         INSERT INTO tbl_activity (date, time, location, vehicle_used, detail, added_by) 
@@ -1760,6 +1760,10 @@ router.post('/submit-activity', (req, res) => {
             console.error(err);
             return res.status(500).json({ success: false, message: 'Failed to insert activity.' });
         }
+        db.query(
+            'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("new activity logs", "Admin", (SELECT accountID from tbl_accounts where username = ?), NOW())',
+            [username]
+        );
 
         const activityID = result.insertId;
         //console.log('THIS IS THE ID: ',activityID);
@@ -1777,6 +1781,14 @@ router.post('/submit-activity', (req, res) => {
                         }
                         if (results.length > 0) {
                             const accountID = results[0].accountID;
+                            db.query(
+                                'UPDATE tbl_accounts SET activityPoints = activityPoints + 1 WHERE accountID = ?', 
+                                [accountID]
+                            );
+                            db.query(
+                                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("added activity Points", (SELECT username from tbl_accounts where accountID = ?), (SELECT accountID from tbl_accounts where username = ?), NOW())',
+                                [accountID, username]
+                            );
                             //console.log(`Found accountID ${accountID} for callSign: ${responder.callSign}`);
                             responderValues.push([activityID, accountID]);
                         } else {
@@ -1790,7 +1802,7 @@ router.post('/submit-activity', (req, res) => {
             // Wait for all account lookups to finish
             Promise.all(responderCalls)
                 .then(() => {
-                    console.log(`Responder values length: ${responderValues.length}`);
+                    //console.log(`Responder values length: ${responderValues.length}`);
                     if (responderValues.length > 0) {
                         // Insert all responders
                         db.query(insertRespondersQuery, [responderValues], (err, result) => {

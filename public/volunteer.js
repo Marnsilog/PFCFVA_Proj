@@ -115,17 +115,11 @@
     
                     // Notification message mapping
                     switch (notification.detail) {
-                        // case 'All equipments are good':
-                        //     message = 'A new Inventory Log has been submitted';
-                        //     break;
-                        // case 'Equipment vehicle transfered':
-                        //     message = 'A new Equipment transfer log has been submitted';
-                        //     break;
-                        // case 'Equipment status changed':
-                        //     message = 'A new Equipment status log has been submitted';
-                        //     break;
                         case 'New account created':
                             message = 'WELCOME TO PFCFVA WEBSITE! Mabuhay!';
+                            break;
+                        case 'added activity Points':
+                            message = 'Congratulations! You Earn 1 activity points';
                             break;
                     }
     
@@ -181,13 +175,8 @@
                     case 'New account created':
                         href = '/volunteer_dashboard';
                         break;
-                    // Uncomment and add more cases as needed
-                    // case 'All equipments are good':
-                    //     href = '/some_other_url';
-                    //     break;
-                    // case 'Equipment vehicle transferred':
-                    //     href = '/another_url';
-                    //     break;
+                    default:
+                        href = '/volunteer_dashboard'; 
                 }
     
                 // Redirect the user if href is set

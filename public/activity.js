@@ -234,7 +234,6 @@ function seeResponders(activityId) {
         });
 }
 
-
 function exitResdetail() {
     document.getElementById('activityResp').style.display = 'none'; // Hide the responder modal
 }

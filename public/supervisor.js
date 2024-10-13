@@ -76,17 +76,12 @@
     
                     // Notification message mapping
                     switch (notification.detail) {
-                        // case 'All equipments are good':
-                        //     message = 'A new Inventory Log has been submitted';
-                        //     break;
-                        // case 'Equipment vehicle transfered':
-                        //     message = 'A new Equipment transfer log has been submitted';
-                        //     break;
-                        // case 'Equipment status changed':
-                        //     message = 'A new Equipment status log has been submitted';
-                        //     break;
+
                         case 'New account created':
                             message = 'WELCOME TO PFCFVA WEBSITE! Mabuhay!';
+                            break;
+                        case 'added activity Points':
+                            message = 'Congratulations! You Earn 1 activity points';
                             break;
                     }
     
@@ -132,34 +127,32 @@
         .then(data => {
             if (data.success) {
                 console.log('Notification marked as read');
-
             } else {
                 console.error('Failed to mark notification as read');
             }
-                
-                let href;
-                switch (detail) {
-                    case 'New account created':
-                        href = '/volunteer_dashboard';
-                        break;
-                    // Uncomment and add more cases as needed
-                    // case 'All equipments are good':
-                    //     href = '/some_other_url';
-                    //     break;
-                    // case 'Equipment vehicle transferred':
-                    //     href = '/another_url';
-                    //     break;
-                }
     
-                // Redirect the user if href is set
-                if (href) {
-                    window.location.href = href; // Navigate to the specified page
-                }
+            let href;
+            switch (detail) {
+                case 'New account created':
+                    href = '/supervisor_dashboard';
+                    break;
+                case 'added activity Points':
+                    href = '/supervisor_activity';
+                    break;
+                default:
+                    href = '/supervisor_dashboard'; 
+            }
+    
+            // Redirect the user if href is set
+            if (href) {
+                window.location.href = href; // Navigate to the specified page
+            }
         })
         .catch(error => {
             console.error('Error marking notification as read:', error);
         });
     }
+    
 
 
 // FIRE RESPONSE ICS

@@ -86,7 +86,10 @@ async function fetchProfileData() {
         return;
     }
 }
-
+const currentUrl = window.location.href;
+  if (currentUrl.includes('.html')) {
+    window.location.href = "/";
+  }
 window.onload = fetchProfileData;
 
 document.addEventListener('DOMContentLoaded', function () {

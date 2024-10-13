@@ -2401,6 +2401,10 @@ video {
   padding-left: 1.5rem;
 }
 
+.pl-8{
+  padding-left: 2rem;
+}
+
 .pl-\[110px\]{
   padding-left: 110px;
 }

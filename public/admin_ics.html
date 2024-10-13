@@ -12,26 +12,28 @@
     <body class="bg-white w-full h-full">
         <div class="bg-rosered2 font-Inter h-[4rem] w-full || md:h-28 md:w-full">
             <div class="flex justify-between md:h-full md:w-full">
-                <div class="flex justify-between md:h-full">
+                <div class="flex justify-start md:h-full">
                     <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
-                    <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+                    <p class="pt-4 ml-5 || md:py-10 md:pl-0 text-white text-2xl font-semibold">PFCFVA</p>
             
                 </div>
                 <!-- NAV -->
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
-                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-14">
+                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-10 text-xl">
                     
-                        <li id="dashb" class="md:mt-12"><a href="/admin_dashboard">Dashboard</a></li>
-                        <li id="att" class="md:mt-12"><a href="/admin_attendance_logs">Attendance Logs</a></li>
-                        <li id="vol" class="md:mt-12"><a href="/admin_merit_tracking">Merit Tracking</a></li>
-                        <li id="inc" class="md:mt-12  underline underline-offset-8"><a href="/admin_fire_response">Fire Response</a></li>
-                        <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
-                        <div class="md:mt-12 cursor-pointer" onclick="toggleNotif()">
-                            <i class="fa-regular fa-bell"></i>
+                        <li class="my-10"><a href="/admin_dashboard">Dashboard</a></li>
+                        <li class=" my-10 "><a href="/admin_attendance_logs">Attendance Logs</a></li>
+                        <li class="my-10 "><a href="/admin_merit_tracking">Merit Tracking</a></li>
+                        <li class="my-10 "><a href="/admin_fire_response">Fire Response</a></li>
+                        <li class="my-10 "><a href="/admin_inventory">Inventory</a></li>
+                        <div class="md:my-10 cursor-pointer" onclick="toggleNotif()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 448 512">
+                                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
                         </div>
-                        <li class="md:mt-6">
+                        <div class="h-full py-6">
                             <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
-                        </li>
+                        </div>
+                            
                     </ul>
                 </nav>
         <div class="flex justify-start space-x-3 mr-2">

@@ -84,7 +84,7 @@
         </div>
         <!-- NOTIFICATION BAR-->
         <div class="flex justify-start w-full" id="notification" style="display: none;">
-            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3">
+            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3 z-30">
                 <div class="w-full h-full overflow-y-auto space-y-1 overflow-x-hidden" id="notificationContainer">
                     <!-- Dynamic notifications will be added here -->
                     <!-- <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" onclick="togo()">
@@ -100,7 +100,7 @@
          </div>   
 
     <!-- SETTINGS -->
-    <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting">
+    <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold z-30" id="Setting">
         <div class="bg-white rounded-lg border-[1px] border-black w-64">
             <div class="pl-12 py-3 hover:bg-gray-500 flex justify-start space-x-5" style="cursor: pointer;"  onclick="location.href='volunteer_main_profile'"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg><p>My Profile</p></div>
             <div class="bg-black h-[2px]"></div>

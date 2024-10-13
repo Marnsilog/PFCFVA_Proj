@@ -50,13 +50,26 @@ function loadNotifications() {
                 const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                 let message = notification.detail;
                 console.log(message);
-                if (notification.detail === 'All equipments are good') {
-                    message = 'A new Inventory Log has been submitted';
-                } else if (notification.detail === 'Equipment vehicle transfered') {
-                    message = 'A new Equipment transfer log has been submitted';
-                } else if (notification.detail === 'Equipment status changed') {
-                    message = 'A new Equipment status log has been submitted';
+                switch (notification.detail) {
+                    case 'All equipments are good':
+                        message = 'A new Inventory Log has been submitted';
+                        break;
+                    case 'Equipment vehicle transfered':
+                        message = 'A new Equipment transfer log has been submitted';
+                        break;
+                    case 'Equipment status changed':
+                        message = 'A new Equipment status log has been submitted';
+                        break;
+                    case 'new activity logs':
+                        message = 'A new Activity log has been submitted';
+                        break;
+                    case 'added activity Points':
+                        message = 'Congratulations! You Earn 1 activity points';
+                        break;
+                    default:
+                        console.warn('Unknown notification detail:', notification.detail);
                 }
+                
                 console.log(message);
                 // Generate the notification div with dynamic content
                 const notificationDiv = `
@@ -94,30 +107,33 @@ function markAsRead(notificationId, detail) {
     .then(data => {
         if (data.success) {
             console.log('Notification marked as read');
-
-            // Handle redirection based on the notification detail
-
+            let href;
+            switch (detail) {
+                case 'All equipments are good':
+                    href = '/admin_inventory_logs';
+                    break;
+                case 'Equipment vehicle transfered':
+                    href = '/admin_inventory_vehicle_ass';
+                    break;
+                case 'Equipment status changed':
+                    href = '/admin_inventory_status_logs';
+                    break;
+                default:
+                    href = '/admin_dashboard'
+            }
+            if (href) {
+                window.location.href = href; 
+            }
         } else {
             console.error('Failed to mark notification as read');
-        }
-        let href;
-        if (detail === 'All equipments are good') {
-            href = '/admin_inventory_logs';
-        } else if (detail === 'Equipment vehicle transfered'){
-            href = '/admin_inventory_vehicle_ass';
-        } else if (detail === 'Equipment status changed') {
-            href = '/admin_inventory_status_logs';
-        }
-
-        // Redirect the user if href is set
-        if (href) {
-            window.location.href = href; // Navigate to the specified page
         }
     })
     .catch(error => {
         console.error('Error marking notification as read:', error);
     });
 }
+
+
 
 function showSettings() {
 

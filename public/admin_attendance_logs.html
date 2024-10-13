@@ -14,24 +14,25 @@
             <div class="flex justify-between md:h-full md:w-full">
                 <div class="flex justify-between md:h-full">
                     <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
-                    <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+                    <p class="pt-4 ml-5 || md:py-10 md:pl-5 text-white text-2xl font-semibold">PFCFVA</p>
             
                 </div>
                 <!-- NAV -->
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
-                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-14">
+                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-10 text-xl">
                     
-                        <li id="dashb" class="md:mt-12"><a href="/admin_dashboard">Dashboard</a></li>
-                        <li id="att" class="md:mt-12  underline underline-offset-8"><a href="/admin_attendance_logs">Attendance Logs</a></li>
-                        <li id="vol" class="md:mt-12"><a href="/admin_merit_tracking">Merit Tracking</a></li>
-                        <li id="inc" class="md:mt-12"><a href="/admin_fire_response">Fire Response</a></li>
-                        <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
-                        <div class="md:mt-12 cursor-pointer" onclick="toggleNotif()">
+                        <li id="dashb" class="my-10"><a href="/admin_dashboard">Dashboard</a></li>
+                        <li id="att" class="underline underline-offset-8 my-10 "><a href="/admin_attendance_logs">Attendance Logs</a></li>
+                        <li id="vol" class="my-10 "><a href="/admin_merit_tracking">Merit Tracking</a></li>
+                        <li id="inc" class="my-10 "><a href="/admin_fire_response">Fire Response</a></li>
+                        <li id="inV" class="my-10 "><a href="/admin_inventory">Inventory</a></li>
+                        <div class=" cursor-pointer my-10 " onclick="toggleNotif()">
                             <i class="fa-regular fa-bell"></i>
                         </div>
-                        <li class="md:mt-6">
+                        <div class="h-full py-6">
                             <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
-                        </li>
+                        </div>
+                            
                     </ul>
                 </nav>
         <div class="flex justify-start space-x-3 mr-2">
@@ -166,7 +167,7 @@
         </div>
     </div>
     <div class="w-full flex justify-center  mt-2">
-        <div class=" w-full max-w-[95%] md:overflow-x-hidden overflow-x-scroll border-2 border-black">
+        <div class=" w-full max-w-[100rem] md:mx-10 md:overflow-x-hidden overflow-x-scroll border-2 border-black">
             <div class="font-Inter md:w-full w-[60rem] overflow-y-auto max-h-[60vh] md:max-h-[35rem] ">
                 <table class="w-full  text-center ">
                     <thead class="md:text-lg text-base bg-[#D6D6D6] border-b-2 border-black sticky top-0 z-10">

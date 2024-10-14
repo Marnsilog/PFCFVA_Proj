@@ -1,5 +1,8 @@
 
-
+const currentUrl = window.location.href;
+  if (currentUrl.includes('.html')) {
+    window.location.href = "/";
+  }
 function animateProgressBar(currentValue, maxValue) {
     const progressBar = document.getElementById('progress');
     if (progressBar) {

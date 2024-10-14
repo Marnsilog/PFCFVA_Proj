@@ -167,6 +167,48 @@ module.exports = (db, db2) => {
             res.status(500).json({ message: 'Error processing login' });
         }
     });
+    router.post('/loginAttendance', (req, res) => {
+        const { username, password } = req.body;
+    
+        try {
+            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(sql, [username], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching user:', error);
+                    return res.status(500).json({ message: 'Internal Server Error' });
+                }
+    
+                if (results.length === 0) {
+                    return res.status(401).json({ message: 'Invalid username or password' });
+                }
+    
+                const user = results[0];
+                const isMatch = await bcrypt.compare(password, user.password);
+    
+                // Check if the user is the admin
+                if (isMatch && user.accountType === 'Admin') {
+                    req.session.user = { 
+                        username: user.username, 
+                        userId: user.accountID,
+                        permission: user.accountType,
+                    };
+                    console.log(`${user.username} has logged into the server`);
+                    
+                    // Redirect to the admin dashboard
+                    return res.status(200).json({ 
+                        message: 'Login successful!', 
+                        redirectUrl: '/attendance_dashboard',
+                    });
+                } else {
+                    res.status(401).json({ message: 'Access denied: only admins can log in' });
+                }
+            });
+        } catch (err) {
+            console.error('Error processing login:', err);
+            res.status(500).json({ message: 'Error processing login' });
+        }
+    });
+    
     router.get('/get-user-data', (req, res) => {
         const username = req.session.user?.username;
     

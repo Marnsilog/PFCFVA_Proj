@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="./styles.css" rel="stylesheet">
     <link href="loader.css" rel="stylesheet">
+    <link rel="icon" href="img/pfcfvalogo.png">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFCFVA || Admin Dashboard</title>
@@ -12,34 +13,36 @@
     <body class="bg-white w-full h-full">
         <div class="bg-rosered2 font-Inter h-[4rem] w-full || md:h-28 md:w-full">
             <div class="flex justify-between md:h-full md:w-full">
-                <div class="flex justify-between md:h-full">
+                <div class="flex justify-start md:h-full">
                     <img src="img/pfcfvalogo.png" class="h-10 w-10 mt-3 ml-5 || md:mt-2 md:h-24 md:w-24">
-                    <p class="pt-4 ml-5 || md:pt-12 md:pl-10 text-white text-2xl font-semibold">PFCFVA</p>
+                    <p class="pt-4 ml-5 || md:py-10 md:pl-0 text-white text-2xl font-semibold">PFCFVA</p>
             
                 </div>
                 <!-- NAV -->
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
-                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-20">
+                    <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-10 text-xl">
                     
-                        <li id="dashb" class="md:mt-12"><a href="/admin_dashboard">Dashboard</a></li>
-                        <li id="att" class="md:mt-12"><a href="/admin_attendance_logs">Attendance Logs</a></li>
-                        <li id="vol" class="md:mt-12"><a href="/admin_merit_tracking">Merit Tracking</a></li>
-                        <li id="inc" class="md:mt-12"><a href="/admin_fire_response">Fire Response</a></li>
-                        <li id="inV" class="md:mt-12"><a href="/admin_inventory">Inventory</a></li>
-                        <div class="md:mt-12 cursor-pointer" onclick="toggleNotif()">
-                            <i class="fa-regular fa-bell"></i>
+                        <li class="my-10"><a href="/admin_dashboard">Dashboard</a></li>
+                        <li class=" my-10 "><a href="/admin_attendance_logs">Attendance Logs</a></li>
+                        <li class="my-10 "><a href="/admin_merit_tracking">Merit Tracking</a></li>
+                        <li class="my-10 "><a href="/admin_fire_response">Fire Response</a></li>
+                        <li class="my-10 "><a href="/admin_inventory">Inventory</a></li>
+                        <div class="md:my-10 cursor-pointer" onclick="toggleNotif()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 448 512">
+                                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
                         </div>
-                        <li class="md:mt-6">
+                        <div class="h-full py-6">
                             <img  id="profile-pic-button" class="h-16 w-16 mb-5 rounded-full" style="cursor: pointer;" onclick="toggleSetting()">
-                        </li>
+                        </div>
+                            
                     </ul>
                 </nav>
         <div class="flex justify-start space-x-3 mr-2">
-        <!-- <div>
-            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
-              </i></a>
-        </div> -->
+            <div>
+                <a href="#" class="md:hidden cursor-pointer" onclick="toggleNotif()"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                    <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+                  </i></a>
+            </div>
     
          
                 <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
@@ -114,22 +117,22 @@
     
        
     </div>
-            <!-- NOTIFICATION BAR-->
-            <div class="flex justify-end w-full" id="notification" style="display: none;">
-                <div class="absolute right-[11rem] border top-[120px]  border-black w-[30rem] h-96 bg-white rounded-lg p-3">
-                    <div class="w-full h-full overflow-y-auto space-y-1" id="notificationContainer">
-                        <!-- Dynamic notifications will be added here -->
-                        <!-- <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" onclick="togo()">
-                            <div class="flex justify-between w-full">
-                                <p class="text-base  w-full leading-tight">A new Inventory Log has been submitted andwajdwadj</p>
-                                <p class="w-[20%] text-sm">14:56 20/11/24</p> 
-                            </div>
-                            <p class="text-sm ">Marniel Corsiga</p>
-                        </div> -->
-                    </div>
+        <!-- NOTIFICATION BAR-->
+        <div class="flex justify-start w-full" id="notification" style="display: none;">
+            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3">
+                <div class="w-full h-full overflow-y-auto space-y-1 overflow-x-hidden" id="notificationContainer">
+                    <!-- Dynamic notifications will be added here -->
+                    <!-- <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" onclick="togo()">
+                        <div class="flex justify-between w-full">
+                            <p class="text-base  w-full leading-tight">A new Inventory Log has been submitted andwajdwadj</p>
+                            <p class="w-[20%] text-sm">14:56 20/11/24</p> 
+                        </div>
+                        <p class="text-sm ">Marniel Corsiga</p>
+                    </div> -->
                 </div>
-    
-             </div>
+            </div>
+
+         </div>
 <!-- SETTINGS -->
 <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
     <div class="bg-white rounded-lg border-[1px] border-black w-64">
@@ -150,9 +153,7 @@
         <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2" style="cursor: pointer;"  onclick="location.href='/admin_inventory_status_logs'">
             <svg xmlns="http://www.w3.org/2000/svg"  class="w-6 h-6" viewBox="0 -960 960 960" fill="black"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
             <p>Inventory Logs</p></div>
-        <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2" style="cursor: pointer;"  onclick="location.href='/attendance_dashboard'">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="w-6 h-6"  fill="black"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
-            <p>Attendance Module</p></div>
+
         <div class="bg-black h-[2px]"></div>
         <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
     </div>

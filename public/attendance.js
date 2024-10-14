@@ -6,7 +6,10 @@ function plusSlides(n) {
   showSlides(slideIndex += n);
 }
 
-
+const currentUrl = window.location.href;
+  if (currentUrl.includes('.html')) {
+    window.location.href = "/";
+  }
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }

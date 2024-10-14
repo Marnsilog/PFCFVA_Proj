@@ -45,6 +45,9 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
+router.get('/pfcfvaAttendance', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'attendance.html'));
+});
 
 const Supervisor = [
     'supervisor_dashboard',
@@ -56,7 +59,8 @@ const Supervisor = [
     'supervisor_inventory',
     'supervisor_main_profile',
     'supervisor_inventory_report',
-    'supervisor_leaderboards'
+    'supervisor_leaderboards',
+    'supervisor_activity'
 
 ];
 

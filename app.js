@@ -14,9 +14,7 @@ const fs = require('fs');
 const cron = require('node-cron');
 require('dotenv').config({ path: './.env' });
 const socketIo = require('socket.io');
-const http = require('http');  // Added for HTTP server creation
-// const session = require('express-session');
-// const MySQLStore = require('express-mysql-session')(session);
+const http = require('http'); 
 const mysql2 = require('mysql2/promise');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
@@ -76,22 +74,6 @@ const storage = multer.diskStorage({
 // Init upload
 const upload = multer({ storage: storage });
 
-
-// Check File Type
-function checkFileType(file, cb){
-    // Allowed ext
-    const filetypes = /jpeg|jpg|png|gif/;
-    // Check ext
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
-    const mimetype = filetypes.test(file.mimetype);
-
-    if(mimetype && extname){
-        return cb(null, true);
-    } else {
-        cb('Error: Images Only!');
-    }
-}
 
 
 
@@ -212,57 +194,57 @@ app.use('/routes_attendance', allRoutes);
 
 
 //update profile route (WITH BUGS)
-app.post('/updateProfile', (req, res) => {
-    const {
-        rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
-        newPassword, confirmPassword
-    } = req.body;
+// app.post('/updateProfile', (req, res) => {
+//     const {
+//         rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+//         civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+//         emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+//         nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
+//         newPassword, confirmPassword
+//     } = req.body;
 
-    if (newPassword && newPassword !== confirmPassword) {
-        return res.status(400).send('New password and confirm password do not match');
-    }
+//     if (newPassword && newPassword !== confirmPassword) {
+//         return res.status(400).send('New password and confirm password do not match');
+//     }
 
-    const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-    db.query(getUserQuery, [rfid], (err, result) => {
-        if (err) {
-            console.error('Error fetching user:', err);
-            return res.status(500).send('Error fetching user');
-        }
+//     const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             console.error('Error fetching user:', err);
+//             return res.status(500).send('Error fetching user');
+//         }
 
-        const hashedPassword = result[0].password;
+//         const hashedPassword = result[0].password;
 
-        // If a new password is provided, validate the old password
-        if (newPassword) {
-            bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
-                if (compareErr || !compareResult) {
-                    return res.status(400).send('Incorrect old password');
-                }
+//         // If a new password is provided, validate the old password
+//         if (newPassword) {
+//             bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
+//                 if (compareErr || !compareResult) {
+//                     return res.status(400).send('Incorrect old password');
+//                 }
 
-                bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-                    if (hashErr) {
-                        console.error('Error hashing new password:', hashErr);
-                        return res.status(500).send('Error hashing new password');
-                    }
+//                 bcrypt.hash(newPassword, 10, (hashErr, hash) => {
+//                     if (hashErr) {
+//                         console.error('Error hashing new password:', hashErr);
+//                         return res.status(500).send('Error hashing new password');
+//                     }
 
-                    // Call updateUserProfile with new password
-                    updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-                        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-                        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-                        nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
-                });
-            });
-        } else {
-            // Call updateUserProfile without new password
-            updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-                civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-                emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-                nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
-        }
-    });
-});
+//                     // Call updateUserProfile with new password
+//                     updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+//                         civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+//                         emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+//                         nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
+//                 });
+//             });
+//         } else {
+//             // Call updateUserProfile without new password
+//             updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
+//                 civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
+//                 emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
+//                 nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
+//         }
+//     });
+// });
 
 function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
     civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
@@ -326,8 +308,6 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
     });
 }
 
-
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -364,15 +344,14 @@ app.get('/attendanceProfile', (req, res) => {
     });
 });
 
-
-
 // endpoint to record Time In (working)
 app.post('/recordTimeIn', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
-    const timeIn = currentTime.toTimeString().split(' ')[0]; // time in HH:MM:SS format
-    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; // date in YYYY-MM-DD format
+    const timeIn = currentTime.toTimeString().split(' ')[0]; 
+    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; 
 
+     //console.log('Time In: ',timeIn, dateOfTimeIn);
     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
         if (err) {
@@ -410,8 +389,10 @@ app.post('/recordTimeIn', (req, res) => {
 app.post('/recordTimeOut', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
-    const timeOut = currentTime.toTimeString().split(' ')[0]; 
-    const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+    const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+    const hours = String(currentTime.getHours()).padStart(2, '0');
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    const timeOut = `${hours}:${minutes}`;
 
     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
@@ -451,16 +432,16 @@ app.post('/recordTimeOut', (req, res) => {
             const timeIn = result[0].timeIn; 
             const dateOfTimeIn = result[0].dateOfTimeIn; 
 
-            const timeOut = result[0].timeOut; 
-            const dateOfTimeOut = result[0].dateOfTimeOut; 
+            // const timeOut = result[0].timeOut; 
+            // const dateOfTimeOut = result[0].dateOfTimeOut; 
 
-            // console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
-            // console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
+            //console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
+            //console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
 
             const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
             const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
-            // console.log('-- timeInDateTime: ', timeInDateTime)
-            // console.log('xx timeOutDateTime: ', timeOutDateTime)
+            //console.log('-- timeInDateTime: ', timeInDateTime)
+            //console.log('xx timeOutDateTime: ', timeOutDateTime)
 
             
             if (isNaN(timeInDateTime.getTime())) {
@@ -548,12 +529,15 @@ cron.schedule('0 0 1 * *', () => {
   });
 
 function logOutAllUsers() {
+    const currentTime = new Date();
+    const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+    const hours = String(currentTime.getHours()).padStart(2, '0');
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    const timeOut = `${hours}:${minutes}`;
     const getUsersQuery = `
         SELECT a.accountID, 
               DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
-              DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
-             DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
-             DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+              DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn
         FROM tbl_accounts a
         JOIN tbl_attendance t ON a.accountID = t.accountID
         WHERE t.timeInStatus = 1;`;
@@ -574,8 +558,6 @@ function logOutAllUsers() {
             const accountID = user.accountID;
             const timeIn = user.timeIn; 
             const dateOfTimeIn = user.dateOfTimeIn; 
-            const timeOut = user.timeOut;
-            const dateOfTimeOut = user.dateOfTimeOut;
             const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
             const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
             const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 

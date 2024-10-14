@@ -27,9 +27,11 @@ function toggleSetting() {
 function toggleNotif(){
     var notification = document.getElementById('notification');
     var profileForm = document.getElementById('Setting');
+    var mobilemenu = document.getElementById('mobile-menu');
     
     if (notification.style.display === 'none' || notification.style.display === '') {
         notification.style.display = 'block';
+        mobilemenu.style.display = 'none';
         profileForm.style.display = 'none';
         loadNotifications();
     } else {
@@ -47,26 +49,40 @@ function loadNotifications() {
             notifications.forEach(notification => {
                 const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                 let message = notification.detail;
-                console.log(message);
-                if (notification.detail === 'All equipments are good') {
-                    message = 'A new Inventory Log has been submitted';
-                } else if (notification.detail === 'Equipment vehicle transfered') {
-                    message = 'A new Equipment transfer log has been submitted';
-                } else if (notification.detail === 'Equipment status changed') {
-                    message = 'A new Equipment status log has been submitted';
+                let from = notification.created_by;
+                switch (notification.detail) {
+                    case 'All equipments are good':
+                        message = 'A new Inventory Log has been submitted';
+                        break;
+                    case 'Equipment vehicle transfered':
+                        message = 'A new Equipment transfer log has been submitted';
+                        break;
+                    case 'Equipment status changed':
+                        message = 'A new Equipment status log has been submitted';
+                        break;
+                    case 'new activity logs':
+                        message = 'A new Activity log has been submitted';
+                        break;
+                    case 'added activity Points':
+                        message = 'Congratulations! You Earned 1 activity points';
+                        from = 'PFCFVA System';
+                        break;
+                    default:
+                        console.warn('Unknown notification detail:', notification.detail);
                 }
+                
                 console.log(message);
                 // Generate the notification div with dynamic content
                 const notificationDiv = `
                     <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" 
                          onclick="markAsRead('${notification.notification_id}', '${notification.detail}')">
-                        <div class="flex justify-between w-full">
-                            <div class = "w-full pr-5">
-                             <p class="text-base ${fontWeight} w-full leading-tight">${message}</p>
-                             <p class="text-sm ">${notification.created_by}</p>
+                        <div class="flex justify-between w-full overflow-hidden"">
+                            <div class = "w-full pr-2">
+                             <p class="text-base ${fontWeight} w-full leading-tight overflow-hidden">${message}</p>
+                             <p class="text-sm overflow-hidden">${from}</p>
                             </div>
                            
-                            <div class = "w-[20%]">
+                            <div class = "w-[25%] md:w-[20%] md:pr-0 pr-2">
                              <p class="text-sm">${notification.created_time}</p>
                              <p class="text-sm">${notification.created_date}</p>
                             </div>
@@ -92,30 +108,33 @@ function markAsRead(notificationId, detail) {
     .then(data => {
         if (data.success) {
             console.log('Notification marked as read');
-
-            // Handle redirection based on the notification detail
-
+            let href;
+            switch (detail) {
+                case 'All equipments are good':
+                    href = '/admin_inventory_logs';
+                    break;
+                case 'Equipment vehicle transfered':
+                    href = '/admin_inventory_vehicle_ass';
+                    break;
+                case 'Equipment status changed':
+                    href = '/admin_inventory_status_logs';
+                    break;
+                default:
+                    href = '/admin_dashboard'
+            }
+            if (href) {
+                window.location.href = href; 
+            }
         } else {
             console.error('Failed to mark notification as read');
-        }
-        let href;
-        if (detail === 'All equipments are good') {
-            href = '/admin_inventory_logs';
-        } else if (detail === 'Equipment vehicle transfered'){
-            href = '/admin_inventory_vehicle_ass';
-        } else if (detail === 'Equipment status changed') {
-            href = '/admin_inventory_status_logs';
-        }
-
-        // Redirect the user if href is set
-        if (href) {
-            window.location.href = href; // Navigate to the specified page
         }
     })
     .catch(error => {
         console.error('Error marking notification as read:', error);
     });
 }
+
+
 
 function showSettings() {
 
@@ -320,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', function () {
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-    
+        const notification = document.getElementById('notification');
     
 
         menuToggle.addEventListener('click', function () {
@@ -328,6 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenu.style.display = 'none';
             } else {
                 mobileMenu.style.display = 'block';
+                notification.style.display = 'none';
             }
         });
     

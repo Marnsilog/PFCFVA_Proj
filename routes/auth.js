@@ -27,57 +27,50 @@ module.exports = (db, db2) => {
             otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
             inventoryPoints, dutyHours
         } = req.body;
-
+    
         // Check if the username already exists in the database
         const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
         db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
             if (checkUsernameErr) {
                 console.error('Error checking username:', checkUsernameErr);
-                res.status(500).send('Error checking username');
-                return;
+                return res.status(500).send('Error checking username');
             }
-
+    
             if (checkUsernameResult[0].count > 0) {
-                res.status(400).send('Username already exists');
-                return;
+                return res.status(400).send('Username already exists');
             }
-
+    
             // Check if the RFID already exists in the database
             const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
             db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
                 if (checkRfidErr) {
                     console.error('Error checking RFID:', checkRfidErr);
-                    res.status(500).send('Error checking RFID');
-                    return;
+                    return res.status(500).send('Error checking RFID');
                 }
-
+    
                 if (checkRfidResult[0].count > 0) {
-                    res.status(400).send('RFID already exists');
-                    return;
+                    return res.status(400).send('RFID already exists');
                 }
-
+    
                 // Check if the email already exists in the database
                 const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
                 db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
                     if (checkEmailErr) {
                         console.error('Error checking email:', checkEmailErr);
-                        res.status(500).send('Error checking email');
-                        return;
+                        return res.status(500).send('Error checking email');
                     }
-
+    
                     if (checkEmailResult[0].count > 0) {
-                        res.status(400).send('Email already exists');
-                        return;
+                        return res.status(400).send('Email already exists');
                     }
-
+    
                     // Hash the password and register the user
                     bcrypt.hash(password, 10, (hashErr, hash) => {
                         if (hashErr) {
                             console.error('Error hashing password:', hashErr);
-                            res.status(500).send('Error hashing password');
-                            return;
+                            return res.status(500).send('Error hashing password');
                         }
-
+    
                         const sql = `
                             INSERT INTO tbl_accounts (
                                 rfid, username, password, accountType, lastName, firstName, middleName,
@@ -88,7 +81,9 @@ module.exports = (db, db2) => {
                                 fireResponsePoints, activityPoints, inventoryPoints, cumulativeDutyHours
                             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         `;
-                        let tomins = dutyHours*60;
+    
+                        let tomins = dutyHours * 60;
+    
                         db.query(sql, [
                             rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
                             callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
@@ -99,17 +94,28 @@ module.exports = (db, db2) => {
                         ], (err, result) => {
                             if (err) {
                                 console.error('Error registering user:', err);
-                                res.status(500).send('Error registering user');
-                                return;
+                                return res.status(500).send('Error registering user');
                             }
-                            res.status(200).send('User registered successfully');
+    
+                            // Insert notification
+                            const notificationQuery = `
+                                INSERT INTO tbl_notification (detail, target, created_by, created_at)
+                                VALUES ("New account created", ?, "Pfcfva System", NOW())
+                            `;
+                            db.query(notificationQuery, [username], (notifErr) => {
+                                if (notifErr) {
+                                    console.error('Error inserting notification:', notifErr);
+                                    return res.status(500).send('User registered but notification failed');
+                                }
+    
+                                res.status(200).send('User registered successfully');
+                            });
                         });
                     });
                 });
             });
         });
     });
-
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     
@@ -161,6 +167,48 @@ module.exports = (db, db2) => {
             res.status(500).json({ message: 'Error processing login' });
         }
     });
+    router.post('/loginAttendance', (req, res) => {
+        const { username, password } = req.body;
+    
+        try {
+            const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
+            db.query(sql, [username], async (error, results) => {
+                if (error) {
+                    console.error('Error fetching user:', error);
+                    return res.status(500).json({ message: 'Internal Server Error' });
+                }
+    
+                if (results.length === 0) {
+                    return res.status(401).json({ message: 'Invalid username or password' });
+                }
+    
+                const user = results[0];
+                const isMatch = await bcrypt.compare(password, user.password);
+    
+                // Check if the user is the admin
+                if (isMatch && user.accountType === 'Admin') {
+                    req.session.user = { 
+                        username: user.username, 
+                        userId: user.accountID,
+                        permission: user.accountType,
+                    };
+                    console.log(`${user.username} has logged into the server`);
+                    
+                    // Redirect to the admin dashboard
+                    return res.status(200).json({ 
+                        message: 'Login successful!', 
+                        redirectUrl: '/attendance_dashboard',
+                    });
+                } else {
+                    res.status(401).json({ message: 'Access denied: only admins can log in' });
+                }
+            });
+        } catch (err) {
+            console.error('Error processing login:', err);
+            res.status(500).json({ message: 'Error processing login' });
+        }
+    });
+    
     router.get('/get-user-data', (req, res) => {
         const username = req.session.user?.username;
     
@@ -327,8 +375,6 @@ module.exports = (db, db2) => {
         }
     });
     
-    
-
     router.post('/edit-profile', async (req, res) => {
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,
@@ -741,36 +787,27 @@ module.exports = (db, db2) => {
             connection = await db2.getConnection(); 
             await connection.beginTransaction();
             
-            // Get the expiration date from the accounts table
             const [dateExpirationResult] = await connection.query(
                 'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?', 
                 [username]
             );
     
             let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
-            console.log('Date Expiration:', dateExpiration);
-    
-            // Convert dateExpiration to a Date object for comparison
+            //console.log('Date Expiration:', dateExpiration);
             const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
-    
-            // Check if 24 hours have passed since dateExpiration
             const currentTime = new Date();
-            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
             let vehicle = items[0].vehicleAssignment ? items[0].vehicleAssignment : 'All Vehicle';
-            // Allow logging if dateExpiration is null (first log) or if 24 hours have passed
             if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
                 for (const item of items) {
                     const { itemID, status, remarks } = item;
-                    
-                    // Get current status of the item from the inventory
+                
                     const [currentStatusResult] = await connection.query(
                         'SELECT Status FROM tbl_inventory WHERE itemID = ?', 
                         [itemID]
                     );
     
                     const currentStatus = currentStatusResult[0]?.Status;
-    
-                    // If status changed, log the change and update the inventory
                     if ((status === 'damaged' || status === 'missing' || status === 'good') && currentStatus !== status) {
                         await connection.query(
                             `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked, remarks, vehicleAssignment) 
@@ -801,11 +838,6 @@ module.exports = (db, db2) => {
                         [username]
                     );
                 }
-    
-                // Insert a notification for the admin
-
-    
-                // Increment inventory points and update expiration date
                 await connection.query( 
                     'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
                     [username]
@@ -1384,7 +1416,25 @@ module.exports = (db, db2) => {
             res.json(result);
         });
     });
-
+    router.get('/allPerson', (req, res) => {
+        const search = req.query.search || '';
+        let sql = 'SELECT accountID, callSign, firstName, middleInitial, lastName FROM tbl_accounts';
+        
+        if (search) {
+          
+            sql += ' WHERE callSign LIKE ? OR firstName LIKE ? OR lastName LIKE ?';
+        }
+    
+        const searchParam = `%${search}%`;
+    
+        db.query(sql, [searchParam, searchParam, searchParam], (err, result) => {
+            if (err) {
+                console.error('Error fetching members:', err);
+                return res.status(500).json({ error: 'Failed to retrieve members' });
+            }
+            res.json(result);
+        });
+    });
     router.post('/addEquipment', async (req, res) => {
         const { itemName, vehicleAssignment, dateAcquired } = req.body;
         let itemImagePath = null;
@@ -1701,41 +1751,234 @@ module.exports = (db, db2) => {
         });
     });
     
-const util = require('util');
-const query = util.promisify(db.query).bind(db);
-router.post('/reset-password', async (req, res) => {
-    try {
-        const { token, password } = req.body;
+    const util = require('util');
+    const query = util.promisify(db.query).bind(db);
+    router.post('/reset-password', async (req, res) => {
+        try {
+            const { token, password } = req.body;
+        
+            if (!token || !password) {
+                return res.status(400).json({ message: 'Token and password are required.' });
+            }
+
+            const sql = 'SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?';
+            console.log("Executing SQL:", sql, "with parameters:", [token, Date.now()]);
+
+            const result = await query(sql, [token, Date.now()]);
+            if (!Array.isArray(result) || result.length === 0) {
+                return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
+            }
     
-        if (!token || !password) {
-            return res.status(400).json({ message: 'Token and password are required.' });
+            const user = result[0];
+        
+            const hashedPassword = await bcrypt.hash(password, 10);
+        
+            await query(
+                'UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID  = ?',
+                [hashedPassword, user.accountID ]
+            );
+        
+            res.status(200).json({ message: 'Your password has been updated. You can now log in.', redirectTo: '/' });
+        } catch (error) {
+            console.error('Error resetting password:', error.message || error);
+            res.status(500).json({ message: 'Internal server error.' });
         }
+    });
 
-        const sql = 'SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?';
-        console.log("Executing SQL:", sql, "with parameters:", [token, Date.now()]);
+    router.post('/submit-activity', (req, res) => {
+        const { activityDate, activityTime, location, activityAssignment, activityDetail, responders } = req.body;
+        //console.log(responders);
+        const username = req.session.user?.username;
+        const insertActivityQuery = `
+            INSERT INTO tbl_activity (date, time, location, vehicle_used, detail, added_by) 
+            VALUES (?, ?, ?, ?, ?, (select accountID from tbl_accounts where username = ?))`;
 
-        const result = await query(sql, [token, Date.now()]);
-        if (!Array.isArray(result) || result.length === 0) {
-            return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
-        }
-  
-        const user = result[0];
-    
-        const hashedPassword = await bcrypt.hash(password, 10);
-    
-        await query(
-            'UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID  = ?',
-            [hashedPassword, user.accountID ]
-        );
-    
-        res.status(200).json({ message: 'Your password has been updated. You can now log in.', redirectTo: '/' });
-    } catch (error) {
-        console.error('Error resetting password:', error.message || error);
-        res.status(500).json({ message: 'Internal server error.' });
-    }
-});
+        db.query(insertActivityQuery, [activityDate, activityTime, location, activityAssignment, activityDetail, username], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, message: 'Failed to insert activity.' });
+            }
+            db.query(
+                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("new activity logs", "Admin", (SELECT accountID from tbl_accounts where username = ?), NOW())',
+                [username]
+            );
 
-  
+            const activityID = result.insertId;
+            //console.log('THIS IS THE ID: ',activityID);
+            if (responders && responders.length > 0) {
+                const insertRespondersQuery = `INSERT INTO tbl_responders (activityID, accountID) VALUES ?`;
+                const responderValues = [];
+
+                const responderCalls = responders.map(responder => {
+                    return new Promise((resolve, reject) => {
+                        const accountQuery = `SELECT accountID FROM tbl_accounts WHERE callsign = ?`;
+                        //console.log(`Looking up accountID for callSign: ${responder.callSign}`);
+                        db.query(accountQuery, [responder.callSign], (err, results) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            if (results.length > 0) {
+                                const accountID = results[0].accountID;
+                                db.query(
+                                    'UPDATE tbl_accounts SET activityPoints = activityPoints + 1 WHERE accountID = ?', 
+                                    [accountID]
+                                );
+                                db.query(
+                                    'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("added activity Points", (SELECT username from tbl_accounts where accountID = ?), (SELECT accountID from tbl_accounts where username = ?), NOW())',
+                                    [accountID, username]
+                                );
+                                //console.log(`Found accountID ${accountID} for callSign: ${responder.callSign}`);
+                                responderValues.push([activityID, accountID]);
+                            } else {
+                                console.log(`No account found for callSign: ${responder.callSign}`);
+                            }
+                            resolve();
+                        });
+                    });
+                });
+
+                // Wait for all account lookups to finish
+                Promise.all(responderCalls)
+                    .then(() => {
+                        //console.log(`Responder values length: ${responderValues.length}`);
+                        if (responderValues.length > 0) {
+                            // Insert all responders
+                            db.query(insertRespondersQuery, [responderValues], (err, result) => {
+                                if (err) {
+                                    console.error(err);
+                                    return res.status(500).json({ success: false, message: 'Failed to insert responders.' });
+                                }
+                                res.json({ success: true });
+                            });
+                        } else {
+                            res.json({ success: true }); // No responders to insert
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        return res.status(500).json({ success: false, message: 'Failed to retrieve account IDs for responders.' });
+                    });
+            } else {
+                res.json({ success: true }); // No responders provided
+            }
+        });
+    });
+
+    router.get('/get-activities', (req, res) => {
+        const query = 'SELECT activityID, date, time, detail, location FROM tbl_activity ORDER BY date DESC';
+        
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, message: 'Failed to retrieve activities.' });
+            }
+            res.json({ success: true, activities: results });
+        });
+    });
+
+    router.get('/get-responders/:activityId', (req, res) => {
+        const activityId = req.params.activityId;
+        console.log(activityId);
+        const getRespondersQuery = `
+            SELECT CONCAT(a.firstName, ' ', a.lastName) AS name, a.callsign, r.accountID 
+            FROM tbl_responders r
+            JOIN tbl_accounts a ON r.accountID = a.accountID
+            WHERE r.activityID = ?`;
+
+        db.query(getRespondersQuery, [activityId], (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, message: 'Failed to retrieve responders.' });
+            }
+            //console.log(results);
+            res.json({ success: true, responders: results });
+        });
+    });
+
+    router.post('/submit-manual-attendance', (req, res) => {
+        const { attendanceDateIn, attendanceTimeIn, attendanceDateOut, attendanceTimeOut, volunteers } = req.body;
+    
+        let timeInStatus = attendanceDateOut && attendanceTimeOut ? 0 : 1;
+    
+        const promises = volunteers.map(volunteer => {
+            const accountID = volunteer.accountID;
+    
+            // Check if accountID already exists in tbl_attendance for time in on the same date
+            const checkAttendanceQuery = `
+                SELECT * FROM tbl_attendance WHERE accountID = ? AND dateOfTimeIn = ?
+            `;
+            
+            return new Promise((resolve, reject) => {
+                db.query(checkAttendanceQuery, [accountID, attendanceDateIn], (err, existingAttendance) => {
+                    if (err) return reject('Error checking existing attendance');
+                    
+                    if (existingAttendance.length > 0) {
+                        return resolve(); 
+                    }
+
+                    if (attendanceDateOut && attendanceTimeOut) {
+                        const timeIn = new Date(`${attendanceDateIn} ${attendanceTimeIn}`);
+                        const timeOut = new Date(`${attendanceDateOut} ${attendanceTimeOut}`);
+                        const totalMinutes = Math.floor((timeOut - timeIn) / 60000);
+    
+                        const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+    
+                        db.query(getDutyHoursQuery, [accountID], (err, result) => {
+                            if (err) return reject('Error retrieving duty hours');
+    
+                            let oldDutyHours = result[0]?.dutyHours || 0;
+                            let oldCumulativeDutyHours = result[0]?.cumulativeDutyHours || 0;
+                            const updatedDutyHours = oldDutyHours + totalMinutes;
+                            const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+    
+                            // Insert a new attendance record with timeOut and dateOfTimeOut
+                            const insertAttendanceQuery = `
+                                INSERT INTO tbl_attendance (dateOfTimeIn, timeIn, timeOut, dateOfTimeOut, timeInStatus, accountID) 
+                                VALUES (?, ?, ?, ?, 0, ?)
+                            `;
+                            db.query(insertAttendanceQuery, [attendanceDateIn, attendanceTimeIn, attendanceTimeOut, attendanceDateOut, accountID], (err, result) => {
+                                if (err) return reject('Error logging Time Out');
+    
+                                // Update duty hours in tbl_accounts
+                                const updateDutyHoursQuery = `
+                                    UPDATE tbl_accounts 
+                                    SET dutyHours = ?, cumulativeDutyHours = ? 
+                                    WHERE accountID = ?
+                                `;
+                                db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err, result) => {
+                                    if (err) return reject('Error updating duty hours');
+                                    resolve();
+                                });
+                            });
+                        });
+                    } else {
+                        // Insert new attendance record for time in only
+                        const insertAttendanceQuery = `
+                            INSERT INTO tbl_attendance (dateOfTimeIn, timeIn, timeInStatus, accountID) 
+                            VALUES (?, ?, 1, ?)
+                        `;
+                        db.query(insertAttendanceQuery, [attendanceDateIn, attendanceTimeIn, accountID], (err, result) => {
+                            if (err) return reject('Error logging Time In');
+                            resolve();
+                        });
+                    }
+                });
+            });
+        });
+    
+        // Once all promises are resolved, send a response
+        Promise.all(promises)
+            .then(() => res.json({ success: true }))
+            .catch(error => res.status(500).send(error));
+    });
+    
+    
+    
+
+    
+    
+
+
     return router;
 };
 

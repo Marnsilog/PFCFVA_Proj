@@ -1,10 +1,7 @@
 
-
-
-
 //for attendance NAV
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/attendanceDetails')
+function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -12,11 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            const attendanceLogs = document.getElementById('attendanceLogs');
-            const searchBox = document.getElementById('attendanceSearchBox');
-
             function displayAttendanceData(records) { 
-                attendanceLogs.innerHTML = ''; 
+                attendanceLogsElement.innerHTML = ''; 
                 records.forEach(record => {
                     const row = document.createElement('tr');
                     const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
@@ -38,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${dateFormattedTimeOut}</td>
                         <td>${record.timeOut || '-'}</td>
                     `;
-                    attendanceLogs.appendChild(row);
+                    attendanceLogsElement.appendChild(row);
                 });
             }
 
@@ -46,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
             displayAttendanceData(data);
 
             // Add event listener to search box
-            searchBox.addEventListener('input', function() {
-                const searchTerm = searchBox.value.toLowerCase();
+            searchBoxElement.addEventListener('input', function() {
+                const searchTerm = searchBoxElement.value.toLowerCase();
                 const filteredData = data.filter(record => {
                     const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
                     const callSign = record.callSign.toLowerCase();
@@ -62,18 +56,25 @@ document.addEventListener('DOMContentLoaded', function() {
                            callSign.includes(searchTerm) ||
                            dateOfTimeIn.includes(searchTerm);
                 });
-                displayAttendanceData(filteredData); // Call displayAttendanceData with filtered data
+                displayAttendanceData(filteredData);
             });
         })
         .catch(error => {
-            console.error('Error fetching recent attendance logs:', error);
+            console.error('Error fetching attendance logs:', error);
         });
+}
+
+// Usage
+document.addEventListener('DOMContentLoaded', function() {
+    const attendanceLogs = document.getElementById('attendanceLogs');
+    const searchBox = document.getElementById('attendanceSearchBox');
+    fetchAndDisplayAttendanceLogs('/attendanceDetails', attendanceLogs, searchBox);
 });
 
 
 
-//for Volunteer Accounts Configuration
 
+//for Volunteer Accounts Configuration
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/accountsAll')
         .then(response => {
@@ -230,15 +231,15 @@ function fetchVolunteerData() {
         });
 }
 
-
 window.addEventListener('load', function() {
-if (window.location.pathname === '/admin_edit_volunter') {
-    fetchVolunteerData();
-}
+    if (window.location.pathname === '/admin_edit_volunter') {
+        fetchVolunteerData();
+    } else if (window.location.pathname === '/admin_attendance_logs') {
+        const attendanceLogs = document.getElementById('attendanceLogs');
+        const searchBox = document.getElementById('attendanceSearchBox');
+        fetchAndDisplayAttendanceLogs('/attendanceDetails', attendanceLogs, searchBox);
+    }
 });
-
-
-
 
 //Merit Tracking Nav
 document.addEventListener('DOMContentLoaded', function() {
@@ -338,4 +339,180 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
+//FOR MANUAL ATTENDANCE
+function addManualAttendance(){
+    var manualAttendance = document.getElementById('manualAttendance');
+    if (manualAttendance.style.display === 'none' || manualAttendance.style.display === '') {
+        manualAttendance.style.display = 'block';
+        applyDateConstraints('dateIn', 'dateOut');
+        const attendanceLogs = document.getElementById('attendanceLogs');
+        const searchBox = document.getElementById('attendanceSearchBox');
+        fetchAndDisplayAttendanceLogs('/attendanceDetails', attendanceLogs, searchBox);
+    } else {
+        manualAttendance.style.display = 'none';
+        const attendanceLogs = document.getElementById('attendanceLogs');
+        const searchBox = document.getElementById('attendanceSearchBox');
+        fetchAndDisplayAttendanceLogs('/attendanceDetails', attendanceLogs, searchBox);
+    }
+}
 
+function addVolunteer(){
+    var addVolunteerAttendance = document.getElementById('addVolunteerAttendance');
+    if (addVolunteerAttendance.style.display === 'none' || addVolunteerAttendance.style.display === '') {
+        addVolunteerAttendance.style.display = 'block';
+        fetchMembers();
+        document.getElementById('searchPerson').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchMembers(searchQuery);
+        });
+
+    } else {
+        addVolunteerAttendance.style.display = 'none';
+
+    }
+}
+let selectedMembers = [];
+function submitSelectedMembers() {
+    const currentPresentDiv = document.getElementById('tbl_volunteers');
+    selectedMembers.forEach(member => {
+        const row = document.createElement('tr');
+        row.classList.add('text-sm', 'text-center');
+        row.innerHTML = `
+            <td class="py-2 md:px-4 border-b">${member.accountID}</td>
+            <td class="py-2 md:px-4 border-b">${member.callSign}</td>
+            <td class="py-2 md:px-4 border-b">${member.name}</td>
+        `;
+        currentPresentDiv.appendChild(row);
+    });
+
+    selectedMembers = [];
+    var profileForm = document.getElementById('addVolunteerAttendance');
+    if (addVolunteerAttendance.style.display === 'none' || addVolunteerAttendance.style.display === '') {
+        addVolunteerAttendance.style.display = 'block';
+    } else {
+      
+        addVolunteerAttendance.style.display = 'none';
+    }
+}
+function fetchMembers(Name) {
+    let url = '/auth/allPerson';
+    if (Name) {
+        url += `?search=${encodeURIComponent(Name)}`;
+    }
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('volunteer');
+            tableBody.innerHTML = ''; 
+
+            data.forEach(member => {
+                const row = document.createElement('tr');
+                const checkboxId = `checkbox-${member.accountID}`;
+                row.innerHTML = `
+                    <td class="text-center">${member.accountID}</td>
+                    <td class="text-center">${member.callSign}</td>
+                    <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
+                    <td class="">
+                        <div class="w-full flex justify-center">
+                            <input type="checkbox" id="${checkboxId}" date-accountID="${member.accountID}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                const checkbox = document.getElementById(checkboxId);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedMembers.push({
+                            accountID: member.accountID,
+                            callSign: member.callSign,
+                            name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
+                        });
+                    } else {
+                        selectedMembers = selectedMembers.filter(m => m.accountID !== member.accountID);
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching members:', error));
+}
+
+document.getElementById('submitLogs').addEventListener('click', function (event) {
+    event.preventDefault();
+    
+    // Gather form data
+    const attendanceDateIn = document.getElementById('dateIn').value;
+    const attendanceTimeIn = document.getElementById('timeIn').value;
+    const attendanceDateOut = document.getElementById('dateOut').value;
+    const attendanceTimeOut = document.getElementById('timeOut').value;
+
+    // Gather responder data from the table...
+    const volunteers = [];  // This is the correct array name
+    const rows = document.getElementById('tbl_volunteers').getElementsByTagName('tr');
+    for (let i = 0; i < rows.length; i++) {
+        const accountID = rows[i].cells[0].innerText;
+        volunteers.push({ accountID });  // Corrected the array name here
+    }
+
+    // Send data to the server using fetch...
+    fetch('/auth/submit-manual-attendance', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            attendanceDateIn,
+            attendanceTimeIn,
+            attendanceDateOut,
+            attendanceTimeOut,
+            volunteers  // Make sure this matches the correct variable name
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('dateIn').value = '';
+            document.getElementById('timeIn').value = '';
+            document.getElementById('dateOut').value = '';
+            document.getElementById('timeOut').value = '';
+            const rows = document.getElementById('tbl_volunteers').getElementsByTagName('tr');
+            while (rows.length > 0) {
+                rows[0].remove();
+            }
+
+            // Hide the form
+            document.getElementById('manualAttendance').style.display = 'none'; 
+            const attendanceLogs = document.getElementById('attendanceLogs');
+            const searchBox = document.getElementById('attendanceSearchBox');
+            fetchAndDisplayAttendanceLogs('/attendanceDetails', attendanceLogs, searchBox);
+            alert('Attendance successfully logged');
+        } else {
+            alert('Error logging activity.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+function applyDateConstraints(dateInId, dateOutId) {
+    const dateInInput = document.getElementById(dateInId);
+    const dateOutInput = document.getElementById(dateOutId);
+    const currentDate = new Date().toISOString().split('T')[0];
+    dateOutInput.setAttribute('max', currentDate);
+
+    dateInInput.oninput = () => {
+        const dateInValue = dateInInput.value;
+        if (dateInValue) {
+            const dateIn = new Date(dateInValue);
+            const maxDateOut = new Date(dateIn);
+            maxDateOut.setDate(dateIn.getDate() + 2);
+            dateOutInput.setAttribute('min', dateInValue);
+            dateOutInput.setAttribute('max', maxDateOut.toISOString().split('T')[0]);
+        }
+    };
+}
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     applyDateConstraints('dateIn', 'dateOut');
+// });

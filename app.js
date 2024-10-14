@@ -370,10 +370,10 @@ app.get('/attendanceProfile', (req, res) => {
 app.post('/recordTimeIn', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
-    const timeIn = currentTime.toTimeString().split(' ')[0]; // time in HH:MM:SS format
-    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; // date in YYYY-MM-DD format
+    const timeIn = currentTime.toTimeString().split(' ')[0]; 
+    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; 
 
-     console.log('Time In: ',timeIn, dateOfTimeIn)
+     console.log('Time In: ',timeIn, dateOfTimeIn);
     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
         if (err) {
@@ -411,8 +411,10 @@ app.post('/recordTimeIn', (req, res) => {
 app.post('/recordTimeOut', (req, res) => {
     const rfid = req.body.rfid;
     const currentTime = new Date();
-    const timeOut = currentTime.toTimeString().split(' ')[0]; 
-    const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+    const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+    const hours = String(currentTime.getHours()).padStart(2, '0');
+    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    const timeOut = `${hours}:${minutes}`;
 
     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
@@ -452,8 +454,8 @@ app.post('/recordTimeOut', (req, res) => {
             const timeIn = result[0].timeIn; 
             const dateOfTimeIn = result[0].dateOfTimeIn; 
 
-            const timeOut = result[0].timeOut; 
-            const dateOfTimeOut = result[0].dateOfTimeOut; 
+            // const timeOut = result[0].timeOut; 
+            // const dateOfTimeOut = result[0].dateOfTimeOut; 
 
             console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
             console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)

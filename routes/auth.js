@@ -116,8 +116,6 @@ module.exports = (db, db2) => {
             });
         });
     });
-    
-
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     
@@ -335,8 +333,6 @@ module.exports = (db, db2) => {
         }
     });
     
-    
-
     router.post('/edit-profile', async (req, res) => {
         const {
             lastName, firstName, middleName, emailAddress, contactNumber,

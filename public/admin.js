@@ -525,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            console.log(data);  
+            //console.log(data);  
             const tbody = document.getElementById('inventory-log3');
             
             if (!data.length) {
@@ -560,11 +560,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            console.log(data);  
+            //console.log(data);  
             const tbody = document.getElementById('inventory-log2');
             
             if (!data.length) {
-                console.log('No data found');
+                //console.log('No data found');
                 return; 
             }
     

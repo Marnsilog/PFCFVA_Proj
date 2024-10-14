@@ -56,7 +56,7 @@
         
         <!-- RESPONSIVE SETTINGS -->
         <div class="w-full flex justify-end sticky-col relative z-50">
-            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;">
+            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
                 <div class="ml-3 flex justify-start mr-3" onclick="location.href='/admin_main_profile'" style="cursor: pointer;">
                     <img  id="resPonsivepic" class="h-10 w-10" >
                     <p class="ml-2 py-2 text-sm"  data-feild="ResponsiveName"></p>
@@ -104,10 +104,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
                     <p class="ml-2 block py-2">Inventory Status</p>
                 </div>
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/admin_activity'">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
-                    <p class="ml-2 block py-2">Activity Log</p>
-                </div>
 
                 <div class="bg-white h-[1px] w-full my-3"></div>
     
@@ -123,7 +119,7 @@
     </div>
         <!-- NOTIFICATION BAR-->
         <div class="flex justify-start w-full" id="notification" style="display: none;">
-            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3">
+            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3 z-30">
                 <div class="w-full h-full overflow-y-auto space-y-1 overflow-x-hidden" id="notificationContainer">
                     <!-- Dynamic notifications will be added here -->
                     <!-- <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" onclick="togo()">
@@ -164,78 +160,190 @@
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
             </div>
+<div class="md:pt-4 pt-8 w-full flex justify-center" >
+    <div class="w-full md:max-w-[85rem] md:pt-7"  id="frmActivity">
+            <div class="w-full">
+                <div id="loading-container">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+                        <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
+                            <div class="md:ml-0 flex justify-center items-center"> 
+                                <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="addAcitivity()">+ Add Activity Logs</button></div>
+                             <div class=" md:pl-0 md:w-[25rem] mx-5 h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                <input id="Search_form_inv" class="w-full h-full focus:outline-none rounded-lg px-2" type="text" placeholder="Search">
+                            </div>
+                        </div>
+                    </div>
 
-<!-- NEW INVENTORY LOGS -->
- <div class="w-full flex justify-center h-full">
-    <div class="max-w-[90rem] w-full h-auto">
-        <div id="loading-container" style="display: none;">
-            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-        </div>
-        <div class="md:flex md:justify-between w-full md:px-20 font-Inter p-5 md:pt-14">
-            <div>
-                <p class="md:text-4xl text-center md:text-start text-xl font-bold">Inventory Logs</p>
-                <!-- <p>Total Item: <span>0000</span> </p> --> 
-            </div>
-            <div class="md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                <input class="w-full h-full focus:outline-none px-2 rounded-lg" placeholder="Search" id="inventorySearchBox" type="text">
-            </div>
-        </div>
-        <div class="w-full flex md:justify-start justify-center">
-            <div class="w-full mx-5 md:w-full h-8 border-[1px] border-black flex justify-center font-Inter md:mt-8 md:ml-10 rounded-md">
-                <div class="w-[70%] h-full bg-white rounded-l-md">
-                    <p class="text-center text-black text-lg cursor-pointer" onclick="location.href='admin_inventory_status_logs'">Equipment Status Update</p>
+                    <div class="font-Inter w-full">       
+                        <div class="mt-5 md:mt-10 font-Inter w-full min-h-[60vh] max-h-[70vh] border-2 border-black h-full">       
+                            <table  class="w-full ">
+                                <thead class="h-14 bg-[#D9D9D9] opacity-75 rounded-t-lg text-black md:mt-10 mdh-16 md:text-3xl border-b-2 border-black">
+                                    <tr class="rounded-t-lg">
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Detail</th>
+                                        <th>location</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="w-full text-center text-sm md:text-2xl" id="actTable">
+                                    <!-- <tr>
+                                        <td>04/15/2001</td>
+                                        <td>14:50</td>
+                                        <td>Feeding</td>
+                                        <td>Paranaque </td>
+                                        <td><a class="underline underline-offset-1 md:text-xl" href="#"onclick="seeResponders()">See details</a></td>
+                                    </tr> -->
+                                    <!-- Rows will be populated here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                 </div>
+
+                 <div class="flex justify-center" id="activityResp" style="display: none;">
+                    <div class="absolute top-44 md:w-[35rem] w-[95%] md:pt-10 border-2 border-black shadow-lg shadow-gray-500 font-Inter bg-rosered2">
+                        <div class="max-h-[50vh] overflow-y-auto bg-white">
+                            <table class="w-full font-Inter">
+                                <thead class="h-14 border-y-[1px] border-black">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>CallSign</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="respp">
+                                    <!-- Responders will be populated here -->
+                                </tbody>
+                            </table>
+                            <div class="flex justify-center underline underline-offset-2 py-10">
+                                <a href="#" onclick="exitResdetail()">Close</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="w-full bg-white">
-                    <p class="text-center text-black text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass'">Transfer Logs</p>
-                </div>
-                <div class="w-full rounded-r-md  bg-[#930D0D] ">
-                    <p class="text-center text-white text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_logs'">Inventory logs</p>
-                </div>
-            </div>
-        </div>
+                
+                <div id="addRes" style="display: none;">
+                    <div class="w-full flex justify-center">
+                        <div class="absolute bg-white border-[1px] border-black md:w-[25rem] md:h-[30rem] w-[22rem] h-[30rem] top-20 md:top-16 shadow-lg shadow-gray-300 z-20">
+                            <div class="flex justify-end mr-3 font-bold text-2xl">
+                                <a href="#" onclick="addResponders()">X</a>
+                            </div>
+                            <div class="w-full flex justify-center mb-2">
+                                <div class="w-[70%] flex justify-start border border-black  rounded-lg ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                    <input type="text" class="w-full focus:outline-none rounded-lg" id="searchPerson">
+                                </div>
+                            </div>
+                            
+                            <div class=" mx-2 h-full min-h-[20rem] max-h-[20rem] border-[1px] overflow-y-auto border-black">
+                                <table class="w-full">
+                                    <thead class="bg-[#EED033] text-black w-full">
+                                        <tr class="w-full">
+                                            <th class="w-[70%]">CALL SIGN</th>
+                                            <th class="px-14 text-center">NAME</th>
+                                            <th class="w-full"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="responds">
+                                       <!-- <tr class="">
+                                        <td class="px-5">Marniel Corsiga</td>
+                                        <td class="w-[50%]">
+                                           <div class="w-full flex justify-center">
+                                            <input type="checkbox" id="task3" name="task3">
+                                           </div>
+                                        </td>
+                                       </tr> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="py-2 w-full flex justify-center items-center">
+                                <button onclick="submitSelectedMembers()" type="button" class="bg-[#EED033] px-5 py-2 md:px-8 md:py-2 font-semibold md:text-lg  rounded-md">Add Member</button>
+                            </div>
+                            
         
-        <div class="overflow-x-auto md:w-full w-full border-2 border-black mt-5">
-            <div class="overflow-y-auto md:max-h-[35rem] max-h-[50vh] ">
-                <table class="md:w-full w-[70rem] text-center" >
-                    <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] ">
-                        <tr class="text-sm md:text-lg h-8">
-                            <th class="">Full Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Vehicle Assignment</th>
-                            <th>Status</th>
+                        </div>
+                    </div>
+                </div>
+            <div id="activityForm" style="display: none;">
+                <div  class="w-full h-full flex justify-center" >
+                    <div class="absolute font-Inter w-auto p-5 top-7 bg-white border border-black z-10">
 
-                        </tr>
-                    </thead>
-                    <tbody id="inventory-log3" class="font-[500] space-y-2">
-                      <!-- <tr class="md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500">
-                        <td><div class="flex justify-center"><img src="img/ex1.jpg" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
-                        <td>5</td>
-                        <td>Corsiga Marniel</td>
-                        <td>January 20 2024</td>
-                        <td>12:00pm</td>
-                        <td>${row.vehicle}</td>
-                        <td>good</td>
-                        <td>bad</td>
-                        <td class="w-72 break-words ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus eaque accusamus ipsam tenetur porro, saepe sed modi </td>
-                      </tr>
-                 -->
-                      
-                    </tbody>
-                    
-                </table>
+                        <div class="flex justify-center w-full max-h-[70vh] overflow-x-auto border border-black">
+                            <div class=" mx-5 py-5 pb-5">
+                                <div class="flex justify-start">
+                                    <p class="text-lg font-bold mr-32">Activity Date</p>
+                                    <input class="border-[1px] border-black w-72" type="date" id="activityDate" required>
+                                </div>
+                                <div class="flex justify-start mt-4">
+                                    <p class="text-lg font-bold mr-[100px]">Time of Activitiy</p>
+                                    <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="activityTime" required>
+                                </div>
+                                <div class="flex  justify-start mt-4">
+                                    <p class="text-lg font-bold mr-[170px]">Location</p>
+                                    <textarea class="border-[1px] border-black max-w-72 w-full h-28" id="location" required></textarea>
+                                </div>
+
+                        
+                        
+                                <div class="flex justify-start mt-7">
+                                    <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
+                                    <!-- <p class="border-[1px] border-black w-72 h-8" id="vehicleName"></p>  -->
+                                    <select class="border-[1px] border-black w-72 h-8" name="" id="activityAssignment" required>
+                                        <option value=""> </option>
+
+                                    </select>
+                                </div>
+                               
+
+                                <div class="flex justify-start mt-7">
+                                    <p class="text-lg font-bold mr-[145px]">Responders</p>
+                                    <button class="bg-[#930D0D] text-white h-8 w-[135px] rounded-md" onclick="addResponders()" id="addResponders">Add Responder</button>
+                                </div>
+                                <div class="mt-5 max-h-44 overflow-y-auto h-full">
+                                    <table class="w-full font-Inter">
+                                        <thead class="border-y-[1px] border-black">
+                                            <tr>
+                                                <th>Call Sign</th>
+                                                <th>Full Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblResponders">
+                                            <!-- Dynamic content will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="flex justify-start mt-7 pb-5">
+                                    <p class="text-lg font-bold mr-[165px]">Detail</p>
+                                    <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="activityDetail" required></textarea>
+
+                                </div>
+
+                                
+                                
+                            </div>
+                            
+                            </div>
+                            <div class="flex justify-center w-full mt-2 space-x-5">
+                                
+                                <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" id="submitLogs">Submit</button>
+                                <a href="" onclick="addAcitivity()" class="underline underline-offset-4 mt-1">CLOSE</a>
+                            </div>
+                    </div>
+                
+                </div>
+                        
             </div>
+
         </div>
-
-       
+                
     </div>
-
- </div>
 
 </body>
 </div>
-<script src="admin.js" defer></script>
+<script src="activity.js" defer></script>
 <script src="super_profiler.js" defer></script>
 <script src="profileImage.js" defer></script>
+<script src="admin.js" defer></script>
 </html>

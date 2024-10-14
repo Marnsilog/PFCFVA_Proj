@@ -373,6 +373,7 @@ app.post('/recordTimeIn', (req, res) => {
     const timeIn = currentTime.toTimeString().split(' ')[0]; // time in HH:MM:SS format
     const dateOfTimeIn = currentTime.toISOString().split('T')[0]; // date in YYYY-MM-DD format
 
+     console.log('Time In: ',timeIn, dateOfTimeIn)
     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
     db.query(getUserQuery, [rfid], (err, result) => {
         if (err) {
@@ -454,13 +455,13 @@ app.post('/recordTimeOut', (req, res) => {
             const timeOut = result[0].timeOut; 
             const dateOfTimeOut = result[0].dateOfTimeOut; 
 
-            // console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
-            // console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
+            console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
+            console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
 
             const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
             const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
-            // console.log('-- timeInDateTime: ', timeInDateTime)
-            // console.log('xx timeOutDateTime: ', timeOutDateTime)
+            console.log('-- timeInDateTime: ', timeInDateTime)
+            console.log('xx timeOutDateTime: ', timeOutDateTime)
 
             
             if (isNaN(timeInDateTime.getTime())) {

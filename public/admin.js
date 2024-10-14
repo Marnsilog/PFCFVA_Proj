@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const tbody = document.getElementById('inventory-log3');
             
             if (!data.length) {
-                console.log('No data found');
+                //console.log('No data found');
                 return; 
             }
     

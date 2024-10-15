@@ -187,133 +187,6 @@ const allRoutes = require('./routes/routes_all')(db); // Pass the `db` connectio
 app.use('/routes_attendance', allRoutes);
 
 
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-//update profile route (WITH BUGS)
-// app.post('/updateProfile', (req, res) => {
-//     const {
-//         rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-//         civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-//         emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-//         nameOfCompany, yearsInService, skillsTraining, otherAffiliation, oldPassword,
-//         newPassword, confirmPassword
-//     } = req.body;
-
-//     if (newPassword && newPassword !== confirmPassword) {
-//         return res.status(400).send('New password and confirm password do not match');
-//     }
-
-//     const getUserQuery = 'SELECT password FROM tbl_accounts WHERE rfid = ?';
-//     db.query(getUserQuery, [rfid], (err, result) => {
-//         if (err) {
-//             console.error('Error fetching user:', err);
-//             return res.status(500).send('Error fetching user');
-//         }
-
-//         const hashedPassword = result[0].password;
-
-//         // If a new password is provided, validate the old password
-//         if (newPassword) {
-//             bcrypt.compare(oldPassword, hashedPassword, (compareErr, compareResult) => {
-//                 if (compareErr || !compareResult) {
-//                     return res.status(400).send('Incorrect old password');
-//                 }
-
-//                 bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-//                     if (hashErr) {
-//                         console.error('Error hashing new password:', hashErr);
-//                         return res.status(500).send('Error hashing new password');
-//                     }
-
-//                     // Call updateUserProfile with new password
-//                     updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-//                         civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-//                         emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-//                         nameOfCompany, yearsInService, skillsTraining, otherAffiliation, hash, req, res); // Pass req to update session
-//                 });
-//             });
-//         } else {
-//             // Call updateUserProfile without new password
-//             updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-//                 civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-//                 emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-//                 nameOfCompany, yearsInService, skillsTraining, otherAffiliation, null, req, res); // Pass req to update session
-//         }
-//     });
-// });
-
-function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-    civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-    emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-    nameOfCompany, yearsInService, skillsTraining, otherAffiliation, newPassword, req, res) { // Added req to update session
-    
-    let updateUserQuery = `UPDATE tbl_accounts SET
-        lastName = ?, firstName = ?, middleName = ?, middleInitial = ?, username = ?, emailAddress = ?,
-        mobileNumber = ?, civilStatus = ?, nationality = ?, bloodType = ?, dateOfBirth = ?,
-        gender = ?, currentAddress = ?, emergencyContactPerson = ?, emergencyContactNumber = ?,
-        highestEducationalAttainment = ?, nameOfCompany = ?, yearsInService = ?, skillsTraining = ?,
-        otherAffiliation = ?`;
-
-    const updateValues = [
-        lastName, firstName, middleName, middleInitial, username, emailAddress, mobileNumber,
-        civilStatus, nationality, bloodType, dateOfBirth, gender, currentAddress,
-        emergencyContactPerson, emergencyContactNumber, highestEducationalAttainment,
-        nameOfCompany, yearsInService, skillsTraining, otherAffiliation
-    ];
-
-    if (newPassword) {
-        updateUserQuery += `, password = ?`;
-        updateValues.push(newPassword);
-    }
-
-    updateUserQuery += ` WHERE rfid = ?`;
-    updateValues.push(rfid);
-
-    db.query(updateUserQuery, updateValues, (updateErr, updateResult) => {
-        if (updateErr) {
-            console.error('Error updating profile:', updateErr);
-            return res.status(500).send('Error updating profile');
-        }
-        
-        // Update session variables to reflect the changes
-        req.session.lastName = lastName; 
-        req.session.firstName = firstName; 
-        req.session.middleName = middleName; 
-        req.session.middleInitial = middleInitial; 
-        req.session.username = username; 
-        req.session.emailAddress = emailAddress; 
-        req.session.mobileNumber = mobileNumber; 
-        req.session.civilStatus = civilStatus; 
-        req.session.nationality = nationality; 
-        req.session.bloodType = bloodType; 
-        req.session.dateOfBirth = dateOfBirth; 
-        req.session.gender = gender; 
-        req.session.currentAddress = currentAddress; 
-        req.session.emergencyContactPerson = emergencyContactPerson; 
-        req.session.emergencyContactNumber = emergencyContactNumber; 
-        req.session.highestEducationalAttainment = highestEducationalAttainment; 
-        req.session.nameOfCompany = nameOfCompany; 
-        req.session.yearsInService = yearsInService; 
-        req.session.skillsTraining = skillsTraining; 
-        req.session.otherAffiliation = otherAffiliation; 
-
-        // res.status(200).send('Profile updated successfully');
-        req.session.fullName = `${firstName} ${middleInitial}. ${lastName}`; // Corrected to update fullName
-
-        res.status(200).json(req.session); // Send updated session data to client
-    });
-}
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-// endpoint to get user profile data by RFID (working for profile)
 app.get('/attendanceProfile', (req, res) => {
     const rfid = req.query.rfid;
     const sql = 'SELECT * FROM tbl_accounts WHERE rfid = ?';
@@ -526,6 +399,7 @@ cron.schedule('58 23 * * *', () => {
 cron.schedule('0 0 1 * *', () => {
     console.log('Resetting duty hours at the beginning of the month');
     resetDutyHours();
+    deleteTrashItems()
   });
 
 function logOutAllUsers() {
@@ -607,7 +481,6 @@ function logOutAllUsers() {
         });
     });
 }
-
 function resetDutyHours() {
     const query = 'UPDATE tbl_accounts SET dutyHours = 0';
     connection.query(query, (error, results) => {
@@ -617,46 +490,21 @@ function resetDutyHours() {
         console.log('Duty hours reset successfully');
       }
     });
-  }
+}
+function deleteTrashItems() {
+    console.log('Running scheduled task to delete trash items');
 
-// endpoint to record Time Out (working)
-// app.post('/recordTimeOut', (req, res) => {
-//     const rfid = req.body.rfid;
-//     const currentTime = new Date();
-//     const timeOut = currentTime.toTimeString().split(' ')[0]; 
-//     const dateOfTimeOut = currentTime.toISOString().split('T')[0]; 
+    const deleteTrashQuery = 'DELETE FROM tbl_inventory WHERE itemStatus = "trash"';
 
-//     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
-//     db.query(getUserQuery, [rfid], (err, result) => {
-//         if (err) {
-//             res.status(500).send('Error retrieving user data');
-//             return;
-//         }
-//         if (result.length === 0) {
-//             res.status(404).send('User not found');
-//             return;
-//         }
-//         const accountID = result[0].accountID;
-//         const updateAttendanceQuery = `UPDATE tbl_attendance 
-//                                        SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
-//                                        WHERE accountID = ? AND timeInStatus = 1 ORDER BY attendanceID DESC LIMIT 1`;
-//         db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
-//             if (err) {
-//                 res.status(500).send('Error recording Time Out');
-//                 return;
-//             }
-//             if (result.affectedRows === 0) {
-//                 res.status(400).send('No active Time In record found');
-//                 return;
-//             }
-//             res.json({ timeOut, dateOfTimeOut });
-//         });
-//     });
-// });
+    db.query(deleteTrashQuery, (err, result) => {
+        if (err) {
+            console.error('Error deleting trash items:', err);
+        } else {
+            console.log(`Deleted ${result.affectedRows} trash items`);
+        }
+    });
+}
 
-
-
-// endpoint to retrieve recent attendance records
 app.get('/recentAttendance', (req, res) => {
     const sql = `
         SELECT a.accountID, a.timeIn, a.dateOfTimeIn, a.timeOut, a.dateOfTimeOut, 
@@ -674,62 +522,6 @@ app.get('/recentAttendance', (req, res) => {
         res.json(results);
     });
 });
-
-
-// //SELECT tbl_accounts (REFINED)
-// app.get('/accountsAll', (req, res) => {
-//     const sql = `
-//         SELECT
-//             accountID,
-//             rfid,
-//             username,
-//             password,
-//             accountType,
-//             lastName,
-//             firstName,
-//             middleName,
-//             middleInitial,
-//             callSign,
-//             currentAddress,
-//             dateOfBirth,
-//             civilStatus,
-//             gender,
-//             nationality,
-//             bloodType,
-//             mobileNumber,
-//             emailAddress,
-//             emergencyContactPerson,
-//             emergencyContactNumber,
-//             highestEducationalAttainment,
-//             nameOfCompany,
-//             yearsInService,
-//             skillsTraining,
-//             otherAffiliation,
-//             idPicture,
-//             bioDataChecked,
-//             interviewChecked,
-//             fireResponsePoints,
-//             activityPoints,
-//             inventoryPoints,
-//             dutyHours,
-//             cumulativeDutyHours,
-//             rank,
-//             resetPasswordToken,
-//             resetPasswordExpires,
-//             status
-//         FROM tbl_accounts
-//         ORDER BY lastName ASC, firstName ASC, middleInitial ASC
-//     `;
-
-//     db.query(sql, (err, results) => {
-//         if (err) {
-//             res.status(500).send('Error retrieving accounts');
-//             return;
-//         }
-//         res.json(results);
-//     });
-// });
-
 app.get('/accountsAll', (req, res) => {
     const sql = `
         SELECT *
@@ -745,9 +537,6 @@ app.get('/accountsAll', (req, res) => {
         res.json(results);
     });
 });
-
-
-
 //admin attendance shit
 // endpoint to retrieve attendance details
 app.get('/attendanceDetails', (req, res) => {
@@ -775,8 +564,6 @@ app.get('/attendanceDetails', (req, res) => {
         res.json(results);
     });
 });
-
-
 // endpoint to retrieve volunteer details
 // New endpoint to retrieve all account details
 app.get('/volunteerDetails', (req, res) => {
@@ -804,8 +591,6 @@ app.get('/volunteerDetails', (req, res) => {
         res.json(results);
     }); 
 });
-
-
 // Endpoint to get current attendees with timeInStatus = 1
 app.get('/getCurrentPresent', (req, res) => {
     const sql = `
@@ -825,8 +610,6 @@ app.get('/getCurrentPresent', (req, res) => {
     });
 });
 
-
-
 app.get('/getVehicleAssignments', (req, res) => {
     const sql = 'SELECT * from tbl_vehicles;';
     db.query(sql, (err, results) => {
@@ -838,13 +621,6 @@ app.get('/getVehicleAssignments', (req, res) => {
         }
     });
 });
-
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 app.get('/getEquipment', (req, res) => { 
     try {
@@ -907,10 +683,6 @@ app.get('/getTrashedEquipment', (req, res) => {
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
-
-
-
-
 
 app.put('/moveToTrash/:itemID', (req, res) => {
     const itemID = req.params.itemID;
@@ -1202,9 +974,6 @@ app.get('/getIcsLogs', (req, res) => {
         res.json(results);
     });
 });
-
-
-// Route to fetch specific incident log by icsID
 app.get('/getIncidentLog/:icsID', (req, res) => {
     const icsID = req.params.icsID;
     
@@ -1227,12 +996,6 @@ app.get('/getIncidentLog/:icsID', (req, res) => {
         res.json(results[0]);
     });
 });
-
-
-
-//RANKUP
-
-
 
 app.get('/rankUp', (req, res) => {
     const sql = `

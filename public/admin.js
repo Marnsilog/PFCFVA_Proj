@@ -71,7 +71,7 @@ function loadNotifications() {
                         console.warn('Unknown notification detail:', notification.detail);
                 }
                 
-                console.log(message);
+                //console.log(message);
                 // Generate the notification div with dynamic content
                 const notificationDiv = `
                     <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" 
@@ -98,7 +98,36 @@ function loadNotifications() {
             console.error('Error fetching notifications:', error);
         });
 }
+    //FOR RESPONSIVE ---------------------------------->
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const notification = document.getElementById('notification');
+    
 
+        menuToggle.addEventListener('click', function () {
+            if (mobileMenu.style.display === 'block') {
+                mobileMenu.style.display = 'none';
+            } else {
+                mobileMenu.style.display = 'block';
+                notification.style.display = 'none';
+            }
+        });
+    
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                mobileMenu.style.display = 'none';
+            });
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.style.display = 'none';
+            }
+        });
+        
+    });
 
 function markAsRead(notificationId, detail) {
     fetch(`/auth/markNotificationRead/${notificationId}`, {
@@ -134,8 +163,6 @@ function markAsRead(notificationId, detail) {
     });
 }
 
-
-
 function showSettings() {
 
     var profileForm = document.getElementById('inventorySetting');
@@ -149,16 +176,16 @@ function showSettings() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
 
-    const circles = document.querySelectorAll('.colorCircle');
-    circles.forEach(circle => {
-        circle.addEventListener('click', function () {
-            circle.classList.toggle('bg-red-500');
-            circle.classList.toggle('bg-green-500');
-        });
-    });
-});
+//     const circles = document.querySelectorAll('.colorCircle');
+//     circles.forEach(circle => {
+//         circle.addEventListener('click', function () {
+//             circle.classList.toggle('bg-red-500');
+//             circle.classList.toggle('bg-green-500');
+//         });
+//     });
+// });
   
   //FORM INCIDENT ----------------------------------->
   function inciform(){
@@ -243,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
     }
         
-
     function cancelSort(){
             var summarySort = document.getElementById('summarySort');
             if (summarySort.style.display === 'none' || incidentLog.style.display === '') {
@@ -334,260 +360,138 @@ document.addEventListener('DOMContentLoaded', function() {
             URL.revokeObjectURL(output.src) // free memory
         }
     };
-    
-    //FOR RESPONSIVE ---------------------------------->
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const notification = document.getElementById('notification');
-    
-
-        menuToggle.addEventListener('click', function () {
-            if (mobileMenu.style.display === 'block') {
-                mobileMenu.style.display = 'none';
-            } else {
-                mobileMenu.style.display = 'block';
-                notification.style.display = 'none';
-            }
-        });
-    
-        const mobileMenuItems = mobileMenu.querySelectorAll('a');
-        mobileMenuItems.forEach(function (item) {
-            item.addEventListener('click', function () {
-                mobileMenu.style.display = 'none';
-            });
-        });
-    
-        document.addEventListener('click', function (event) {
-            if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
-                mobileMenu.style.display = 'none';
-            }
-        });
-        
+    window.addEventListener('load', function() {
+        if (window.location.pathname === '/admin_inventory_status_logs') {
+            fetchInventoryLog();
+        } else if (window.location.pathname === '/admin_inventory_logs') {
+            fetchInventoryLog3();
+        } else if(window.location.pathname === '/admin_inventory_vehicle_ass') {
+            fetchInventoryLog2();
+        }
     });
+
     //register, clear form
 
-    
-    
-    // //register, dont allow numbers
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
-    
-    //     numberFields.forEach(fieldId => {
-    //         const field = document.getElementById(fieldId);
-    //         if (field) { // Check if the field exists
-    //             field.addEventListener('keypress', function(event) {
-    //                 if (/[a-zA-Z]/.test(event.key)) {
-    //                     event.preventDefault();
-    //                 }
-    //             });
-    //         } 
-    //     });
-    // });
-    
-    // //register, don't allow letters for specific fields
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const numberFields = [
-    //         'contactNumber', 
-    //         'emergencyContactNumber', 
-    //         'dutyHours', 
-    //         'fireResponse', 
-    //         'activityPoints', 
-    //         'inventoryPoints', 
-    //         'yearsInService'
-    //     ];
-    
-    //     numberFields.forEach(fieldId => {
-    //         const field = document.getElementById(fieldId);
-    //         if (field) { 
-    //             field.addEventListener('keypress', function(event) {
-    //                 // Prevent input of letters
-    //                 if (/[a-zA-Z]/.test(event.key)) {
-    //                     event.preventDefault();
-    //                 }
-    //             });
-    //         } 
-    //     });
-    // });
-    //auto format
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
-    
-    //     // Function to capitalize the first letter of each word
-    //     function capitalizeWords(str) {
-    //         return str.replace(/\b\w/g, function(char) {
-    //             return char.toUpperCase();
-    //         });
-    //     }
-    
-    //     nameFields.forEach(fieldId => {
-    //         const field = document.getElementById(fieldId);
-    
-    //         // Format text as the user types
-    //         field.addEventListener('input', function() {
-    //             field.value = capitalizeWords(field.value);
-    //         });
-    
-    //         // Format text when the user leaves the input field
-    //         field.addEventListener('blur', function() {
-    //             field.value = capitalizeWords(field.value);
-    //         });
-    //     });
-    // });
-     //handle accountType/callSign
-    //  document.addEventListener('DOMContentLoaded', function() {
-    //     const accountTypeSelect = document.getElementById('accountType');
-    //     const callSignSelect = document.getElementById('callSign');
-    //     const optionsToDisable = ['ECHO', 'ECHO800', 'ECHO900'];
-    //     const tooltipText = callSignSelect.nextElementSibling;
+    //ADMIN INVENTORY STATUS  /admin_inventory_status_logs
+    function fetchInventoryLog() {
 
-    //     accountTypeSelect.addEventListener('change', function() {
-    //         const selectedAccountType = accountTypeSelect.value;
-    //         if (selectedAccountType) {
-    //             callSignSelect.disabled = false;
-    //             tooltipText.classList.add('hidden');
-    //         } else {
-    //             callSignSelect.disabled = true;
-    //             tooltipText.classList.remove('hidden');
-    //         }
-
-    //         if (selectedAccountType === 'Volunteer') {
-    //             optionsToDisable.forEach(optionValue => {
-    //                 const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
-    //                 option.disabled = true;
-    //             });
-    //         } else {
-    //             optionsToDisable.forEach(optionValue => {
-    //                 const option = callSignSelect.querySelector(`option[value="${optionValue}"]`);
-    //                 option.disabled = false;
-    //             });
-    //         }
-    //     });
-
-    //     callSignSelect.addEventListener('mouseover', function() {
-    //         if (callSignSelect.disabled) {
-    //             tooltipText.classList.remove('hidden');
-    //         }
-    //     });
-
-    //     callSignSelect.addEventListener('mouseout', function() {
-    //         tooltipText.classList.add('hidden');
-    //     });
-    // });
-
-
-    //ADMIN INVENTORY STATUS 
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/auth/admin-inventory/log')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);  
-            const tbody = document.getElementById('inventory-log');
-            
-            if (!data.length) {
-                console.log('No data found');
-                return; 
-            }
-    
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+            fetch('/auth/admin-inventory/log')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                //console.log(data);  
+                const tbody = document.getElementById('inventory-log');
                 
-                tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
-                    <td>${row.item}</td>
-                    <td>${row.volunteer_name}</td>
-                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
-                    <td>${row.checked_time}</td>
-                    <td>${row.vehicle}</td>
-                    <td>${row.from_vehicle}</td>
-                    <td>${row.change_to}</td>
-                    <td class="w-72 break-words">${row.remarks}</td>
-                `;
-                
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(error => console.error('Error fetching inventory log data:', error));
-    });
+                if (!data.length) {
+                    console.log('No data found');
+                    return; 
+                }
+    
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                    const remarks = row.remarks === null ? '' : row.remarks;
+                    tr.innerHTML = `
+                        <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
+                        <td>${row.item}</td>
+                        <td>${row.volunteer_name}</td>
+                        <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                        <td>${row.checked_time}</td>
+                        <td>${row.vehicle}</td>
+                        <td>${row.from_vehicle}</td>
+                        <td>${row.change_to}</td>
+                        <td class="w-72 break-words">${remarks}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error fetching inventory log data:', error));
 
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/auth/admin-inventory/log3')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log(data);  
-            const tbody = document.getElementById('inventory-log3');
-            
-            if (!data.length) {
-                //console.log('No data found');
-                return; 
-            }
+    }
+    ///admin_inventory_logs
+    function fetchInventoryLog3() {
+     
+            fetch('/auth/admin-inventory/log3')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('inventory-log3');
+        
+                if (!data.length) {
+                    console.log('No data found');
+                    return; 
+                }
     
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                    
+                    // Handle status, assigning an empty string if it's null
+                    const status = row.status === null ? '' : row.status;
+                    
+                    tr.innerHTML = `
+                        <td>${row.volunteer_name}</td>
+                        <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                        <td>${row.checked_time}</td>
+                        <td>${row.vehicle}</td>
+                        <td>${status}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error fetching inventory log data:', error));
+
+    }
+    ///admin_inventory_vehicle_ass
+    function fetchInventoryLog2() {
+       
+            fetch('/auth/admin-inventory/log2')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('inventory-log2');
                 
-                tr.innerHTML = `
-                    <td>${row.volunteer_name}</td>
-                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
-                    <td>${row.checked_time}</td>
-                    <td>${row.vehicle}</td>
-                    <td>${row.status}</td>
-                `;
-                
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(error => console.error('Error fetching inventory log data:', error));
-    });
-    //ADMIN VEHICLE STATUS
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/auth/admin-inventory/log2')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log(data);  
-            const tbody = document.getElementById('inventory-log2');
-            
-            if (!data.length) {
-                //console.log('No data found');
-                return; 
-            }
+                if (!data.length) {
+                    return; 
+                }
     
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                    
+                    tr.innerHTML = `
+                        <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
+                        <td>${row.item}</td>
+                        <td>${row.volunteer_name}</td>
+                        <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                        <td>${row.checked_time}</td>
+                        <td>${row.from_vehicle}</td>
+                        <td>${row.change_to}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
                 
-                tr.innerHTML = `
-                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
-                    <td>${row.item}</td>
-                    <td>${row.volunteer_name}</td>
-                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
-                    <td>${row.checked_time}</td>
-                    <td>${row.from_vehicle}</td>
-                    <td>${row.change_to}</td>
-                `;
-                
-                tbody.appendChild(tr);
-            });
-            
-        })
-        .catch(error => console.error('Error fetching inventory log data:', error));
-    });
+            })
+            .catch(error => console.error('Error fetching inventory log data:', error));
+
+    }
+    
+
 
 //NOTIFICATION
 

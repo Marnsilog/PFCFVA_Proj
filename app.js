@@ -998,23 +998,12 @@ app.get('/getIncidentLog/:icsID', (req, res) => {
 });
 
 app.get('/rankUp', (req, res) => {
-    const sql = `
-        SELECT 
-            a.accountID,
-            a.firstName,
-            a.middleInitial,
-            a.lastName,
-            a.callSign,
-            a. FLOOR(cumulativeDutyHours / 60) AS dutyHours,
-            a.fireResponsePoints
-        FROM tbl_accounts a
-        WHERE 
-            (a.dutyHours >= 100 AND a.callSign LIKE 'ASPIRANT%')
-            OR 
-            (a.dutyHours >= 1000 AND a.callSign LIKE 'PROBATIONARY%' AND a.fireResponsePoints >= 20)
-            OR 
-            (a.dutyHours >= 2000 AND a.callSign LIKE 'ECHO9%' AND a.fireResponsePoints >= 20)
-        ORDER BY a.lastName, a.firstName`;
+    const sql = `SELECT a.accountID, a.firstName, a.middleInitial,
+    a.lastName, a.callSign, FLOOR(a.cumulativeDutyHours / 60) AS dutyHours,
+    a.fireResponsePoints FROM tbl_accounts a WHERE (FLOOR(a.cumulativeDutyHours / 60) >= 100 AND a.callSign LIKE 'ASPIRANT%')
+    OR (FLOOR(a.cumulativeDutyHours / 60) >= 1000 AND a.callSign LIKE 'PROBATIONARY%' AND a.fireResponsePoints >= 20)
+    OR (FLOOR(a.cumulativeDutyHours / 60) >= 2000 AND a.callSign LIKE 'ECHO9%' AND a.fireResponsePoints >= 20)
+    ORDER BY a.lastName, a.firstName;`;
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -1044,12 +1033,7 @@ app.post('/upgradeRank', (req, res) => {
     // SQL to update the callSign and cumulative values
     const sql = `
         UPDATE tbl_accounts 
-        SET 
-            callSign = ?,
-            dutyHours = 0,
-            fireResponsePoints = 0,
-            cumulativeDutyHours = cumulativeDutyHours + ?,
-            cumulativeFireResponse = cumulativeFireResponse + ?
+        SET callSign = ?
         WHERE accountID = ?`;
 
     const params = [newCallSign, dutyHours, fireResponsePoints, accountID];

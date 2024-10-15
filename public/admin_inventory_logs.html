@@ -7,7 +7,7 @@
     <link rel="icon" href="img/pfcfvalogo.png">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFCFVA || Admin Dashboard</title>
+    <title>PFCFVA || Admin Inventory Logs</title>
 </head>
 <div>
     <body class="bg-white w-full h-full">
@@ -56,7 +56,7 @@
         
         <!-- RESPONSIVE SETTINGS -->
         <div class="w-full flex justify-end sticky-col relative z-50">
-            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
+            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;">
                 <div class="ml-3 flex justify-start mr-3" onclick="location.href='/admin_main_profile'" style="cursor: pointer;">
                     <img  id="resPonsivepic" class="h-10 w-10" >
                     <p class="ml-2 py-2 text-sm"  data-feild="ResponsiveName"></p>
@@ -104,6 +104,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
                     <p class="ml-2 block py-2">Inventory Status</p>
                 </div>
+                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/admin_activity'">
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
+                    <p class="ml-2 block py-2">Activity Log</p>
+                </div>
 
                 <div class="bg-white h-[1px] w-full my-3"></div>
     
@@ -134,12 +138,15 @@
 
          </div>
         <!-- SETTINGS -->
-        <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold" id="Setting" style="display: none;">
+        <div class="hidden absolute right-2 top-[120px] font-Inter text-start font-semibold z-30" id="Setting" >
             <div class="bg-white rounded-lg border-[1px] border-black w-64">
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-t-lg" style="cursor: pointer;" onclick="location.href='/admin_main_profile'">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class=" w-6 h-6" fill="black"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/></svg>
                     <p>My Profile</p></div>
                 <div class="bg-black h-[2px]"></div>
+                <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2" style="cursor: pointer;"  onclick="location.href='/admin_activity'">
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="w-6 h-6" viewBox="0 -960 960 960" fill="black"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
+                    <p>Activity Logs</p></div>
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2" style="cursor: pointer;"  onclick="location.href='/admin_register'">
                     <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class=" w-6 h-6" fill="black"><path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg><p>Register<p></div>
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2" style="cursor: pointer;"  onclick="location.href='/admin_rank_up'"> <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="w-6 h-6" fill="black" ><path d="M280-880h400v314q0 23-10 41t-28 29l-142 84 28 92h152l-124 88 48 152-124-94-124 94 48-152-124-88h152l28-92-142-84q-18-11-28-29t-10-41v-314Zm80 80v234l80 48v-282h-80Zm240 0h-80v282l80-48v-234ZM480-647Zm-40-12Zm80 0Z"/></svg>
@@ -156,7 +163,7 @@
                 <div class="bg-black h-[2px]"></div>
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
-        </div>
+            </div>
 
 <!-- NEW INVENTORY LOGS -->
  <div class="w-full flex justify-center h-full">

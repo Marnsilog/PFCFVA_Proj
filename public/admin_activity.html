@@ -7,7 +7,7 @@
     <link rel="icon" href="img/pfcfvalogo.png">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFCFVA || Admin Edit Profile</title>
+    <title>PFCFVA || Admin Activity</title>
 </head>
 <div>
     <body class="bg-white w-full h-full">
@@ -22,11 +22,11 @@
                 <nav class="hidden  text-white font-Inter || md:block md:text-2xl md:mr-10 md:w-full md:h-full">
                     <ul class="md:w-full md:flex md:justify-end md:h-full md:space-x-10 text-xl">
                     
-                        <li id="dashb" class="my-10"><a href="/admin_dashboard">Dashboard</a></li>
-                        <li id="att" class=" my-10 "><a href="/admin_attendance_logs">Attendance Logs</a></li>
-                        <li id="vol" class="my-10 "><a href="/admin_merit_tracking">Merit Tracking</a></li>
-                        <li id="inc" class="my-10 "><a href="/admin_fire_response">Fire Response</a></li>
-                        <li id="inV" class="my-10 "><a href="/admin_inventory">Inventory</a></li>
+                        <li class="my-10"><a href="/admin_dashboard">Dashboard</a></li>
+                        <li class=" my-10 "><a href="/admin_attendance_logs">Attendance Logs</a></li>
+                        <li class="my-10 "><a href="/admin_merit_tracking">Merit Tracking</a></li>
+                        <li class="my-10 "><a href="/admin_fire_response">Fire Response</a></li>
+                        <li class="my-10 "><a href="/admin_inventory">Inventory</a></li>
                         <div class="md:my-10 cursor-pointer" onclick="toggleNotif()">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 448 512">
                                 <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
@@ -56,7 +56,7 @@
         
         <!-- RESPONSIVE SETTINGS -->
         <div class="w-full flex justify-end sticky-col relative z-50">
-            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;">
+            <div class="md:hidden w-1/2 py-5 bg-rosered2 text-white text-start text-md font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
                 <div class="ml-3 flex justify-start mr-3" onclick="location.href='/admin_main_profile'" style="cursor: pointer;">
                     <img  id="resPonsivepic" class="h-10 w-10" >
                     <p class="ml-2 py-2 text-sm"  data-feild="ResponsiveName"></p>
@@ -104,10 +104,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
                     <p class="ml-2 block py-2">Inventory Status</p>
                 </div>
-                <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/admin_activity'">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mt-[10px] w-5 h-5" viewBox="0 -960 960 960" fill="white"><path d="M620-163 450-333l56-56 114 114 226-226 56 56-282 282Zm220-397h-80v-200h-80v120H280v-120h-80v560h240v80H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v200ZM480-760q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/></svg>
-                    <p class="ml-2 block py-2">Activity Log</p>
-                </div>
 
                 <div class="bg-white h-[1px] w-full my-3"></div>
     
@@ -118,10 +114,12 @@
             </div>
         </div>
             
-        </div>
+    
+       
+    </div>
         <!-- NOTIFICATION BAR-->
         <div class="flex justify-start w-full" id="notification" style="display: none;">
-            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3">
+            <div class="absolute md:right-[11rem] border md:top-[120px] top-14  border-black w-[85%] md:w-[30rem] h-96 bg-white rounded-lg p-3 z-30">
                 <div class="w-full h-full overflow-y-auto space-y-1 overflow-x-hidden" id="notificationContainer">
                     <!-- Dynamic notifications will be added here -->
                     <!-- <div class="h-[20%] max-h-[20%] w-full border-b border-black font-Inter px-1 py-1 cursor-pointer hover:bg-gray-300" onclick="togo()">
@@ -162,253 +160,190 @@
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
             </div>
-<!-- Edit Profile -->
-<div class="w-full h-full flex justify-center" >
-    <div class=" md:max-w-[70rem] w-full" id="editProfile" >
-        <div id="loading-container">
-            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-        </div>
-        <div class="w-full mt-7">
-            <p class="font-Inter font-bold md:text-3xl text-2xl md:text-start text-center">Edit Profile</p>
-          
-                <form  action="/auth/edit-profile" method="POST" enctype="multipart/form-data"  class="font-Inter text-base md:text-xl font-[600] w-full md:mt-0 mt-5" id="editProfileForm">
-                    <div class="flex justify-normal ml-5 md:ml-0 md:pt-9 md:py-5 space-x-8">
-                        <div class="md:ml-12"> <img src="img/user.png" id="profile-pic" class="w-24 h-24 md:w-48 md:h-48 rounded-full"></div>
-
-                        <div class="mt-24">
-                            <label for="profilePicture"></label>
-                            <input type="file" id="profilePicture" name="profilePicture" >
+<div class="md:pt-4 pt-8 w-full flex justify-center" >
+    <div class="w-full md:max-w-[85rem] md:pt-7"  id="frmActivity">
+            <div class="w-full">
+                <div id="loading-container">
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+                        <div class="space-y-2 md:space-x-0 md:flex md:justify-between">
+                            <div class="md:ml-0 flex justify-center items-center"> 
+                                <button class="w-40 text-sm rounded-md font-400  font-kadwa border-[1px] border-black hover:border-gray-600 || md:text-2xl md:font-600 md:rounded-lg md:w-72 md:h-10" onclick="addAcitivity()">+ Add Activity Logs</button></div>
+                             <div class=" md:pl-0 md:w-[25rem] mx-5 h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                <input id="Search_form_inv" class="w-full h-full focus:outline-none rounded-lg px-2" type="text" placeholder="Search">
+                            </div>
                         </div>
-                          
                     </div>
-                    <input type="hidden" id="EditRFID" name="rfid">
-                    <input type="hidden" id="HiddenUsername" name="username">
-                    <input type="hidden" id="accountID " name="accountID ">
+
+                    <div class="font-Inter w-full">       
+                        <div class="mt-5 md:mt-10 font-Inter w-full min-h-[60vh] max-h-[70vh] border-2 border-black h-full">       
+                            <table  class="w-full ">
+                                <thead class="h-14 bg-[#D9D9D9] opacity-75 rounded-t-lg text-black md:mt-10 mdh-16 md:text-3xl border-b-2 border-black">
+                                    <tr class="rounded-t-lg">
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Detail</th>
+                                        <th>location</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="w-full text-center text-sm md:text-2xl" id="actTable">
+                                    <!-- <tr>
+                                        <td>04/15/2001</td>
+                                        <td>14:50</td>
+                                        <td>Feeding</td>
+                                        <td>Paranaque </td>
+                                        <td><a class="underline underline-offset-1 md:text-xl" href="#"onclick="seeResponders()">See details</a></td>
+                                    </tr> -->
+                                    <!-- Rows will be populated here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                 </div>
+
+                 <div class="flex justify-center" id="activityResp" style="display: none;">
+                    <div class="absolute top-44 md:w-[35rem] w-[95%] md:pt-10 border-2 border-black shadow-lg shadow-gray-500 font-Inter bg-rosered2">
+                        <div class="max-h-[50vh] overflow-y-auto bg-white">
+                            <table class="w-full font-Inter">
+                                <thead class="h-14 border-y-[1px] border-black">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>CallSign</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="respp">
+                                    <!-- Responders will be populated here -->
+                                </tbody>
+                            </table>
+                            <div class="flex justify-center underline underline-offset-2 py-10">
+                                <a href="#" onclick="exitResdetail()">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="addRes" style="display: none;">
                     <div class="w-full flex justify-center">
-                        <div class="md:space-y-5 md:w-full space-y-3 md:space-x-0">
-                            <div class="md:flex md:justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <p>Lastname</p>
-                                    <input  class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Last Name" name="lastName" id="EditLastName" 
-                                    oninput="removeNumbers(event)">
-                                </div>
-            
-                                <div>
-                                    <p>First Name</p>
-                                    <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="First Name" name="firstName" id="EditFirstName"
-                                    oninput="removeNumbers(event)">
-                                </div>
-            
-                                <div>
-                                    <p>Middle Name</p>
-                                    <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Middle Name" name="middleName" id="EditMiddleName"
-                                    oninput="removeNumbers(event)">
-                                </div>
+                        <div class="absolute bg-white border-[1px] border-black md:w-[25rem] md:h-[30rem] w-[22rem] h-[30rem] top-20 md:top-16 shadow-lg shadow-gray-300 z-20">
+                            <div class="flex justify-end mr-3 font-bold text-2xl">
+                                <a href="#" onclick="addResponders()">X</a>
                             </div>
-            
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div >
-                                    <p>Username</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" type="text" placeholder="Username" name="username2" id="EditUsername" readonly>
-                             
-                                </div>
-            
-                                <div>
-                                    <p>Email Address</p>
-                                    <input class="bg-white w-80 h-10 md:px-4 border border-black" 
-                                    type="email" placeholder="Email Address" name="emailAddress" id="EditEmailAddress" 
-                                    oninput="validateEmail(event)">
-                                </div>
-            
-                                <div>
-                                    <p>Contact Number</p>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                        type="text" placeholder="Contact Number" name="contactNumber" id="EditContactNumber" 
-                                        oninput="validateContactNumber(event)">
+                            <div class="w-full flex justify-center mb-2">
+                                <div class="w-[70%] flex justify-start border border-black  rounded-lg ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+                                    <input type="text" class="w-full focus:outline-none rounded-lg" id="searchPerson">
                                 </div>
                             </div>
                             
-                               <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                    <div>
-                                        <p>Old Password</p>
-                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                        type="password" placeholder="Old Password" name="oldPassword" id="EditOldPassword">
-                                    </div>
-                
-                                    <div>
-                                        <p>New Password</p>
-                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                        type="password" placeholder="New Password" name="" id="EditNewPassword">
-                                    </div>
-                
-                                    <div >
-                                        <p>Confirm Password</p>
-                                        <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                        type="password" placeholder="Confirm Password" name="newPassword" id="EditConfirmPassword">
-                                    </div>
-                                </div>
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                             
-                                <div>
-                                    <!-- <input class="block" type="text" id="" placeholder="Gender" name="gender"> -->
-                                    <p>Civil Status</p>
-                                    <select class="bg-white md:w-80 w-full h-10 md:px-4 border border-black" name="civilStatus" id="EditCivilStatus">
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Seperated">Seperated</option>
-                                        <option value="Divorced">Divorced</option>
-                                    </select>
+                            <div class=" mx-2 h-full min-h-[20rem] max-h-[20rem] border-[1px] overflow-y-auto border-black">
+                                <table class="w-full">
+                                    <thead class="bg-[#EED033] text-black w-full">
+                                        <tr class="w-full">
+                                            <th class="w-[70%]">CALL SIGN</th>
+                                            <th class="px-14 text-center">NAME</th>
+                                            <th class="w-full"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="responds">
+                                       <!-- <tr class="">
+                                        <td class="px-5">Marniel Corsiga</td>
+                                        <td class="w-[50%]">
+                                           <div class="w-full flex justify-center">
+                                            <input type="checkbox" id="task3" name="task3">
+                                           </div>
+                                        </td>
+                                       </tr> -->
+                                    </tbody>
+                                </table>
                             </div>
-            
-                                <div>
-                                    <p>Nationality</p>
-                                    <select class="bg-white w-80 h-10 px-4 border border-black" name="nationality" id="EditNationality" >
-                                        <option value="" disabled selected></option>
-                                        <option value="Filipino">Filipino</option>
-                                        <option value="Chinese">Chinese</option>
-                                        <option value="American">American</option>
-                                        <option value="Canadian">Canadian</option>
-                                        <option value="British">British</option>
-                                        <option value="Indian">Indian</option>
-                                        <option value="Japanese">Japanese</option>
-                                        <option value="Korean">Korean</option>
-                                        <option value="German">German</option>
-                                        <option value="French">French</option>
-                                        <option value="Australian">Australian</option>
-                                        <option value="Brazilian">Brazilian</option>
-                                        
-                                    </select>
-                                </div>
-            
-                                <div>
-                                    <p>Blood Type</p>
-                                    <!-- <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                    type="text" placeholder="BloodType" name="bloodType" id="EditBloodType"> -->
-                                    <select class="bg-white w-80 h-10 px-4 border border-black" name="bloodType" id="EditBloodType">
-                                        <option value="" disabled selected> </option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                    </select>
-                                </div>
+                            <div class="py-2 w-full flex justify-center items-center">
+                                <button onclick="submitSelectedMembers()" type="button" class="bg-[#EED033] px-5 py-2 md:px-8 md:py-2 font-semibold md:text-lg  rounded-md">Add Member</button>
                             </div>
-                           
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <label class="block" for="birthdaytime">Birthday:</label>
-                                    <input class="bg-white w-80 h-10 px-4 border border-black" 
-                                           type="date" id="EditBirthday" name="birthday" oninput="validateBirthday()">
-                                </div>
-            
-                                <div>
-                                        <!-- <input class="block" type="text" id="" placeholder="Gender" name="gender"> -->
-                                        <select class="bg-white md:w-80 w-full h-10 md:px-4 border border-black" name="gender" id="EditGender">
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                </div>
-                            </div>
-                          
-                            <div class="flex justify-between w-full mt-2">
-                                <div class="w-full">
-                                    <p>Current Address</p>
-                                    <input class="bg-white w-full h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Current Address" name="currentAddress" id="EditCurrentAddress">
-                                </div>
-                            </div>
-            
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <p>Emergency Contact Person</p>
-                                    <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Emergency Contact Person" name="emergencyContactPerson" id="EditEmergencyContactPerson" oninput="removeNumbers(event)">
-                                </div>
-            
-                                <div>
-                                    <p>Emergency Contact Number</p>
-                                    <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Emergency Contact Number" name="emergencyContactNumber" id="EditEmergencyContactNumber" oninput="validateContactNumber(event)">
-                                </div>
-                            </div>   
                             
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div>
-                                    <p>Highest Educational Attainment</p>
-                                    <select class="bg-white md:w-[25rem] w-full h-10 px-4 border border-black" 
-                                            name="highestEducationalAttainment" 
-                                            id="EditHighestEducationalAttainment">
-                                        <option value="">Select Educational Attainment</option>
-                                        <option value="Some Elementary">Some Elementary</option>
-                                        <option value="Elementary Graduate">Elementary Graduate</option>
-                                        <option value="Some High School">Some High School</option>
-                                        <option value="High School Graduate">High School Graduate</option>
-                                        <option value="Some College">Some College</option>
-                                        <option value="College Graduate">College Graduate</option>
-                                        <option value="Postgraduate">Postgraduate</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                </div>
-            
-                                <div>
-                                    <p>Name of the Company</p>
-                                    <input class="bg-white md:w-80 w-full h-10 md:px-4 border border-black" 
-                                    type="text" placeholder="Name of the Company" name="nameOfCompany" id="EditNameOfCompany">
-                                </div>
-            
-                                <div>
-                                    <p>Years in Service</p>
-                                    <input class="bg-white md:w-60 w-full h-10 md:px-4 border border-black" 
-                                           type="text" 
-                                           placeholder="Years in service" 
-                                           name="yearsInService" 
-                                           id="EditYearsInService" 
-                                           oninput="validateYearsInService()" required>
-                                </div>
-                            </div>     
-
-                            <div class="md:flex justify-between w-full space-y-3 md:space-x-0">
-                                <div >
-                                    <p>Skills/Training</p>
-                                    <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Skills/Training" name="skillsTraining" id="EditSkillsTraining">
-                                </div>
-            
-                                <div>
-                                    <p>Other Affiliation</p>
-                                    <input class="bg-white md:w-[28rem] w-full h-10 px-4 border border-black" 
-                                    type="text" placeholder="Other Affiliation" name="otherAffiliation" id="EditOtherAffiliation">
-                                </div>
-                            </div> 
-
-                            <div class="flex justify-end pb-14 pt-12 space-x-5">
-                                <button type="button" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]" onclick="location.href='volunteer_main_profile'">Cancel</button>
-                                <button type="submit" class="bg-[#930D0D] hover:bg-red-500 rounded-lg h-10 w-20 md:w-36 md:ml-5 text-white text-sm md:text-xl font-Inter font-[500]">Save</button>
-                            </div>      
+        
                         </div>
                     </div>
-                   
-                    
-                    
-                </form>
-    
-        </div>
-    </div>
-   
-</div>
+                </div>
+            <div id="activityForm" style="display: none;">
+                <div  class="w-full h-full flex justify-center" >
+                    <div class="absolute font-Inter w-auto p-5 top-7 bg-white border border-black z-10">
 
+                        <div class="flex justify-center w-full max-h-[70vh] overflow-x-auto border border-black">
+                            <div class=" mx-5 py-5 pb-5">
+                                <div class="flex justify-start">
+                                    <p class="text-lg font-bold mr-32">Activity Date</p>
+                                    <input class="border-[1px] border-black w-72" type="date" id="activityDate" required>
+                                </div>
+                                <div class="flex justify-start mt-4">
+                                    <p class="text-lg font-bold mr-[100px]">Time of Activitiy</p>
+                                    <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="activityTime" required>
+                                </div>
+                                <div class="flex  justify-start mt-4">
+                                    <p class="text-lg font-bold mr-[170px]">Location</p>
+                                    <textarea class="border-[1px] border-black max-w-72 w-full h-28" id="location" required></textarea>
+                                </div>
+
+                        
+                        
+                                <div class="flex justify-start mt-7">
+                                    <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
+                                    <!-- <p class="border-[1px] border-black w-72 h-8" id="vehicleName"></p>  -->
+                                    <select class="border-[1px] border-black w-72 h-8" name="" id="activityAssignment" required>
+                                        <option value=""> </option>
+
+                                    </select>
+                                </div>
+                               
+
+                                <div class="flex justify-start mt-7">
+                                    <p class="text-lg font-bold mr-[145px]">Responders</p>
+                                    <button class="bg-[#930D0D] text-white h-8 w-[135px] rounded-md" onclick="addResponders()" id="addResponders">Add Responder</button>
+                                </div>
+                                <div class="mt-5 max-h-44 overflow-y-auto h-full">
+                                    <table class="w-full font-Inter">
+                                        <thead class="border-y-[1px] border-black">
+                                            <tr>
+                                                <th>Call Sign</th>
+                                                <th>Full Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblResponders">
+                                            <!-- Dynamic content will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="flex justify-start mt-7 pb-5">
+                                    <p class="text-lg font-bold mr-[165px]">Detail</p>
+                                    <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="activityDetail" required></textarea>
+
+                                </div>
+
+                                
+                                
+                            </div>
+                            
+                            </div>
+                            <div class="flex justify-center w-full mt-2 space-x-5">
+                                
+                                <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" id="submitLogs">Submit</button>
+                                <a href="" onclick="addAcitivity()" class="underline underline-offset-4 mt-1">CLOSE</a>
+                            </div>
+                    </div>
+                
+                </div>
+                        
+            </div>
+
+        </div>
+                
+    </div>
 
 </body>
 </div>
+<script src="activity.js" defer></script>
 <script src="super_profiler.js" defer></script>
-<script src="admin.js" defer></script>
 <script src="profileImage.js" defer></script>
-<script src="constraint.js"></script>
+<script src="admin.js" defer></script>
 </html>

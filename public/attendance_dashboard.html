@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
-    <link href="marns.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || ATTENDANCE DASHBOARD</title>
 </head>
@@ -214,70 +213,7 @@
             });
         }
 
-        // Function to handle manual RFID scan and trigger the existing attendance logic
-        // function handleManualRFID(rfid) {
-        //     document.getElementById('rfidText').textContent = rfid;
-        //     console.log('Handling Manual RFID scan:', rfid);
-        
-        //     fetch('/recordTimeIn', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({ rfid: rfid })
-        //     })
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             if (response.status === 400) {
-        //                 // If Time In already exists, try recording Time Out
-        //                 return fetch('/recordTimeOut', {
-        //                     method: 'POST',
-        //                     headers: {
-        //                         'Content-Type': 'application/json'
-        //                     },
-        //                     body: JSON.stringify({ rfid: rfid })
-        //                 })
-        //                 .then(response => {
-        //                     if (!response.ok) {
-        //                         throw new Error('Error recording Time Out');
-        //                     }
-        //                     return response.json();
-        //                 })
-        //                 .then(data => {
-        //                     document.getElementById('TimeOut').textContent = data.timeOut; 
-        //                     fetchProfileData(rfid);  // Fetch updated profile data
-        //                     fetchRecentAttendance(); // Fetch updated attendance logs
-        //                     timeOutAudio.play();  // Play Time Out audio feedback
-        //                 });
-        //             } else {
-        //                 throw new Error('Error recording attendance');
-        //             }
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         // Handle Time In success
-        //         if (data.timeIn) {
-        //             document.getElementById('TimeIn').textContent = data.timeIn;
-        //             document.getElementById('TimeOut').textContent = '--:--';  // Clear Time Out
-        //             fetchProfileData(rfid);  // Fetch updated profile data
-        //             fetchRecentAttendance(); // Fetch updated attendance logs
-        //             timeInAudio.play();  // Play Time In audio feedback
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.error('Error processing RFID:', error);
-        //     });
-        // }
-
-
-
-//// DON'T TOUC THE CODE ABOVE THIS LINE XXX
- //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-//XXXXXXXXXXXXXXX END XXXXXXXXXXXXXXXXXXX
-
+      
 
 </script>
         

@@ -88,7 +88,8 @@ const adminRoutes = [
     'admin_volunteer_configuration',
     'attendance_dashboard',
     'admin_edit_volunter',
-    'admin_inventory_logs'
+    'admin_inventory_logs',
+    'admin_activity'
 ];
 
 adminRoutes.forEach(route => {

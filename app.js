@@ -965,7 +965,7 @@ app.post('/saveICSLogs', async (req, res) => {
 
 
 app.get('/getIcsLogs', (req, res) => {
-    const query = 'SELECT icsID, supervisorName, incidentDate, dispatchTime FROM tbl_ics_logs';  // Added icsID
+    const query = 'SELECT icsID, TRIM(SUBSTRING_INDEX(supervisorName, \'[\', 1)) AS supervisorName, incidentDate, dispatchTime FROM tbl_ics_logs;';
     
     db.query(query, (err, results) => {
         if (err) {
@@ -974,6 +974,7 @@ app.get('/getIcsLogs', (req, res) => {
         res.json(results);
     });
 });
+
 app.get('/getIncidentLog/:icsID', (req, res) => {
     const icsID = req.params.icsID;
     

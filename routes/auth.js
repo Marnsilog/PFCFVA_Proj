@@ -10,6 +10,8 @@ const fs = require('fs');
 const nodemailer = require('nodemailer'); 
 const crypto = require('crypto');
 const cloudinary = require('cloudinary').v2;
+const util = require('util');
+const query = util.promisify(db.query).bind(db);
 
 cloudinary.config({
     cloud_name: 'duhumw72j',
@@ -796,7 +798,7 @@ module.exports = (db, db2) => {
             //console.log('Date Expiration:', dateExpiration);
             const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
             const currentTime = new Date();
-            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
+            const twentyFourHoursAgo = new Date(currentTime.getTime() - 1 * 60 * 60 * 1000); 
             let vehicle = items[0].vehicleAssignment ? items[0].vehicleAssignment : 'All Vehicle';
             if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
                 for (const item of items) {
@@ -905,7 +907,6 @@ module.exports = (db, db2) => {
         });
     });
     
-    
     router.get('/notification', (req, res) => {
         const username = req.session.user?.username; 
         const permission = req.session.user?.permission;
@@ -932,8 +933,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-    
+
     router.get('/inventory2', (req, res) => {
         const username = req.session.user?.username; 
         const search = req.query.search || ''; 
@@ -981,54 +981,6 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    
-    // router.get('/inventory2', (req, res) => {
-    //     const username = req.session.user?.username; 
-    //     const search = req.query.search || ''; 
-    
-    //     const query = `
-    //         SELECT il.itemID,
-    //                il.logID, 
-    //                DATE_FORMAT(il.dateAndTimeChecked, '%Y-%m-%d') AS checked_date,  
-    //                DATE_FORMAT(il.dateAndTimeChecked, '%H:%i:%s') AS checked_time, 
-    //                iv.vehicleAssignment AS vehicle
-    //         FROM tbl_inventory_logs il
-    //         JOIN tbl_inventory iv ON iv.ItemID = il.itemID
-    //         WHERE il.accountID = (SELECT accountID FROM tbl_accounts WHERE username = ?)
-    //           AND (iv.vehicleAssignment LIKE ? OR il.itemID LIKE ?) 
-    //         ORDER BY il.dateAndTimeChecked DESC 
-    //         LIMIT 0, 25;`;
-    
-    //     // Use '%' wildcard for LIKE search
-    //     db.query(query, [username, `%${search}%`, `%${search}%`], (err, results) => {
-    //         if (err) {
-    //             console.error('Error fetching inventory data:', err);
-    //             return res.status(500).json({ error: 'Error fetching data' });
-    //         }
-    //         res.json(results);
-    //     });
-    // });
-    // router.get('/inventory2/detail/:checked_date', (req, res) => {
-    //     const checked_date = req.params.checked_date;
-    //     const query = `
-    //       SELECT il.itemID, i.itemName, il.changeFrom, il.changeTo
-    //         FROM tbl_inventory_logs il
-    //         JOIN tbl_inventory i ON il.itemID = i.itemID
-    //         WHERE il.dateAndTimeChecked = ?;
-    //         `;
-
-    //     db.query(query, [checked_date], (err, results) => {
-    //         if (err) {
-    //             console.error('Error fetching inventory details:', err);
-    //             return res.status(500).json({ error: 'Error fetching data' });
-    //         }
-    //         res.json(results);
-    //     });
-    // });
-
-
-
-
     //FOR SUPERVISOR INV
     router.get('/inventory-supervisor', (req, res) => {
         const vehicleAssignment = req.query.vehicleAssignment; 
@@ -1098,7 +1050,7 @@ module.exports = (db, db2) => {
     
             const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
             const currentTime = new Date();
-            const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
+            const twentyFourHoursAgo = new Date(currentTime.getTime() - 1 * 60 * 60 * 1000); 
             let vehicle = items[0].vehAss ? items[0].vehAss : 'All Vehicle';
             if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
                 for (const item of items) {
@@ -1168,115 +1120,6 @@ module.exports = (db, db2) => {
         }
     });
     
-    
-    // router.post('/inventory-supervisor/log', async (req, res) => {
-    //     const items = req.body;
-    //     const username = req.session.user?.username;
-    //     let connection;
-
-    //     try {
-    //         connection = await db2.getConnection();
-    //         await connection.beginTransaction();
-
-    //         const [dateExpirationResult] = await connection.query(
-    //             'SELECT dateinvExpiration FROM tbl_accounts WHERE username = ?',
-    //             [username]
-    //         );
-
-    //         let dateExpiration = dateExpirationResult[0]?.dateinvExpiration;
-    //         console.log('Date Expiration:', dateExpiration);
-    //         const expirationDate = dateExpiration ? new Date(dateExpiration) : null;
-    //         const currentTime = new Date();
-    //         const twentyFourHoursAgo = new Date(currentTime.getTime() - 24 * 60 * 60 * 1000); 
-    //         if (!dateExpiration || expirationDate <= twentyFourHoursAgo) {
-    //             for (const item of items) {
-    //                 const { itemID, vehicleAssignment } = item;
-    //                 const [currentVehicleAssignmentResult] = await connection.query(
-    //                     'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-    //                     [itemID]
-    //                 );
-    //                 const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
-
-    //                 if (currentVehicleAssignment !== vehicleAssignment) {
-    //                     await connection.query(
-    //                         `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-    //                         VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-    //                         [itemID, username, currentVehicleAssignment, vehicleAssignment]
-    //                     );
-    //                     await connection.query(
-    //                         'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-    //                         [vehicleAssignment, itemID]
-    //                     );
-    //                 }
-    //             }
-    //             await connection.query(
-    //                 'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
-    //                 [username]
-    //             );
-    //             await connection.query(
-    //                 'INSERT INTO tbl_notification purpose = "Inventory", target = "admin" created_at = NOW()', 
-    //                 [username]
-    //             );
-    //             await connection.commit();
-    //             res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
-    //         } else {
-    //             await connection.query(
-    //                 'UPDATE tbl_accounts SET inventoryPoints = inventoryPoints + 1, dateinvExpiration = NOW() WHERE username = ?', 
-    //                 [username]
-    //             );
-    //             res.status(403).json({ message: 'Please wait 24 hours before logging inventory again.' });
-    //         }
-
-    //     } catch (err) {
-    //         console.error('Database error:', err);
-    //         if (connection) await connection.rollback();
-    //         res.status(500).json({ message: 'Server error' });
-    //     } finally {
-    //         if (connection) connection.release();
-    //     }
-    // });
-
-    // router.post('/inventory-supervisor/log', async (req, res) => {
-    //     const items = req.body;
-    //     const username = req.session.user?.username;
-    //     let connection;
-    
-    //     try {
-    //         connection = await db2.getConnection();
-    //         await connection.beginTransaction();
-            
-    //         for (const item of items) {
-    //             const { itemID, vehicleAssignment } = item;
-    //             const [currentVehicleAssignmentResult] = await connection.query(
-    //                 'SELECT vehicleAssignment FROM tbl_inventory WHERE itemID = ?',
-    //                 [itemID]
-    //             );
-    //             const currentVehicleAssignment = currentVehicleAssignmentResult[0]?.vehicleAssignment;
-    
-    //             if (currentVehicleAssignment !== vehicleAssignment) {
-    //                 await connection.query(
-    //                     `INSERT INTO tbl_inventory_logs (itemID, accountID, changeLabel, changeFrom, changeTo, dateAndTimeChecked) 
-    //                     VALUES (?, (SELECT accountID FROM tbl_accounts WHERE username = ?), 'change truckAssignment', ?, ?, NOW())`,
-    //                     [itemID, username, currentVehicleAssignment, vehicleAssignment] 
-    //                 );
-    //                 await connection.query(
-    //                     'UPDATE tbl_inventory SET vehicleAssignment = ? WHERE itemID = ?',
-    //                     [vehicleAssignment, itemID]
-    //                 );
-    //             }
-    //         }
-    
-    //         await connection.commit();
-    //         res.json({ message: 'Inventory vehicle assignments updated and logs created where applicable.', redirect: '/supervisor_inventory_report' });
-            
-    //     } catch (err) {
-    //         console.error('Database error:', err);
-    //         if (connection) await connection.rollback();
-    //         res.status(500).json({ message: 'Server error' });
-    //     } finally {
-    //         if (connection) connection.release();
-    //     }
-    // });
     router.get('/admin-inventory/log', (req, res) => {
         const query = `SELECT i.itemImage AS image, i.itemName AS item, 
                 CONCAT(a.firstName, ' ', a.lastName) AS volunteer_name, 
@@ -1342,30 +1185,7 @@ module.exports = (db, db2) => {
             res.json(results);
         });
     });
-    // router.get('/equipment/:id', (req, res) => {
-    //     const itemId = parseInt(req.params.id, 10); // Convert string to integer
-        
-    //     const query = 'SELECT * FROM tbl_inventory WHERE itemID = ?';
-    //     db.query(query, [itemId], (error, results) => {
-    //         if (error) {
-    //             console.error('Error fetching equipment data:', error);
-    //             return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
-    //         }
-            
-    //         if (results.length === 0) {
-    //             return res.status(404).json({ success: false, message: 'Equipment not found' });
-    //         }
-    
-    //         const equipment = results[0];
-    
-    //         // If the equipment image is not found, use the default image
-    //         const itemImagePath = equipment.itemImage ? '../' + equipment.itemImage : '../public/img/ex1.jpg';
 
-            
-    //         res.json({ success: true, data: { ...equipment, itemImagePath } });
-    //     });
-    // });
-    
     router.get('/equipment/:id', async (req, res) => {
         try {
             const itemId = parseInt(req.params.id, 10); // Convert string to integer
@@ -1493,51 +1313,6 @@ module.exports = (db, db2) => {
         });
     });
     
-    // router.post('/addEquipment', (req, res) => {
-    //     const { itemName, vehicleAssignment, dateAcquired } = req.body;
-    //     let itemImagePath = null;
-    
-    //     if (req.files && req.files.itemImage) {
-    //         const itemImage = req.files.itemImage;
-    //         const uniqueFileName = `${itemName}_${Date.now()}_${itemImage.name}`;
-    //         const uploadPath = path.join(__dirname, '../public/uploads', uniqueFileName);
-    
-    //         sharp(itemImage.data)
-    //             .resize(500) // Resize to a width of 800px (adjust as necessary)
-    //             .toFormat('jpeg') // Convert to JPEG format (you can change this based on your requirement)
-    //             .jpeg({ quality: 80 }) // Set JPEG quality to 80%
-    //             .toFile(uploadPath, (err, info) => {
-    //                 if (err) {
-    //                     console.error('Error processing image:', err);
-    //                     return res.status(500).send({ success: false, message: 'Internal Server Error' });
-    //                 }
-    
-    //                 itemImagePath = `uploads/${uniqueFileName}`;
-    //                 insertEquipment();
-    //             });
-    //     } else {
-    //         // No image uploaded, proceed with inserting data into the database
-    //         insertEquipment();
-    //     }
-    
-    //     function insertEquipment() {
-    //         const query = `
-    //             INSERT INTO tbl_inventory (itemName, vehicleAssignment, dateAcquired, itemImage)
-    //             VALUES (?, ?, ?, ?)
-    //         `;
-    //         const queryParams = [itemName, vehicleAssignment, dateAcquired, itemImagePath];
-    
-    //         db.query(query, queryParams, (error, results) => {
-    //             if (error) {
-    //                 console.error('Error inserting equipment data:', error);
-    //                 return res.status(500).send({ success: false, message: 'Internal Server Error' });
-    //             }
-    
-    //             res.send({ success: true, message: 'Equipment added successfully.' });
-    //         });
-    //     }
-    // });
-
     router.put('/updateEquipment', async (req, res) => {
         const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
         let itemImagePath = null;
@@ -1615,87 +1390,6 @@ module.exports = (db, db2) => {
         });
     });
     
-    // router.put('/updateEquipment', (req, res) => {
-    //     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
-    //     let itemImagePath = null;
-
-    //     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
-    //     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
-    //         if (err) {
-    //             console.error('Error retrieving current image path:', err);
-    //             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
-    //         }
-    //         if (results.length === 0) {
-    //             return res.status(404).send({ success: false, message: 'Item not found' });
-    //         }
-    //         const currentImagePath = results[0].itemImage;
-    //         if (req.files && req.files.itemImage) {
-    //             const itemImage = req.files.itemImage;
-    //             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
-    //             const uploadDir = path.join(__dirname, '../public/uploads');
-    //             const uploadPath = path.join(uploadDir, uniqueFileName);
-                
-    //             // Ensure upload directory exists
-    //             if (!fs.existsSync(uploadDir)) {
-    //                 fs.mkdirSync(uploadDir, { recursive: true });
-    //             }
-    
-
-    //             sharp(itemImage.data)
-    //                 .resize(500) // Resize to a width of 800px (adjust as necessary)
-    //                 .toFormat('jpeg') // Convert to JPEG format
-    //                 .jpeg({ quality: 80 }) // Set JPEG quality to 80%
-    //                 .toFile(uploadPath, (err) => {
-    //                     if (err) {
-    //                         console.error('Error processing image:', err);
-    //                         return res.status(500).send({ success: false, message: 'Error saving item image' });
-    //                     }
-    
-    //                     itemImagePath = `uploads/${uniqueFileName}`;
-    //                     // Step 3: Delete the old image if it exists
-    //                     if (currentImagePath) {
-    //                         const existingImagePath = path.join(__dirname, '../public', currentImagePath);
-    //                         if (fs.existsSync(existingImagePath)) {
-    //                             fs.unlink(existingImagePath, (err) => {
-    //                                 if (err) {
-    //                                     console.error('Error deleting existing image:', err);
-    //                                     return res.status(500).send({ success: false, message: 'Error deleting existing image' });
-    //                                 }
-    //                                 updateDatabase();
-    //                             });
-    //                         } else {
-    //                             updateDatabase();
-    //                         }
-    //                     } else {
-    //                         updateDatabase();
-    //                     }
-    //                 });
-    //         } else {
-    //             // No new image uploaded, just update the database
-    //             updateDatabase();
-    //         }
-    //     });
-    
-    //     function updateDatabase() {
-    //         const sql = `
-    //             UPDATE tbl_inventory
-    //             SET itemName = ?, 
-    //                 vehicleAssignment = ?,
-    //                 itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
-    //             WHERE itemID = ?
-    //         `;
-    
-    //         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
-    //             if (err) {
-    //                 console.error('Database update error:', err);
-    //                 return res.status(500).json({ success: false, message: 'Failed to update equipment' });
-    //             }
-    //             res.status(200).json({ success: true, message: 'Equipment updated successfully' });
-    //         });
-    //     }
-    // });
-    
-    
     router.post('/send-email', async (req, res) => {
         try {
             const { email } = req.body;
@@ -1751,8 +1445,7 @@ module.exports = (db, db2) => {
         });
     });
     
-    const util = require('util');
-    const query = util.promisify(db.query).bind(db);
+
     router.post('/reset-password', async (req, res) => {
         try {
             const { token, password } = req.body;
@@ -1972,13 +1665,6 @@ module.exports = (db, db2) => {
             .catch(error => res.status(500).send(error));
     });
     
-    
-    
-
-    
-    
-
-
     return router;
 };
 

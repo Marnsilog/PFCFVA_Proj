@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary').v2;
 const util = require('util');
-const query = util.promisify(db.query).bind(db);
+
 
 cloudinary.config({
     cloud_name: 'duhumw72j',
@@ -20,6 +20,7 @@ cloudinary.config({
 });
 
 module.exports = (db, db2) => {
+const query = util.promisify(db.query).bind(db);
     router.post('/register', (req, res) => {
         const {
             rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,

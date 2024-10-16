@@ -5,3 +5,7 @@
 [10/16/2024 23:55:25] xxx: Backup requested, send additional support units.
 [10/16/2024 23:55:27] xxx: Fallback requested, unforeseen circumstances encountered.
 [10/16/2024 23:55:28] xxx: URGENT! REQUESTING MEDICAL ASSISTANCE FOR INJURED PERSONNEL.
+[10/17/2024 00:13:32] xxx: Resupplying water tank, operations paused temporarily.
+[10/17/2024 00:13:34] xxx: ASPIRANT activated, they will proceed to the designated areas.
+[10/17/2024 00:13:36] xxx: ASPIRANT has stood down and is awaiting further instructions.
+[10/17/2024 00:14:50] xxx: Resupplying water tank, operations paused temporarily.

@@ -61,6 +61,54 @@ document.addEventListener('DOMContentLoaded', function() {
 //     });
 // }
 
+// // Function to handle the fire_response.html logic
+// function handleFireResponsePage() {
+//     let attendees = [];
+
+//     // Fetch attendees
+//     fetchCurrentPresent();
+
+//     // Handle Confirm Attendance
+//     const confirmAttendanceBtn = document.getElementById('confirmAttendanceBtn');
+//     confirmAttendanceBtn.addEventListener('click', function() {
+//         attendees = []; // Clear previous list
+//         const attendeeRows = document.querySelectorAll('#currentPresent tr');
+
+//         // Get the selected vehicle
+//         const vehicle = document.getElementById('vehicleAssignment').value;
+
+//         // Check if a vehicle has been selected
+//         if (!vehicle || vehicle === 'Choose Vehicle') {
+//             alert('Please select a vehicle before confirming attendance.');
+//             return; // Stop further execution if no vehicle is selected
+//         }
+
+//         // Loop through attendee rows and check if they are selected (checked)
+//         attendeeRows.forEach(row => {
+//             const checkbox = row.querySelector('input[type="checkbox"]');
+//             if (checkbox && checkbox.checked) {
+//                 const callSign = row.querySelector('td:nth-child(2)').textContent;
+//                 const name = row.querySelector('td:nth-child(3)').textContent;
+//                 attendees.push({ callSign, name });
+//             }
+//         });
+
+//         // Check if any attendees were selected
+//         if (attendees.length === 0) {
+//             alert('Please select at least one attendee.');
+//             return; // Stop if no attendees are selected
+//         }
+
+//         // Store attendees in sessionStorage to transfer to ICS page
+//         sessionStorage.setItem('attendees', JSON.stringify(attendees));
+//         sessionStorage.setItem('selectedVehicle', vehicle);  // Store selected vehicle in sessionStorage
+
+//         // Redirect to ICS page
+//         window.location.href = '/supervisor_ics'; // Adjust path if necessary
+//     });
+// }
+
+
 // Function to handle the fire_response.html logic
 function handleFireResponsePage() {
     let attendees = [];
@@ -87,8 +135,8 @@ function handleFireResponsePage() {
         attendeeRows.forEach(row => {
             const checkbox = row.querySelector('input[type="checkbox"]');
             if (checkbox && checkbox.checked) {
-                const callSign = row.querySelector('td:nth-child(2)').textContent;
-                const name = row.querySelector('td:nth-child(3)').textContent;
+                const callSign = row.querySelector('td:nth-child(1)').textContent;  // Use correct cell index for Call Sign
+                const name = row.querySelector('td:nth-child(2)').textContent;      // Use correct cell index for Name
                 attendees.push({ callSign, name });
             }
         });
@@ -168,6 +216,35 @@ function removeFromTable(element) {
     row.classList.add('removed'); // Mark row as removed
 }
 
+// // Function to handle the ICS page logic
+// function handleICSPage() {
+//     // Get the attendees stored in sessionStorage
+//     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+//     const icsAttendeesDiv = document.getElementById('icsAttendees');
+//     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
+
+
+    
+
+//     attendees.forEach((attendee, index) => {
+//         const row = document.createElement('tr');
+//         row.innerHTML = `
+//             <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>
+//             <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>
+//             <td><input type="checkbox"></td>
+//             <td>00:00:00</td> <!-- Placeholder for timer -->
+//         `;
+//         icsAttendeesDiv.appendChild(row);
+//     });
+
+//     // Get the selected vehicle from sessionStorage and display it in vehicleNames
+//     const vehicleName = sessionStorage.getItem('selectedVehicle');
+//     if (vehicleName) {
+//         document.getElementById('vehicleName').textContent = vehicleName;  // Set the vehicle name in the ICS page
+//     }
+// }
+
 // Function to handle the ICS page logic
 function handleICSPage() {
     // Get the attendees stored in sessionStorage
@@ -176,14 +253,11 @@ function handleICSPage() {
     const icsAttendeesDiv = document.getElementById('icsAttendees');
     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
 
-
-    
-
-    attendees.forEach((attendee, index) => {
+    attendees.forEach(attendee => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>
-            <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>
+            <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>  <!-- Correct cell for call sign -->
+            <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>      <!-- Correct cell for name -->
             <td><input type="checkbox"></td>
             <td>00:00:00</td> <!-- Placeholder for timer -->
         `;
@@ -196,6 +270,8 @@ function handleICSPage() {
         document.getElementById('vehicleName').textContent = vehicleName;  // Set the vehicle name in the ICS page
     }
 }
+
+
 
 // Function to remove an attendee from the ICS page
 function removeAttendee(index) {
@@ -425,56 +501,56 @@ document.addEventListener('DOMContentLoaded', function () {
 //         .catch(error => console.error('Error fetching members:', error));
 // }
 
-// function fetchMembers(Name) {
-//     let url = '/getMembers2';
-//     const transferredCallSigns = Array.from(document.querySelectorAll('#currentPresent tr')).map(row => row.getAttribute('data-callSign'));
+function fetchMembers(Name) {
+    let url = '/getMembers2';
+    const transferredCallSigns = Array.from(document.querySelectorAll('#currentPresent tr')).map(row => row.getAttribute('data-callSign'));
 
-//     // Ensure proper URL encoding and add transferred members to the query string
-//     if (Name) {
-//         url += `?search=${encodeURIComponent(Name)}&transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
-//     } else {
-//         url += `?transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
-//     }
+    // Ensure proper URL encoding and add transferred members to the query string
+    if (Name) {
+        url += `?search=${encodeURIComponent(Name)}&transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
+    } else {
+        url += `?transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
+    }
 
-//     fetch(url)
-//         .then(response => response.json())
-//         .then(data => {
-//             const tableBody = document.getElementById('addPersonICS');
-//             tableBody.innerHTML = ''; 
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('addPersonICS');
+            tableBody.innerHTML = ''; 
 
-//             if (data.length === 0) {
-//                 tableBody.innerHTML = '<tr><td colspan="3">No members available</td></tr>';
-//                 return;
-//             }
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="3">No members available</td></tr>';
+                return;
+            }
 
-//             data.forEach(member => {
-//                 const row = document.createElement('tr');
-//                 const checkboxId = `checkbox-${member.callSign}`;
-//                 row.innerHTML = `
-//                     <td class="text-center">${member.callSign}</td>
-//                     <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
-//                     <td class="">
-//                         <div class="w-full flex justify-center">
-//                             <input type="checkbox" id="${checkboxId}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
-//                         </div>
-//                     </td>
-//                 `;
-//                 tableBody.appendChild(row);
-//                 const checkbox = document.getElementById(checkboxId);
-//                 checkbox.addEventListener('change', function() {
-//                     if (this.checked) {
-//                         selectedMembers.push({
-//                             callSign: member.callSign,
-//                             name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
-//                         });
-//                     } else {
-//                         selectedMembers = selectedMembers.filter(m => m.callSign !== member.callSign);
-//                     }
-//                 });
-//             });
-//         })
-//         .catch(error => console.error('Error fetching members:', error));
-// }
+            data.forEach(member => {
+                const row = document.createElement('tr');
+                const checkboxId = `checkbox-${member.callSign}`;
+                row.innerHTML = `
+                    <td class="text-center">${member.callSign}</td>
+                    <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
+                    <td class="">
+                        <div class="w-full flex justify-center">
+                            <input type="checkbox" id="${checkboxId}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                const checkbox = document.getElementById(checkboxId);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedMembers.push({
+                            callSign: member.callSign,
+                            name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
+                        });
+                    } else {
+                        selectedMembers = selectedMembers.filter(m => m.callSign !== member.callSign);
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Error fetching members:', error));
+}
 
 // function submitSelectedMembers() {
 //     const currentPresentDiv = document.getElementById('currentPresent');
@@ -550,53 +626,6 @@ document.addEventListener('DOMContentLoaded', function () {
 //     }
 // }
 
-// function submitSelectedMembers() {
-//     const currentPresentDiv = document.getElementById('currentPresent');
-//     const membersToRemove = [];
-
-//     // Iterate through selected members to add them to currentPresent and prepare for removal
-//     selectedMembers.forEach(member => {
-//         // Check if the member is already in the currentPresent list to prevent duplicates
-//         const existingRow = currentPresentDiv.querySelector(`tr[data-callSign="${member.callSign}"]`);
-//         if (!existingRow) {
-//             // Create a new row for the selected member if not already present
-//             const row = document.createElement('tr');
-//             row.classList.add('text-sm', 'md:text-2xl');
-//             row.setAttribute('data-callSign', member.callSign); // Store callSign as an attribute for future checks
-//             row.innerHTML = `
-//                 <td class="py-2 md:px-4 border-b">${member.callSign}</td>
-//                 <td class="py-2 md:px-4 border-b">${member.name}</td>
-//                 <td class="py-2 md:px-4 border-b text-center">
-//                     <input type="checkbox" class="attendee-checkbox" data-callSign="${member.callSign}">
-//                 </td>
-//             `;
-//             currentPresentDiv.appendChild(row);
-
-//             // Mark members for removal from addPersonICS after transfer
-//             membersToRemove.push(member.callSign);
-//         }
-//     });
-
-//     // Remove transferred members from addPersonICS
-//     membersToRemove.forEach(callSign => {
-//         const rowToRemove = document.querySelector(`#addPersonICS input[data-callSign="${callSign}"]`).closest('tr');
-//         if (rowToRemove) {
-//             rowToRemove.remove();  // Remove the row from the addPersonICS table
-//         }
-//     });
-
-//     // Clear the selected members array
-//     selectedMembers = [];
-
-//     // Hide the modal or form for adding attendees
-//     var profileForm = document.getElementById('addPer');
-//     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-//         profileForm.style.display = 'block';
-//     } else {
-//         profileForm.style.display = 'none';
-//     }
-// }
-
 function submitSelectedMembers() {
     const currentPresentDiv = document.getElementById('currentPresent');
     const membersToRemove = [];
@@ -642,62 +671,6 @@ function submitSelectedMembers() {
     } else {
         profileForm.style.display = 'none';
     }
-
-    console.log("Members added:", selectedMembers); // Debugging log to ensure members were added
-}
-
-
-function fetchMembers(Name) {
-    let url = '/getMembers2';
-    const transferredCallSigns = Array.from(document.querySelectorAll('#currentPresent tr')).map(row => row.getAttribute('data-callSign'));
-
-    // Ensure proper URL encoding and add transferred members to the query string
-    if (Name) {
-        url += `?search=${encodeURIComponent(Name)}&transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
-    } else {
-        url += `?transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
-    }
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('addPersonICS');
-            tableBody.innerHTML = ''; 
-
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="3">No members available</td></tr>';
-                return;
-            }
-
-            data.forEach(member => {
-                const row = document.createElement('tr');
-                const checkboxId = `checkbox-${member.callSign}`;
-                row.innerHTML = `
-                    <td class="text-center">${member.callSign}</td>
-                    <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
-                    <td class="">
-                        <div class="w-full flex justify-center">
-                            <input type="checkbox" id="${checkboxId}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
-                        </div>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-                const checkbox = document.getElementById(checkboxId);
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        console.log('Selected:', member.callSign, member.name); // Debugging log
-                        selectedMembers.push({
-                            callSign: member.callSign,
-                            name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
-                        });
-                    } else {
-                        selectedMembers = selectedMembers.filter(m => m.callSign !== member.callSign);
-                    }
-                    console.log(selectedMembers); // Check if all selected members are in the array
-                });
-            });
-        })
-        .catch(error => console.error('Error fetching members:', error));
 }
 
 

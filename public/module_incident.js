@@ -19,6 +19,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// // Function to handle the fire_response.html logic
+// function handleFireResponsePage() {
+//     let attendees = [];
+
+//     // Fetch attendees
+//     fetchCurrentPresent();
+
+//     // Handle Confirm Attendance
+//     const confirmAttendanceBtn = document.getElementById('confirmAttendanceBtn');
+//     confirmAttendanceBtn.addEventListener('click', function() {
+//         attendees = []; // Clear previous list
+//         const attendeeRows = document.querySelectorAll('#currentPresent tr');
+
+//         // Get the selected vehicle
+//         const vehicle = document.getElementById('vehicleAssignment').value;
+
+//         // Check if a vehicle has been selected
+//         if (!vehicle || vehicle === 'Choose Vehicle') {
+//             alert('Please select a vehicle before confirming attendance.');
+//             return; // Stop further execution if no vehicle is selected
+//         }
+
+//         // Loop through attendee rows and add them to the attendees array
+//         attendeeRows.forEach(row => {
+//             const callSign = row.querySelector('td:nth-child(1)').textContent;
+//             const name = row.querySelector('td:nth-child(2)').textContent;
+
+//             // Only add attendees that haven't been removed
+//             if (!row.classList.contains('removed')) {
+//                 attendees.push({ callSign, name });
+//             }
+//         });
+
+//         // Store attendees in sessionStorage to transfer to ICS page
+//         sessionStorage.setItem('attendees', JSON.stringify(attendees));
+//         sessionStorage.setItem('selectedVehicle', vehicle);  // Store selected vehicle in sessionStorage
+
+//         // Redirect to ICS page
+//         window.location.href = '/supervisor_ics'; // Adjust path if necessary
+//     });
+// }
+
 // Function to handle the fire_response.html logic
 function handleFireResponsePage() {
     let attendees = [];
@@ -41,16 +83,21 @@ function handleFireResponsePage() {
             return; // Stop further execution if no vehicle is selected
         }
 
-        // Loop through attendee rows and add them to the attendees array
+        // Loop through attendee rows and check if they are selected (checked)
         attendeeRows.forEach(row => {
-            const callSign = row.querySelector('td:nth-child(1)').textContent;
-            const name = row.querySelector('td:nth-child(2)').textContent;
-
-            // Only add attendees that haven't been removed
-            if (!row.classList.contains('removed')) {
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            if (checkbox && checkbox.checked) {
+                const callSign = row.querySelector('td:nth-child(2)').textContent;
+                const name = row.querySelector('td:nth-child(3)').textContent;
                 attendees.push({ callSign, name });
             }
         });
+
+        // Check if any attendees were selected
+        if (attendees.length === 0) {
+            alert('Please select at least one attendee.');
+            return; // Stop if no attendees are selected
+        }
 
         // Store attendees in sessionStorage to transfer to ICS page
         sessionStorage.setItem('attendees', JSON.stringify(attendees));
@@ -61,6 +108,32 @@ function handleFireResponsePage() {
     });
 }
 
+
+// // Function to fetch and populate current attendees for fire_response.html
+// function fetchCurrentPresent() {
+//     fetch('/getCurrentPresent')
+//         .then(response => response.json())
+//         .then(data => {
+//             const currentPresentDiv = document.getElementById('currentPresent');
+//             currentPresentDiv.innerHTML = '';
+
+//             data.forEach(record => {
+//                 const row = document.createElement('tr');
+//                 row.classList.add('text-sm', 'md:text-2xl');
+//                 row.innerHTML = `
+//                     <td class="py-2 md:px-4 border-b">${record.callSign}</td>
+//                     <td class="py-2 md:px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+//                     <td class="py-2 md:px-4 border-b text-center">
+//                         <a href="#" onclick="removeFromTable(this)">
+//                             <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
+//                         </a>
+//                     </td>
+//                 `;
+//                 currentPresentDiv.appendChild(row);
+//             });
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
 
 // Function to fetch and populate current attendees for fire_response.html
 function fetchCurrentPresent() {
@@ -74,12 +147,12 @@ function fetchCurrentPresent() {
                 const row = document.createElement('tr');
                 row.classList.add('text-sm', 'md:text-2xl');
                 row.innerHTML = `
+                    
                     <td class="py-2 md:px-4 border-b">${record.callSign}</td>
                     <td class="py-2 md:px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                    <td class="py-2 md:px-4 border-b text-center">
-                        <a href="#" onclick="removeFromTable(this)">
-                            <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
-                        </a>
+                    
+                    <td class="py-2 md:px-4 border-b">
+                        <input type="checkbox" class="attendee-checkbox" data-callSign="${record.callSign}">
                     </td>
                 `;
                 currentPresentDiv.appendChild(row);
@@ -87,6 +160,7 @@ function fetchCurrentPresent() {
         })
         .catch(error => console.error('Error:', error));
 }
+
 
 // Function to remove an attendee from the fire_response.html page
 function removeFromTable(element) {

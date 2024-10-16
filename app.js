@@ -1050,6 +1050,25 @@ app.post('/upgradeRank', (req, res) => {
 });
 
 
+app.get('/getMembers2', (req, res) => {
+    const search = req.query.search || '';
+    let sql = 'SELECT callSign, firstName, middleInitial, lastName FROM tbl_accounts WHERE accountID NOT IN (SELECT accountID FROM tbl_attendance WHERE timeInStatus = 1)';
+    
+    if (search) {
+        // Add the search filter using AND, since there's already a WHERE clause
+        sql += ' AND (callSign LIKE ? OR firstName LIKE ? OR lastName LIKE ?)';
+    }
+
+    const searchParam = `%${search}%`;
+
+    db.query(sql, [searchParam, searchParam, searchParam], (err, result) => {
+        if (err) {
+            console.error('Error fetching members:', err);
+            return res.status(500).json({ error: 'Failed to retrieve members' });
+        }
+        res.json(result);
+    });
+});
 
 const pages = require('./routes/pages');
 app.use('/', pages);

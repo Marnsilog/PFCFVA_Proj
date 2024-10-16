@@ -384,17 +384,68 @@ document.addEventListener('DOMContentLoaded', function () {
 // Declare selectedMembers at a higher scope
 
 
-function fetchMembers(Name) {
-    let url = '/auth/getMembers';
-    if (Name) {
-        url += `?search=${encodeURIComponent(Name)}`;
-    }
+// function fetchMembers(Name) {
+//     let url = '/auth/getMembers';
+//     if (Name) {
+//         url += `?search=${encodeURIComponent(Name)}`;
+//     }
     
+//     fetch(url)
+//         .then(response => response.json())
+//         .then(data => {
+//             const tableBody = document.getElementById('addPersonICS');
+//             tableBody.innerHTML = ''; 
+
+//             data.forEach(member => {
+//                 const row = document.createElement('tr');
+//                 const checkboxId = `checkbox-${member.callSign}`;
+//                 row.innerHTML = `
+//                     <td class="text-center">${member.callSign}</td>
+//                     <td class="text-center">${member.firstName} ${member.middleInitial} ${member.lastName}</td>
+//                     <td class="">
+//                         <div class="w-full flex justify-center">
+//                             <input type="checkbox" id="${checkboxId}" data-callSign="${member.callSign}" data-name="${member.firstName} ${member.middleInitial} ${member.lastName}">
+//                         </div>
+//                     </td>
+//                 `;
+//                 tableBody.appendChild(row);
+//                 const checkbox = document.getElementById(checkboxId);
+//                 checkbox.addEventListener('change', function() {
+//                     if (this.checked) {
+//                         selectedMembers.push({
+//                             callSign: member.callSign,
+//                             name: `${member.firstName} ${member.middleInitial} ${member.lastName}`
+//                         });
+//                     } else {
+//                         selectedMembers = selectedMembers.filter(m => m.callSign !== member.callSign);
+//                     }
+//                 });
+//             });
+//         })
+//         .catch(error => console.error('Error fetching members:', error));
+// }
+
+function fetchMembers(Name) {
+    let url = '/getMembers2';
+    const transferredCallSigns = Array.from(document.querySelectorAll('#currentPresent tr')).map(row => row.getAttribute('data-callSign'));
+
+    // Ensure proper URL encoding and add transferred members to the query string
+    if (Name) {
+        url += `?search=${encodeURIComponent(Name)}&transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
+    } else {
+        url += `?transferred=${encodeURIComponent(JSON.stringify(transferredCallSigns))}`;
+    }
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('addPersonICS');
             tableBody.innerHTML = ''; 
+
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="3">No members available</td></tr>';
+                return;
+            }
 
             data.forEach(member => {
                 const row = document.createElement('tr');
@@ -425,34 +476,126 @@ function fetchMembers(Name) {
         .catch(error => console.error('Error fetching members:', error));
 }
 
+// function submitSelectedMembers() {
+//     const currentPresentDiv = document.getElementById('currentPresent');
+//     selectedMembers.forEach(member => {
+//         const row = document.createElement('tr');
+//         row.classList.add('text-sm', 'md:text-2xl');
+//         row.innerHTML = `
+//             <td class="py-2 md:px-4 border-b">${member.callSign}</td>
+//             <td class="py-2 md:px-4 border-b">${member.name}</td>
+//             <td class="py-2 md:px-4 border-b text-center">
+//                 <a href="#" onclick="removeFromTable(this)">
+//                     <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
+//                 </a>
+//             </td>
+//         `;
+//         currentPresentDiv.appendChild(row);
+//     });
+
+//     selectedMembers = [];
+//     var profileForm = document.getElementById('addPer');
+//     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+//         profileForm.style.display = 'block';
+//     } else {
+      
+//         profileForm.style.display = 'none';
+//     }
+// }
+
+//it works
+// function submitSelectedMembers() {
+//     const currentPresentDiv = document.getElementById('currentPresent');
+//     const membersToRemove = [];
+
+//     selectedMembers.forEach(member => {
+//         // Check if the member is already in the currentPresent list to prevent duplicates
+//         const existingRow = currentPresentDiv.querySelector(`tr[data-callSign="${member.callSign}"]`);
+//         if (!existingRow) {
+//             // Create a new row for the selected member if not already present
+//             const row = document.createElement('tr');
+//             row.classList.add('text-sm', 'md:text-2xl');
+//             row.setAttribute('data-callSign', member.callSign); // Store callSign as an attribute for future checks
+//             row.innerHTML = `
+//                 <td class="py-2 md:px-4 border-b">${member.callSign}</td>
+//                 <td class="py-2 md:px-4 border-b">${member.name}</td>
+//                 <td class="py-2 md:px-4 border-b text-center">
+//                     <input type="checkbox" class="attendee-checkbox" data-callSign="${member.callSign}">
+//                 </td>
+//             `;
+//             currentPresentDiv.appendChild(row);
+
+//             // Mark members to remove from addPersonICS after transfer
+//             membersToRemove.push(member.callSign);
+//         }
+//     });
+
+//     // Remove transferred members from addPersonICS
+//     membersToRemove.forEach(callSign => {
+//         const rowToRemove = document.querySelector(`#addPersonICS input[data-callSign="${callSign}"]`).closest('tr');
+//         if (rowToRemove) {
+//             rowToRemove.remove();  // Remove the row from the table
+//         }
+//     });
+
+//     // Clear selected members
+//     selectedMembers = [];
+
+//     // Hide the modal or form for adding attendees
+//     var profileForm = document.getElementById('addPer');
+//     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+//         profileForm.style.display = 'block';
+//     } else {
+//         profileForm.style.display = 'none';
+//     }
+// }
+
 function submitSelectedMembers() {
     const currentPresentDiv = document.getElementById('currentPresent');
+    const membersToRemove = [];
+
+    // Iterate through selected members to add them to currentPresent and prepare for removal
     selectedMembers.forEach(member => {
-        const row = document.createElement('tr');
-        row.classList.add('text-sm', 'md:text-2xl');
-        row.innerHTML = `
-            <td class="py-2 md:px-4 border-b">${member.callSign}</td>
-            <td class="py-2 md:px-4 border-b">${member.name}</td>
-            <td class="py-2 md:px-4 border-b text-center">
-                <a href="#" onclick="removeFromTable(this)">
-                    <i class="fa-solid fa-x text-red-500 cursor-pointer"></i>
-                </a>
-            </td>
-        `;
-        currentPresentDiv.appendChild(row);
+        // Check if the member is already in the currentPresent list to prevent duplicates
+        const existingRow = currentPresentDiv.querySelector(`tr[data-callSign="${member.callSign}"]`);
+        if (!existingRow) {
+            // Create a new row for the selected member if not already present
+            const row = document.createElement('tr');
+            row.classList.add('text-sm', 'md:text-2xl');
+            row.setAttribute('data-callSign', member.callSign); // Store callSign as an attribute for future checks
+            row.innerHTML = `
+                <td class="py-2 md:px-4 border-b">${member.callSign}</td>
+                <td class="py-2 md:px-4 border-b">${member.name}</td>
+                <td class="py-2 md:px-4 border-b text-center">
+                    <input type="checkbox" class="attendee-checkbox" data-callSign="${member.callSign}">
+                </td>
+            `;
+            currentPresentDiv.appendChild(row);
+
+            // Mark members for removal from addPersonICS after transfer
+            membersToRemove.push(member.callSign);
+        }
     });
 
+    // Remove transferred members from addPersonICS
+    membersToRemove.forEach(callSign => {
+        const rowToRemove = document.querySelector(`#addPersonICS input[data-callSign="${callSign}"]`).closest('tr');
+        if (rowToRemove) {
+            rowToRemove.remove();  // Remove the row from the addPersonICS table
+        }
+    });
+
+    // Clear the selected members array
     selectedMembers = [];
+
+    // Hide the modal or form for adding attendees
     var profileForm = document.getElementById('addPer');
     if (profileForm.style.display === 'none' || profileForm.style.display === '') {
         profileForm.style.display = 'block';
     } else {
-      
         profileForm.style.display = 'none';
     }
 }
-
-
 
 
 function showAddperson(){

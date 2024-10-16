@@ -128,23 +128,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Sort functionality
             sortByMeritTracking.addEventListener('change', function() {
-                const sortBy = sortByMeritTracking.value;
+                const sortBy = sortByMeritTracking.value.toLowerCase();
                 let sortedData = [...data]; // Create a copy of the data
 
                 if (sortBy === 'name') {
-                    sortedData.sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
-                } else if (sortBy === 'callSign') {
-                    sortedData.sort((a, b) => a.callSign.localeCompare(b.callSign));
+                    sortedData.sort((a, b) => `${b.firstName} ${b.lastName}`.localeCompare(`${a.firstName} ${a.lastName}`)); // Descending
+                } else if (sortBy === 'callsign') {
+                    sortedData.sort((a, b) => b.callSign.localeCompare(a.callSign)); // Descending
                 } else if (sortBy === 'rank') {
                     sortedData.sort((a, b) => {
                         const rankA = a.callSign.replace(/\d/g, ''); // Remove numbers from callSign
                         const rankB = b.callSign.replace(/\d/g, '');
-                        return rankA.localeCompare(rankB);
+                        return rankB.localeCompare(rankA); // Descending
                     });
-                } else if (sortBy === 'accountType') {
-                    sortedData.sort((a, b) => a.accountType.localeCompare(b.accountType));
+                } else if (sortBy === 'accounttype') {
+                    sortedData.sort((a, b) => b.accountType.localeCompare(a.accountType)); // Descending
                 } else if (sortBy === 'status') {
-                    sortedData.sort((a, b) => a.status.localeCompare(b.status));
+                    sortedData.sort((a, b) => b.status.localeCompare(a.status)); // Descending
+                } else if (sortBy === 'dutyhours') {
+                    sortedData.sort((a, b) => b.dutyHours - a.dutyHours); // Descending
+                } else if (sortBy === 'cumulativedutyhours') {
+                    sortedData.sort((a, b) => b.cumulativeDutyHours - a.cumulativeDutyHours); // Descending
+                } else if (sortBy === 'fireresponse') {
+                    sortedData.sort((a, b) => b.fireResponse - a.fireResponse); // Descending
+                } else if (sortBy === 'inventory') {
+                    sortedData.sort((a, b) => b.inventory - a.inventory); // Descending
                 }
 
                 displayAttendanceData(sortedData); // Display sorted data
@@ -155,6 +163,87 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error fetching recent attendance logs:', error);
         });
 });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     fetch('/accountsAll')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             const volunteerAccountsDetails = document.getElementById('volunteerAccountsDetails');
+//             const searchBox = document.getElementById('volunteerAccountsSearchBox');
+//             const sortByMeritTracking = document.getElementById('sortByMeritTracking');
+
+//             function createRow(record) {
+//                 const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
+//                 return `
+//                     <tr>
+//                         <td class="py-2 px-4">
+//                             <a href="/admin_edit_volunter?accountID=${record.accountID}" class="hover:underline text-blue-500" onclick="showEdit()">
+//                                 ${record.firstName} ${record.middleInitial}. ${record.lastName}
+//                             </a>
+//                         </td>
+//                         <td>${record.callSign}</td>
+//                         <td>${rank}</td>
+//                         <td>${record.accountType}</td>
+//                         <td>${record.status}</td>
+//                     </tr>
+//                 `;
+//             }
+
+//             function displayAttendanceData(records) {
+//                 volunteerAccountsDetails.innerHTML = ''; // Clear existing logs
+//                 if (records.length === 0) {
+//                     volunteerAccountsDetails.innerHTML = '<tr><td colspan="5">No records found.</td></tr>';
+//                     return;
+//                 }
+//                 volunteerAccountsDetails.innerHTML = records.map(createRow).join('');
+//             }
+
+//             displayAttendanceData(data); // Display initial data
+
+//             // Search functionality
+//             searchBox.addEventListener('input', function() {
+//                 const searchTerm = searchBox.value.toLowerCase();
+//                 const filteredData = data.filter(record => {
+//                     const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+//                     return fullName.includes(searchTerm);
+//                 });
+//                 displayAttendanceData(filteredData);
+//             });
+
+//             // Sort functionality
+//             sortByMeritTracking.addEventListener('change', function() {
+//                 const sortBy = sortByMeritTracking.value;
+//                 let sortedData = [...data]; // Create a copy of the data
+
+//                 if (sortBy === 'name') {
+//                     sortedData.sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
+//                 } else if (sortBy === 'callSign') {
+//                     sortedData.sort((a, b) => a.callSign.localeCompare(b.callSign));
+//                 } else if (sortBy === 'rank') {
+//                     sortedData.sort((a, b) => {
+//                         const rankA = a.callSign.replace(/\d/g, ''); // Remove numbers from callSign
+//                         const rankB = b.callSign.replace(/\d/g, '');
+//                         return rankA.localeCompare(rankB);
+//                     });
+//                 } else if (sortBy === 'accountType') {
+//                     sortedData.sort((a, b) => a.accountType.localeCompare(b.accountType));
+//                 } else if (sortBy === 'status') {
+//                     sortedData.sort((a, b) => a.status.localeCompare(b.status));
+//                 }
+
+//                 displayAttendanceData(sortedData); // Display sorted data
+//             });
+//         })
+//         .catch(error => {
+//             // Error handling: Notify the user
+//             console.error('Error fetching recent attendance logs:', error);
+//         });
+// });
 
 function fetchVolunteerData() {
     const accountID = new URLSearchParams(window.location.search).get('accountID');

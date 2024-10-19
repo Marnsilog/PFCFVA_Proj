@@ -21,6 +21,106 @@ cloudinary.config({
 
 module.exports = (db, db2) => {
 const query = util.promisify(db.query).bind(db);
+    // router.post('/register', (req, res) => {
+    //     const {
+    //         rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,
+    //         callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
+    //         mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
+    //         highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
+    //         otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
+    //         inventoryPoints, dutyHours
+    //     } = req.body;
+    
+    //     // Check if the username already exists in the database
+    //     const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
+    //     db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
+    //         if (checkUsernameErr) {
+    //             console.error('Error checking username:', checkUsernameErr);
+    //             return res.status(500).send('Error checking username');
+    //         }
+    
+    //         if (checkUsernameResult[0].count > 0) {
+    //             return res.status(400).send('Username already exists');
+    //         }
+    
+    //         // Check if the RFID already exists in the database
+    //         const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
+    //         db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
+    //             if (checkRfidErr) {
+    //                 console.error('Error checking RFID:', checkRfidErr);
+    //                 return res.status(500).send('Error checking RFID');
+    //             }
+    
+    //             if (checkRfidResult[0].count > 0) {
+    //                 return res.status(400).send('RFID already exists');
+    //             }
+    
+    //             // Check if the email already exists in the database
+    //             const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
+    //             db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
+    //                 if (checkEmailErr) {
+    //                     console.error('Error checking email:', checkEmailErr);
+    //                     return res.status(500).send('Error checking email');
+    //                 }
+    
+    //                 if (checkEmailResult[0].count > 0) {
+    //                     return res.status(400).send('Email already exists');
+    //                 }
+    
+    //                 // Hash the password and register the user
+    //                 bcrypt.hash(password, 10, (hashErr, hash) => {
+    //                     if (hashErr) {
+    //                         console.error('Error hashing password:', hashErr);
+    //                         return res.status(500).send('Error hashing password');
+    //                     }
+    
+    //                     const sql = `
+    //                         INSERT INTO tbl_accounts (
+    //                             rfid, username, password, accountType, lastName, firstName, middleName,
+    //                             middleInitial, callSign, currentAddress, dateOfBirth, civilStatus, gender,
+    //                             nationality, bloodType, mobileNumber, emailAddress, emergencyContactPerson,
+    //                             emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+    //                             yearsInService, skillsTraining, otherAffiliation, bioDataChecked, interviewChecked,
+    //                             fireResponsePoints, activityPoints, inventoryPoints, cumulativeDutyHours
+    //                         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    //                     `;
+    
+    //                     let tomins = dutyHours * 60;
+    
+    //                     db.query(sql, [
+    //                         rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
+    //                         callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
+    //                         mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
+    //                         highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
+    //                         otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
+    //                         inventoryPoints, tomins
+    //                     ], (err, result) => {
+    //                         if (err) {
+    //                             console.error('Error registering user:', err);
+    //                             return res.status(500).send('Error registering user');
+    //                         }
+    
+    //                         // Insert notification
+    //                         const notificationQuery = `
+    //                             INSERT INTO tbl_notification (detail, target, created_by, created_at)
+    //                             VALUES ("New account created", ?, "Pfcfva System", NOW())
+    //                         `;
+    //                         db.query(notificationQuery, [username], (notifErr) => {
+    //                             if (notifErr) {
+    //                                 console.error('Error inserting notification:', notifErr);
+    //                                 return res.status(500).send('User registered but notification failed');
+    //                             }
+    
+    //                             res.status(200).send('User registered successfully');
+    //                         });
+    //                     });
+    //                 });
+    //             });
+    //         });
+    //     });
+    // });
+
+
     router.post('/register', (req, res) => {
         const {
             rfid, username, password, accountType, lastName, firstName, middleName, middleInitial,
@@ -31,7 +131,7 @@ const query = util.promisify(db.query).bind(db);
             inventoryPoints, dutyHours
         } = req.body;
     
-        // Check if the username already exists in the database
+        
         const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
         db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
             if (checkUsernameErr) {
@@ -43,75 +143,88 @@ const query = util.promisify(db.query).bind(db);
                 return res.status(400).send('Username already exists');
             }
     
-            // Check if the RFID already exists in the database
-            const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
-            db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
-                if (checkRfidErr) {
-                    console.error('Error checking RFID:', checkRfidErr);
-                    return res.status(500).send('Error checking RFID');
+            //callsign check
+            const checkCallSignQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE callSign = ?';
+            db.query(checkCallSignQuery, [callSign], (checkCallSignErr, checkCallSignResult) => {
+                if (checkCallSignErr) {
+                    console.error('Error checking callSign:', checkCallSignErr);
+                    return res.status(500).send('Error checking callSign');
                 }
     
-                if (checkRfidResult[0].count > 0) {
-                    return res.status(400).send('RFID already exists');
+                if (checkCallSignResult[0].count > 0) {
+                    return res.status(400).send('An account with this callSign already exists');
                 }
     
-                // Check if the email already exists in the database
-                const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
-                db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
-                    if (checkEmailErr) {
-                        console.error('Error checking email:', checkEmailErr);
-                        return res.status(500).send('Error checking email');
+                
+                const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
+                db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
+                    if (checkRfidErr) {
+                        console.error('Error checking RFID:', checkRfidErr);
+                        return res.status(500).send('Error checking RFID');
                     }
     
-                    if (checkEmailResult[0].count > 0) {
-                        return res.status(400).send('Email already exists');
+                    if (checkRfidResult[0].count > 0) {
+                        return res.status(400).send('RFID already exists');
                     }
     
-                    // Hash the password and register the user
-                    bcrypt.hash(password, 10, (hashErr, hash) => {
-                        if (hashErr) {
-                            console.error('Error hashing password:', hashErr);
-                            return res.status(500).send('Error hashing password');
+                
+                    const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
+                    db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
+                        if (checkEmailErr) {
+                            console.error('Error checking email:', checkEmailErr);
+                            return res.status(500).send('Error checking email');
                         }
     
-                        const sql = `
-                            INSERT INTO tbl_accounts (
-                                rfid, username, password, accountType, lastName, firstName, middleName,
-                                middleInitial, callSign, currentAddress, dateOfBirth, civilStatus, gender,
-                                nationality, bloodType, mobileNumber, emailAddress, emergencyContactPerson,
-                                emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
-                                yearsInService, skillsTraining, otherAffiliation, bioDataChecked, interviewChecked,
-                                fireResponsePoints, activityPoints, inventoryPoints, cumulativeDutyHours
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        `;
+                        if (checkEmailResult[0].count > 0) {
+                            return res.status(400).send('Email already exists');
+                        }
     
-                        let tomins = dutyHours * 60;
-    
-                        db.query(sql, [
-                            rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
-                            callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
-                            mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
-                            highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
-                            otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
-                            inventoryPoints, tomins
-                        ], (err, result) => {
-                            if (err) {
-                                console.error('Error registering user:', err);
-                                return res.status(500).send('Error registering user');
+                       
+                        bcrypt.hash(password, 10, (hashErr, hash) => {
+                            if (hashErr) {
+                                console.error('Error hashing password:', hashErr);
+                                return res.status(500).send('Error hashing password');
                             }
     
-                            // Insert notification
-                            const notificationQuery = `
-                                INSERT INTO tbl_notification (detail, target, created_by, created_at)
-                                VALUES ("New account created", ?, "Pfcfva System", NOW())
+                            const sql = `
+                                INSERT INTO tbl_accounts (
+                                    rfid, username, password, accountType, lastName, firstName, middleName,
+                                    middleInitial, callSign, currentAddress, dateOfBirth, civilStatus, gender,
+                                    nationality, bloodType, mobileNumber, emailAddress, emergencyContactPerson,
+                                    emergencyContactNumber, highestEducationalAttainment, nameOfCompany,
+                                    yearsInService, skillsTraining, otherAffiliation, bioDataChecked, interviewChecked,
+                                    fireResponsePoints, activityPoints, inventoryPoints, cumulativeDutyHours
+                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             `;
-                            db.query(notificationQuery, [username], (notifErr) => {
-                                if (notifErr) {
-                                    console.error('Error inserting notification:', notifErr);
-                                    return res.status(500).send('User registered but notification failed');
+    
+                            let tomins = dutyHours * 60;
+    
+                            db.query(sql, [
+                                rfid, username, hash, accountType, lastName, firstName, middleName, middleInitial,
+                                callSign, currentAddress, dateOfBirth, civilStatus, gender, nationality, bloodType,
+                                mobileNumber, emailAddress, emergencyContactPerson, emergencyContactNumber,
+                                highestEducationalAttainment, nameOfCompany, yearsInService, skillsTraining,
+                                otherAffiliation, bioDataChecked, interviewChecked, fireResponsePoints, activityPoints,
+                                inventoryPoints, tomins
+                            ], (err, result) => {
+                                if (err) {
+                                    console.error('Error registering user:', err);
+                                    return res.status(500).send('Error registering user');
                                 }
     
-                                res.status(200).send('User registered successfully');
+                                // Insert notification
+                                const notificationQuery = `
+                                    INSERT INTO tbl_notification (detail, target, created_by, created_at)
+                                    VALUES ("New account created", ?, "Pfcfva System", NOW())
+                                `;
+                                db.query(notificationQuery, [username], (notifErr) => {
+                                    if (notifErr) {
+                                        console.error('Error inserting notification:', notifErr);
+                                        return res.status(500).send('User registered but notification failed');
+                                    }
+    
+                                    res.status(200).send('User registered successfully');
+                                });
                             });
                         });
                     });
@@ -119,6 +232,7 @@ const query = util.promisify(db.query).bind(db);
             });
         });
     });
+    
     router.post('/login', (req, res) => {
         const { username, password } = req.body;
     

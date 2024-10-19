@@ -514,61 +514,110 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Load chat messages from the .txt file on page load
-    fetch('/loadChatMessages')
-        .then(response => response.json())
-        .then(chatLogs => {
-            const chatSystem = document.getElementById('chatSystem');
-            chatLogs.forEach(log => {
-                const messageElement = document.createElement('div');
-                const timestamp = `${log.date} ${log.time}`;
+    // fetch('/loadChatMessages')
+    //     .then(response => response.json())
+    //     .then(chatLogs => {
+    //         const chatSystem = document.getElementById('chatSystem');
+    //         chatLogs.forEach(log => {
+    //             const messageElement = document.createElement('div');
+    //             const timestamp = `${log.date} ${log.time}`;
 
-                let messageStyle = '';
-                if (log.isInjuredOrMedical) {
-                    messageStyle = 'color: red; font-weight: bold;';
-                } else if (log.buttonType === 'backUp') {
-                    messageStyle = 'background-color: green; color: white; padding: 5px; border-radius: 3px;';
-                } else if (log.buttonType === 'medicalAssistance') {
-                    messageStyle = 'background-color: gold; color: black; padding: 5px; border-radius: 3px;';
-                } else if (log.buttonType === 'resupplyWater') {
-                    messageStyle = 'background-color: red; color: white; padding: 5px; border-radius: 3px;';
-                } else if (log.buttonType === 'fallback') {
-                    messageStyle = 'background-color: blue; color: white; padding: 5px; border-radius: 3px;';
-                }
+    //             let messageStyle = '';
+    //             if (log.isInjuredOrMedical) {
+    //                 messageStyle = 'color: red; font-weight: bold;';
+    //             } else if (log.buttonType === 'backUp') {
+    //                 messageStyle = 'background-color: green; color: white; padding: 5px; border-radius: 3px;';
+    //             } else if (log.buttonType === 'medicalAssistance') {
+    //                 messageStyle = 'background-color: gold; color: black; padding: 5px; border-radius: 3px;';
+    //             } else if (log.buttonType === 'resupplyWater') {
+    //                 messageStyle = 'background-color: red; color: white; padding: 5px; border-radius: 3px;';
+    //             } else if (log.buttonType === 'fallback') {
+    //                 messageStyle = 'background-color: blue; color: white; padding: 5px; border-radius: 3px;';
+    //             }
 
-                messageElement.innerHTML = `<strong>${log.username}</strong>: <span style="${messageStyle}">${log.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
-                chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
-            });
-        })
-        .catch(error => console.error('Failed to load chat messages:', error));
+    //             messageElement.innerHTML = `<strong>${log.username}</strong>: <span style="${messageStyle}">${log.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+    //             chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+    //         });
+    //     })
+    //     .catch(error => console.error('Failed to load chat messages:', error));
 
-    // Receiving a message
-    socket.on('chatMessage', (msgData) => {
-        const chatSystem = document.getElementById('chatSystem');
+    // Load chat log from the server when the user connects
+socket.on('loadChatLog', (chatLogs) => {
+    const chatSystem = document.getElementById('chatSystem');
 
+    // Clear the chat system before appending messages
+    chatSystem.innerHTML = '';
+
+    // Iterate through each log message and append it to the chat
+    chatLogs.forEach((logMessage) => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');  // Add a class for styling if needed
-
-        const timestamp = `${msgData.date} ${msgData.time}`;
-
-        let messageStyle = '';
-        if (msgData.isInjuredOrMedical) {
-            messageStyle = 'color: red; font-weight: bold;';
-        } else if (msgData.buttonType === 'backUp') {
-            messageStyle = 'background-color: green; color: white; padding: 5px; border-radius: 3px;';
-        } else if (msgData.buttonType === 'medicalAssistance') {
-            messageStyle = 'background-color: gold; color: black; padding: 5px; border-radius: 3px;';
-        } else if (msgData.buttonType === 'resupplyWater') {
-            messageStyle = 'background-color: red; color: white; padding: 5px; border-radius: 3px;';
-        } else if (msgData.buttonType === 'fallback') {
-            messageStyle = 'background-color: blue; color: white; padding: 5px; border-radius: 3px;';
-        }
-
-        messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="${messageStyle}">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+        
+        // Append each message from the log file
+        messageElement.innerHTML = logMessage;
         chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
-
-        // Store the chat messages in sessionStorage
-        let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
-        storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
-        sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
     });
+});
+
+
+    // // Receiving a message
+    // socket.on('chatMessage', (msgData) => {
+    //     const chatSystem = document.getElementById('chatSystem');
+
+    //     const messageElement = document.createElement('div');
+    //     messageElement.classList.add('message');  // Add a class for styling if needed
+
+    //     const timestamp = `${msgData.date} ${msgData.time}`;
+
+    //     let messageStyle = '';
+    //     if (msgData.isInjuredOrMedical) {
+    //         messageStyle = 'color: red; font-weight: bold;';
+    //     } else if (msgData.buttonType === 'backUp') {
+    //         messageStyle = 'background-color: green; color: white; padding: 5px; border-radius: 3px;';
+    //     } else if (msgData.buttonType === 'medicalAssistance') {
+    //         messageStyle = 'background-color: gold; color: black; padding: 5px; border-radius: 3px;';
+    //     } else if (msgData.buttonType === 'resupplyWater') {
+    //         messageStyle = 'background-color: red; color: white; padding: 5px; border-radius: 3px;';
+    //     } else if (msgData.buttonType === 'fallback') {
+    //         messageStyle = 'background-color: blue; color: white; padding: 5px; border-radius: 3px;';
+    //     }
+
+    //     messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="${messageStyle}">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+    //     chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+
+    //     // Store the chat messages in sessionStorage
+    //     let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+    //     storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
+    //     sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
+    // });
+
+
+    // Receiving a new message
+socket.on('chatMessage', (msgData) => {
+    const chatSystem = document.getElementById('chatSystem');
+
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');  // Add a class for styling if needed
+
+    const timestamp = `${msgData.date} ${msgData.time}`;
+
+    // Display the message with the appropriate styling for different message types
+    let messageStyle = '';
+    if (msgData.isInjuredOrMedical) {
+        messageStyle = 'color: red; font-weight: bold;';
+    } else if (msgData.buttonType === 'backUp') {
+        messageStyle = 'background-color: green; color: white; padding: 5px; border-radius: 3px;';
+    } else if (msgData.buttonType === 'medicalAssistance') {
+        messageStyle = 'background-color: gold; color: black; padding: 5px; border-radius: 3px;';
+    } else if (msgData.buttonType === 'resupplyWater') {
+        messageStyle = 'background-color: red; color: white; padding: 5px; border-radius: 3px;';
+    } else if (msgData.buttonType === 'fallback') {
+        messageStyle = 'background-color: blue; color: white; padding: 5px; border-radius: 3px;';
+    }
+
+    messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="${messageStyle}">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
+    chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+});
+
+
 });

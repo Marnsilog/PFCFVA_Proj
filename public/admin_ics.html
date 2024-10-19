@@ -188,9 +188,17 @@
                                 <textarea class="rounded-lg rounded-black w-full border-[.2px] border-black pt-2 pl-2 pb-36 text-wrap" id="messageBox" type="text" placeholder="Type message here..."></textarea>
                             </div>
                        </div>
-                       <div class="flex justify-end md:pr-0 pr-5">
+                       <!-- <div class="flex justify-end md:pr-0 pr-5">
                             <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
                        </div>
+                       <div class="flex justify-end md:pr-0 pr-5">
+                        <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 md:mt-16 mt-5 text-sm md:text-xl font-[500] rounded-md" id="clearLogs">Clear Messages</button>
+                         </div> -->
+                         <div class="flex justify-between items-center md:px-0 px-5 mt-5 md:mt-16">
+                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 text-sm md:text-xl font-[500] rounded-md" id="clearLogs">Clear Messages</button>
+                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
+                        </div>
+                        
 
                     
 
@@ -278,6 +286,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.getElementById('clearLogs').addEventListener('click', () => {
+    const chatSystem = document.getElementById('chatSystem');
+    chatSystem.innerHTML = ''; // Clears all messages from the chatSystem element
+});
+
 
 </script>
 
@@ -288,4 +301,5 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="super_profiler.js" defer></script>
 <script src="profileImage.js" defer></script>
 <script src="chat.js" defer></script>
+<script src="_exit_stopper.js" defer></script>
 </html>

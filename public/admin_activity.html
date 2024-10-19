@@ -266,75 +266,66 @@
                         </div>
                     </div>
                 </div>
-            <div id="activityForm" style="display: none;">
-                <div  class="w-full h-full flex justify-center" >
-                    <div class="absolute font-Inter w-auto p-5 top-7 bg-white border border-black z-10">
-
-                        <div class="flex justify-center w-full max-h-[70vh] overflow-x-auto border border-black">
-                            <div class=" mx-5 py-5 pb-5">
-                                <div class="flex justify-start">
-                                    <p class="text-lg font-bold mr-32">Activity Date</p>
-                                    <input class="border-[1px] border-black w-72" type="date" id="activityDate" required>
+                <div id="activityForm" style="display: none;">
+                    <div class="w-full h-full flex justify-center">
+                        <div class="absolute font-Inter md:w-auto py-5 md:p-5 top-7 bg-white border border-black z-10">
+                
+                            <div class="flex justify-center w-full max-h-[70vh] overflow-x-auto border border-black">
+                                <div class="mx-5 py-5 pb-5 md:px-0">
+                                    <div class="flex md:justify-start justify-center">
+                                        <p class="text-lg font-bold mr-8 md:mr-32">Activity Date</p>
+                                        <input class="border-[1px] border-black md:w-72" type="date" id="activityDate" required>
+                                    </div>
+                                    <div class="flex justify-center md:justify-start mt-4">
+                                        <p class="text-lg font-bold mr-8 md:mr-[100px]">Time of Activity</p>
+                                        <input class="border-[1px] border-black w-32 md:w-72" placeholder="HH:mm:ss" type="time" id="activityTime" required>
+                                    </div>
+                                    <div class="flex justify-center md:justify-start mt-4">
+                                        <p class="text-lg font-bold mr-8 md:mr-[170px]">Location</p>
+                                        <textarea class="border-[1px] border-black md:max-w-72 w-64 md:w-full md:h-28" id="location" required></textarea>
+                                    </div>
+                
+                                    <div class="flex justify-center md:justify-start mt-7">
+                                        <p class="text-lg font-bold mr-8 md:mr-[127px]">Vehicle Used</p>
+                                        <select class="border-[1px] border-black w-52 md:w-72 h-8" id="activityAssignment" required>
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                
+                                    <div class="flex justify-start mt-7">
+                                        <p class="text-lg font-bold mr-[145px]">Responders</p>
+                                        <button class="bg-[#930D0D] text-white h-8 w-[135px] rounded-md" onclick="addResponders()" id="addResponders">Add Responder</button>
+                                    </div>
+                
+                                    <div class="mt-5 max-h-44 overflow-y-auto h-full">
+                                        <table class="w-full font-Inter">
+                                            <thead class="border-y-[1px] border-black">
+                                                <tr>
+                                                    <th>Call Sign</th>
+                                                    <th>Full Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tblResponders">
+                                                <!-- Dynamic content will be inserted here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                
+                                    <div class="flex justify-start mt-7 pb-5">
+                                        <p class="text-lg font-bold mr-[165px]">Detail</p>
+                                        <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" id="activityDetail" required></textarea>
+                                    </div>
                                 </div>
-                                <div class="flex justify-start mt-4">
-                                    <p class="text-lg font-bold mr-[100px]">Time of Activitiy</p>
-                                    <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="activityTime" required>
-                                </div>
-                                <div class="flex  justify-start mt-4">
-                                    <p class="text-lg font-bold mr-[170px]">Location</p>
-                                    <textarea class="border-[1px] border-black max-w-72 w-full h-28" id="location" required></textarea>
-                                </div>
-
-                        
-                        
-                                <div class="flex justify-start mt-7">
-                                    <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
-                                    <!-- <p class="border-[1px] border-black w-72 h-8" id="vehicleName"></p>  -->
-                                    <select class="border-[1px] border-black w-72 h-8" name="" id="activityAssignment" required>
-                                        <option value=""> </option>
-
-                                    </select>
-                                </div>
-                               
-
-                                <div class="flex justify-start mt-7">
-                                    <p class="text-lg font-bold mr-[145px]">Responders</p>
-                                    <button class="bg-[#930D0D] text-white h-8 w-[135px] rounded-md" onclick="addResponders()" id="addResponders">Add Responder</button>
-                                </div>
-                                <div class="mt-5 max-h-44 overflow-y-auto h-full">
-                                    <table class="w-full font-Inter">
-                                        <thead class="border-y-[1px] border-black">
-                                            <tr>
-                                                <th>Call Sign</th>
-                                                <th>Full Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tblResponders">
-                                            <!-- Dynamic content will be inserted here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="flex justify-start mt-7 pb-5">
-                                    <p class="text-lg font-bold mr-[165px]">Detail</p>
-                                    <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="activityDetail" required></textarea>
-
-                                </div>
-
-                                
-                                
                             </div>
-                            
-                            </div>
+                
                             <div class="flex justify-center w-full mt-2 space-x-5">
-                                
                                 <button class="bg-[#930D0D] text-white h-8 w-[125px] rounded-md" id="submitLogs">Submit</button>
                                 <a href="" onclick="addAcitivity()" class="underline underline-offset-4 mt-1">CLOSE</a>
                             </div>
+                        </div>
                     </div>
-                
                 </div>
-                        
-            </div>
+                
 
         </div>
                 

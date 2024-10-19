@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function handleRankUp(accountID, currentCallSign, dutyHours, fireResponsePoints) {
-    fetch('/upgradeRank', {
+    fetch('/auth/upgradeRank', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

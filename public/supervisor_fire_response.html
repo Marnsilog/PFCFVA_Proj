@@ -34,11 +34,11 @@
                     </ul>
                 </nav>
                 <div class="flex justify-start space-x-3 mr-2">
-        <!-- <div>
-            <a href="#" class="md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
-                <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
-              </i></a>
-        </div> -->
+                    <div>
+                        <a href="#" class="md:hidden cursor-pointer" onclick="toggleNotif()"><svg xmlns="http://www.w3.org/2000/svg" class="mt-5 w-6 h-6" viewBox="0 0 448 512">
+                            <path fill="white" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+                          </i></a>
+                    </div>
             
                  
                         <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
@@ -47,12 +47,13 @@
                             </svg>
                         </button>
                 </div>
+        
             
             </div>
         </div>
              <!-- RESPONSIVE SETTING -->
              <div class="absolute w-full flex justify-end z-30">
-                <div class="md:hidden w-1/2  h-auto pt-5 pb-3 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
+                <div class="md:hidden w-1/2 h-auto pt-5 pb-3 bg-rosered2 text-white text-start text-xl font-Inter" id="mobile-menu" style="display: none;" id="mobile-menu">
                     <div class="ml-3 flex justify-start mr-3" onclick="location.href='/supervisor_main_profile'" style="cursor: pointer;">
                         <img  id="resPonsivepic" class="h-10 w-10" >
                         <p class="ml-2 py-2 text-sm"  data-feild="ResponsiveName"></p>
@@ -81,6 +82,10 @@
                     <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/supervisor_ics_logs'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mt-[12px] w-5 h-5" viewBox="0 0 448 512"><path fill="white" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
                         <p class="ml-2 block py-2">Ics Logs</p>
+                    </div>
+                    <div class="ml-3 flex justify-normal" style="cursor: pointer;" onclick="location.href='/supervisor_activity'">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="mt-[12px] w-5 h-5"  fill="white"><path d="M640-440 474-602q-31-30-52.5-66.5T400-748q0-55 38.5-93.5T532-880q32 0 60 13.5t48 36.5q20-23 48-36.5t60-13.5q55 0 93.5 38.5T880-748q0 43-21 79.5T807-602L640-440Zm0-112 109-107q19-19 35-40.5t16-48.5q0-22-15-37t-37-15q-14 0-26.5 5.5T700-778l-60 72-60-72q-9-11-21.5-16.5T532-800q-22 0-37 15t-15 37q0 27 16 48.5t35 40.5l109 107ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Zm520-546Z"/></svg>
+                        <p class="ml-2 block py-2">Activity Log</p>
                     </div>
         
                     <div class="bg-white h-[1px] w-full mb-4 mt-2"></div>

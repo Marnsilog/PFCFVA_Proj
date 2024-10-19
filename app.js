@@ -1116,7 +1116,7 @@ app.post('/upgradeRank', (req, res) => {
         SET callSign = ?
         WHERE accountID = ?`;
 
-    const params = [newCallSign, dutyHours, fireResponsePoints, accountID];
+    const params = [newCallSign, accountID];
 
     db.query(sql, params, (err, result) => {
         if (err) {

@@ -1666,6 +1666,39 @@ const query = util.promisify(db.query).bind(db);
             .catch(error => res.status(500).send(error));
     });
     
+    router.post('/upgradeRank', (req, res) => {
+        const { accountID, currentCallSign, dutyHours, fireResponsePoints } = req.body;
+    
+        // Determine the new rank based on the current callSign
+        let newCallSign;
+        if (currentCallSign.startsWith('ASPIRANT')) {
+            newCallSign = currentCallSign.replace('ASPIRANT', 'PROBATIONARY');
+        } else if (currentCallSign.startsWith('PROBATIONARY')) {
+            newCallSign = currentCallSign.replace('PROBATIONARY', 'ECHO900');
+        } else if (/^ECHO9\d{2}$/.test(currentCallSign)) {
+            // Change 'ECHO9' to 'ECHO8' while keeping the remaining digits the same
+            newCallSign = currentCallSign.replace('ECHO9', 'ECHO8');
+        } else {
+            return res.status(400).json({ error: 'Invalid rank or no promotion available' });
+        }
+    
+        // SQL to update the callSign and cumulative values
+        const sql = `
+            UPDATE tbl_accounts 
+            SET callSign = ?
+            WHERE accountID = ?`;
+    
+        const params = [newCallSign, accountID];
+    
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Error upgrading the rank' });
+            }
+    
+            res.json({ success: true });
+        });
+    });
     return router;
 };
 

@@ -61,6 +61,54 @@ document.addEventListener('DOMContentLoaded', function() {
 //     });
 // }
 
+// // Function to handle the fire_response.html logic
+// function handleFireResponsePage() {
+//     let attendees = [];
+
+//     // Fetch attendees
+//     fetchCurrentPresent();
+
+//     // Handle Confirm Attendance
+//     const confirmAttendanceBtn = document.getElementById('confirmAttendanceBtn');
+//     confirmAttendanceBtn.addEventListener('click', function() {
+//         attendees = []; // Clear previous list
+//         const attendeeRows = document.querySelectorAll('#currentPresent tr');
+
+//         // Get the selected vehicle
+//         const vehicle = document.getElementById('vehicleAssignment').value;
+
+//         // Check if a vehicle has been selected
+//         if (!vehicle || vehicle === 'Choose Vehicle') {
+//             alert('Please select a vehicle before confirming attendance.');
+//             return; // Stop further execution if no vehicle is selected
+//         }
+
+//         // Loop through attendee rows and check if they are selected (checked)
+//         attendeeRows.forEach(row => {
+//             const checkbox = row.querySelector('input[type="checkbox"]');
+//             if (checkbox && checkbox.checked) {
+//                 const callSign = row.querySelector('td:nth-child(2)').textContent;
+//                 const name = row.querySelector('td:nth-child(3)').textContent;
+//                 attendees.push({ callSign, name });
+//             }
+//         });
+
+//         // Check if any attendees were selected
+//         if (attendees.length === 0) {
+//             alert('Please select at least one attendee.');
+//             return; // Stop if no attendees are selected
+//         }
+
+//         // Store attendees in sessionStorage to transfer to ICS page
+//         sessionStorage.setItem('attendees', JSON.stringify(attendees));
+//         sessionStorage.setItem('selectedVehicle', vehicle);  // Store selected vehicle in sessionStorage
+
+//         // Redirect to ICS page
+//         window.location.href = '/supervisor_ics'; // Adjust path if necessary
+//     });
+// }
+
+
 // Function to handle the fire_response.html logic
 function handleFireResponsePage() {
     let attendees = [];
@@ -87,8 +135,8 @@ function handleFireResponsePage() {
         attendeeRows.forEach(row => {
             const checkbox = row.querySelector('input[type="checkbox"]');
             if (checkbox && checkbox.checked) {
-                const callSign = row.querySelector('td:nth-child(2)').textContent;
-                const name = row.querySelector('td:nth-child(3)').textContent;
+                const callSign = row.querySelector('td:nth-child(1)').textContent;  // Use correct cell index for Call Sign
+                const name = row.querySelector('td:nth-child(2)').textContent;      // Use correct cell index for Name
                 attendees.push({ callSign, name });
             }
         });
@@ -168,6 +216,35 @@ function removeFromTable(element) {
     row.classList.add('removed'); // Mark row as removed
 }
 
+// // Function to handle the ICS page logic
+// function handleICSPage() {
+//     // Get the attendees stored in sessionStorage
+//     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+//     const icsAttendeesDiv = document.getElementById('icsAttendees');
+//     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
+
+
+    
+
+//     attendees.forEach((attendee, index) => {
+//         const row = document.createElement('tr');
+//         row.innerHTML = `
+//             <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>
+//             <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>
+//             <td><input type="checkbox"></td>
+//             <td>00:00:00</td> <!-- Placeholder for timer -->
+//         `;
+//         icsAttendeesDiv.appendChild(row);
+//     });
+
+//     // Get the selected vehicle from sessionStorage and display it in vehicleNames
+//     const vehicleName = sessionStorage.getItem('selectedVehicle');
+//     if (vehicleName) {
+//         document.getElementById('vehicleName').textContent = vehicleName;  // Set the vehicle name in the ICS page
+//     }
+// }
+
 // Function to handle the ICS page logic
 function handleICSPage() {
     // Get the attendees stored in sessionStorage
@@ -176,14 +253,11 @@ function handleICSPage() {
     const icsAttendeesDiv = document.getElementById('icsAttendees');
     icsAttendeesDiv.innerHTML = ''; // Clear any existing data
 
-
-    
-
-    attendees.forEach((attendee, index) => {
+    attendees.forEach(attendee => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>
-            <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>
+            <td class="md:py-2 md:px-4 border-b">${attendee.callSign}</td>  <!-- Correct cell for call sign -->
+            <td class="md:py-2 md:px-4 border-b">${attendee.name}</td>      <!-- Correct cell for name -->
             <td><input type="checkbox"></td>
             <td>00:00:00</td> <!-- Placeholder for timer -->
         `;
@@ -196,6 +270,8 @@ function handleICSPage() {
         document.getElementById('vehicleName').textContent = vehicleName;  // Set the vehicle name in the ICS page
     }
 }
+
+
 
 // Function to remove an attendee from the ICS page
 function removeAttendee(index) {

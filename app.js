@@ -917,51 +917,92 @@ app.put('/updateEquipment', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-// POST route for saving ICS logs
+// // POST route for saving ICS logs
+// app.post('/saveICSLogs', async (req, res) => {
+//     try {
+//         const {
+//             supervisorName,
+//             incidentDate,
+//             dispatchTime,
+//             location,
+//             alarmStatus,
+//             whoRequested,
+//             fireType,
+//             vehicleUsed,
+//             responders,
+//             chatLogs,
+//             remarks
+//         } = req.body;
+
+//         // Construct the SQL query
+//         const query = `
+//             INSERT INTO tbl_ics_logs 
+//             (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//         `;
+
+//         // Insert the data into the database
+//         await db.query(query, [
+//             supervisorName,
+//             incidentDate,
+//             dispatchTime,
+//             location,
+//             alarmStatus,
+//             whoRequested,
+//             fireType,
+//             vehicleUsed,
+//             responders,      // This should be a JSON string containing the attendees (callSign and name)
+//             chatLogs,        // The chat log as a text
+//             remarks
+//         ]);
+
+//         res.json({ success: true, message: 'ICS logs saved successfully.' });
+//     } catch (error) {
+//         console.error('Error saving ICS logs:', error);
+//         res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
+//     }
+// });
+
 app.post('/saveICSLogs', async (req, res) => {
+    const {
+        supervisorName,
+        incidentDate,
+        dispatchTime,
+        location,
+        alarmStatus,
+        whoRequested,
+        fireType,
+        vehicleUsed,
+        responders,
+        chatLogs,
+        remarks
+    } = req.body;
+
     try {
-        const {
-            supervisorName,
-            incidentDate,
-            dispatchTime,
-            location,
-            alarmStatus,
-            whoRequested,
-            fireType,
-            vehicleUsed,
-            responders,
-            chatLogs,
-            remarks
-        } = req.body;
+        // Save the ICS logs to tbl_ics_logs
+        await db.query(`INSERT INTO tbl_ics_logs 
+            (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+            [supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks]);
 
-        // Construct the SQL query
-        const query = `
-            INSERT INTO tbl_ics_logs 
-            (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+        // Convert responders into an array of callSigns
+        const responderList = responders.split(',').map(responder => {
+            const match = responder.match(/\[(.*?)\]/);
+            return match ? match[1].trim() : null;
+        }).filter(callSign => callSign);  // Remove null values in case of failed regex match
 
-        // Insert the data into the database
-        await db.query(query, [
-            supervisorName,
-            incidentDate,
-            dispatchTime,
-            location,
-            alarmStatus,
-            whoRequested,
-            fireType,
-            vehicleUsed,
-            responders,      // This should be a JSON string containing the attendees (callSign and name)
-            chatLogs,        // The chat log as a text
-            remarks
-        ]);
+        // Update the fireResponsePoints for each responder in tbl_accounts
+        for (const callSign of responderList) {
+            await db.query(`UPDATE tbl_accounts SET fireResponsePoints = fireResponsePoints + 1 WHERE callSign = ?`, [callSign]);
+        }
 
-        res.json({ success: true, message: 'ICS logs saved successfully.' });
+        res.json({ success: true, message: 'Logs saved and fireResponsePoints updated successfully' });
     } catch (error) {
-        console.error('Error saving ICS logs:', error);
-        res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
+        console.error('Error saving logs or updating fireResponsePoints:', error);
+        res.status(500).json({ success: false, message: 'Failed to save logs or update fireResponsePoints' });
     }
 });
+
 
 
 app.get('/getIcsLogs', (req, res) => {

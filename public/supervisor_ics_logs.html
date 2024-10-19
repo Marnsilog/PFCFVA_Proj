@@ -144,7 +144,7 @@
 
                                     <div class=" md:pl-0 md:w-[25rem] w-full h-10 bg-white border-[1px] rounded-lg border-black flex justify-normal md:mx-0 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                                        <input class="w-full h-full px-2 focus:outline-none rounded-lg" type="text" placeholder="Search">
+                                        <input class="w-full h-full px-2 focus:outline-none rounded-lg" type="text" placeholder="Search" id="searchBox">
                                     </div>
                             
                                 </div>
@@ -273,6 +273,31 @@ function fireclose() {
     // Hide the incident log div
     document.getElementById("incidentLog").style.display = "none";
 }
+
+document.getElementById('searchBox').addEventListener('input', function() {
+    // Get the search term from the input
+    const searchTerm = this.value.toLowerCase();
+
+    // Get all table rows in the ICS logs table
+    const rows = document.querySelectorAll('#icsLogs tr');
+
+    // Loop through the rows and check if they match the search term
+    rows.forEach(row => {
+        // Get the text content of each cell in the row
+        const name = row.cells[0]?.textContent.toLowerCase();
+        const date = row.cells[1]?.textContent.toLowerCase();
+        const time = row.cells[2]?.textContent.toLowerCase();
+
+        // Check if the row should be visible (if any cell contains the search term)
+        if (name.includes(searchTerm) || date.includes(searchTerm) || time.includes(searchTerm)) {
+            row.style.display = ''; // Show the row
+        } else {
+            row.style.display = 'none'; // Hide the row
+        }
+    });
+});
+
+
 </script>
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>

@@ -659,19 +659,32 @@ app.get('/getVehicleAssignments', (req, res) => {
         }
     });
 });
-
 app.get('/getEquipment', (req, res) => { 
     try {
         const search = req.query.search || ''; 
-        const query = `
+        const vehicleAssignment = req.query.vehicleAssignment || ''; 
+        const itemStatus = req.query.itemStatus || ''; 
+
+        let query = `
             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
-            WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+            WHERE (itemName LIKE ? OR itemID LIKE ?) 
             AND itemStatus = 'Available'
         `;
+        
+        const queryParams = [`%${search}%`, `%${search}%`];
 
-        const searchParam = `%${search}%`;
+        // Add filters only if vehicleAssignment and itemStatus are provided
+        if (vehicleAssignment !== '') {
+            query += ` AND vehicleAssignment LIKE ? `;
+            queryParams.push(`%${vehicleAssignment}%`);
+        }
 
-        db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
+        if (itemStatus !== '') {
+            query += ` AND status LIKE ? `;
+            queryParams.push(`%${itemStatus}%`);
+        }
+
+        db.query(query, queryParams, (err, results) => {
             if (err) {
                 console.error('Failed to retrieve equipment:', err);
                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
@@ -679,9 +692,9 @@ app.get('/getEquipment', (req, res) => {
 
             const equipment = results.map(item => ({
                 ...item,
-                itemImage: cloudinary.url(item.itemImage) 
+                itemImage: cloudinary.url(item.itemImage) // Assuming you're using Cloudinary
             }));
-
+            // console.log(equipment);
             res.json(equipment);
         });
     } catch (error) {
@@ -689,6 +702,39 @@ app.get('/getEquipment', (req, res) => {
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
+
+
+// app.get('/getEquipment', (req, res) => { 
+//     try {
+//         const search = req.query.search || ''; 
+//         const vehicleAssignment = req.query.search || ''; 
+//         const itemStatus = req.query.search || ''; 
+//         const query = `
+//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
+//             WHERE (itemName LIKE ? OR itemID LIKE ? AND vehicleAssignment LIKE ? and status = ?) 
+//             AND itemStatus = 'Available'
+//         `;
+
+//         const searchParam = `%${search}%`;
+
+//         db.query(query, [searchParam, searchParam, itemStatus], (err, results) => {
+//             if (err) {vehicleAssignment
+//                 console.error('Failed to retrieve equipment:', err);
+//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
+//             }
+
+//             const equipment = results.map(item => ({
+//                 ...item,
+//                 itemImage: cloudinary.url(item.itemImage) 
+//             }));
+
+//             res.json(equipment);
+//         });
+//     } catch (error) {
+//         console.error('Unexpected error:', error);
+//         res.status(500).json({ error: 'An unexpected error occurred' });
+//     }
+// });
 
 
 app.get('/getTrashedEquipment', (req, res) => { 

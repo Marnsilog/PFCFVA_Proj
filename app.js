@@ -1001,7 +1001,59 @@ app.put('/updateEquipment', (req, res) => {
 //     }
 // });
 
+// app.post('/saveICSLogs', async (req, res) => {
+//     const username = req.session.user?.username;
+//     const {
+//         supervisorName,
+//         incidentDate,
+//         dispatchTime,
+//         location,
+//         alarmStatus,
+//         whoRequested,
+//         fireType,
+//         vehicleUsed,
+//         responders,
+//         chatLogs,
+//         remarks
+//     } = req.body;
+
+//     try {
+//         // Save the ICS logs to tbl_ics_logs
+//         await db.query(`INSERT INTO tbl_ics_logs 
+//             (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks)
+//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+//             [supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks]);
+
+//         // Convert responders into an array of callSigns
+//         const responderList = responders.split(',').map(responder => {
+//             const match = responder.match(/\[(.*?)\]/);
+//             return match ? match[1].trim() : null;
+//         }).filter(callSign => callSign);  // Remove null values in case of failed regex match
+
+//         // Update the fireResponsePoints for each responder in tbl_accounts
+//         for (const callSign of responderList) {
+//             await db.query(`UPDATE tbl_accounts SET fireResponsePoints = fireResponsePoints + 1 WHERE callSign = ?`, [callSign]);
+//             await connection.query(
+//                 'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username from tbl_accounts where callSign = ?), "PFCFVA System", NOW())',
+//                 [callSign]
+//             );
+//         }
+
+//         await connection.query(
+//             'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("fire response submitted", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
+//             [username]
+//         );
+       
+
+//         res.json({ success: true, message: 'Logs saved and fireResponsePoints updated successfully' });
+//     } catch (error) {
+//         console.error('Error saving logs or updating fireResponsePoints:', error);
+//         res.status(500).json({ success: false, message: 'Failed to save logs or update fireResponsePoints' });
+//     }
+// });
+
 app.post('/saveICSLogs', async (req, res) => {
+    const username = req.session.user?.username;
     const {
         supervisorName,
         incidentDate,
@@ -1032,7 +1084,19 @@ app.post('/saveICSLogs', async (req, res) => {
         // Update the fireResponsePoints for each responder in tbl_accounts
         for (const callSign of responderList) {
             await db.query(`UPDATE tbl_accounts SET fireResponsePoints = fireResponsePoints + 1 WHERE callSign = ?`, [callSign]);
+
+            // Insert notification for responder
+            await db.query(
+                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username FROM tbl_accounts WHERE callSign = ?), "PFCFVA System", NOW())',
+                [callSign]
+            );
         }
+
+        // Insert notification for the admin
+        await db.query(
+            'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("fire response submitted", "Admin", (SELECT accountID from tbl_accounts where username = ?), NOW())',
+            [username]
+        );
 
         res.json({ success: true, message: 'Logs saved and fireResponsePoints updated successfully' });
     } catch (error) {
@@ -1040,7 +1104,6 @@ app.post('/saveICSLogs', async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to save logs or update fireResponsePoints' });
     }
 });
-
 
 
 app.get('/getIcsLogs', (req, res) => {

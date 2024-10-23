@@ -67,6 +67,13 @@ function loadNotifications() {
                         message = 'Congratulations! You Earned 1 activity points';
                         from = 'PFCFVA System';
                         break;
+                    case 'earned fire response':
+                        message = 'Congratulations! You Earned 1 Fire Response point';
+                        from = 'PFCFVA System';
+                        break;
+                        case 'fire response submitted':
+                        message = 'A new Fire Response log has been submitted';
+                        break;
                     default:
                         console.warn('Unknown notification detail:', notification.detail);
                 }

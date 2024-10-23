@@ -649,7 +649,7 @@ const query = util.promisify(db.query).bind(db);
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
     const query = `SELECT accountType, CONCAT(firstname, ' ', lastname) AS fullName, 
-                          FLOOR(cumulativeDutyHours / 60) AS dutyHours, fireResponsePoints, inventoryPoints, activityPoints
+                          FLOOR(cumulativeDutyHours / 60) AS dutyHours, fireResponsePoints, inventoryPoints, activityPoints, callSign
                    FROM tbl_accounts WHERE username = ?`;
     db.query(query, [username], (error, results) => {
         if (error) {
@@ -660,7 +660,7 @@ const query = util.promisify(db.query).bind(db);
             console.log('No profile found for username:', username); 
             return res.status(404).json({ success: false, message: 'Profile not found' });
         }
-
+        //console.log(results);
         res.json({ success: true, data: results[0] });
     });
     });

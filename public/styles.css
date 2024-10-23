@@ -738,6 +738,34 @@ video {
   top: 90px;
 }
 
+.top-10{
+  top: 2.5rem;
+}
+
+.right-0{
+  right: 0px;
+}
+
+.top-24{
+  top: 6rem;
+}
+
+.top-28{
+  top: 7rem;
+}
+
+.top-40{
+  top: 10rem;
+}
+
+.top-80{
+  top: 20rem;
+}
+
+.top-72{
+  top: 18rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -2403,6 +2431,11 @@ video {
   padding-bottom: 5px;
 }
 
+.py-7{
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
 .pb-1{
   padding-bottom: 0.25rem;
 }
@@ -2785,6 +2818,12 @@ video {
 .shadow-sm{
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-md{
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 

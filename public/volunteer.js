@@ -13,6 +13,7 @@
     dutyH.classList.add('text-black');
     }
 
+
   function showFireRes(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');

@@ -35,70 +35,71 @@
         
         <div class="absolute top-0 bg-opacity-50 w-full h-full bg-black" >
             <div class="w-full h-full flex justify-center">
-                <div class="absolute top-36">
-                <p class="font-sans font-bold text-[2.5rem] text-white">PARAÑAQUE FILIPINO-CHINESE<br>FIRE VOLUNTEER ASSOCIATION</p>
-
-                </div>
-                <div class="bg-gray-200 bg-opacity-80 shadow-lg shadow-black  text-black rounded-xl mt-[12rem] absolute top-0 w-80 h-[330px] ml-7 || md:ml-0  md:w-96 md:h-96 mx-5 md:mt-[30vh] md:top-0" id="form">
-
-                    <div class="text-lg text-center">
-                        <h1 class="font-Istok font-bold text-2xl pb-1 || md:text-4xl md:py-7">Login</h1>
-                        <form id="loginForm">
-                            <div class="space-y-2 font-Istok text-xs">
-                                <div class="w-full px-10 h-8">
-                                    <input class="w-full h-full px-4 focus:outline-none bg-opacity-80 bg-white rounded-lg" type="text" placeholder="Username" id="username" name="username">
-                                </div>
-                                <div  class="w-full px-10 h-8 rounded-lg">
-                                    <input  class="w-full h-full px-4 focus:outline-none bg-opacity-80 bg-white rounded-lg"  type="password" placeholder="Password" id="password" name="password">
-                                </div>
-                                <div class="pl-[110px] || md:text-right md:px-16">
-                                    <a class="text-xs text-black" href="#" id="forgotPasswordLink">Forgot Password?</a>
-                                </div>
-                            </div>
-                            <div class="mt-5 md:mt-0">
-                                <button type="submit" class=" bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Log In</button>
-                            </div>
-                            
-                            <div class="mt-2 text-center">
-                                <a href="#" id="firstTimeLoginLink" class="text-black underline text-xs">First time logging in? Click here</a>
-                            </div>
-                            <div id="loginInstructions" class="hidden max-h-[20vh] md:max-h-max overflow-y-auto mt-4 text-gray-600 text-sm text-left bg-gray-100 rounded-lg px-14 pt-2 md:py-4">
-                                <div>
-                                <h2 class="text-sm md:text-lg font-bold mb-1">Login Instructions</h2>
-                        
-                                <p class="font-bold">Default Credentials Format:</p>
-                    
-                                <p>Use your assigned RFID number as <span class="text-red-600 font-bold">username</span>, and your lastname + birthday(yyyy/mm/dd) as <span class="text-red-600 font-bold">password</span>.</p>
-                                
-                                <p class="font-bold">Example:</p>
-                                <p><span class="text-red-600 font-bold">username</span>: 0008900422</p>
-                                <p><span class="text-red-600 font-bold">password</span>: delacruz20010527</p>
-                                <p>Make sure to change your password after your first login to ensure security.</p>
-                                </div>
-                            </div>
-            
-                            <div id="error-message" style="display:none; color: red;"></div>
-                        </form>
-                        
-                        <form id="reset-password-form" style="display: none;">
-                            <div id="loading-container" style="display: none;">
-                                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                            </div>
-                            <div class="space-y-2 font-Istok text-xs">
-                                <div>
-                                    <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="email" placeholder="Enter your email" name="email" id="email">
+            <div>
+                <div class="mt-32">
+                    <p class="font-sans font-bold text-[2.5rem] text-white">PARAÑAQUE FILIPINO-CHINESE<br>FIRE VOLUNTEER ASSOCIATION</p>
+    
+                    </div>
+                    <div class="w-[27rem] h-[22rem] bg-white ml-20 rounded-lg bg-opacity-70 mt-8">
+                        <div class="text-lg text-center">
+                            <h1 class="font-Istok font-bold text-2xl pb-1 || md:text-4xl md:py-7">Login</h1>
+                            <form id="loginForm">
+                                <div class="space-y-2 font-Istok text-xs">
+                                    <div class="w-full px-10 h-8">
+                                        <input class="w-full h-full px-4 focus:outline-none bg-opacity-80 bg-white rounded-lg" type="text" placeholder="Username" id="username" name="username">
+                                    </div>
+                                    <div  class="w-full px-10 h-8 rounded-lg">
+                                        <input  class="w-full h-full px-4 focus:outline-none bg-opacity-80 bg-white rounded-lg"  type="password" placeholder="Password" id="password" name="password">
+                                    </div>
+                                    <div class="pl-[110px] || md:text-right md:px-16">
+                                        <a class="text-xs text-black" href="#" id="forgotPasswordLink">Forgot Password?</a>
+                                    </div>
                                 </div>
                                 <div class="mt-5 md:mt-0">
-                                    <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Send Email</button>
+                                    <button type="submit" class=" bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Log In</button>
                                 </div>
-                                <div class="pl-[110px] || md:text-right md:px-16">
-                                    <a class="text-xs text-gray-400" href="#" id="backToLoginLink">Back to Login</a>
+                                
+                                <div class="mt-2 text-center">
+                                    <a href="#" id="firstTimeLoginLink" class="text-black underline text-xs">First time logging in? Click here</a>
                                 </div>
-                            </div>
-                        </form>
+                                <div id="loginInstructions" class="hidden max-h-[20vh] md:max-h-max overflow-y-auto mt-4 text-gray-600 text-sm text-left bg-gray-100 rounded-lg px-14 pt-2 md:py-4">
+                                    <div>
+                                    <h2 class="text-sm md:text-lg font-bold mb-1">Login Instructions</h2>
+                            
+                                    <p class="font-bold">Default Credentials Format:</p>
+                        
+                                    <p>Use your assigned RFID number as <span class="text-red-600 font-bold">username</span>, and your lastname + birthday(yyyy/mm/dd) as <span class="text-red-600 font-bold">password</span>.</p>
+                                    
+                                    <p class="font-bold">Example:</p>
+                                    <p><span class="text-red-600 font-bold">username</span>: 0008900422</p>
+                                    <p><span class="text-red-600 font-bold">password</span>: delacruz20010527</p>
+                                    <p>Make sure to change your password after your first login to ensure security.</p>
+                                    </div>
+                                </div>
+                
+                                <div id="error-message" style="display:none; color: red;"></div>
+                            </form>
+                            
+                            <form id="reset-password-form" style="display: none;">
+                                <div id="loading-container" style="display: none;">
+                                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                                </div>
+                                <div class="space-y-2 font-Istok text-xs">
+                                    <div>
+                                        <input class="px-14 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="email" placeholder="Enter your email" name="email" id="email">
+                                    </div>
+                                    <div class="mt-5 md:mt-0">
+                                        <button type="submit" class="bg-red-800 hover:bg-red-400 text-white rounded-xl py-2 px-24 || md:py-2 md:w-[19rem] md:mx-10 md:my-5">Send Email</button>
+                                    </div>
+                                    <div class="pl-[110px] || md:text-right md:px-16">
+                                        <a class="text-xs text-gray-400" href="#" id="backToLoginLink">Back to Login</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
+    
+            </div>
 
             </div>
         </div>

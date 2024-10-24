@@ -750,6 +750,10 @@ video {
   top: 90px;
 }
 
+.top-2{
+  top: 0.5rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -881,10 +885,6 @@ video {
 
 .ml-2{
   margin-left: 0.5rem;
-}
-
-.ml-20{
-  margin-left: 5rem;
 }
 
 .ml-24{
@@ -1271,6 +1271,10 @@ video {
   height: 20%;
 }
 
+.h-\[20rem\]{
+  height: 20rem;
+}
+
 .h-\[22rem\]{
   height: 22rem;
 }
@@ -1301,10 +1305,6 @@ video {
 
 .h-\[3px\]{
   height: 3px;
-}
-
-.h-\[3rem\]{
-  height: 3rem;
 }
 
 .h-\[45px\]{
@@ -1346,6 +1346,10 @@ video {
 
 .h-screen{
   height: 100vh;
+}
+
+.h-\[18rem\]{
+  height: 18rem;
 }
 
 .max-h-44{
@@ -1652,16 +1656,8 @@ video {
   width: 100%;
 }
 
-.w-\[28rem\]{
-  width: 28rem;
-}
-
-.w-\[25rem\]{
-  width: 25rem;
-}
-
-.w-\[24rem\]{
-  width: 24rem;
+.w-14{
+  width: 3.5rem;
 }
 
 .min-w-full{
@@ -2038,11 +2034,6 @@ video {
 .border-gray-500{
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
-}
-
-.border-rosered{
-  --tw-border-opacity: 1;
-  border-color: rgb(193 20 20 / var(--tw-border-opacity));
 }
 
 .border-white{
@@ -2603,10 +2594,6 @@ video {
   line-height: 2.5rem;
 }
 
-.text-\[2\.5rem\]{
-  font-size: 2.5rem;
-}
-
 .text-base{
   font-size: 1rem;
   line-height: 1.5rem;
@@ -3048,6 +3035,10 @@ video {
     top: 8rem;
   }
 
+  .md\:left-6{
+    left: 1.5rem;
+  }
+
   .md\:col-end-4{
     grid-column-end: 4;
   }
@@ -3127,6 +3118,10 @@ video {
 
   .md\:ml-2{
     margin-left: 0.5rem;
+  }
+
+  .md\:ml-20{
+    margin-left: 5rem;
   }
 
   .md\:ml-36{
@@ -3337,6 +3332,10 @@ video {
     margin-top: 7px;
   }
 
+  .md\:ml-24{
+    margin-left: 6rem;
+  }
+
   .md\:block{
     display: block;
   }
@@ -3417,6 +3416,10 @@ video {
     height: 200px;
   }
 
+  .md\:h-\[22rem\]{
+    height: 22rem;
+  }
+
   .md\:h-\[30rem\]{
     height: 30rem;
   }
@@ -3435,6 +3438,10 @@ video {
 
   .md\:h-screen{
     height: 100vh;
+  }
+
+  .md\:h-36{
+    height: 9rem;
   }
 
   .md\:max-h-\[30rem\]{
@@ -3562,6 +3569,10 @@ video {
     width: 25rem;
   }
 
+  .md\:w-\[27rem\]{
+    width: 27rem;
+  }
+
   .md\:w-\[280px\]{
     width: 280px;
   }
@@ -3612,6 +3623,10 @@ video {
 
   .md\:w-full{
     width: 100%;
+  }
+
+  .md\:w-\[24rem\]{
+    width: 24rem;
   }
 
   .md\:max-w-72{
@@ -3967,10 +3982,6 @@ video {
     padding-top: 2.5rem;
   }
 
-  .md\:pt-12{
-    padding-top: 3rem;
-  }
-
   .md\:pt-14{
     padding-top: 3.5rem;
   }
@@ -4034,6 +4045,10 @@ video {
   .md\:text-8xl{
     font-size: 6rem;
     line-height: 1;
+  }
+
+  .md\:text-\[2\.5rem\]{
+    font-size: 2.5rem;
   }
 
   .md\:text-base{

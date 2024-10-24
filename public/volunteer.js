@@ -13,6 +13,7 @@
     dutyH.classList.add('text-black');
     }
 
+
   function showFireRes(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
@@ -119,7 +120,12 @@
                             message = 'WELCOME TO PFCFVA WEBSITE! Mabuhay!';
                             break;
                         case 'added activity Points':
-                            message = 'Congratulations! You Earned 1 activity points';
+                            message = 'Congratulations! You Earned 1 activity point';
+                            name =  'PFCFVA System';
+                            break;
+                        case 'earned fire response':
+                            message = 'Congratulations! You Earned 1 Fire Response point';
+                            name =  'PFCFVA System';
                             break;
                     }
     

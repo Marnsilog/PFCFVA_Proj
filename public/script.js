@@ -1,11 +1,11 @@
 
-document.addEventListener("DOMContentLoaded", function() {
+// document.addEventListener("DOMContentLoaded", function() {
     
-    var blackBackground = document.getElementById('blackBackround');
-    var homepageSec = document.getElementById('homepageSec');
-    blackBackground.classList.remove('bg-opacity-50','bg-black');
-    homepageSec.classList.remove('opacity-40');
-});
+//     var blackBackground = document.getElementById('blackBackround');
+//     var homepageSec = document.getElementById('homepageSec');
+//     blackBackground.classList.remove('bg-opacity-50','bg-black');
+//     homepageSec.classList.remove('opacity-40');
+// });
 
 
 function handleLogin() {
@@ -34,66 +34,53 @@ function handleLogin() {
    
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    var blackBackground  = document.getElementById("blackBackround");
-    var homepageSec = document.getElementById('homepageSec');
+// document.addEventListener("DOMContentLoaded", function() {
+//     var blackBackground  = document.getElementById("blackBackround");
+//     var homepageSec = document.getElementById('homepageSec');
 
-    document.getElementById("cancel").addEventListener("click", function() {
-        document.getElementById("form").style.display = "none";
-        blackBackground.classList.remove('bg-black');
-        blackBackground.classList.remove('bg-opacity-50');
-        homepageSec.classList.remove('opacity-40');
+//     document.getElementById("cancel").addEventListener("click", function() {
+//         document.getElementById("form").style.display = "none";
+//         blackBackground.classList.remove('bg-black');
+//         blackBackground.classList.remove('bg-opacity-50');
+//         homepageSec.classList.remove('opacity-40');
 
-        loginButton.disabled = false;
-        var navLinks = document.getElementById('navLinks').getElementsByTagName('a');
-        for (var i = 0; i < navLinks.length; i++) {
-            navLinks[i].style.pointerEvents = 'auto';
-        }
+//         loginButton.disabled = false;
+//         var navLinks = document.getElementById('navLinks').getElementsByTagName('a');
+//         for (var i = 0; i < navLinks.length; i++) {
+//             navLinks[i].style.pointerEvents = 'auto';
+//         }
         
-    });
-});
+//     });
+// });
 
 
-function directTo() {
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
 
-    if (username === "marns" && password === "1234") {
-
-        window.location.href = "volunteer.html";
-        return false;
-    } else {
-        alert("Invalid credentials. Please try again.");
-        return false; 
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
+// document.addEventListener('DOMContentLoaded', function () {
+//     const menuToggle = document.getElementById('menu-toggle');
+//     const mobileMenu = document.getElementById('mobile-menu');
 
 
-    menuToggle.addEventListener('click', function () {
-        if (mobileMenu.style.display === 'block') {
-            mobileMenu.style.display = 'none';
-        } else {
-            mobileMenu.style.display = 'block';
-        }
-    });
+//     menuToggle.addEventListener('click', function () {
+//         if (mobileMenu.style.display === 'block') {
+//             mobileMenu.style.display = 'none';
+//         } else {
+//             mobileMenu.style.display = 'block';
+//         }
+//     });
 
-    const mobileMenuItems = mobileMenu.querySelectorAll('a');
-    mobileMenuItems.forEach(function (item) {
-        item.addEventListener('click', function () {
-            mobileMenu.style.display = 'none';
-        });
-    });
+//     const mobileMenuItems = mobileMenu.querySelectorAll('a');
+//     mobileMenuItems.forEach(function (item) {
+//         item.addEventListener('click', function () {
+//             mobileMenu.style.display = 'none';
+//         });
+//     });
 
-    document.addEventListener('click', function (event) {
-        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
-            mobileMenu.style.display = 'none';
-        }
-    });
-});
+//     document.addEventListener('click', function (event) {
+//         if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+//             mobileMenu.style.display = 'none';
+//         }
+//     });
+// });
 
 document.getElementById('reset-password-form').addEventListener('submit', async function (event) {
     event.preventDefault();

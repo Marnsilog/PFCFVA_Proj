@@ -53,3 +53,14 @@ firstTimeLoginLink.addEventListener('click', (event) => {
         loginInstructions.classList.add('hidden');  // Hide instructions
     }
 });
+
+
+let slides = document.querySelectorAll('#slideshow .slide');
+let currentSlide = 0;
+let slideInterval = setInterval(nextSlide, 3000); // Change every 3 seconds
+
+function nextSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+}

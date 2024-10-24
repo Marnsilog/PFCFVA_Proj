@@ -165,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
     function fetchDashboardData() {
         fetch('/auth/dashboard-data')
@@ -201,8 +200,65 @@ document.addEventListener("DOMContentLoaded", function () {
                 element.textContent = data[field.key] || field.fallback;
             } 
         });
+    
+        // Additional logic for Duty Hours and Rank Upgrade
+        updateDutyHoursAndRank(data);
+    }
+
+    function cleanRank(rankWithNumber) {
+        // Use a regular expression to remove digits
+        return rankWithNumber.replace(/[0-9]/g, '');
+    }
+
+    function updateDutyHoursAndRank(data) {
+        const dutyHours = data.dutyHours || 0;
+        const fireresponse = data.fireResponsePoints || 0;
+        let callSigndb = data.callSign || '';
+        let callsign = cleanRank(callSigndb);
+        let maxHours = 100;
+        let maxfrpoints = "";
+        let rankUpgrade = "";
+        let currentRank = "";
+        console.log("CALLSIGN: ",callsign);
+        if (callsign === "ASPIRANT") {
+            currentRank = "Aspirant";
+            maxfrpoints = 0;
+            rankUpgrade = "Aspirant -> Probationary";
+            maxHours = 100;
+        } else if (callsign === "PROBATIONARY") {
+            currentRank = "Probationary";
+            rankUpgrade = "Probationary -> Echo";
+             maxfrpoints = 10;
+            maxHours = 1000;
+        } else if (callsign === "ECHO") {
+            currentRank = "Echo";
+            rankUpgrade = "Echo -> Prevo";
+             maxfrpoints = 20;
+            maxHours = 2000;
+        } else {
+            currentRank = "PREVO";
+            rankUpgrade = "Prevo (Max Rank)";
+            maxfrpoints = "Unlimited";
+            maxHours = "Unlimited";
+        }
+
+        // Update duty hours and rank in the dashboard
+        
+        document.getElementById("cumFireresponse").textContent = `${fireresponse}/${maxfrpoints}`;
+        document.getElementById("cumDutyhours").textContent = `${dutyHours}/${maxHours}`;
+        document.querySelector(".rankUpgrade").textContent = rankUpgrade;
+        document.querySelector(".rankUpgrade2").textContent = rankUpgrade;
     }
 
     fetchDashboardData();
 });
+
+function showFRdet(){
+    const FireResdash = document.getElementById('FireResdash');
+    FireResdash.style.display = (FireResdash.style.display === 'none' || FireResdash.style.display === '') ? 'block' : 'none';
+}
+function showDHrankUP() {
+    const dutyHoursDash = document.getElementById('Dutyhoursdash');
+    dutyHoursDash.style.display = (dutyHoursDash.style.display === 'none' || dutyHoursDash.style.display === '') ? 'block' : 'none';
+}
 

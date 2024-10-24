@@ -110,6 +110,13 @@ const io = socketIo(server);  // Attach Socket.IO to the server
 
 const filePath = path.join(__dirname, 'public/chat_logs', 'chat_log.txt'); // Single log file for all chats
 
+// Ensure that the chat_logs folder is created if it doesn't exist
+if (!fs.existsSync(path.join(__dirname, 'public/chat_logs'))) {
+    fs.mkdirSync(path.join(__dirname, 'public/chat_logs'), { recursive: true });
+    console.log('Chat logs directory created.');
+} else {
+    console.log('Chat logs directory already exists.');
+}
 
 // io.on('connection', (socket) => {
 //     console.log('A user connected: ', socket.id);

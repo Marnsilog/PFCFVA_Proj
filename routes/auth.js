@@ -215,7 +215,7 @@ const query = util.promisify(db.query).bind(db);
                                 // Insert notification
                                 const notificationQuery = `
                                     INSERT INTO tbl_notification (detail, target, created_by, created_at)
-                                    VALUES ("New account created", ?, "Pfcfva System", NOW())
+                                    VALUES ("New account created", ?, "0", NOW())
                                 `;
                                 db.query(notificationQuery, [username], (notifErr) => {
                                     if (notifErr) {

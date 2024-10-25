@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // }
 
 
-// Function to handle the fire_response.html logic
+// Function to handle the fire_response.html logic (WORKING TO)
 function handleFireResponsePage() {
     let attendees = [];
 
@@ -348,7 +348,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Function to handle the ICS Form page (supervisor_ics_form.html)
+// Function to handle the ICS Form page (supervisor_ics_form.html , this is WORKING)
+// function handleICSFormPage() {
+//     // Retrieve the attendees stored in sessionStorage
+//     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
+
+//     // Get the responders div and clear it before populating
+//     const respondersDiv = document.getElementById('responders');
+//     respondersDiv.innerHTML = ''; // Clear existing content
+
+//     // Loop through attendees and create list elements for each attendee
+//     attendees.forEach(attendee => {
+//         const li = document.createElement('li');
+//         li.innerHTML = `<strong>[${attendee.callSign}]</strong> ${attendee.name}`;
+//         respondersDiv.appendChild(li); // Append each attendee to the responders div
+//     });
+
+//     // Retrieve chat logs from sessionStorage and populate the chatLogs textarea
+//     const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];  // Default to empty array if no logs found
+//     const chatLogs = storedChatLogs.join('\n'); // Combine all messages into a single string with line breaks
+//     document.getElementById('chatLogs').value = chatLogs;  // Populate chat logs in the textarea
+
+//     // Retrieve the supervisor name (already handled, but just in case)
+//     const supervisorName = sessionStorage.getItem('supervisorName') || '';
+//     document.getElementById('supervisorName').textContent = supervisorName;
+
+//     // If needed, retrieve and populate other details like vehicle used, incident date, etc.
+//     const vehicleUsed = sessionStorage.getItem('selectedVehicle') || '';
+//     document.getElementById('vehicleUsed').value = vehicleUsed;
+// }
 function handleICSFormPage() {
     // Retrieve the attendees stored in sessionStorage
     const attendees = JSON.parse(sessionStorage.getItem('attendees')) || [];
@@ -364,19 +392,30 @@ function handleICSFormPage() {
         respondersDiv.appendChild(li); // Append each attendee to the responders div
     });
 
+    // Retrieve and populate the vehicle used
+    const vehicleUsed = sessionStorage.getItem('selectedVehicle') || '';
+    const vehicleUsedElement = document.getElementById('vehicleUsed');
+    if (vehicleUsedElement) {
+        vehicleUsedElement.value = vehicleUsed;  // Set the vehicle name in the form
+    }
+
+    // Retrieve the supervisor name from sessionStorage
+    const supervisorName = sessionStorage.getItem('supervisorName') || '';
+    const supervisorNameElement = document.getElementById('supervisorName');
+    if (supervisorNameElement) {
+        supervisorNameElement.textContent = supervisorName;  // Set the supervisor name in the form
+    }
+
     // Retrieve chat logs from sessionStorage and populate the chatLogs textarea
     const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];  // Default to empty array if no logs found
     const chatLogs = storedChatLogs.join('\n'); // Combine all messages into a single string with line breaks
-    document.getElementById('chatLogs').value = chatLogs;  // Populate chat logs in the textarea
-
-    // Retrieve the supervisor name (already handled, but just in case)
-    const supervisorName = sessionStorage.getItem('supervisorName') || '';
-    document.getElementById('supervisorName').textContent = supervisorName;
-
-    // If needed, retrieve and populate other details like vehicle used, incident date, etc.
-    const vehicleUsed = sessionStorage.getItem('selectedVehicle') || '';
-    document.getElementById('vehicleUsed').value = vehicleUsed;
+    const chatLogsElement = document.getElementById('chatLogs');
+    if (chatLogsElement) {
+        chatLogsElement.value = chatLogs;  // Populate chat logs in the textarea
+    }
 }
+
+
 
 
 document.getElementById('submitLogs').addEventListener('click', function(event) {

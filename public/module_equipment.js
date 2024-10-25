@@ -355,6 +355,7 @@ document.getElementById('addVehicleForm').addEventListener('submit', async funct
             EditAddVehicleAssignments();
             loadAddVehicleAssignments();
             var form = document.getElementById('addVehicleForm');
+            form.reset();
             form.classList.add('hidden');
         } else {
             alert('Error: ' + result.message);

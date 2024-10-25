@@ -285,7 +285,24 @@
                 </div>
 </body>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Check if the chatLogs textarea exists
+    const chatLogsTextarea = document.getElementById('chatLogs');
 
+    if (chatLogsTextarea) {
+        // Retrieve stored chat logs from sessionStorage
+        const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+
+        // Join the chat logs into a single string, separating each message with a new line
+        const chatLogsText = storedChatLogs.join('\n');
+
+        // Populate the textarea with the stored chat logs
+        chatLogsTextarea.value = chatLogsText;
+    }
+});
+
+</script>
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>
 <script src="module_incident.js" defer></script>

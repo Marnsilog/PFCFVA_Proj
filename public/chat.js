@@ -617,6 +617,11 @@ socket.on('chatMessage', (msgData) => {
 
     messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="${messageStyle}">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
     chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+
+     //     // Store the chat messages in sessionStorage
+        let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+        storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
+        sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
 });
 
 

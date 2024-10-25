@@ -46,6 +46,114 @@ document.addEventListener('DOMContentLoaded', function () {
 //         });
 // }
 
+
+//WORKING
+// function fetchIcsLogs() {
+//     fetch('/getIcsLogs')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Sort the data array based on incidentDateFormatted in descending order (newest at the top)
+//             data.sort((a, b) => {
+//                 const dateA = new Date(a.incidentDate).getTime();
+//                 const dateB = new Date(b.incidentDate).getTime();
+//                 return dateB - dateA; // Sort in descending order
+//             });
+
+//             const icsLogsTable = document.getElementById('icsLogs');
+//             icsLogsTable.innerHTML = ''; // Clear existing logs
+
+//             data.forEach(log => {
+//                 const row = document.createElement('tr');
+                
+//                 // Formatting date to a readable format, for example, "Month Day, Year"
+//                 const incidentDateFormatted = new Date(log.incidentDate).toLocaleDateString('en-US', {
+//                     year: 'numeric',
+//                     month: 'long',
+//                     day: 'numeric'
+//                 });
+
+//                 // If `dispatchTime` is returned in `HH:MM:SS` format, we remove seconds (substring(0, 5))
+//                 const dispatchTimeFormatted = log.dispatchTime ? log.dispatchTime.substring(0, 5) : '--:--';
+
+//                 // Populate the table row with fetched data
+//                 row.innerHTML = `
+//                     <td>${log.supervisorName}</td>
+//                     <td class="px-3">${incidentDateFormatted}</td>
+//                     <td class="px-3">${dispatchTimeFormatted}</td>
+//                     <td class="px-3"><a href="#" onclick="inciform(${log.icsID})"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a></td>
+//                 `;
+
+//                 // Append the new row to the table body
+//                 icsLogsTable.appendChild(row);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching ICS logs:', error);
+//         });
+// }
+
+// //working din
+// function fetchIcsLogs() {
+//     fetch('/getIcsLogs')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // First, sort by dispatchTime in descending order (newest time first)
+//             data.sort((a, b) => {
+//                 const timeA = a.dispatchTime ? a.dispatchTime.replace(":", "") : '0000'; // Handle missing times
+//                 const timeB = b.dispatchTime ? b.dispatchTime.replace(":", "") : '0000'; // Handle missing times
+//                 return timeB - timeA; // Sort by time in descending order
+//             });
+
+//             // Then, sort by incidentDate in descending order (newest date first)
+//             data.sort((a, b) => {
+//                 const dateA = new Date(a.incidentDate).getTime();
+//                 const dateB = new Date(b.incidentDate).getTime();
+//                 return dateB - dateA; // Sort by date in descending order
+//             });
+
+//             const icsLogsTable = document.getElementById('icsLogs');
+//             icsLogsTable.innerHTML = ''; // Clear existing logs
+
+//             data.forEach(log => {
+//                 const row = document.createElement('tr');
+                
+//                 // Formatting date to a readable format, for example, "Month Day, Year"
+//                 const incidentDateFormatted = new Date(log.incidentDate).toLocaleDateString('en-US', {
+//                     year: 'numeric',
+//                     month: 'long',
+//                     day: 'numeric'
+//                 });
+
+//                 // Format dispatchTime to remove seconds
+//                 const dispatchTimeFormatted = log.dispatchTime ? log.dispatchTime.substring(0, 5) : '--:--';
+
+//                 // Populate the table row with fetched data
+//                 row.innerHTML = `
+//                     <td>${log.supervisorName}</td>
+//                     <td class="px-3">${incidentDateFormatted}</td>
+//                     <td class="px-3">${dispatchTimeFormatted}</td>
+//                     <td class="px-3"><a href="#" onclick="inciform(${log.icsID})"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512"><path d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"/></svg></a></td>
+//                 `;
+
+//                 // Append the new row to the table body
+//                 icsLogsTable.appendChild(row);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching ICS logs:', error);
+//         });
+// }
+
 function fetchIcsLogs() {
     fetch('/getIcsLogs')
         .then(response => {
@@ -55,11 +163,19 @@ function fetchIcsLogs() {
             return response.json();
         })
         .then(data => {
-            // Sort the data array based on incidentDateFormatted in descending order (newest at the top)
+            // First, sort by date in descending order
             data.sort((a, b) => {
                 const dateA = new Date(a.incidentDate).getTime();
                 const dateB = new Date(b.incidentDate).getTime();
-                return dateB - dateA; // Sort in descending order
+                
+                if (dateA !== dateB) {
+                    return dateB - dateA; // Sort by date if they are different
+                } else {
+                    // If the dates are the same, sort by time in descending order
+                    const timeA = a.dispatchTime ? parseInt(a.dispatchTime.replace(':', ''), 10) : 0;
+                    const timeB = b.dispatchTime ? parseInt(b.dispatchTime.replace(':', ''), 10) : 0;
+                    return timeB - timeA; // Sort by time when the dates are the same
+                }
             });
 
             const icsLogsTable = document.getElementById('icsLogs');
@@ -75,7 +191,7 @@ function fetchIcsLogs() {
                     day: 'numeric'
                 });
 
-                // If `dispatchTime` is returned in `HH:MM:SS` format, we remove seconds (substring(0, 5))
+                // Format dispatchTime to remove seconds
                 const dispatchTimeFormatted = log.dispatchTime ? log.dispatchTime.substring(0, 5) : '--:--';
 
                 // Populate the table row with fetched data
@@ -94,6 +210,7 @@ function fetchIcsLogs() {
             console.error('Error fetching ICS logs:', error);
         });
 }
+
 
 // Function to fetch incident log details for a given icsID and toggle the modal visibility
 function inciform(icsID) {

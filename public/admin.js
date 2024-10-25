@@ -155,6 +155,12 @@ function markAsRead(notificationId, detail) {
                 case 'Equipment status changed':
                     href = '/admin_inventory_status_logs';
                     break;
+                case 'new activity logs':
+                    href = '/admin_activity';
+                    break;
+                 case 'added activity Points':
+                    href = '/admin_activity';
+                    break;
                 default:
                     href = '/admin_dashboard'
             }

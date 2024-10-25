@@ -435,8 +435,8 @@ app.post('/recordTimeOut', (req, res) => {
 });
 
 // TIMER TAB HERE
-cron.schedule('58 23 * * *', () => {
-    console.log('Logging out all users at 11:58 PM');
+cron.schedule('58 20 * * *', () => {
+    console.log('Logging out all users at 10:00 PM');
     logOutAllUsers();
 });
 

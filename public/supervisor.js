@@ -72,7 +72,7 @@
                 notifications.forEach(notification => {
                     const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                     let message = notification.detail;
-                    let name = notification.created_by || ''; // Fallback to empty string if null or empty
+                    let name = notification.created_by || ''; 
     
                     // Notification message mapping
                     switch (notification.detail) {
@@ -144,8 +144,12 @@
                 case 'added activity Points':
                     href = '/supervisor_activity';
                     break;
+                case 'earned fire response':
+                    href = '/supervisor_ics_logs';
+                    break;
                 default:
                     href = '/supervisor_dashboard'; 
+                
             }
     
             // Redirect the user if href is set

@@ -1140,7 +1140,7 @@ app.post('/saveICSLogs', async (req, res) => {
 
             // Insert notification for responder
             await db.query(
-                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username FROM tbl_accounts WHERE callSign = ?), "PFCFVA System", NOW())',
+                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username FROM tbl_accounts WHERE callSign = ?), "0", NOW())',
                 [callSign]
             );
         }

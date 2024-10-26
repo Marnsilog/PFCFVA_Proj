@@ -118,70 +118,6 @@ if (!fs.existsSync(path.join(__dirname, 'public/chat_logs'))) {
     console.log('Chat logs directory already exists.');
 }
 
-// io.on('connection', (socket) => {
-//     console.log('A user connected: ', socket.id);
-
-//     // Handle incoming messages
-//     socket.on('chatMessage', (msgData) => {
-//         // Broadcast the message object to all clients
-//         io.emit('chatMessage', msgData);
-//     });
-
-//     socket.on('disconnect', () => {
-//         console.log('A user disconnected: ', socket.id);
-//     });
-// });
-
-// io.on('connection', (socket) => {
-//     console.log('A user connected: ', socket.id);
-
-//     // Send the chat log when a user connects
-//     const now = new Date();
-//     const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
-//     const filePath = path.join(__dirname, 'public/chat_logs', fileName);
-
-//     // Check if the log file exists and read it
-//     fs.readFile(filePath, 'utf8', (err, data) => {
-//         if (err) {
-//             console.error('Error reading chat log file:', err);
-//         } else {
-//             // Send the entire chat log content to the client
-//             socket.emit('loadChatLog', data);
-//         }
-//     });
-
-//     // Handle incoming chat messages
-//     socket.on('chatMessage', (msgData) => {
-//         const now = new Date();
-//         const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
-//         const filePath = path.join(__dirname, 'public/chat_logs', fileName);
-
-//         const logMessage = `[${msgData.date} ${msgData.time}] ${msgData.username}: ${msgData.message}\n`;
-
-//         // Save the message to the .txt file
-//         fs.appendFile(filePath, logMessage, (err) => {
-//             if (err) {
-//                 console.error('Error writing to chat log:', err);
-//                 return;
-//             }
-
-//             // Store the file path in the database if it's not already saved
-//             const query = 'INSERT INTO tbl_chat_logs (filePath) VALUES (?) ON DUPLICATE KEY UPDATE filePath = ?';
-//             db.query(query, [filePath, filePath], (err) => {
-//                 if (err) {
-//                     console.error('Error saving chat log path:', err);
-//                 }
-//             });
-//         });
-
-//         // Broadcast the message to all clients
-//         io.emit('chatMessage', msgData);
-//     });
-
-//     socket.on('disconnect', () => {
-//         console.log('A user disconnected: ', socket.id);
-//     });
-// });
 
 
 io.on('connection', (socket) => {
@@ -711,37 +647,6 @@ app.get('/getEquipment', (req, res) => {
 });
 
 
-// app.get('/getEquipment', (req, res) => { 
-//     try {
-//         const search = req.query.search || ''; 
-//         const vehicleAssignment = req.query.search || ''; 
-//         const itemStatus = req.query.search || ''; 
-//         const query = `
-//             SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
-//             WHERE (itemName LIKE ? OR itemID LIKE ? AND vehicleAssignment LIKE ? and status = ?) 
-//             AND itemStatus = 'Available'
-//         `;
-
-//         const searchParam = `%${search}%`;
-
-//         db.query(query, [searchParam, searchParam, itemStatus], (err, results) => {
-//             if (err) {vehicleAssignment
-//                 console.error('Failed to retrieve equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to retrieve equipment' });
-//             }
-
-//             const equipment = results.map(item => ({
-//                 ...item,
-//                 itemImage: cloudinary.url(item.itemImage) 
-//             }));
-
-//             res.json(equipment);
-//         });
-//     } catch (error) {
-//         console.error('Unexpected error:', error);
-//         res.status(500).json({ error: 'An unexpected error occurred' });
-//     }
-// });
 
 
 app.get('/getTrashedEquipment', (req, res) => { 
@@ -955,50 +860,6 @@ app.put('/updateEquipment', (req, res) => {
     }
 });
 
-// app.put('/updateEquipment', (req, res) => {
-//     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
-//     let itemImagePath = null;
-
-//     if (req.files && req.files.itemImage) {
-//         const itemImage = req.files.itemImage;
-//         const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
-//         const uploadDir = path.join(__dirname, 'public/uploads');
-//         const uploadPath = path.join(uploadDir, uniqueFileName);
-//         if (!fs.existsSync(uploadDir)) {
-//             fs.mkdirSync(uploadDir, { recursive: true });
-//         }
-//         itemImage.mv(uploadPath, (err) => {
-//             if (err) {
-//                 console.error('Error moving file:', err);
-//                 return res.status(500).send({ success: false, message: 'Error saving item image' });
-//             }
-
-//             itemImagePath = `/uploads/${uniqueFileName}`;
-//             updateDatabase();
-//         });
-//     } else {
-//         updateDatabase();
-//     }
-
-//     function updateDatabase() {
-//         const sql = `
-//             UPDATE tbl_inventory
-//             SET itemName = ?, 
-//             vehicleAssignment = ?,
-//             itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
-//             WHERE itemID = ?
-//         `;
-
-//         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
-//             if (err) {
-//                 console.error('Database update error:', err);
-//                 return res.status(500).json({ error: 'Failed to update equipment' });
-//             }
-//             res.status(200).json({ message: 'Equipment updated successfully' });
-//         });
-//     }
-// });
-
 
 
 
@@ -1008,102 +869,7 @@ app.put('/updateEquipment', (req, res) => {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-// // POST route for saving ICS logs
-// app.post('/saveICSLogs', async (req, res) => {
-//     try {
-//         const {
-//             supervisorName,
-//             incidentDate,
-//             dispatchTime,
-//             location,
-//             alarmStatus,
-//             whoRequested,
-//             fireType,
-//             vehicleUsed,
-//             responders,
-//             chatLogs,
-//             remarks
-//         } = req.body;
 
-//         // Construct the SQL query
-//         const query = `
-//             INSERT INTO tbl_ics_logs 
-//             (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//         `;
-
-//         // Insert the data into the database
-//         await db.query(query, [
-//             supervisorName,
-//             incidentDate,
-//             dispatchTime,
-//             location,
-//             alarmStatus,
-//             whoRequested,
-//             fireType,
-//             vehicleUsed,
-//             responders,      // This should be a JSON string containing the attendees (callSign and name)
-//             chatLogs,        // The chat log as a text
-//             remarks
-//         ]);
-
-//         res.json({ success: true, message: 'ICS logs saved successfully.' });
-//     } catch (error) {
-//         console.error('Error saving ICS logs:', error);
-//         res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
-//     }
-// });
-
-// app.post('/saveICSLogs', async (req, res) => {
-//     const username = req.session.user?.username;
-//     const {
-//         supervisorName,
-//         incidentDate,
-//         dispatchTime,
-//         location,
-//         alarmStatus,
-//         whoRequested,
-//         fireType,
-//         vehicleUsed,
-//         responders,
-//         chatLogs,
-//         remarks
-//     } = req.body;
-
-//     try {
-//         // Save the ICS logs to tbl_ics_logs
-//         await db.query(`INSERT INTO tbl_ics_logs 
-//             (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-//             [supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks]);
-
-//         // Convert responders into an array of callSigns
-//         const responderList = responders.split(',').map(responder => {
-//             const match = responder.match(/\[(.*?)\]/);
-//             return match ? match[1].trim() : null;
-//         }).filter(callSign => callSign);  // Remove null values in case of failed regex match
-
-//         // Update the fireResponsePoints for each responder in tbl_accounts
-//         for (const callSign of responderList) {
-//             await db.query(`UPDATE tbl_accounts SET fireResponsePoints = fireResponsePoints + 1 WHERE callSign = ?`, [callSign]);
-//             await connection.query(
-//                 'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username from tbl_accounts where callSign = ?), "PFCFVA System", NOW())',
-//                 [callSign]
-//             );
-//         }
-
-//         await connection.query(
-//             'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("fire response submitted", "Admin", (SELECT accountID FROM tbl_accounts WHERE username = ?), NOW())',
-//             [username]
-//         );
-       
-
-//         res.json({ success: true, message: 'Logs saved and fireResponsePoints updated successfully' });
-//     } catch (error) {
-//         console.error('Error saving logs or updating fireResponsePoints:', error);
-//         res.status(500).json({ success: false, message: 'Failed to save logs or update fireResponsePoints' });
-//     }
-// });
 
 app.post('/saveICSLogs', async (req, res) => {
     const username = req.session.user?.username;
@@ -1272,11 +1038,7 @@ app.use('/profilePicture', express.static(path.join(__dirname, 'profilePicture')
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
 
 
-// //port
-// const PORT = 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server started on port ${PORT}`);
-// });
+
 
 //server instead of app for HTTP || wag baguhin.
 const PORT = 3000;

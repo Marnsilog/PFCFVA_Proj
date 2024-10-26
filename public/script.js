@@ -90,7 +90,10 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
 
     // Show loading spinner
     loadingContainer.style.display = 'block';
-
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.reset();
+    }
     try {
         const response = await fetch('/auth/send-email', {
             method: 'POST',

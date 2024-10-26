@@ -41,7 +41,7 @@ async function fetchProfileData() {
             if (/Aspirant/i.test(callsign)) {
                 dhmax = 100;
                 frmax = 0;
-            } else if (/Probationary/i.test(callsign)) {
+            } else if (/PROBATIONARY/i.test(callsign)) {
                 dhmax = 1000;
                 frmax = 10;
             } else if (/echo/i.test(callsign)) {

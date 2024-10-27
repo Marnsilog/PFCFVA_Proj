@@ -424,6 +424,11 @@
 
 </body>
 </div>
+<script>
+    document.getElementById('rfid').addEventListener('input', function (event) {
+    event.target.value = event.target.value.replace(/[^0-9]/g, '');
+});
+</script>
 <script src="admin.js" defer></script>
 <script src="register.js" defer></script>
 <script src="super_profiler.js" defer></script>

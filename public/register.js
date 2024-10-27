@@ -21,7 +21,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     // Adjust callSign based on its value
     if (callSign === "ECHO800" || callSign === "ECHO900") {
         callSign = callSign.slice(0, 4) + callSignNum;
-    } else if (callSign === "ASPIRANT" || callSign === "PROBATIONARY" || callSign === "ECHO") {
+    } else if (callSign === "ASPIRANT" || callSign === "PROBATIONARY" || callSign === "ECHO" || callSign === "PREVO") {
         callSign = callSign + callSignNum;
     }
 

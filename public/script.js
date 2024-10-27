@@ -90,7 +90,7 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
 
     // Show loading spinner
     loadingContainer.style.display = 'block';
-
+   
     try {
         const response = await fetch('/auth/send-email', {
             method: 'POST',
@@ -128,7 +128,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const forgotPasswordLink = document.getElementById('forgotPasswordLink');
     const backToLoginLink = document.getElementById('backToLoginLink');
 
-    forgotPasswordLink.addEventListener('click', function(event) {
+    forgotPasswordLink.addEventListener('click', function(event) { 
+        if (loginForm) {
+            loginForm.reset();
+        }
+
         event.preventDefault();
         loginForm.style.display = 'none';
         forgotPasswordForm.style.display = 'block';

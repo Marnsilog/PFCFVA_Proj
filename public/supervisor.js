@@ -72,7 +72,7 @@
                 notifications.forEach(notification => {
                     const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                     let message = notification.detail;
-                    let name = notification.created_by || ''; // Fallback to empty string if null or empty
+                    let name = notification.created_by || ''; 
     
                     // Notification message mapping
                     switch (notification.detail) {
@@ -144,8 +144,12 @@
                 case 'added activity Points':
                     href = '/supervisor_activity';
                     break;
+                case 'earned fire response':
+                    href = '/supervisor_ics_logs';
+                    break;
                 default:
                     href = '/supervisor_dashboard'; 
+                
             }
     
             // Redirect the user if href is set
@@ -327,9 +331,9 @@ function fetchVolunteers(searchTerm = '') {
 
                 tableHTML += `
                     <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showDutyDetails(${volunteer.id})">
-                        <td class="pl-5 flex justify-normal space-x-3 pt-4">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-2 md:pt-4">
                             <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
-                            <p>${volunteer.name}</p>
+                            <p class="md:pt-0 pt-[6px]">${volunteer.name}</p>
                         </td>
                         <td class="text-center">${volunteer.points||'0'}</td>
                     </tr>
@@ -396,9 +400,9 @@ function fetchFireResponse(searchTerm = '') {
                 const textColorClass = index < 5 ? 'text-red-500' : '';
                 tableHTML += `
                     <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showFireRe(${volunteer.id})">
-                        <td class="pl-5 flex justify-normal space-x-3 pt-4">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-2 md:pt-4">
                             <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
-                            <p>${volunteer.name}</p>
+                            <p class="md:pt-0 pt-[6px]">${volunteer.name}</p>
                         </td>
                         <td class="text-center">${volunteer.points||'0'}</td>
                     </tr>

@@ -49,7 +49,7 @@ function loadNotifications() {
             notifications.forEach(notification => {
                 const fontWeight = notification.status === 'read' ? '' : 'font-semibold';
                 let message = notification.detail;
-                let from = notification.created_by;
+                let from = notification.created_by || '';
                 switch (notification.detail) {
                     case 'All equipments are good':
                         message = 'A new Inventory Log has been submitted';
@@ -71,7 +71,7 @@ function loadNotifications() {
                         message = 'Congratulations! You Earned 1 Fire Response point';
                         from = 'PFCFVA System';
                         break;
-                        case 'fire response submitted':
+                    case 'fire response submitted':
                         message = 'A new Fire Response log has been submitted';
                         break;
                     default:
@@ -161,6 +161,12 @@ function markAsRead(notificationId, detail) {
                  case 'added activity Points':
                     href = '/admin_activity';
                     break;
+                case 'earned fire response':
+                    href = '/admin_fire_response';
+                        break;
+                case 'fire response submitted':
+                    href = '/admin_fire_response';
+                        break;
                 default:
                     href = '/admin_dashboard'
             }

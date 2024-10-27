@@ -906,7 +906,7 @@ app.post('/saveICSLogs', async (req, res) => {
 
             // Insert notification for responder
             await db.query(
-                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username FROM tbl_accounts WHERE callSign = ?), "PFCFVA System", NOW())',
+                'INSERT INTO tbl_notification (detail, target, created_by, created_at) VALUES ("earned fire response", (SELECT username FROM tbl_accounts WHERE callSign = ?), "0", NOW())',
                 [callSign]
             );
         }
@@ -964,7 +964,7 @@ app.get('/rankUp', (req, res) => {
     a.lastName, a.callSign, FLOOR(a.cumulativeDutyHours / 60) AS dutyHours,
     a.fireResponsePoints FROM tbl_accounts a WHERE (FLOOR(a.cumulativeDutyHours / 60) >= 100 AND a.callSign LIKE 'ASPIRANT%')
     OR (FLOOR(a.cumulativeDutyHours / 60) >= 1000 AND a.callSign LIKE 'PROBATIONARY%' AND a.fireResponsePoints >= 20)
-    OR (FLOOR(a.cumulativeDutyHours / 60) >= 2000 AND a.callSign LIKE 'ECHO9%' AND a.fireResponsePoints >= 20)
+    OR (FLOOR(a.cumulativeDutyHours / 60) >= 2000 AND a.callSign LIKE 'ECHO%' AND a.fireResponsePoints >= 20)
     ORDER BY a.lastName, a.firstName;`;
 
     db.query(sql, (err, results) => {

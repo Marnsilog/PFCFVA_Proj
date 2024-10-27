@@ -329,6 +329,7 @@ function closeVehicleForm() {
 }
 function toggleVehicleForm() {
     var form = document.getElementById('addVehicleForm');
+    form.classList.add('flex'); 
     form.classList.remove('hidden');
 
 }

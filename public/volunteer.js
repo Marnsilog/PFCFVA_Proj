@@ -12,8 +12,6 @@
     FireR.classList.remove('bg-red-700','text-white');
     dutyH.classList.add('text-black');
     }
-
-
   function showFireRes(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
@@ -251,6 +249,9 @@ window.addEventListener('load', function() {
         });
     
 
+    }else if(window.location.pathname === '/volunteer_leaderboards'){
+        fetchFireResponse();
+        fetchVolunteers();
     }
 });
 function fetchInventory_form(searchTerm = '') {  
@@ -529,4 +530,160 @@ function seeinventory(checked_date) {
 function exitinventorydetail() {
     const inventoryDetailDiv = document.getElementById('inventorydetail');
     inventoryDetailDiv.style.display = 'none';
+}
+
+//LEADERBOARDS
+function handledhSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchVolunteers(searchTerm);
+    });
+}
+function handlefrSearch() {
+    const searchInput = document.getElementById('txtleaderboardsearch');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.trim();
+        fetchFireResponse(searchTerm);
+    });
+}
+function fetchVolunteers(searchTerm = '') {
+    const url = searchTerm ? `/auth/volunteers?search=${encodeURIComponent(searchTerm)}` : '/auth/volunteers';
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('Container');
+
+            // Build the table HTML structure
+            let tableHTML = `
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                    <table id="myTable2" class="text-start w-full px-4">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white">
+                            <tr>
+                                <th class="text-start pl-5">Volunteers</th>
+                                <th class="text-center">Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+            `;
+
+            // Loop through the data and create table rows
+            data.forEach((volunteer, index) => {
+                // Set the color red for the first 5 volunteers
+                const textColorClass = index < 5 ? 'text-red-500' : '';
+
+                tableHTML += `
+                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showDutyDetails(${volunteer.id})">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-2 md:pt-4">
+                            <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
+                            <p class="md:pt-0 pt-[6px]">${volunteer.name}</p>
+                        </td>
+                        <td class="text-center">${volunteer.points||'0'}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Inject the generated table HTML into the container
+            container.innerHTML = tableHTML;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function showDutyDetails(volunteerId) {
+    fetch(`/auth/volunteer/${volunteerId}`)
+        .then(response => response.json())
+        .then(volunteerDetails => {
+            document.getElementById('dutyhoursdetail').style.display = 'block';
+
+            document.querySelector('#detailName').textContent = volunteerDetails.name;
+            document.querySelector('#detailID').textContent = volunteerDetails.callSign;
+            document.querySelector('#dutyHours').textContent = volunteerDetails.dutyHours;
+            document.querySelector('#fireResponse').textContent = volunteerDetails.fireResponsePoints;
+            document.querySelector('#inventory').textContent = volunteerDetails.inventoryPoints;
+            document.querySelector('#activity').textContent = volunteerDetails.activityPoints;
+
+            // Set the source of the detail image
+            const detailImage = document.getElementById('detailImage');
+            detailImage.src = volunteerDetails.image ? `${volunteerDetails.image}` : 'img/user.png';
+        })
+        .catch(error => console.error('Error fetching volunteer details:', error));
+}
+function exitdtdetail() {
+    document.getElementById('dutyhoursdetail').style.display = 'none';
+}
+function fetchFireResponse(searchTerm = '') {
+    const url = searchTerm ? `/auth/fireresponse?search=${encodeURIComponent(searchTerm)}` : '/auth/fireresponse';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('Container2');
+
+            // Build the table HTML structure
+            let tableHTML = `
+                <div class="w-full h-full max-h-[28rem] md:max-h-[37rem] overflow-y-auto rounded-lg shadow-black shadow-lg">
+                    <table id="myTable3" class="text-start w-full px-4">
+                        <thead class="font-Inter md:font-[100] text-[#5B5B5B] md:text-2xl md:mx-0 md:h-16 sticky top-0 bg-white"">
+                            <tr>
+                                <th class="text-start pl-5">Volunteers</th>
+                                <th class="text-center">Fire Response</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-xl text-start font-Inter">
+            `;
+
+            // Loop through the data and create table rows dynamically
+            data.forEach((volunteer, index) => {
+                const textColorClass = index < 5 ? 'text-red-500' : '';
+                tableHTML += `
+                    <tr class="h-7 border-t-2 border-b-[1px] hover:bg-gray-300 border-gray-500 md:h-16 cursor-pointer" onclick="showFireRe(${volunteer.id})">
+                        <td class="pl-5 flex justify-normal space-x-3 pt-2 md:pt-4">
+                            <p class="text-2xl font-bold ${textColorClass}">${index + 1}.</p>
+                            <p class="md:pt-0 pt-[6px]">${volunteer.name}</p>
+                        </td>
+                        <td class="text-center">${volunteer.points||'0'}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Inject the generated table HTML into the container
+            container.innerHTML = tableHTML;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function showFireRe(volunteerId) {
+    fetch(`/auth/fireresponse/${volunteerId}`)
+        .then(response => response.json())
+        .then(volunteerDetails => {
+            document.getElementById('frdetail').style.display = 'block';
+
+            document.querySelector('#detailName2').textContent = volunteerDetails.name;
+            document.querySelector('#detailID2').textContent = volunteerDetails.callSign;
+            document.querySelector('#dutyHours2').textContent = volunteerDetails.dutyHours;
+            document.querySelector('#fireResponse2').textContent = volunteerDetails.fireResponsePoints;
+            document.querySelector('#inventory2').textContent = volunteerDetails.inventoryPoints;
+            document.querySelector('#activity2').textContent = volunteerDetails.activityPoints;
+
+             // Set the source of the detail image
+             const detailImage = document.getElementById('detailImage2');
+             detailImage.src = volunteerDetails.image ? `${volunteerDetails.image}` : 'img/user.png';
+        })
+        .catch(error => console.error('Error fetching details:', error));
+}
+
+function exitdtdetail2() {
+    document.getElementById('frdetail').style.display = 'none';
 }

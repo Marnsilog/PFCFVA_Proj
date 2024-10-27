@@ -286,22 +286,52 @@
 </body>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Check if the chatLogs textarea exists
-    const chatLogsTextarea = document.getElementById('chatLogs');
+//     document.addEventListener('DOMContentLoaded', function() {
+//     // Check if the chatLogs textarea exists
+//     const chatLogsTextarea = document.getElementById('chatLogs');
 
-    if (chatLogsTextarea) {
-        // Retrieve stored chat logs from sessionStorage
-        const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+//     if (chatLogsTextarea) {
+//         // Retrieve stored chat logs from sessionStorage
+//         const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
 
-        // Join the chat logs into a single string, separating each message with a new line
-        const chatLogsText = storedChatLogs.join('\n');
+//         // Join the chat logs into a single string, separating each message with a new line
+//         const chatLogsText = storedChatLogs.join('\n');
 
-        // Populate the textarea with the stored chat logs
-        chatLogsTextarea.value = chatLogsText;
-    }
-});
+//         // Populate the textarea with the stored chat logs
+//         chatLogsTextarea.value = chatLogsText;
+//     }
+// });
 
+document.addEventListener('DOMContentLoaded', function() {
+        // Auto-fill incident date and dispatch time with current values
+        const incidentDateInput = document.getElementById('incidentDate');
+        const dispatchTimeInput = document.getElementById('dispatchTime');
+
+        if (incidentDateInput && dispatchTimeInput) {
+            // Get current date and time
+            const now = new Date();
+
+            // Format the date as yyyy-mm-dd
+            const date = now.toISOString().split('T')[0];
+            // Format the time as HH:MM (24-hour format)
+            const time = now.toTimeString().slice(0, 5);
+
+            // Set the values to the inputs
+            incidentDateInput.value = date;
+            dispatchTimeInput.value = time;
+        }
+
+        // Check if the chatLogs textarea exists
+        const chatLogsTextarea = document.getElementById('chatLogs');
+        if (chatLogsTextarea) {
+            // Retrieve stored chat logs from sessionStorage
+            const storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+            // Join the chat logs into a single string, separating each message with a new line
+            const chatLogsText = storedChatLogs.join('\n');
+            // Populate the textarea with the stored chat logs
+            chatLogsTextarea.value = chatLogsText;
+        }
+    });
 </script>
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>

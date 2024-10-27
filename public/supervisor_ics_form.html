@@ -330,8 +330,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const chatLogsText = storedChatLogs.join('\n');
             // Populate the textarea with the stored chat logs
             chatLogsTextarea.value = chatLogsText;
+
+           
         }
     });
+
+    window.addEventListener('beforeunload', function() {
+    sessionStorage.removeItem('storedChatLogs');
+});
 </script>
 <script src="supervisor.js" defer></script>
 <script src="profileImage.js" defer></script>

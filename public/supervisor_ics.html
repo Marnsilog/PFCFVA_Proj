@@ -9,6 +9,13 @@
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        #chatSystem .message {
+            line-height: 1.7; 
+            margin-bottom: 5px;
+        }
+    </style>
     <title>PFCFVA || Supervisor ICS</title>
 </head>
     <body class="bg-white w-full h-full">
@@ -204,8 +211,10 @@
                                                 <textarea class="rounded-lg w-full border-[.2px] border-black pt-2 pl-2 pb-36" id="messageBox" type="text" placeholder="Type message here..."></textarea>
                                             </div>
                                         </div>
-                                        <div class="flex justify-end">
-                                            <button class="bg-[#CBC9C2] md:w-auto w-[30%] md:h-auto h-10 md:px-7 md:py-3 md:mt-16 mt-3 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
+                                        <div class="flex justify-between items-center md:px-0 px-5 mt-5 md:mt-16">
+                                            <!-- <button class="bg-[#CBC9C2] md:w-auto w-[30%] md:h-auto h-10 md:px-7 md:py-3 md:mt-16 mt-3 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button> -->
+                                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 text-sm md:text-xl font-[500] rounded-md" id="clearLogs">Clear Messages</button>
+                                            <button class="bg-[#CBC9C2] md:w-52 md:h-12 w-32 h-10 text-sm md:text-xl font-[500] rounded-md" id="btnSendMessage">SEND MESSAGE</button>
                                         </div>
 
                                         <!-- Chat logs -->
@@ -282,6 +291,11 @@
     }
 });
 
+
+document.getElementById('clearLogs').addEventListener('click', () => {
+    const chatSystem = document.getElementById('chatSystem');
+    chatSystem.innerHTML = ''; // Clears all messages from the chatSystem element
+});
             </script>
  <script src="/socket.io/socket.io.js"></script>
 <script src="chat.js"></script>

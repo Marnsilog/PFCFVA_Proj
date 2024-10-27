@@ -1198,7 +1198,7 @@ app.get('/rankUp', (req, res) => {
     a.lastName, a.callSign, FLOOR(a.cumulativeDutyHours / 60) AS dutyHours,
     a.fireResponsePoints FROM tbl_accounts a WHERE (FLOOR(a.cumulativeDutyHours / 60) >= 100 AND a.callSign LIKE 'ASPIRANT%')
     OR (FLOOR(a.cumulativeDutyHours / 60) >= 1000 AND a.callSign LIKE 'PROBATIONARY%' AND a.fireResponsePoints >= 20)
-    OR (FLOOR(a.cumulativeDutyHours / 60) >= 2000 AND a.callSign LIKE 'ECHO9%' AND a.fireResponsePoints >= 20)
+    OR (FLOOR(a.cumulativeDutyHours / 60) >= 2000 AND a.callSign LIKE 'ECHO%' AND a.fireResponsePoints >= 20)
     ORDER BY a.lastName, a.firstName;`;
 
     db.query(sql, (err, results) => {

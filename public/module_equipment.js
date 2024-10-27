@@ -96,9 +96,6 @@ function toggleTrashForm() {
         searchBox.id = 'inventorySearchBox';
     }
 }
-
-
-
 //MOVE TO TRASH EQIPMENT 
 function moveToTrash(itemID) {
     if (confirm(`Are you sure you want to move to the trash?`)) {
@@ -398,31 +395,38 @@ function saveEquipment() {
     const updatedItemName = document.getElementById('name').value;
     const updatedVehicleAssignment = document.getElementById('editvehicleAssignment').value;
     const itemImageFile = document.getElementById('editImage').files[0];
-    
+    const loadingContainer = document.getElementById('loading-container2');
+    loadingContainer.style.display = 'block';
+
     const itemId = document.getElementById('itemId').value; 
     const formData = new FormData();
     formData.append('updatedItemName', updatedItemName);
     formData.append('updatedVehicleAssignment', updatedVehicleAssignment);
     formData.append('itemImage', itemImageFile);
     formData.append('itemId', itemId); 
-    
-    fetch('/auth/updateEquipment', {
-        method: 'PUT',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);
-            loadEquipment();
-            exitinvedit();
-        } else {
-            alert('Update failed');
-        }
-    })
-    .catch(error => {
-        console.error('Error updating equipment:', error);
-    });
+    setTimeout(() => {
+        fetch('/auth/updateEquipment', {
+            method: 'PUT',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                loadEquipment();
+                exitinvedit();
+                loadingContainer.style.display = 'none';
+            } else {
+                alert('Update failed');
+                loadingContainer.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error updating equipment:', error);
+            loadingContainer.style.display = 'none';
+        });
+    }, 300);
+   
 }
 
 

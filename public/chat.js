@@ -1,6 +1,8 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const chatSystem = document.getElementById('chatSystem');
+    chatSystem.innerHTML = '';
     const socket = io();
     const timers = {};  // Store interval IDs and seconds for each checked attendee (by callSign)
     let selectedAttendees = [];  // Store selected attendees when msgActivate is clicked
@@ -192,24 +194,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load chat log from the server when the user connects
-socket.on('loadChatLog', (chatLogs) => {
-    const chatSystem = document.getElementById('chatSystem');
+    //DONT DELETE CODES BELOW++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //DONT DELETE CODES BELOW++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //DONT DELETE CODES BELOW++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    // Clear the chat system before appending messages
-    chatSystem.innerHTML = '';
+//     // Load chat log from the server when the user connects
+// socket.on('loadChatLog', (chatLogs) => {
+//     const chatSystem = document.getElementById('chatSystem');
 
-    // Iterate through each log message and append it to the chat
-    chatLogs.forEach((logMessage) => {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');  // Add a class for styling if needed
+//     // Clear the chat system before appending messages
+//     chatSystem.innerHTML = '';
+
+//     // Iterate through each log message and append it to the chat
+//     chatLogs.forEach((logMessage) => {
+//         const messageElement = document.createElement('div');
+//         messageElement.classList.add('message');  // Add a class for styling if needed
         
-        // Append each message from the log file
-        messageElement.innerHTML = logMessage;
-        chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
-    });
-});
+//         // Append each message from the log file
+//         messageElement.innerHTML = logMessage;
+//         chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
+//     });
+// });
 
+
+    // // Load chat log without storing it in session storage
+    // socket.on('loadChatLog', (chatLogs) => {
+    //     chatSystem.innerHTML = '';  // Clear chat system on page load
+
+    //     // Only display past messages, do not store in sessionStorage
+    //     chatLogs.forEach((logMessage) => {
+    //         const messageElement = document.createElement('div');
+    //         messageElement.classList.add('message');
+    //         messageElement.innerHTML = logMessage;
+    //         chatSystem.prepend(messageElement);
+    //     });
+    // });
+
+     //DONT DELETE CODES ABOVE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //DONT DELETE CODES ABOVE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //DONT DELETE CODES ABOVE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
  
     // Receiving a new message
@@ -240,10 +263,15 @@ socket.on('chatMessage', (msgData) => {
     messageElement.innerHTML = `<strong>${msgData.username}</strong>: <span style="${messageStyle}">${msgData.message}</span> <span class="text-gray-500">(${timestamp})</span>`;
     chatSystem.prepend(messageElement);  // Prepend to show recent messages on top
 
-     //     // Store the chat messages in sessionStorage
-        let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
-        storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
-        sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
+    //  //     // Store the chat messages in sessionStorage
+    //     let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+    //     storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
+    //     sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
+
+     // Store only new messages in sessionStorage
+     let storedChatLogs = JSON.parse(sessionStorage.getItem('storedChatLogs')) || [];
+     storedChatLogs.push(`${msgData.username}: ${msgData.message} (${timestamp})`);
+     sessionStorage.setItem('storedChatLogs', JSON.stringify(storedChatLogs));
 });
 
 

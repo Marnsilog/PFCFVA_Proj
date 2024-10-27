@@ -185,7 +185,7 @@
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
             </div>
-<div class="fixed bg-black bg-opacity-50 h-full w-full z-20 top-0" id="loading-container2" style="display: none;">
+<div class="fixed bg-black bg-opacity-50 h-full w-full z-50 top-0" id="loading-container2" style="display: none;">
     <div class="lds-ellipsis2"><div></div><div></div><div></div><div></div></div>
 </div>
 <!--FORM INVENTORY NEW-->
@@ -261,53 +261,8 @@
                 </div>
             </div>
 
-            <div id="addForm" class="w-full" style="display: none;">
-                <form  id="addEquipmentForm"  class="w-full flex justify-center" enctype="multipart/form-data">
-                    <div class="absolute md:top-80 top-20 w-[90%]  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7 -20" >
-                        <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
-                        <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
-                            <p class="font-semibold text-md mr-2">Item Name:</p>
-                            <input class="w-48 md:w-72 h-7 border-black border-[1px] focus:outline-none md:px-2" type="text" id="itemName" name="itemName" required>
-                        </div>
-                        
-                        <div class="flex justify-center md:justify-start md:pl-10">
-                            <p class="mr-2 font-semibold md:mt-0 mt-1 text-sm md:text-md">Vehicle Assignment:</p>
-                            <select class="md:w-auto w-32 border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
-                            </select>
-                        </div>
-                    
-                        <div class="flex justify-center md:justify-start md:pl-10 md:mr-0 mr-2">
-                            <p class="font-semibold text-sm md:text-md">Date Acquired:</p>
-                            <input class="border-[1px] border-black rounded-md ml-2 w-48 md:pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
-                        </div>
-                    
-                        <div class="md:flex inline-block md:justify-start pl-5 md:pl-10">
-                            <p class="mr-2 font-semibold text-sm">Upload Image:</p>
-                            <input class="w-[60%]" type="file" id="itemImage" name="itemImage" accept="image/*">
-                        </div>
-                    
-                        <div class="flex justify-center space-x-5 md:space-x-10 md:pt-0 pt-5">
-                            <button class="w-16  md:w-24 h-10 bg-[#930D0D] text-white text-sm md:text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
-                            <button class="w-16 md:w-24 h-10 bg-white text-[#930D0D] text-sm md:text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
-                        </div>
-                    </div>
-                    
-                </form>
-            </div>
 
-            <div  class="flex justify-center w-full font-Inter">
-                <form id="addVehicleForm" class="hidden absolute top-44 md:top-80 w-[90%] md:w-96 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
-                    <h2 class="text-2xl text-center font-bold">Add New Vehicle</h2>
-                    <div class="flex justify-start mx-5">
-                        <p class="font-semibold text-md mr-2">Vehicle Name:</p>
-                        <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="vehicleName" name="vehicleName" required>
-                    </div>
-                    <div class="flex justify-center space-x-10">
-                        <button class="w-16 h-8 md:w-24 md:h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
-                        <button class="w-16 h-8 md:w-24 md:h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeVehicleForm()">Close</button>
-                    </div>
-                </form>
-            </div>
+         
 
 
            
@@ -338,7 +293,53 @@
 
         </div>
     </div>
+    <form id="addVehicleForm"  class="hidden  top-0 fixed bg-black bg-opacity-70 justify-center h-full w-full font-Inter z-30">
+        <div  class=" absolute top-44 md:top-80 w-[90%] md:w-96 h-64 bg-white border-[1px] border-black pt-5 space-y-7">
+            <h2 class="text-2xl text-center font-bold">Add New Vehicle</h2>
+            <div class="flex justify-start mx-5">
+                <p class="font-semibold text-md mr-2">Vehicle Name:</p>
+                <input class="w-72 h-7 border-black border-[1px] focus:outline-none px-2" type="text" id="vehicleName" name="vehicleName" required>
+            </div>
+            <div class="flex justify-center space-x-10">
+                <button class="w-16 h-8 md:w-24 md:h-10 bg-[#930D0D] text-white text-base rounded-lg font-bold" type="submit">Submit</button>
+                <button class="w-16 h-8 md:w-24 md:h-10 bg-white text-[#930D0D] text-base rounded-lg font-semibold" type="button" onclick="closeVehicleForm()">Close</button>
+            </div>
+        </div>
+    </form>
 
+    <div id="addForm" class="w-full h-full fixed bg-black bg-opacity-70 top-0 right-0 z-30" style="display: none;">
+        <form  id="addEquipmentForm"  class="w-full flex justify-center" enctype="multipart/form-data">
+            <div class="absolute md:top-72 top-14 w-[90%]  md:w-[30rem] h-96 bg-white border-[1px] border-black pt-3 md:pt-5 space-y-5 md:space-y-7 -20" >
+                <h2 class="md:text-2xl text-lg text-center font-bold">Add New Equipment</h2>
+                <div class="flex justify-center md:justify-start md:pl-10 md:mt-0 mt-3">
+                    <p class="font-semibold text-md mr-2">Item Name:</p>
+                    <input class="w-48 md:w-72 h-7 border-black border-[1px] focus:outline-none md:px-2" type="text" id="itemName" name="itemName" required>
+                </div>
+                
+                <div class="flex justify-center md:justify-start md:pl-10">
+                    <p class="mr-2 font-semibold md:mt-0 mt-1 text-sm md:text-md">Vehicle Assignment:</p>
+                    <select class="md:w-auto w-32 border-[1px] border-black rounded-md" id="addvehicleAssignment" name="vehicleAssignment"> <!-- UPDATED NAME -->
+                    </select>
+                </div>
+            
+                <div class="flex justify-center md:justify-start md:pl-10 md:mr-0 mr-2">
+                    <p class="font-semibold text-sm md:text-md">Date Acquired:</p>
+                    <input class="border-[1px] border-black rounded-md ml-2 w-48 md:pl-2" type="date" id="dateAcquired" name="dateAcquired" required>
+                </div>
+            
+                <div class="md:flex inline-block md:justify-start pl-5 md:pl-10">
+                    <p class="mr-2 font-semibold text-sm">Upload Image:</p>
+                    <input class="w-[60%]" type="file" id="itemImage" name="itemImage" accept="image/*">
+                </div>
+            
+                <div class="flex justify-center space-x-5 md:space-x-10 md:pt-0 pt-5">
+                    <button class="w-16  md:w-24 h-10 bg-[#930D0D] text-white text-sm md:text-base rounded-lg font-bold" name="sumbitAddquip" type="submit">Submit</button>
+                    <button class="w-16 md:w-24 h-10 bg-white text-[#930D0D] text-sm md:text-base rounded-lg font-semibold" type="button" onclick="closeForm()">Close</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
 
    <!-- Password confirmation modal -->
     <div id="passwordModal" class="hidden">
@@ -355,7 +356,7 @@
         </div>
     </div>
 
-    <div id="invedit" style="display: none;">
+    <div id="invedit" class="w-full h-full fixed bg-black bg-opacity-70 top-0 z-30" style="display: none;">
         <input type="hidden" id="itemId">
         <div class="flex justify-center w-full">
             <div class="top-32 md:top-72 absolute h-96 w-96 rounded-xl border-2 border-black bg-white pt-3 font-Inter">
@@ -389,7 +390,7 @@
         </div>
     </div>
 
-    <div class="fixed bottom-5 right-5 md:bottom-10 md:right-10">
+    <div class="fixed bottom-5 right-5 md:bottom-10 md:right-10 z-10">
         <div>
             <div id="inventorySetting" style="display: none;">
                 <div class="flex flex-col space-y-4">

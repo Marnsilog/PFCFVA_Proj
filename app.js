@@ -371,17 +371,23 @@ app.post('/recordTimeOut', (req, res) => {
 });
 
 // TIMER TAB HERE
-cron.schedule('58 20 * * *', () => {
+cron.schedule('0 22 * * *', () => {
     console.log('Logging out all users at 10:00 PM');
     logOutAllUsers();
 });
 
+
 // Schedule the cron job to run at midnight on the 1st day of each month
 cron.schedule('0 0 1 * *', () => {
     console.log('Resetting duty hours at the beginning of the month');
-    resetDutyHours();
     deleteTrashItems()
   });
+  cron.schedule('0 0 27 12 *', () => {
+    console.log('Resetting duty hours on December 27');
+    resetDutyHours();
+    deleteTrashItems();
+});
+
 
 function logOutAllUsers() {
     const currentTime = new Date();

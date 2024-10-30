@@ -382,10 +382,10 @@ cron.schedule('0 0 1 * *', () => {
     console.log('Resetting duty hours at the beginning of the month');
     deleteTrashItems()
   });
-  cron.schedule('0 0 27 12 *', () => {
-    console.log('Resetting duty hours on December 27');
-    resetDutyHours();
-    deleteTrashItems();
+
+cron.schedule('0 0 27 12 *', () => {
+console.log('Resetting duty hours on December 27');
+resetDutyHours();
 });
 
 

@@ -1,68 +1,140 @@
 
 //for attendance NAV
-function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            function displayAttendanceData(records) { 
-                attendanceLogsElement.innerHTML = ''; 
-                records.forEach(record => {
-                    const row = document.createElement('tr');
-                    const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    const dateFormattedTimeOut = record.dateOfTimeOut ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    }) : '-';
+// function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
+//     fetch(url)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             function displayAttendanceData(records) { 
+//                 attendanceLogsElement.innerHTML = ''; 
+//                 records.forEach(record => {
+//                     const row = document.createElement('tr');
+//                     const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+//                         year: 'numeric',
+//                         month: 'long',
+//                         day: 'numeric'
+//                     });
+//                     const dateFormattedTimeOut = record.dateOfTimeOut ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
+//                         year: 'numeric',
+//                         month: 'long',
+//                         day: 'numeric'
+//                     }) : '-';
                     
-                    row.innerHTML = `
-                        <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                        <td>${record.callSign}</td>
-                        <td>${dateFormattedTimeIn}</td>
-                        <td>${record.timeIn}</td>
-                        <td>${dateFormattedTimeOut}</td>
-                        <td>${record.timeOut || '-'}</td>
-                    `;
-                    attendanceLogsElement.appendChild(row);
+//                     row.innerHTML = `
+//                         <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+//                         <td>${record.callSign}</td>
+//                         <td>${dateFormattedTimeIn}</td>
+//                         <td>${record.timeIn}</td>
+//                         <td>${dateFormattedTimeOut}</td>
+//                         <td>${record.timeOut || '-'}</td>
+//                     `;
+//                     attendanceLogsElement.appendChild(row);
+//                 });
+//             }
+
+//             // Initial display of data
+//             displayAttendanceData(data);
+
+//             // Add event listener to search box
+//             searchBoxElement.addEventListener('input', function() {
+//                 const searchTerm = searchBoxElement.value.toLowerCase();
+//                 const filteredData = data.filter(record => {
+//                     const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+//                     const callSign = record.callSign.toLowerCase();
+//                     const dateOfTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+//                         year: 'numeric',
+//                         month: 'long',
+//                         day: 'numeric'
+//                     }).toLowerCase();
+
+//                     // Match search term with full name, call sign, or date of time in
+//                     return fullName.includes(searchTerm) || 
+//                            callSign.includes(searchTerm) ||
+//                            dateOfTimeIn.includes(searchTerm);
+//                 });
+//                 displayAttendanceData(filteredData);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching attendance logs:', error);
+//         });
+// }
+
+
+function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
+    function fetchData() {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                function displayAttendanceData(records) { 
+                    attendanceLogsElement.innerHTML = ''; 
+                    records.forEach(record => {
+                        const row = document.createElement('tr');
+                        const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        const dateFormattedTimeOut = record.dateOfTimeOut ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }) : '-';
+                        
+                        row.innerHTML = `
+                            <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                            <td>${record.callSign}</td>
+                            <td>${dateFormattedTimeIn}</td>
+                            <td>${record.timeIn}</td>
+                            <td>${dateFormattedTimeOut}</td>
+                            <td>${record.timeOut || '-'}</td>
+                        `;
+                        attendanceLogsElement.appendChild(row);
+                    });
+                }
+
+                // Initial display of data
+                displayAttendanceData(data);
+
+                // Add event listener to search box
+                searchBoxElement.addEventListener('input', function() {
+                    const searchTerm = searchBoxElement.value.toLowerCase();
+                    const filteredData = data.filter(record => {
+                        const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+                        const callSign = record.callSign.toLowerCase();
+                        const dateOfTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }).toLowerCase();
+
+                        // Match search term with full name, call sign, or date of time in
+                        return fullName.includes(searchTerm) || 
+                               callSign.includes(searchTerm) ||
+                               dateOfTimeIn.includes(searchTerm);
+                    });
+                    displayAttendanceData(filteredData);
                 });
-            }
-
-            // Initial display of data
-            displayAttendanceData(data);
-
-            // Add event listener to search box
-            searchBoxElement.addEventListener('input', function() {
-                const searchTerm = searchBoxElement.value.toLowerCase();
-                const filteredData = data.filter(record => {
-                    const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
-                    const callSign = record.callSign.toLowerCase();
-                    const dateOfTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    }).toLowerCase();
-
-                    // Match search term with full name, call sign, or date of time in
-                    return fullName.includes(searchTerm) || 
-                           callSign.includes(searchTerm) ||
-                           dateOfTimeIn.includes(searchTerm);
-                });
-                displayAttendanceData(filteredData);
+            })
+            .catch(error => {
+                console.error('Error fetching attendance logs:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching attendance logs:', error);
-        });
+    }
+
+    // Fetch data immediately and then every 3 seconds
+    fetchData();
+    setInterval(fetchData, 3000);
 }
+
 
 // Usage
 document.addEventListener('DOMContentLoaded', function() {
@@ -330,105 +402,216 @@ window.addEventListener('load', function() {
     }
 });
 
-//Merit Tracking Nav
+// //Merit Tracking Nav (working)
+// document.addEventListener('DOMContentLoaded', function() {
+//     fetch('/volunteerDetails')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             const volunteerDetails = document.getElementById('volunteerDetails');
+//             const searchBox = document.getElementById('volunteerSearchBox');
+//             const sortByMeritTracking = document.getElementById('sortByMeritTracking'); // Reference to the sort dropdown
+
+//             // Function to display the data
+//             function displayData(records) {
+//                 volunteerDetails.innerHTML = ''; 
+//                 records.forEach(record => {
+//                     const dutyHours = record.dutyHours || 0; 
+//                     const cumulativeDutyHours = record.cumulativeDutyHours || 0; 
+//                     const row = document.createElement('tr');
+//                     const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
+//                     row.innerHTML = `
+//                         <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+//                         <td>${record.callSign}</td>
+//                         <td>${rank}</td>
+//                         <td>${dutyHours}</td>
+//                         <td>${cumulativeDutyHours}</td>
+//                         <td>${record.fireResponsePoints}</td>
+//                         <td>${record.inventoryPoints}</td>
+//                         <td>${record.activityPoints}</td>
+//                     `;
+//                     volunteerDetails.appendChild(row);
+//                 });
+//             }
+
+//             // Initial display of data
+//             displayData(data);
+
+//             // Add event listener to search box
+//             searchBox.addEventListener('input', function() {
+//                 const searchTerm = searchBox.value.toLowerCase();
+//                 const filteredData = data.filter(record => {
+//                     const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+//                     return fullName.includes(searchTerm);
+//                 });
+//                 displayData(filteredData); // Call displayData with filtered data
+//             });
+
+//             // Add event listener to sort dropdown
+//             sortByMeritTracking.addEventListener('change', function() {
+//                 const sortBy = sortByMeritTracking.value;
+//                 let sortedData;
+
+//                 // Sort the data based on selected option
+//                 switch (sortBy) {
+//                     case 'Name':
+//                         sortedData = data.sort((a, b) => {
+//                             const nameA = `${a.firstName} ${a.middleInitial}. ${a.lastName}`.toLowerCase();
+//                             const nameB = `${b.firstName} ${b.middleInitial}. ${b.lastName}`.toLowerCase();
+//                             return nameA.localeCompare(nameB);
+//                         });
+//                         break;
+//                     case 'CallSign':
+//                         sortedData = data.sort((a, b) => a.callSign.localeCompare(b.callSign));
+//                         break;
+//                     case 'Rank':
+//                         sortedData = data.sort((a, b) => {
+//                             const rankA = a.callSign.replace(/\d/g, '').toLowerCase(); // Remove numbers for rank
+//                             const rankB = b.callSign.replace(/\d/g, '').toLowerCase();
+//                             return rankA.localeCompare(rankB);
+//                         });
+//                         break;
+//                     case 'DutyHours':
+//                         sortedData = data.sort((a, b) => (a.dutyHours || 0) - (b.dutyHours || 0));
+//                         break;
+//                     case 'CumulativeDutyHours':
+//                         sortedData = data.sort((a, b) => (a.cumulativeDutyHours || 0) - (b.cumulativeDutyHours || 0));
+//                         break;
+//                     case 'FireResponse':
+//                         sortedData = data.sort((a, b) => a.fireResponsePoints - b.fireResponsePoints);
+//                         break;
+//                     case 'Inventory':
+//                         sortedData = data.sort((a, b) => a.inventoryPoints - b.inventoryPoints);
+//                         break;
+//                     case 'Activity':
+//                         sortedData = data.sort((a, b) => a.activityPoints - b.activityPoints);
+//                         break;
+//                     default:
+//                         sortedData = data; // No sorting
+//                 }
+
+//                 displayData(sortedData); // Call displayData with sorted data
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching volunteer details:', error);
+//         });
+// });
+
+// Merit Tracking Nav
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/volunteerDetails')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const volunteerDetails = document.getElementById('volunteerDetails');
-            const searchBox = document.getElementById('volunteerSearchBox');
-            const sortByMeritTracking = document.getElementById('sortByMeritTracking'); // Reference to the sort dropdown
+    const volunteerDetails = document.getElementById('volunteerDetails');
+    const searchBox = document.getElementById('volunteerSearchBox');
+    const sortByMeritTracking = document.getElementById('sortByMeritTracking'); // Reference to the sort dropdown
+    let data = []; // To store the latest fetched data
 
-            // Function to display the data
-            function displayData(records) {
-                volunteerDetails.innerHTML = ''; 
-                records.forEach(record => {
-                    const dutyHours = record.dutyHours || 0; 
-                    const cumulativeDutyHours = record.cumulativeDutyHours || 0; 
-                    const row = document.createElement('tr');
-                    const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
-                    row.innerHTML = `
-                        <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-                        <td>${record.callSign}</td>
-                        <td>${rank}</td>
-                        <td>${dutyHours}</td>
-                        <td>${cumulativeDutyHours}</td>
-                        <td>${record.fireResponsePoints}</td>
-                        <td>${record.inventoryPoints}</td>
-                        <td>${record.activityPoints}</td>
-                    `;
-                    volunteerDetails.appendChild(row);
-                });
-            }
-
-            // Initial display of data
-            displayData(data);
-
-            // Add event listener to search box
-            searchBox.addEventListener('input', function() {
-                const searchTerm = searchBox.value.toLowerCase();
-                const filteredData = data.filter(record => {
-                    const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
-                    return fullName.includes(searchTerm);
-                });
-                displayData(filteredData); // Call displayData with filtered data
-            });
-
-            // Add event listener to sort dropdown
-            sortByMeritTracking.addEventListener('change', function() {
-                const sortBy = sortByMeritTracking.value;
-                let sortedData;
-
-                // Sort the data based on selected option
-                switch (sortBy) {
-                    case 'Name':
-                        sortedData = data.sort((a, b) => {
-                            const nameA = `${a.firstName} ${a.middleInitial}. ${a.lastName}`.toLowerCase();
-                            const nameB = `${b.firstName} ${b.middleInitial}. ${b.lastName}`.toLowerCase();
-                            return nameA.localeCompare(nameB);
-                        });
-                        break;
-                    case 'CallSign':
-                        sortedData = data.sort((a, b) => a.callSign.localeCompare(b.callSign));
-                        break;
-                    case 'Rank':
-                        sortedData = data.sort((a, b) => {
-                            const rankA = a.callSign.replace(/\d/g, '').toLowerCase(); // Remove numbers for rank
-                            const rankB = b.callSign.replace(/\d/g, '').toLowerCase();
-                            return rankA.localeCompare(rankB);
-                        });
-                        break;
-                    case 'DutyHours':
-                        sortedData = data.sort((a, b) => (a.dutyHours || 0) - (b.dutyHours || 0));
-                        break;
-                    case 'CumulativeDutyHours':
-                        sortedData = data.sort((a, b) => (a.cumulativeDutyHours || 0) - (b.cumulativeDutyHours || 0));
-                        break;
-                    case 'FireResponse':
-                        sortedData = data.sort((a, b) => a.fireResponsePoints - b.fireResponsePoints);
-                        break;
-                    case 'Inventory':
-                        sortedData = data.sort((a, b) => a.inventoryPoints - b.inventoryPoints);
-                        break;
-                    case 'Activity':
-                        sortedData = data.sort((a, b) => a.activityPoints - b.activityPoints);
-                        break;
-                    default:
-                        sortedData = data; // No sorting
+    // Function to fetch and display data
+    function fetchAndDisplayData() {
+        fetch('/volunteerDetails')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-
-                displayData(sortedData); // Call displayData with sorted data
+                return response.json();
+            })
+            .then(fetchedData => {
+                data = fetchedData; // Update the global data variable
+                displayData(data); // Display the latest data
+            })
+            .catch(error => {
+                console.error('Error fetching volunteer details:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching volunteer details:', error);
+    }
+
+    // Function to display the data
+    function displayData(records) {
+        volunteerDetails.innerHTML = ''; 
+        records.forEach(record => {
+            const dutyHours = record.dutyHours || 0; 
+            const cumulativeDutyHours = record.cumulativeDutyHours || 0; 
+            const row = document.createElement('tr');
+            const rank = record.callSign.replace(/\d/g, ''); // Remove numbers from callSign
+            row.innerHTML = `
+                <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+                <td>${record.callSign}</td>
+                <td>${rank}</td>
+                <td>${dutyHours}</td>
+                <td>${cumulativeDutyHours}</td>
+                <td>${record.fireResponsePoints}</td>
+                <td>${record.inventoryPoints}</td>
+                <td>${record.activityPoints}</td>
+            `;
+            volunteerDetails.appendChild(row);
         });
+    }
+
+    // Initial fetch and display of data
+    fetchAndDisplayData();
+
+    // Poll the server every 3 seconds for new data
+    setInterval(fetchAndDisplayData, 3000);
+
+    // Add event listener to search box
+    searchBox.addEventListener('input', function() {
+        const searchTerm = searchBox.value.toLowerCase();
+        const filteredData = data.filter(record => {
+            const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+            return fullName.includes(searchTerm);
+        });
+        displayData(filteredData); // Call displayData with filtered data
+    });
+
+    // Add event listener to sort dropdown
+    sortByMeritTracking.addEventListener('change', function() {
+        const sortBy = sortByMeritTracking.value;
+        let sortedData;
+
+        // Sort the data based on selected option
+        switch (sortBy) {
+            case 'Name':
+                sortedData = data.sort((a, b) => {
+                    const nameA = `${a.firstName} ${a.middleInitial}. ${a.lastName}`.toLowerCase();
+                    const nameB = `${b.firstName} ${b.middleInitial}. ${b.lastName}`.toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+                break;
+            case 'CallSign':
+                sortedData = data.sort((a, b) => a.callSign.localeCompare(b.callSign));
+                break;
+            case 'Rank':
+                sortedData = data.sort((a, b) => {
+                    const rankA = a.callSign.replace(/\d/g, '').toLowerCase(); // Remove numbers for rank
+                    const rankB = b.callSign.replace(/\d/g, '').toLowerCase();
+                    return rankA.localeCompare(rankB);
+                });
+                break;
+            case 'DutyHours':
+                sortedData = data.sort((a, b) => (a.dutyHours || 0) - (b.dutyHours || 0));
+                break;
+            case 'CumulativeDutyHours':
+                sortedData = data.sort((a, b) => (a.cumulativeDutyHours || 0) - (b.cumulativeDutyHours || 0));
+                break;
+            case 'FireResponse':
+                sortedData = data.sort((a, b) => a.fireResponsePoints - b.fireResponsePoints);
+                break;
+            case 'Inventory':
+                sortedData = data.sort((a, b) => a.inventoryPoints - b.inventoryPoints);
+                break;
+            case 'Activity':
+                sortedData = data.sort((a, b) => a.activityPoints - b.activityPoints);
+                break;
+            default:
+                sortedData = data; // No sorting
+        }
+
+        displayData(sortedData); // Call displayData with sorted data
+    });
 });
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     fetch('/volunteerDetails')

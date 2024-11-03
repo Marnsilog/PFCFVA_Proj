@@ -6,7 +6,8 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const rfid = document.getElementById('rfid').value; 
     const lastName = document.getElementById('lastName').value.trim(); //keep last name as is for database
     const dateOfBirth = document.getElementById('dateOfBirth').value;
-
+    const loadingContainer = document.getElementById('loading-container2');
+    loadingContainer.style.display = 'block';
     // Generate the username and password based on the provided data
     const username = rfid; // set RFID as the username
     const password = generatePassword(lastName.toLowerCase(), dateOfBirth); // use lowercase version of last name for password
@@ -51,6 +52,13 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         alert("Please enter a valid email address");
         return;
     }
+
+    // document.getElementById("rfid").addEventListener("keydown", function(event) {
+    //     if (event.key === "Enter") {
+    //         event.preventDefault();  
+    //         this.readOnly = true;   
+    //     }
+    // });
 
     // Post the data
     fetch('/auth/register', {
@@ -100,13 +108,18 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             });
         } else {
             throw new Error('Registration failed');
+            
         }
+        
     })
     .then(message => {
+        loadingContainer.style.display = 'none';
         alert(message);
         location.reload();
+       
     })
     .catch(error => {
+        loadingContainer.style.display = 'none';
         console.error('Error registering:', error);
         alert('Error registering: ' + error.message);
     });

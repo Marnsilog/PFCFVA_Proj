@@ -142,29 +142,29 @@
                     </div>
                     <div class="w-full h-full flex justify-center mt-14">
                         <div class="max-w-[60rem] font-Inter w-full">
-                            <p class="text-4xl font-[700]">Fire Response Form</p>
+                            <p class="text-2xl md:text-start text-center md:text-4xl font-[700]">Fire Response Form</p>
                             <div class="flex justify-center">
-                                <div class="mt-11">
-                                    <div class="flex justify-start">
-                                        <p class="text-lg font-bold mr-32">Supervisor</p>
-                                        <p class="text-lg font-bold mr-32" id="supervisorName">
+                                <div class="mt-5 md:mt-11 space-y-8">
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-10 md:mr-32">Supervisor</p>
+                                        <p class="text-lg font-bold md:mr-32" id="supervisorName">
                                     </div>
-                                    <div class="flex justify-start">
-                                        <p class="text-lg font-bold mr-32">Incident Date</p>
-                                        <input class="border-[1px] border-black w-72" type="date" id="incidentDate">
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-32">Incident Date</p>
+                                        <input class="border-[1px] border-black md:w-72" type="date" id="incidentDate">
                                     </div>
-                                    <div class="flex justify-start mt-4">
-                                        <p class="text-lg font-bold mr-[120px]">Dispatch Time</p>
-                                        <input class="border-[1px] border-black w-72" placeholder="HH:mm:ss" type="time" id="dispatchTime">
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[120px]">Dispatch Time</p>
+                                        <input class="border-[1px] border-black w-36 md:w-72" placeholder="HH:mm:ss" type="time" id="dispatchTime">
                                     </div>
-                                    <div class="flex  justify-start mt-4">
-                                        <p class="text-lg font-bold mr-[170px]">Location</p>
-                                        <textarea class="border-[1px] border-black max-w-72 w-full h-28" id="location"></textarea>
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold md:mr-[170px] mr-2">Location</p>
+                                        <textarea class="border-[1px] border-black max-w-72 w-40 md:w-full h-28" id="location"></textarea>
                                     </div>
-                                    <div class="flex justify-start mt-7"> 
-                                        <p class="text-lg font-bold mr-[120px]">Alarm Status</p> 
+                                    <div class="flex justify-center md:justify-start"> 
+                                        <p class="text-lg font-bold mr-2 md:mr-[120px]">Alarm Status</p> 
                                         
-                                            <select class="border-[1px] border-black w-72 h-8" name="" id="alarmStatus">
+                                            <select class="border-[1px] border-black w-36 md:w-72 h-8" name="" id="alarmStatus">
                                                 <option value="" disabled selected> </option>
                                                 <option value="1st Alarm">1st Alarm</option>
                                                 <option value="2nd Alarm">2nd Alarm</option>
@@ -193,18 +193,18 @@
                     
                                     
                                     </div>
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[110px]">Who requested<br>the response?</p>
-                                            <select class="border-[1px] border-black w-72 h-8" name="" id="whoRequested">
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[110px]">Who requested<br>the response?</p>
+                                            <select class="border-[1px] border-black w-36 md:w-72 h-8" name="" id="whoRequested">
                                                 <option value="" disabled selected> </option>
                                                 <option value="Caller">Caller</option>
                                                 <option value="Monitored through radio">Monitored through radio</option>
                                             </select>
                                     </div>
                             
-                                    <div  class="flex justify-start mt-5">
-                                        <p class="text-lg font-bold mr-[140px]">Type of Fire</p>
-                                        <select class="border-[1px] border-black w-72 h-8" name="" id="fireType">
+                                    <div  class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[140px]">Type of Fire</p>
+                                        <select class="border-[1px] border-black w-36 md:w-72 h-8" name="" id="fireType">
                                             <option value="" disabled selected> </option>
                                             <option value="Residential">Residential</option>
                                             <option value="Commercial">Commercial</option>
@@ -215,9 +215,9 @@
                             
                                     </div>
                             
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[127px]">Vehicle Used</p>
-                                        <p class="w-72 h-8" id="vehicle"></p> 
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[127px]">Vehicle Used</p>
+                                        <p class="w-36 md:w-72 h-8" id="vehicle"></p> 
                                         <!-- <p class="border-[1px] border-black w-72 h-8" id="vehicleName"></p>  -->
                                         <!-- <select class="border-[1px] border-black w-72 h-8" name="" id="vehicleAssignment">
                                             <option value="" disabled selected> </option>
@@ -251,19 +251,19 @@
                                         
                                     </div> -->
 
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[145px]">Responders</p>
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[145px]">Responders</p>
                                         <div id="responders">
                                             <!-- Responders will be dynamically populated here as a list -->
                                         </div>
                                     </div>
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[165px]">Remarks</p>
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[165px]">Remarks</p>
                                         <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="remarks"></textarea>
 
                                     </div>
-                                    <div class="flex justify-start mt-7">
-                                        <p class="text-lg font-bold mr-[165px]">Chat Logs</p>
+                                    <div class="flex justify-center md:justify-start">
+                                        <p class="text-lg font-bold mr-2 md:mr-[165px]">Chat Logs</p>
                                         <textarea class="border-[1px] border-black max-w-72 w-full h-32 text-wrap" name="" id="chatLogs"></textarea>
 
                                     </div>

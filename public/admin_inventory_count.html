@@ -7,7 +7,7 @@
     <link rel="icon" href="img/pfcfvalogo.png">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFCFVA || Admin Inventory Status logs</title>
+    <title>PFCFVA || Admin Vehicle Assignment</title>
 </head>
 <div>
     <body class="bg-white w-full h-full">
@@ -157,9 +157,8 @@
                 <div class="pl-3 py-3 hover:bg-gray-400 flex justify-start space-x-2 rounded-b-lg" onclick="location.href='/logout'" style="cursor: pointer;"><svg class="w-5 h-5 mt-[2px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg><p>Log Out</p></div>
             </div>
             </div>
-
 <!-- NEW INVENTORY LOGS -->
- <div class="w-full flex justify-center h-full">
+<div class="w-full flex justify-center h-full">
     <div class="max-w-[90rem] w-full h-auto">
         <div id="loading-container" style="display: none;">
             <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -169,24 +168,20 @@
                 <p class="md:text-4xl text-center md:text-start text-xl font-bold">Inventory Logs</p>
                 <!-- <p>Total Item: <span>0000</span> </p> --> 
             </div>
-            <div class="md:w-[25rem] w-full h-10 bg-white border-2 rounded-lg border-black flex justify-normal md:mx-0 ">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 mt-[3px] ml-[5px] mx-2" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-                <input class="w-full h-full focus:outline-none px-2 rounded-lg" placeholder="Search" id="inventorySearchBox" type="text">
-            </div>
         </div>
         <div class="w-full flex md:justify-start justify-center">
             <div class="w-full mx-5 md:w-full h-16 md:h-8 border-[1px] border-black flex justify-center font-Inter md:mt-8 md:ml-10 rounded-md">
-                <div class="w-[70%] md:h-full bg-[#930D0D] rounded-l-md">
-                    <p class="text-center text-white text-sm md:text-lg cursor-pointer leading-tight" onclick="location.href='admin_inventory_status_logs'">Equipment Status Update</p>
+                <div class="w-[70%] h-full bg-white rounded-l-md">
+                    <p class="text-center text-black text-sm md:text-lg cursor-pointer leading-tight" onclick="location.href='admin_inventory_status_logs'">Equipment Status Update</p>
                 </div>
-                <div class="w-full bg-white md:pt-0 pt-4">
+                <div class="w-full  bg-white md:pt-0 pt-4">
                     <p class="text-center text-black text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_vehicle_ass'">Transfer Logs</p>
                 </div>
-                <div class="w-full rounded-r-md  bg-white  md:pt-0 pt-4 ">
+                <div class="w-full rounded-r-md  bg-white  md:pt-0 pt-4">
                     <p class="text-center text-black text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_logs'">Inventory logs</p>
                 </div>
-                <div class="w-full rounded-r-md  bg-white  md:pt-0 pt-4 ">
-                    <p class="text-center text-black text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_count'">Stock Count</p>
+                <div class="w-full rounded-r-md bg-[#930D0D]   md:pt-0 pt-4 ">
+                    <p class="text-center text-white text-base mt-1 md:text-md cursor-pointer"  onclick="location.href='admin_inventory_count'">Stock Count</p>
                 </div>
             </div>
         </div>
@@ -196,31 +191,15 @@
                 <table class="md:w-full w-[70rem] text-center" >
                     <thead class="md:h-12 md:text-2xl text-md bg-[#D6D6D6] ">
                         <tr class="text-sm md:text-lg h-8">
-                            <th></th>
-                            <th class="">Item</th>
-                            <th>Volunteer Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Vehicle</th>
-                            <th>from Status</th>
-                            <th>to Status</th>
-                            <th>Remarks</th>
+                            <th class="py-2 bg-[#D6D6D6]">Item</th>
+                            <th>Stock Count</th>
+                            
                         </tr>
                     </thead>
-                    <tbody id="inventory-log" class="font-[500] space-y-2">
-                      <!-- <tr class="md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500">
-                        <td><div class="flex justify-center"><img src="img/ex1.jpg" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
-                        <td>5</td>
-                        <td>Corsiga Marniel</td>
-                        <td>January 20 2024</td>
-                        <td>12:00pm</td>
-                        <td>${row.vehicle}</td>
-                        <td>good</td>
-                        <td>bad</td>
-                        <td class="w-72 break-words ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus eaque accusamus ipsam tenetur porro, saepe sed modi </td>
-                      </tr>
-                 -->
-                      
+                    <tbody id="inventory-log4" class="font-[500] space-y-2">
+
+                
+         
                     </tbody>
                     
                 </table>

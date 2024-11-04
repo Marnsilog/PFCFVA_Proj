@@ -1300,6 +1300,16 @@ const query = util.promisify(db.query).bind(db);
             res.json(results);
         });
     });
+    router.get('/admin-inventory/log4', (req, res) => {
+        const query = `SELECT SUBSTRING_INDEX(itemName, ' ', 1) AS item_Name, COUNT(*) AS item_count
+                        FROM tbl_inventory GROUP BY item_Name;`;
+    
+        db.query(query, (err, results) => {
+            if (err) throw err;
+            //console.log(results); // Log the results to see if data is retrieved
+            res.json(results);
+        });
+    });
 
     router.get('/equipment/:id', async (req, res) => {
         try {

@@ -386,7 +386,10 @@ function showSettings() {
             fetchInventoryLog3();
         } else if(window.location.pathname === '/admin_inventory_vehicle_ass') {
             fetchInventoryLog2();
+        }else if(window.location.pathname === '/admin_inventory_count') {
+            fetchInventoryLog4()
         }
+       
     });
 
     //register, clear form
@@ -500,6 +503,40 @@ function showSettings() {
                         <td>${row.checked_time}</td>
                         <td>${row.from_vehicle}</td>
                         <td>${row.change_to}</td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+            })
+            .catch(error => console.error('Error fetching inventory log data:', error));
+
+    }
+
+        ///admin_inventory_count
+        function fetchInventoryLog4() {
+       
+            fetch('/auth/admin-inventory/log4')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('inventory-log4');
+                
+                if (!data.length) {
+                    return; 
+                }
+    
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                    
+                    tr.innerHTML = `
+                        <td>${row.item_Name}</td>
+                        <td>${row.item_count}</td>
                     `;
                     
                     tbody.appendChild(tr);

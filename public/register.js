@@ -60,6 +60,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     //     }
     // });
 
+
     // Post the data
     fetch('/auth/register', {
         method: 'POST',
@@ -124,6 +125,14 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         alert('Error registering: ' + error.message);
     });
 });
+function editRfid() {
+    const rfid = document.getElementById('rfid');
+    if (rfid) {  // Check if the element exists
+        rfid.readOnly = false; 
+    } else {
+        console.error("Element with ID 'rfid' not found.");
+    }
+}
 
 // Function to generate password
 function generatePassword(lowercaseLastName, dateOfBirth) {

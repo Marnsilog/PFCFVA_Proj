@@ -181,11 +181,16 @@
                         </div>
 
                     </div>
-                    
-                    <div>
-                        <p>RFID No.<span class="text-red-500 font-bold mr-1">*</span></p>
-                        <input class="border-[1px] border-black w-[17rem] h-7 focus:outline-none" type="text" id="rfid" pattern="[0-9]+" title="Please enter numbers only" required>
+                    <div  class="flex justify-normal space-x-5">
+                        <div>
+                            <p>RFID No.<span class="text-red-500 font-bold mr-1">*</span></p>
+                            <input class="border-[1px] border-black w-[17rem] h-7 focus:outline-none" type="text" id="rfid" pattern="[0-9]+" title="Please enter numbers only" required>
+                        </div>
+                        <div class="pt-6">
+                            <button class="text-lg font-Inter bg-black text-white w-20 rounded-lg h-7" onclick="editRfid()">Edit</button>
+                        </div>
                     </div>
+                   
                     
                     <div class="md:flex md:justify-between space-y-2 md:space-y-0">
                         <div>
@@ -434,16 +439,16 @@
 
     document.getElementById("rfid").addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
-            event.preventDefault();  // Prevent form submission if Enter triggers submit
-            this.readOnly = true;    // Make the input field readonly
+            event.preventDefault();  
+            this.readOnly = true;    
         }
     });
 
 </script>
 <script src="admin.js" defer></script>
 <script src="register.js" defer></script>
-<script src="super_profiler.js" defer></script>
-<script src="profileImage.js" defer></script>
+<!-- <script src="super_profiler.js" defer></script>
+<script src="profileImage.js" defer></script> -->
 <script src="register_constraint.js" defer></script>
 <script src="_exit_stopper.js" defer></script>
 </html>

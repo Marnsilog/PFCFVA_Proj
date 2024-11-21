@@ -11,6 +11,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary').v2;
 const util = require('util');
+const { console } = require('inspector');
 
 
 cloudinary.config({
@@ -1823,6 +1824,367 @@ const query = util.promisify(db.query).bind(db);
             res.json({ success: true });
         });
     });
+
+    router.post('/recordTimeIn', async (req, res) => {
+        const { rfid } = req.body;
+        const currentTime = new Date();
+        const timeIn = currentTime.toTimeString().split(' ')[0]; 
+        const dateOfTimeIn = currentTime.toISOString().split('T')[0];
+        let imagePath = null;
+    
+        if (req.files && req.files.image) {
+            const image = req.files.image;
+        
+            if (image.size > 50 * 1024 * 1024) {
+                return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+            }
+    
+            try {
+                const tempFilePath = path.join(__dirname, 'temp', `${rfid}_${Date.now()}_resized.jpg`);
+                await sharp(image.data)
+                    .resize({ width: 600 })
+                    .jpeg({ quality: 70 }) 
+                    .toFile(tempFilePath);
+                const uniqueFileName = `${rfid}_${Date.now()}`;
+                const result = await cloudinary.uploader.upload(tempFilePath, {
+                    folder: 'timein',
+                    public_id: uniqueFileName,
+                });
+                imagePath = result.secure_url;
+                fs.unlinkSync(tempFilePath);
+            } catch (error) {
+                console.error('Error uploading image to Cloudinary:', error);
+                return res.status(500).json({ success: false, message: 'Error uploading image.' });
+            }
+        }
+    
+        // Now, check if the RFID is registered and if the user is not already clocked in
+        const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+        db.query(getUserQuery, [rfid], (err, result) => {
+            if (err) {
+                res.status(500).send('Error retrieving user data');
+                return;
+            }
+            if (result.length === 0) {
+                res.status(404).send('User not found');
+                return;
+            }
+            const accountID = result[0].accountID;
+    
+            const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
+            db.query(checkStatusQuery, [accountID], (err, result) => {
+                if (err) {
+                    res.status(500).send('Error checking attendance status');
+                    return;
+                }
+                if (result.length === 0 || result[0].timeInStatus === 0) {
+                    const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus, timein_image) 
+                                                   VALUES (?, ?, ?, 1, ?)`;
+                    db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn, imagePath], (err, result) => {
+                        if (err) {
+                            res.status(500).send('Error recording Time In');
+                            return;
+                        }
+                        res.json({ success: true, timeIn, dateOfTimeIn});
+                    });
+                } else {
+                    res.status(400).send('User already has an active Time In record');
+                }
+            });
+        });
+    });
+
+    router.post('/recordTimeOut', async (req, res) => {
+        const rfid = req.body.rfid;
+        const currentTime = new Date();
+        const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+        const hours = String(currentTime.getHours()).padStart(2, '0');
+        const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+        const timeOut = `${hours}:${minutes}`;
+        let imagePath = null;
+    
+        if (req.files && req.files.image) {
+            const image = req.files.image;
+            
+            // Check if the image size exceeds the limit (50 MB)
+            if (image.size > 50 * 1024 * 1024) {
+                return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+            }
+    
+            try {
+                // Resize and save the image temporarily
+                const tempFilePath = path.join(__dirname, 'temp', `${rfid}_${Date.now()}_resized.jpg`);
+                await sharp(image.data)
+                    .resize({ width: 600 })
+                    .jpeg({ quality: 70 })
+                    .toFile(tempFilePath);
+    
+                const uniqueFileName = `${rfid}_${Date.now()}`;
+                const result = await cloudinary.uploader.upload(tempFilePath, {
+                    folder: 'timeout',
+                    public_id: uniqueFileName,
+                });
+                imagePath = result.secure_url;
+    
+                // Remove the temporary file
+                fs.unlinkSync(tempFilePath);
+            } catch (error) {
+                console.error('Error uploading image to Cloudinary:', error);
+                return res.status(500).json({ success: false, message: 'Error uploading image.' });
+            }
+        }
+    
+        const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+        db.query(getUserQuery, [rfid], (err, result) => {
+            if (err) {
+                res.status(500).send('Error retrieving user data');
+                return;
+            }
+            if (result.length === 0) {
+                res.status(404).send('User not found');
+                return;
+            }
+    
+            const accountID = result[0].accountID;
+    
+            // Query to get the last time in record
+            const getLastTimeInQuery = `SELECT DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+                                            DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
+                                            DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
+                                            DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+                                        FROM tbl_attendance 
+                                        WHERE accountID = ? AND timeInStatus = 1 
+                                        ORDER BY attendanceID DESC 
+                                        LIMIT 1;`;
+    
+            db.query(getLastTimeInQuery, [accountID], (err, result) => {
+                if (err) {
+                    res.status(500).send('Error retrieving time in data');
+                    return;
+                }
+    
+                if (result.length === 0) {
+                    res.status(400).send('No active Time In record found');
+                    return;
+                }
+    
+                const timeIn = result[0].timeIn;
+                const dateOfTimeIn = result[0].dateOfTimeIn;
+    
+                const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`);
+                const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`);
+    
+                if (isNaN(timeInDateTime.getTime())) {
+                    console.error('Invalid timeInDateTime:', timeInDateTime);
+                    res.status(400).send('Invalid Time In data');
+                    return;
+                }
+    
+                // Calculate total minutes
+                const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60));
+    
+                if (totalMinutes < 0) {
+                    res.status(400).send('Time Out cannot be earlier than Time In');
+                    return;
+                }
+    
+                // Now get the duty hours and cumulative duty hours
+                const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+                db.query(getDutyHoursQuery, [accountID], (err, result) => {
+                    if (err) {
+                        res.status(500).send('Error retrieving duty hours');
+                        return;
+                    }
+    
+                    let oldDutyHours = result[0].dutyHours || 0;
+                    let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0;
+                    const updatedDutyHours = oldDutyHours + totalMinutes;
+                    const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+    
+                    const updateAttendanceQuery = `UPDATE tbl_attendance 
+                                                    SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0, timeout_image = ? 
+                                                    WHERE accountID = ? AND timeInStatus = 1 
+                                                    ORDER BY attendanceID DESC LIMIT 1`;
+    
+                    db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, imagePath, accountID], (err, result) => {
+                        if (err) {
+                            res.status(500).send('Error recording Time Out');
+                            return;
+                        }
+    
+                        if (result.affectedRows === 0) {
+                            res.status(400).send('No active Time In record found');
+                            return;
+                        }
+    
+                        // Now update both dutyHours and cumulativeDutyHours
+                        const updateDutyHoursQuery = `UPDATE tbl_accounts 
+                                                       SET dutyHours = ?, cumulativeDutyHours = ? 
+                                                       WHERE accountID = ?`;
+    
+                        db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+                            if (err) {
+                                res.status(500).send('Error updating duty hours');
+                                return;
+                            }
+    
+                            // Send the updated data back to the client
+                            // res.json({
+                            //     timeOut,
+                            //     dateOfTimeOut,
+                            //     timeIn,
+                            //     dateOfTimeIn
+                            // });
+                            res.json({ success: true, timeOut, dateOfTimeOut, timeIn, dateOfTimeIn});
+                        });
+                    });
+                });
+            });
+        });
+    });
+    
+    
+ 
+    // router.post('/recordTimeOut', async (req, res) => {
+    //     const { rfid } = req.body;
+    //     const currentTime = new Date();
+    //     const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+    //     const hours = String(currentTime.getHours()).padStart(2, '0');
+    //     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+    //     const timeOut = `${hours}:${minutes}`;
+    //     let imagePath = null;
+
+    //     // Handle image upload for Time Out, if present
+    //     if (req.files && req.files.image) {
+    //         const image = req.files.image;
+        
+    //         if (image.size > 50 * 1024 * 1024) { // Check for size limit (50 MB)
+    //             return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+    //         }
+    
+    //         try {
+    //             const tempFilePath = path.join(__dirname, 'temp', `${rfid}_${Date.now()}_timeout_resized.jpg`);
+    //             await sharp(image.data)
+    //                 .resize({ width: 600 })
+    //                 .jpeg({ quality: 70 }) 
+    //                 .toFile(tempFilePath);
+    //             const uniqueFileName = `${rfid}_${Date.now()}_timeout`;
+    //             const result = await cloudinary.uploader.upload(tempFilePath, {
+    //                 folder: 'timeout',
+    //                 public_id: uniqueFileName,
+    //             });
+    //             imagePath = result.secure_url;
+    //             fs.unlinkSync(tempFilePath); // Delete the temporary file
+    //         } catch (error) {
+    //             console.error('Error uploading image to Cloudinary:', error);
+    //             return res.status(500).json({ success: false, message: 'Error uploading image.' });
+    //         }
+    //     }
+    
+    //     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+    //     db.query(getUserQuery, [rfid], (err, result) => {
+    //         if (err) {
+    //             res.status(500).send('Error retrieving user data');
+    //             return;
+    //         }
+    //         if (result.length === 0) {
+    //             res.status(404).send('User not found');
+    //             return;
+    //         }
+    
+    //         const accountID = result[0].accountID;
+    
+    //         // Query to get the last time in record
+    //         const getLastTimeInQuery = `SELECT DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+    //                                         DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn
+    //                                     FROM tbl_attendance 
+    //                                     WHERE accountID = ? AND timeInStatus = 1 
+    //                                     ORDER BY attendanceID DESC 
+    //                                     LIMIT 1;`;
+    
+    //         db.query(getLastTimeInQuery, [accountID], (err, result) => {
+    //             if (err) {
+    //                 res.status(500).send('Error retrieving time in data');
+    //                 return;
+    //             }
+    
+    //             if (result.length === 0) {
+    //                 res.status(400).send('No active Time In record found');
+    //                 return;
+    //             }
+    
+    //             const timeIn = result[0].timeIn; 
+    //             const dateOfTimeIn = result[0].dateOfTimeIn;
+    
+    //             const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
+    //             const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
+    
+    //             if (isNaN(timeInDateTime.getTime())) {
+    //                 console.error('Invalid timeInDateTime:', timeInDateTime);
+    //                 res.status(400).send('Invalid Time In data');
+    //                 return;
+    //             }
+    
+    //             const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
+    
+    //             if (totalMinutes < 0) {
+    //                 res.status(400).send('Time Out cannot be earlier than Time In');
+    //                 return;
+    //             }
+    
+    //             const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+    //             db.query(getDutyHoursQuery, [accountID], (err, result) => {
+    //                 if (err) {
+    //                     res.status(500).send('Error retrieving duty hours');
+    //                     return;
+    //                 }
+    
+    //                 let oldDutyHours = result[0].dutyHours || 0; 
+    //                 let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
+    //                 const updatedDutyHours = oldDutyHours + totalMinutes;
+    //                 const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+    
+    //                 const updateAttendanceQuery = `UPDATE tbl_attendance 
+    //                                                SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0, timeOutImage = ? 
+    //                                                WHERE accountID = ? AND timeInStatus = 1 
+    //                                                ORDER BY attendanceID DESC LIMIT 1`;
+    
+    //                 db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, imagePath, accountID], (err, result) => {
+    //                     if (err) {
+    //                         res.status(500).send('Error recording Time Out');
+    //                         return;
+    //                     }
+    
+    //                     if (result.affectedRows === 0) {
+    //                         res.status(400).send('No active Time In record found');
+    //                         return;
+    //                     }
+    
+    //                     // Now update both dutyHours and cumulativeDutyHours
+    //                     const updateDutyHoursQuery = `UPDATE tbl_accounts 
+    //                                                   SET dutyHours = ?, cumulativeDutyHours = ? 
+    //                                                   WHERE accountID = ?`;
+    
+    //                     db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+    //                         if (err) {
+    //                             res.status(500).send('Error updating duty hours');
+    //                             return;
+    //                         }
+    
+    //                         res.json({
+    //                             timeOut,
+    //                             dateOfTimeOut,
+    //                             timeIn,
+    //                             dateOfTimeIn
+    //                         });
+    //                     });
+    //                 });
+    //             });
+    //         });
+    //     });
+    // });
+    
+    
     return router;
 };
 

@@ -199,176 +199,178 @@ app.get('/attendanceProfile', (req, res) => {
 });
 
 // endpoint to record Time In (working)
-app.post('/recordTimeIn', (req, res) => {
-    const rfid = req.body.rfid;
-    const currentTime = new Date();
-    const timeIn = currentTime.toTimeString().split(' ')[0]; 
-    const dateOfTimeIn = currentTime.toISOString().split('T')[0]; 
 
-     //console.log('Time In: ',timeIn, dateOfTimeIn);
-    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
-    db.query(getUserQuery, [rfid], (err, result) => {
-        if (err) {
-            res.status(500).send('Error retrieving user data');
-            return;
-        }
-        if (result.length === 0) {
-            res.status(404).send('User not found');
-            return;
-        }
-        const accountID = result[0].accountID;
-        const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
-        db.query(checkStatusQuery, [accountID], (err, result) => {
-            if (err) {
-                res.status(500).send('Error checking attendance status');
-                return;
-            }
-            if (result.length === 0 || result[0].timeInStatus === 0) {
-                const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus) 
-                                               VALUES (?, ?, ?, 1)`;
-                db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn], (err, result) => {
-                    if (err) {
-                        res.status(500).send('Error recording Time In');
-                        return;
-                    }
-                    res.json({ timeIn, dateOfTimeIn });
-                });
-            } else {
-                res.status(400).send('User already has an active Time In record');
-            }
-        });
-    });
-});
 
-app.post('/recordTimeOut', (req, res) => {
-    const rfid = req.body.rfid;
-    const currentTime = new Date();
-    const dateOfTimeOut = currentTime.toISOString().split('T')[0];
-    const hours = String(currentTime.getHours()).padStart(2, '0');
-    const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-    const timeOut = `${hours}:${minutes}`;
+// app.post('/recordTimeIn', (req, res) => {
+//     const rfid = req.body.rfid;
+//     const currentTime = new Date();
+//     const timeIn = currentTime.toTimeString().split(' ')[0]; 
+//     const dateOfTimeIn = currentTime.toISOString().split('T')[0]; 
 
-    const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
-    db.query(getUserQuery, [rfid], (err, result) => {
-        if (err) {
-            res.status(500).send('Error retrieving user data');
-            return;
-        }
-        if (result.length === 0) {
-            res.status(404).send('User not found');
-            return;
-        }
+//      //console.log('Time In: ',timeIn, dateOfTimeIn);
+//     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error retrieving user data');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(404).send('User not found');
+//             return;
+//         }
+//         const accountID = result[0].accountID;
+//         const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
+//         db.query(checkStatusQuery, [accountID], (err, result) => {
+//             if (err) {
+//                 res.status(500).send('Error checking attendance status');
+//                 return;
+//             }
+//             if (result.length === 0 || result[0].timeInStatus === 0) {
+//                 const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus) 
+//                                                VALUES (?, ?, ?, 1)`;
+//                 db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn], (err, result) => {
+//                     if (err) {
+//                         res.status(500).send('Error recording Time In');
+//                         return;
+//                     }
+//                     res.json({ timeIn, dateOfTimeIn });
+//                 });
+//             } else {
+//                 res.status(400).send('User already has an active Time In record');
+//             }
+//         });
+//     });
+// });
 
-        const accountID = result[0].accountID;
+// app.post('/recordTimeOut', (req, res) => {
+//     const rfid = req.body.rfid;
+//     const currentTime = new Date();
+//     const dateOfTimeOut = currentTime.toISOString().split('T')[0];
+//     const hours = String(currentTime.getHours()).padStart(2, '0');
+//     const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+//     const timeOut = `${hours}:${minutes}`;
 
-        // Query to get the last time in record
-        const getLastTimeInQuery = `SELECT DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
-                                        DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
-                                        DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
-                                        DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
-                                    FROM tbl_attendance 
-                                    WHERE accountID = ? AND timeInStatus = 1 
-                                    ORDER BY attendanceID DESC 
-                                    LIMIT 1;
-                                    ;`;
+//     const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+//     db.query(getUserQuery, [rfid], (err, result) => {
+//         if (err) {
+//             res.status(500).send('Error retrieving user data');
+//             return;
+//         }
+//         if (result.length === 0) {
+//             res.status(404).send('User not found');
+//             return;
+//         }
 
-        db.query(getLastTimeInQuery, [accountID], (err, result) => {
-            if (err) {
-                res.status(500).send('Error retrieving time in data');
-                return;
-            }
+//         const accountID = result[0].accountID;
 
-            if (result.length === 0) {
-                res.status(400).send('No active Time In record found');
-                return;
-            }
+//         // Query to get the last time in record
+//         const getLastTimeInQuery = `SELECT DATE_FORMAT(timeIn, '%H:%i') AS timeIn, 
+//                                         DATE_FORMAT(dateOfTimeIn, '%Y-%m-%d') AS dateOfTimeIn,
+//                                         DATE_FORMAT(NOW(), '%H:%i') AS timeOut, 
+//                                         DATE_FORMAT(NOW(), '%Y-%m-%d') AS dateOfTimeOut
+//                                     FROM tbl_attendance 
+//                                     WHERE accountID = ? AND timeInStatus = 1 
+//                                     ORDER BY attendanceID DESC 
+//                                     LIMIT 1;
+//                                     ;`;
 
-            const timeIn = result[0].timeIn; 
-            const dateOfTimeIn = result[0].dateOfTimeIn; 
+//         db.query(getLastTimeInQuery, [accountID], (err, result) => {
+//             if (err) {
+//                 res.status(500).send('Error retrieving time in data');
+//                 return;
+//             }
 
-            // const timeOut = result[0].timeOut; 
-            // const dateOfTimeOut = result[0].dateOfTimeOut; 
+//             if (result.length === 0) {
+//                 res.status(400).send('No active Time In record found');
+//                 return;
+//             }
 
-            //console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
-            //console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
+//             const timeIn = result[0].timeIn; 
+//             const dateOfTimeIn = result[0].dateOfTimeIn; 
 
-            const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
-            const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
-            //console.log('-- timeInDateTime: ', timeInDateTime)
-            //console.log('xx timeOutDateTime: ', timeOutDateTime)
+//             // const timeOut = result[0].timeOut; 
+//             // const dateOfTimeOut = result[0].dateOfTimeOut; 
+
+//             //console.log('ss datetimeIn: ',timeIn, dateOfTimeIn)
+//             //console.log('ss datetimeOut: ',timeOut, dateOfTimeOut)
+
+//             const timeInDateTime = new Date(`${dateOfTimeIn}T${timeIn}Z`); 
+//             const timeOutDateTime = new Date(`${dateOfTimeOut}T${timeOut}Z`); 
+//             //console.log('-- timeInDateTime: ', timeInDateTime)
+//             //console.log('xx timeOutDateTime: ', timeOutDateTime)
 
             
-            if (isNaN(timeInDateTime.getTime())) {
-                console.error('Invalid timeInDateTime:', timeInDateTime);
-                res.status(400).send('Invalid Time In data');
-                return;
-            }
+//             if (isNaN(timeInDateTime.getTime())) {
+//                 console.error('Invalid timeInDateTime:', timeInDateTime);
+//                 res.status(400).send('Invalid Time In data');
+//                 return;
+//             }
 
-            // Calculate total minutes
-            const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
+//             // Calculate total minutes
+//             const totalMinutes = Math.floor((timeOutDateTime - timeInDateTime) / (1000 * 60)); 
 
-            // Debug log for total minutes
-            // console.log(`Total Minutes: ${totalMinutes}`);
+//             // Debug log for total minutes
+//             // console.log(`Total Minutes: ${totalMinutes}`);
 
-            if (totalMinutes < 0) {
-                res.status(400).send('Time Out cannot be earlier than Time In');
-                return;
-            }
+//             if (totalMinutes < 0) {
+//                 res.status(400).send('Time Out cannot be earlier than Time In');
+//                 return;
+//             }
 
-            // Now get the duty hours and cumulative duty hours
-            const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
-            db.query(getDutyHoursQuery, [accountID], (err, result) => {
-                if (err) {
-                    res.status(500).send('Error retrieving duty hours');
-                    return;
-                }
+//             // Now get the duty hours and cumulative duty hours
+//             const getDutyHoursQuery = `SELECT dutyHours, cumulativeDutyHours FROM tbl_accounts WHERE accountID = ?`;
+//             db.query(getDutyHoursQuery, [accountID], (err, result) => {
+//                 if (err) {
+//                     res.status(500).send('Error retrieving duty hours');
+//                     return;
+//                 }
 
-                let oldDutyHours = result[0].dutyHours || 0; 
-                let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
-                const updatedDutyHours = oldDutyHours + totalMinutes;
-                const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
+//                 let oldDutyHours = result[0].dutyHours || 0; 
+//                 let oldCumulativeDutyHours = result[0].cumulativeDutyHours || 0; 
+//                 const updatedDutyHours = oldDutyHours + totalMinutes;
+//                 const updatedCumulativeDutyHours = oldCumulativeDutyHours + totalMinutes;
 
-                const updateAttendanceQuery = `UPDATE tbl_attendance 
-                                               SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
-                                               WHERE accountID = ? AND timeInStatus = 1 
-                                               ORDER BY attendanceID DESC LIMIT 1`;
+//                 const updateAttendanceQuery = `UPDATE tbl_attendance 
+//                                                SET timeOut = ?, dateOfTimeOut = ?, timeInStatus = 0 
+//                                                WHERE accountID = ? AND timeInStatus = 1 
+//                                                ORDER BY attendanceID DESC LIMIT 1`;
 
-                db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
-                    if (err) {
-                        res.status(500).send('Error recording Time Out');
-                        return;
-                    }
+//                 db.query(updateAttendanceQuery, [timeOut, dateOfTimeOut, accountID], (err, result) => {
+//                     if (err) {
+//                         res.status(500).send('Error recording Time Out');
+//                         return;
+//                     }
 
-                    if (result.affectedRows === 0) {
-                        res.status(400).send('No active Time In record found');
-                        return;
-                    }
+//                     if (result.affectedRows === 0) {
+//                         res.status(400).send('No active Time In record found');
+//                         return;
+//                     }
 
-                    // Now update both dutyHours and cumulativeDutyHours
-                    const updateDutyHoursQuery = `UPDATE tbl_accounts 
-                                                  SET dutyHours = ?, cumulativeDutyHours = ? 
-                                                  WHERE accountID = ?`;
+//                     // Now update both dutyHours and cumulativeDutyHours
+//                     const updateDutyHoursQuery = `UPDATE tbl_accounts 
+//                                                   SET dutyHours = ?, cumulativeDutyHours = ? 
+//                                                   WHERE accountID = ?`;
 
-                    db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
-                        if (err) {
-                            res.status(500).send('Error updating duty hours');
-                            console.log(err);
-                            return;
-                        }
+//                     db.query(updateDutyHoursQuery, [updatedDutyHours, updatedCumulativeDutyHours, accountID], (err) => {
+//                         if (err) {
+//                             res.status(500).send('Error updating duty hours');
+//                             console.log(err);
+//                             return;
+//                         }
 
-                        // Send the updated data back to the client
-                        res.json({
-                            timeOut,
-                            dateOfTimeOut,
-                            timeIn,
-                            dateOfTimeIn
-                        });
-                    });
-                });
-            });
-        });
-    });
-});
+//                         // Send the updated data back to the client
+//                         res.json({
+//                             timeOut,
+//                             dateOfTimeOut,
+//                             timeIn,
+//                             dateOfTimeIn
+//                         });
+//                     });
+//                 });
+//             });
+//         });
+//     });
+// });
 
 // TIMER TAB HERE
 cron.schedule('0 22 * * *', () => {
@@ -651,9 +653,6 @@ app.get('/getEquipment', (req, res) => {
         res.status(500).json({ error: 'An unexpected error occurred' });
     }
 });
-
-
-
 
 app.get('/getTrashedEquipment', (req, res) => { 
     try {

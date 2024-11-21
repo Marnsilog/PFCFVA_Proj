@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             const rfidValue = rfidInput.value.trim();
             rfidInput.value = '';
-            console.log('RFID Scanned:', rfidValue);
-            handleRFIDScan(rfidValue);
+           // console.log('RFID Scanned:', rfidValue);
+            handleManualRFID(rfidValue);
         }
     });
 
@@ -50,126 +50,144 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchRecentAttendance(); 
 });
 
-function handleRFIDScan(rfid) {
-    document.getElementById('rfidText').textContent = rfid;
-    console.log('Handling RFID scan:', rfid);
 
-    fetch('/recordTimeIn', {
+document.getElementById('promptButton').addEventListener('click', function() {
+    // Trigger the prompt to get manual RFID
+    const manualRFID = prompt("Please enter the RFID:", "");
+
+    if (manualRFID) {
+       
+        handleManualRFID(manualRFID); 
+    } else {
+        console.log("RFID input was cancelled or empty.");
+    }
+});
+
+async function handleManualRFID(rfid) {
+    document.getElementById('rfidText').textContent = rfid;
+    console.log('Handling Manual RFID scan:', rfid);
+    const video = document.getElementById('cameraFeed');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+    const formData = new FormData();
+    const loadingContainer = document.getElementById('loading-container2');
+    formData.append('rfid', rfid);
+    formData.append('image', blob, 'snapshot.jpg');
+
+    loadingContainer.style.display = 'block';
+    
+    fetch('/auth/recordTimeIn', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ rfid: rfid })
+        body: formData,
     })
     .then(response => {
-        if (!response.ok) {
-            if (response.status === 400) {
-                // If Time In already exists, try recording Time Out
-                return fetch('/recordTimeOut', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ rfid: rfid })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error recording Time Out');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('TimeIn').textContent = data.timeIn;
-                    document.getElementById('DateIn').textContent = data.dateOfTimeIn;
-                    document.getElementById('TimeOut').textContent = data.timeOut; 
-                    document.getElementById('DateOut').textContent = data.dateOfTimeOut;
-                    fetchProfileData(rfid); 
-                    fetchRecentAttendance(); 
-                    timeOutAudio.play();                         
-                    setTimeout(() => {
-                        location.reload();  
-                    }, 1000);  
-                });
-            } else {
-                throw new Error('Error recording attendance');
-            }
+        if (!response.ok && response.status === 400) {
+            return fetch('/auth/recordTimeOut', {
+                method: 'POST',
+                body: formData,
+            });
         }
-        return response.json();
+        return response;
     })
+    .then(response => response.json())
     .then(data => {
-        // Handle Time In success
-        if (data.timeIn) {
+        if (data.success && data.timeOut) {
             document.getElementById('TimeIn').textContent = data.timeIn;
             document.getElementById('DateIn').textContent = data.dateOfTimeIn;
-            document.getElementById('TimeOut').textContent = '--:--';  
-           
-            fetchProfileData(rfid);  
-            fetchRecentAttendance(); 
-            timeInAudio.play(); 
+            document.getElementById('TimeOut').textContent = data.timeOut;
+            document.getElementById('DateOut').textContent = data.dateOfTimeOut;
+            fetchProfileData(rfid) ;
+            fetchRecentAttendance();
+            loadingContainer.style.display = 'none';
+
+            //alert('Time Out recorded with image!');
+        } else if (data.success && data.timeIn) {
+            document.getElementById('TimeIn').textContent = data.timeIn;
+            document.getElementById('DateIn').textContent = data.dateOfTimeIn;
+            fetchProfileData(rfid) ;
+            fetchRecentAttendance();
+            loadingContainer.style.display = 'none';
+
+            //alert('Time In ');
+        } else {
+            alert(data.message || 'Error recording attendance.');
+            loadingContainer.style.display = 'none';
+
         }
     })
     .catch(error => {
         console.error('Error processing RFID:', error);
     });
 }
-// function handleRFIDScan(rfid) {
-//     document.getElementById('rfidText').textContent = rfid;
-//     console.log('Handling RFID scan:', rfid);
 
-//     fetch('/recordTimeIn', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ rfid: rfid })
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             if (response.status === 400) {
-//                 // If Time In already exists, record Time Out instead
-//                 return fetch('/recordTimeOut', {
-//                     method: 'POST', // Logic to handle recording Time Out
-//                     headers: {
-//                         'Content-Type': 'application/json'
-//                     },
-//                     body: JSON.stringify({ rfid: rfid })
-//                 })
-//                 .then(response => {
-//                     if (!response.ok) {
-//                         throw new Error('Network response was not ok');
-//                     }
-//                     return response.json();
-//                 })
-//                 .then(data => {
-//                     // Update Time Out display
-//                     document.getElementById('TimeOut').textContent = data.timeOut; 
-//                     // Fetch updated profile data after recording Time Out
-//                     fetchProfileData(rfid);
-//                     fetchRecentAttendance();
-//                     timeOutAudio.play();
-//                 });
-//             } else {
-//                 throw new Error('Network response was not ok');
+
+// function handleManualRFID(rfid) {
+// document.getElementById('rfidText').textContent = rfid;
+// console.log('Handling Manual RFID scan:', rfid);
+
+// fetch('/recordTimeIn', {
+// method: 'POST',
+// headers: {
+//     'Content-Type': 'application/json'
+// },
+// body: JSON.stringify({ rfid: rfid })
+// })
+// .then(response => {
+// if (!response.ok) {
+//     if (response.status === 400) {
+//         // If Time In already exists, try recording Time Out
+//         return fetch('/recordTimeOut', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ rfid: rfid })
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Error recording Time Out');
 //             }
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         // Update Time In display
-//         if (data.timeIn) {
-//             document.getElementById('TimeIn').textContent = data.timeIn; 
-//             // Clear Time Out fields if no Time Out record exists
-//             document.getElementById('TimeOut').textContent = '--:--'; 
-//         }
-//         // Fetch updated profile data after recording Time In
-//         fetchProfileData(rfid); // Fetch profile data after recording Time In
-//         fetchRecentAttendance(); // Fetch recent attendance logs
-//         timeInAudio.play();
-//     })
-//     .catch(error => {
-//         console.error('Error recording attendance:', error);
-//     });
+//             return response.json();
+//         })
+//         .then(data => {
+//             document.getElementById('TimeIn').textContent = data.timeIn;
+//             document.getElementById('DateIn').textContent = data.dateOfTimeIn;
+//             document.getElementById('TimeOut').textContent = data.timeOut; 
+//             document.getElementById('DateOut').textContent = data.dateOfTimeOut;
+//             fetchProfileData(rfid); 
+//             fetchRecentAttendance(); 
+//             timeOutAudio.play();                         
+//             setTimeout(() => {
+//                 location.reload();  
+//             }, 1000);  
+//         });
+//     } else {
+//         throw new Error('Error recording attendance');
+//     }
 // }
+// return response.json();
+// })
+// .then(data => {
+// // Handle Time In success
+// if (data.timeIn) {
+//     document.getElementById('TimeIn').textContent = data.timeIn;
+//     document.getElementById('DateIn').textContent = data.dateOfTimeIn;
+//     document.getElementById('TimeOut').textContent = '--:--';  
+   
+//     fetchProfileData(rfid);  
+//     fetchRecentAttendance(); 
+//     timeInAudio.play(); 
+// }
+// })
+// .catch(error => {
+// console.error('Error processing RFID:', error);
+// });
+// }
+
 
 function fetchProfileData(rfid = '') {
     fetch(`/attendanceProfile?rfid=${rfid}`)

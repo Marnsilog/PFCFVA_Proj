@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
+    <link href="loader.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
     <title>PFCFVA || ATTENDANCE DASHBOARD</title>
 </head>
@@ -13,6 +14,9 @@
             <img src="img/pfcfvalogo.png" class="w-[5rem] h-[5rem]">
             <p class="font-Inter text-2xl text-white font-semibold mt-2">Paranaque Filipino Chinese<br>Fire Volunteer Association</p> 
         </div>
+    </div>
+    <div class="fixed bg-black bg-opacity-50 h-full w-full z-50 top-0" id="loading-container2" style="display: none;">
+        <div class="lds-ellipsis2"><div></div><div></div><div></div><div></div></div>
     </div>
     <div class="w-full h-full flex justify-normal">
         <div class="w-1/2 font-Inter">
@@ -121,8 +125,14 @@
 
 
                     </div>
+                    <div class="w-full flex justify-center mt-2" >
+                       <div>
+                        <video class="w-72 h-95 object-fill rounded-lg" id="cameraFeed" autoplay playsinline></video>
+                        <p id="error"></p>
+                       </div>
+                    </div>
 
-                    <div class="flex justify-center mt-10">
+                    <div class="flex justify-center mt-2">
                         <button id="promptButton" class="bg-[#930D0D] text-white text-lg rounded-lg font-bold py-2 px-4">
                             Enter RFID Manually
                         </button>
@@ -134,93 +144,25 @@
             </div>
         </div>
     </div>
-
-    <script>
-
-//DON'T TOUCH
-                document.getElementById('promptButton').addEventListener('click', function() {
-                    // Trigger the prompt to get manual RFID
-                    const manualRFID = prompt("Please enter the RFID:", "");
-                
-                    if (manualRFID) {
-                       
-                        handleManualRFID(manualRFID); 
-                    } else {
-                        console.log("RFID input was cancelled or empty.");
-                    }
-                });
-    
-    function handleManualRFID(rfid) {
-            document.getElementById('rfidText').textContent = rfid;
-            console.log('Handling Manual RFID scan:', rfid);
-
-            fetch('/recordTimeIn', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ rfid: rfid })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 400) {
-                        // If Time In already exists, try recording Time Out
-                        return fetch('/recordTimeOut', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ rfid: rfid })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Error recording Time Out');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            document.getElementById('TimeIn').textContent = data.timeIn;
-                            document.getElementById('DateIn').textContent = data.dateOfTimeIn;
-                            document.getElementById('TimeOut').textContent = data.timeOut; 
-                            document.getElementById('DateOut').textContent = data.dateOfTimeOut;
-                            fetchProfileData(rfid); 
-                            fetchRecentAttendance(); 
-                            timeOutAudio.play();                         
-                            setTimeout(() => {
-                                location.reload();  
-                            }, 1000);  
-                        });
-                    } else {
-                        throw new Error('Error recording attendance');
-                    }
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle Time In success
-                if (data.timeIn) {
-                    document.getElementById('TimeIn').textContent = data.timeIn;
-                    document.getElementById('DateIn').textContent = data.dateOfTimeIn;
-                    document.getElementById('TimeOut').textContent = '--:--';  
-                   
-                    fetchProfileData(rfid);  
-                    fetchRecentAttendance(); 
-                    timeInAudio.play(); 
-                }
-            })
-            .catch(error => {
-                console.error('Error processing RFID:', error);
-            });
-        }
-
-      
-
-</script>
         
         
     
 </body>
-<script src="module_attendance.js" defer></script>
-<script src="admin.js" defer></script>
+<script>
+    const cameraFeed = document.getElementById('cameraFeed');
+    const errorMessage = document.getElementById('error');
 
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraFeed.srcObject = stream;
+        } catch (error) {
+            errorMessage.textContent = "Unable to access camera: " + error.message;
+        }
+    }
+
+    startCamera();
+</script>
+<script src="module_attendance.js" defer></script>
+<!-- <script src="admin.js" defer></script> -->
 </html>

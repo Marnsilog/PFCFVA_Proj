@@ -1828,70 +1828,81 @@ const query = util.promisify(db.query).bind(db);
     router.post('/recordTimeIn', async (req, res) => {
         const { rfid } = req.body;
         const currentTime = new Date();
-        const timeIn = currentTime.toTimeString().split(' ')[0]; 
+        const timeIn = currentTime.toTimeString().split(' ')[0];
         const dateOfTimeIn = currentTime.toISOString().split('T')[0];
         let imagePath = null;
     
-        if (req.files && req.files.image) {
-            const image = req.files.image;
-        
-            if (image.size > 50 * 1024 * 1024) {
-                return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+        try {
+            // Check if the RFID exists
+            const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
+            const userResult = await new Promise((resolve, reject) => {
+                db.query(getUserQuery, [rfid], (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
+    
+            if (userResult.length === 0) {
+                return res.status(404).json({ success: false, message: 'User not found' });
             }
     
-            try {
+            const accountID = userResult[0].accountID;
+    
+            // Check the user's time-in status
+            const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
+            const statusResult = await new Promise((resolve, reject) => {
+                db.query(checkStatusQuery, [accountID], (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
+    
+            if (statusResult.length > 0 && statusResult[0].timeInStatus === 1) {
+                return res.status(400).json({ success: false, message: 'User already has an active Time In record' });
+            }
+    
+            // Process and upload image if provided
+            if (req.files && req.files.image) {
+                const image = req.files.image;
+    
+                if (image.size > 50 * 1024 * 1024) {
+                    return res.status(400).json({ success: false, message: 'File size exceeds 50 MB limit.' });
+                }
+    
                 const tempFilePath = path.join(__dirname, 'temp', `${rfid}_${Date.now()}_resized.jpg`);
                 await sharp(image.data)
                     .resize({ width: 600 })
-                    .jpeg({ quality: 70 }) 
+                    .jpeg({ quality: 70 })
                     .toFile(tempFilePath);
+    
                 const uniqueFileName = `${rfid}_${Date.now()}`;
-                const result = await cloudinary.uploader.upload(tempFilePath, {
+                const uploadResult = await cloudinary.uploader.upload(tempFilePath, {
                     folder: 'timein',
                     public_id: uniqueFileName,
                 });
-                imagePath = result.secure_url;
+    
+                imagePath = uploadResult.secure_url;
+    
                 fs.unlinkSync(tempFilePath);
-            } catch (error) {
-                console.error('Error uploading image to Cloudinary:', error);
-                return res.status(500).json({ success: false, message: 'Error uploading image.' });
             }
-        }
     
-        // Now, check if the RFID is registered and if the user is not already clocked in
-        const getUserQuery = 'SELECT accountID FROM tbl_accounts WHERE rfid = ?';
-        db.query(getUserQuery, [rfid], (err, result) => {
-            if (err) {
-                res.status(500).send('Error retrieving user data');
-                return;
-            }
-            if (result.length === 0) {
-                res.status(404).send('User not found');
-                return;
-            }
-            const accountID = result[0].accountID;
-    
-            const checkStatusQuery = `SELECT timeInStatus FROM tbl_attendance WHERE accountID = ? ORDER BY attendanceID DESC LIMIT 1`;
-            db.query(checkStatusQuery, [accountID], (err, result) => {
-                if (err) {
-                    res.status(500).send('Error checking attendance status');
-                    return;
-                }
-                if (result.length === 0 || result[0].timeInStatus === 0) {
-                    const insertAttendanceQuery = `INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus, timein_image) 
-                                                   VALUES (?, ?, ?, 1, ?)`;
-                    db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn, imagePath], (err, result) => {
-                        if (err) {
-                            res.status(500).send('Error recording Time In');
-                            return;
-                        }
-                        res.json({ success: true, timeIn, dateOfTimeIn});
-                    });
-                } else {
-                    res.status(400).send('User already has an active Time In record');
-                }
+            // Record the time-in entry
+            const insertAttendanceQuery = `
+                INSERT INTO tbl_attendance (accountID, timeIn, dateOfTimeIn, timeInStatus, timein_image) 
+                VALUES (?, ?, ?, 1, ?)
+            `;
+            await new Promise((resolve, reject) => {
+                db.query(insertAttendanceQuery, [accountID, timeIn, dateOfTimeIn, imagePath], (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
             });
-        });
+    
+            res.json({ success: true, timeIn, dateOfTimeIn });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
     });
 
     router.post('/recordTimeOut', async (req, res) => {
@@ -2043,8 +2054,6 @@ const query = util.promisify(db.query).bind(db);
         });
     });
     
-    
- 
     // router.post('/recordTimeOut', async (req, res) => {
     //     const { rfid } = req.body;
     //     const currentTime = new Date();

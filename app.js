@@ -539,11 +539,13 @@ app.get('/attendanceDetails', (req, res) => {
             b.timeIn,
             b.dateOfTimeOut,
             b.timeOut,
+            b.timein_image,
+            b.timeout_image,
             a.status,
             a.accountType
         FROM tbl_accounts a
         JOIN tbl_attendance b ON a.accountID = b.accountID
-        ORDER BY b.dateOfTimeIn DESC, b.timeIn DESC `; // add LIMIT # if need
+        ORDER BY b.dateOfTimeIn DESC, b.timeIn DESC `;
 
     db.query(sql, (err, results) => {
         if (err) {

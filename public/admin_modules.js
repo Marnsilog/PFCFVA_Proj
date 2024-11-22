@@ -1,71 +1,6 @@
-
-//for attendance NAV
-// function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
-//     fetch(url)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             function displayAttendanceData(records) { 
-//                 attendanceLogsElement.innerHTML = ''; 
-//                 records.forEach(record => {
-//                     const row = document.createElement('tr');
-//                     const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
-//                         year: 'numeric',
-//                         month: 'long',
-//                         day: 'numeric'
-//                     });
-//                     const dateFormattedTimeOut = record.dateOfTimeOut ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
-//                         year: 'numeric',
-//                         month: 'long',
-//                         day: 'numeric'
-//                     }) : '-';
-                    
-//                     row.innerHTML = `
-//                         <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
-//                         <td>${record.callSign}</td>
-//                         <td>${dateFormattedTimeIn}</td>
-//                         <td>${record.timeIn}</td>
-//                         <td>${dateFormattedTimeOut}</td>
-//                         <td>${record.timeOut || '-'}</td>
-//                     `;
-//                     attendanceLogsElement.appendChild(row);
-//                 });
-//             }
-
-//             // Initial display of data
-//             displayAttendanceData(data);
-
-//             // Add event listener to search box
-//             searchBoxElement.addEventListener('input', function() {
-//                 const searchTerm = searchBoxElement.value.toLowerCase();
-//                 const filteredData = data.filter(record => {
-//                     const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
-//                     const callSign = record.callSign.toLowerCase();
-//                     const dateOfTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
-//                         year: 'numeric',
-//                         month: 'long',
-//                         day: 'numeric'
-//                     }).toLowerCase();
-
-//                     // Match search term with full name, call sign, or date of time in
-//                     return fullName.includes(searchTerm) || 
-//                            callSign.includes(searchTerm) ||
-//                            dateOfTimeIn.includes(searchTerm);
-//                 });
-//                 displayAttendanceData(filteredData);
-//             });
-//         })
-//         .catch(error => {
-//             console.error('Error fetching attendance logs:', error);
-//         });
-// }
-
-
 function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
+    const defaultImage = 'img/pfcfvalogo.png'; // Path to your logo image
+
     function fetchData() {
         fetch(url)
             .then(response => {
@@ -94,11 +29,35 @@ function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElem
                             <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
                             <td>${record.callSign}</td>
                             <td>${dateFormattedTimeIn}</td>
-                            <td>${record.timeIn}</td>
+                            <td>
+                                <div class="flex justify-center">
+                                    ${record.timeIn}
+                                    <ul class="ml-2 text-blue-500 cursor-pointer view-link" data-image="${record.timein_image || defaultImage}">
+                                        view
+                                    </ul>
+                                </div>
+                            </td>
                             <td>${dateFormattedTimeOut}</td>
-                            <td>${record.timeOut || '-'}</td>
+                            <td>
+                                <div class="flex justify-center">
+                                    ${record.timeOut || '-'}
+                                    <ul class="ml-2 text-blue-500 cursor-pointer view-link" data-image="${record.timeout_image || defaultImage}">
+                                        view
+                                    </ul>
+                                </div>
+                            </td>
                         `;
                         attendanceLogsElement.appendChild(row);
+                    });
+
+                    // Add click event for image view
+                    const viewLinks = document.querySelectorAll('.view-link');
+                    viewLinks.forEach(link => {
+                        link.addEventListener('click', event => {
+                            const imageUrl = event.target.getAttribute('data-image');
+                            document.getElementById('dynamicImage').src = imageUrl;
+                            document.getElementById('viewPicture').style.display = 'flex';
+                        });
                     });
                 }
 
@@ -134,6 +93,80 @@ function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElem
     fetchData();
     setInterval(fetchData, 3000);
 }
+
+function exitViewPic() {
+    document.getElementById('viewPicture').style.display = 'none';
+    document.getElementById('dynamicImage').src = ''; // Clear the image source
+}
+// function fetchAndDisplayAttendanceLogs(url, attendanceLogsElement, searchBoxElement) {
+//     function fetchData() {
+//         fetch(url)
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.json();
+//             })
+//             .then(data => {
+//                 function displayAttendanceData(records) { 
+//                     attendanceLogsElement.innerHTML = ''; 
+//                     records.forEach(record => {
+//                         const row = document.createElement('tr');
+//                         const dateFormattedTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+//                             year: 'numeric',
+//                             month: 'long',
+//                             day: 'numeric'
+//                         });
+//                         const dateFormattedTimeOut = record.dateOfTimeOut ? new Date(record.dateOfTimeOut).toLocaleDateString('en-US', {
+//                             year: 'numeric',
+//                             month: 'long',
+//                             day: 'numeric'
+//                         }) : '-';
+                        
+//                         row.innerHTML = `
+//                             <td>${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
+//                             <td>${record.callSign}</td>
+//                             <td>${dateFormattedTimeIn}</td>
+//                             <td><div class="flex justify-center">${record.timeIn} <ul class="ml-2 text-blue-500">view</ul></div></td>
+//                             <td>${dateFormattedTimeOut}</td>
+//                             <td><div class="flex justify-center">${record.timeOut || '-'} <ul class="ml-2 text-blue-500">view</ul></div></td>
+//                         `;
+//                         attendanceLogsElement.appendChild(row);
+//                     });
+//                 }
+
+//                 // Initial display of data
+//                 displayAttendanceData(data);
+
+//                 // Add event listener to search box
+//                 searchBoxElement.addEventListener('input', function() {
+//                     const searchTerm = searchBoxElement.value.toLowerCase();
+//                     const filteredData = data.filter(record => {
+//                         const fullName = `${record.firstName} ${record.middleInitial}. ${record.lastName}`.toLowerCase();
+//                         const callSign = record.callSign.toLowerCase();
+//                         const dateOfTimeIn = new Date(record.dateOfTimeIn).toLocaleDateString('en-US', {
+//                             year: 'numeric',
+//                             month: 'long',
+//                             day: 'numeric'
+//                         }).toLowerCase();
+
+//                         // Match search term with full name, call sign, or date of time in
+//                         return fullName.includes(searchTerm) || 
+//                                callSign.includes(searchTerm) ||
+//                                dateOfTimeIn.includes(searchTerm);
+//                     });
+//                     displayAttendanceData(filteredData);
+//                 });
+//             })
+//             .catch(error => {
+//                 console.error('Error fetching attendance logs:', error);
+//             });
+//     }
+
+//     // Fetch data immediately and then every 3 seconds
+//     fetchData();
+//     setInterval(fetchData, 3000);
+// }
 
 
 // Usage

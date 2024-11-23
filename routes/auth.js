@@ -1901,6 +1901,7 @@ const query = util.promisify(db.query).bind(db);
             res.json({ success: true, timeIn, dateOfTimeIn });
         } catch (error) {
             console.error('Error:', error);
+            console.log(error);
             res.status(500).json({ success: false, message: 'Internal server error' });
         }
     });

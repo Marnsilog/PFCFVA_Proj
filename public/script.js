@@ -95,30 +95,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.getElementById('reset-password-form').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
+    const email = event.target.email.value;
+    const loadingContainer = document.getElementById('loading-container');
 
+    // Show loading spinner
+    loadingContainer.style.display = 'block';
 
-//PAMPA KABA
-// function updateCountdown() {
-//     const countdownElement = document.getElementById('countdown');
-//     const deadline = new Date('2024-05-19T00:00:00');
-//     const currentTime = new Date();
-  
-//     const timeDiff = deadline - currentTime;
+    try {
+        const response = await fetch('/auth/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
 
-//     const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-//     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-//     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        const data = await response.json();
 
-//     countdownElement.innerHTML = `Countdown to Capstone:<br>${hours} hours, ${minutes} minutes, ${seconds} seconds`;
-// }
-
-// setInterval(updateCountdown, 1000);
-
-// updateCountdown();
-
-
-
+        if (response.ok) {
+            alert(data.message);
+            loadingContainer.style.display = 'none';
+            window.location.href = '/login';
+        } else {
+            alert(data.message);
+        }
+    } catch (err) {
+        alert('An error occurred. Please try again later.');
+    } finally {
+        // Hide loading spinner once the request completes
+        loadingContainer.style.display = 'none';
+    }
+});
 
 
 
@@ -127,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // JavaScript to handle form toggle
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
-    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    const forgotPasswordForm = document.getElementById('reset-password-form');
     const forgotPasswordLink = document.getElementById('forgotPasswordLink');
     const backToLoginLink = document.getElementById('backToLoginLink');
 

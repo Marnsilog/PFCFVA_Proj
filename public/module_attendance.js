@@ -1,9 +1,21 @@
-//for attendance
 
 
-const timeInAudio = document.getElementById('timeInAudio');
-const timeOutAudio = document.getElementById('timeOutAudio');
-
+function animateProgressBar(currentValue, maxValue) {
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar.style.width = percentage + '%'; 
+        console.log('ProgressBar 1:', percentage + '%'); 
+    }
+}
+function animateProgressBar2(currentValue, maxValue) {
+    const progressBar2 = document.getElementById('progress2');
+    if (progressBar2) {
+        const percentage = currentValue > maxValue ? 100 : (currentValue / maxValue) * 100; 
+        progressBar2.style.width = percentage + '%'; 
+        console.log('ProgressBar 2:', percentage + '%'); 
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     const rfidInput = document.createElement('input');
     rfidInput.style.position = 'absolute';
@@ -18,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('click', function() {
         focusRFIDInput();
-        
     });
 
     rfidInput.addEventListener('keypress', function(event) {
@@ -32,15 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Fetch profile data when page loads
-    fetchProfileData();
+    fetchProfileData(); 
     fetchRecentAttendance(); 
 });
 
 function handleRFIDScan(rfid) {
     document.getElementById('rfidText').textContent = rfid;
     console.log('Handling RFID scan:', rfid);
-
-    // changeBackgroundColor();
 
     fetch('/recordTimeIn', {
         method: 'POST',
@@ -52,9 +61,9 @@ function handleRFIDScan(rfid) {
     .then(response => {
         if (!response.ok) {
             if (response.status === 400) {
-                // if Time In already exists, record Time Out instead
+                // If Time In already exists, record Time Out instead
                 return fetch('/recordTimeOut', {
-                    method: 'POST', // logic to handle recording Time Out
+                    method: 'POST', // Logic to handle recording Time Out
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -67,10 +76,10 @@ function handleRFIDScan(rfid) {
                     return response.json();
                 })
                 .then(data => {
+                    // Update Time Out display
                     document.getElementById('TimeOut').textContent = data.timeOut; 
-                    document.getElementById('DateTimeOut').textContent = data.dateOfTimeOut; 
-                    // Fetch updated profile data after recording attendance
-                    fetchProfileData(rfid); // Fetch profile data after recording Time Out
+                    // Fetch updated profile data after recording Time Out
+                    fetchProfileData(rfid);
                     fetchRecentAttendance();
                     timeOutAudio.play();
                 });
@@ -81,17 +90,15 @@ function handleRFIDScan(rfid) {
         return response.json();
     })
     .then(data => {
-        
+        // Update Time In display
         if (data.timeIn) {
             document.getElementById('TimeIn').textContent = data.timeIn; 
-            document.getElementById('DateTimeIn').textContent = data.dateOfTimeIn; 
             // Clear Time Out fields if no Time Out record exists
-            document.getElementById('TimeOut').textContent = 'Put TimeOut value here'; 
-            document.getElementById('DateTimeOut').textContent = 'DateTimeOut here'; 
+            document.getElementById('TimeOut').textContent = '--:--'; 
         }
-        // Fetch updated profile data after recording attendance
+        // Fetch updated profile data after recording Time In
         fetchProfileData(rfid); // Fetch profile data after recording Time In
-        fetchRecentAttendance(); 
+        fetchRecentAttendance(); // Fetch recent attendance logs
         timeInAudio.play();
     })
     .catch(error => {
@@ -108,6 +115,32 @@ function fetchProfileData(rfid = '') {
             return response.json();
         })
         .then(data => {
+
+            //const data = result.data;
+            const statusDuty = data.dutyHours;
+            const statusFire = data.fireResponsePoints;
+            const callsign = data.callSign.toLowerCase();;
+            let dhmax;
+            let frmax;
+            if (/Aspirant/i.test(callsign)) {
+                dhmax = 100;
+                frmax = 0;
+            } else if (/Probationary/i.test(callsign)) {
+                dhmax = 1000;
+                frmax = 10;
+            } else if (/echo/i.test(callsign)) {
+                dhmax = 2000;
+                frmax = 20;
+            } else {
+                dhmax = 100;
+                frmax = 100;
+            }
+            dhmax = parseInt(dhmax);
+            frmax = parseInt(frmax);
+            animateProgressBar(statusDuty, dhmax);
+            animateProgressBar2(statusFire, frmax);
+            
+
             if (data.fullName) {
                 document.getElementById('FullName').textContent = data.fullName; 
             }
@@ -115,10 +148,10 @@ function fetchProfileData(rfid = '') {
                 document.getElementById('CallSign').textContent = data.callSign; 
             }
             if (data.dutyHours) {
-                document.getElementById('DutyHours').textContent = data.dutyHours; 
+                document.getElementById('DutyHours').textContent = `${data.dutyHours} Duty Hours`;
             }
             if (data.fireResponsePoints) {
-                document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints; 
+                document.getElementById('FireResponsePoints').textContent = `${data.fireResponsePoints} Fire Responses`;
             }
             if (data.inventoryPoints) {
                 document.getElementById('InventoryPoints').textContent = data.inventoryPoints; 
@@ -131,8 +164,6 @@ function fetchProfileData(rfid = '') {
             console.error('Error fetching profile data:', error);
         });
 }
-
-
 
 function fetchRecentAttendance() {
     fetch('/recentAttendance')
@@ -154,7 +185,7 @@ function fetchRecentAttendance() {
                 }); // Format date to "Month Day, Year"
 
                 const timeInFormatted = record.timeIn.substring(0, 5); // Remove seconds from timeIn
-                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : 'N/A'; // Remove seconds from timeOut
+                const timeOutFormatted = record.timeOut ? record.timeOut.substring(0, 5) : '--:--'; // Remove seconds from timeOut
 
                 row.innerHTML = `
                     <td class="py-2 px-4 border-b">${record.firstName} ${record.middleInitial}. ${record.lastName}</td>
@@ -169,334 +200,4 @@ function fetchRecentAttendance() {
             console.error('Error fetching recent attendance logs:', error);
         });
 }
-
-
-
-
-// //colors
-// function getRandomColor() {
-//     const letters = '0123456789ABCDEF';
-//     let color = '#';
-//     for (let i = 0; i < 6; i++) {
-//         color += letters[Math.floor(Math.random() * 16)];
-//     }
-//     return color;
-// }
-
-// function changeBackgroundColor() {
-//     document.body.style.backgroundColor = getRandomColor();
-//     const divs = document.querySelectorAll('div');
-//     divs.forEach(div => {
-//         if (div.id !== 'weewoo') { // IGNORE DIV WITH ID 'ignoreDiv'
-//             div.style.backgroundColor = getRandomColor();
-//         }
-//     });
-// }
-
-
-// //working for retrieving profile
-// document.addEventListener('DOMContentLoaded', function() {
-//     const rfidInput = document.createElement('input');
-//     rfidInput.style.position = 'absolute';
-//     rfidInput.style.opacity = 0;
-//     rfidInput.style.top = '-9999px';
-//     document.body.appendChild(rfidInput);
-//     rfidInput.focus();
-
-//     function focusRFIDInput() {
-//         rfidInput.focus();
-//     }
-
-//     document.addEventListener('click', function() {
-//         focusRFIDInput();
-//     });
-
-//     rfidInput.addEventListener('keypress', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             const rfidValue = rfidInput.value.trim();
-//             rfidInput.value = '';
-//             console.log('RFID Scanned:', rfidValue);
-//             handleRFIDScan(rfidValue);
-//         }
-//     });
-
-//     // Fetch profile data when page loads
-//     fetchProfileData();
-// });
-
-// function handleRFIDScan(rfid) {
-//     document.getElementById('rfidText').textContent = rfid;
-//     console.log('Handling RFID scan:', rfid);
-//     fetchProfileData(rfid);
-// }
-
-// function fetchProfileData(rfid = '') {
-//     fetch(`/attendanceProfile?rfid=${rfid}`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             document.getElementById('FullName').textContent = data.fullName;
-//             document.getElementById('CallSign').textContent = data.callSign;
-//             document.getElementById('DutyHours').textContent = data.dutyHours;
-//             document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints;
-//             document.getElementById('InventoryPoints').textContent = data.inventoryPoints;
-//             document.getElementById('ActivityPoints').textContent = data.activityPoints;
-//         })
-//         .catch(error => {
-//             console.error('Error fetching profile data:', error);
-//         });
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //working recent
-// document.addEventListener('DOMContentLoaded', function() {
-//     const rfidInput = document.createElement('input');
-//     rfidInput.style.position = 'absolute';
-//     rfidInput.style.opacity = 0;
-//     rfidInput.style.top = '-9999px';
-//     document.body.appendChild(rfidInput);
-//     rfidInput.focus();
-
-//     function focusRFIDInput() {
-//         rfidInput.focus();
-//     }
-
-//     document.addEventListener('click', function() {
-//         focusRFIDInput();
-//     });
-
-//     rfidInput.addEventListener('keypress', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             const rfidValue = rfidInput.value.trim();
-//             rfidInput.value = '';
-//             console.log('RFID Scanned:', rfidValue);
-//             handleRFIDScan(rfidValue);
-//         }
-//     });
-
-//     // Fetch profile data when page loads
-//     fetchProfileData();
-// });
-
-// function handleRFIDScan(rfid) {
-//     document.getElementById('rfidText').textContent = rfid;
-//     console.log('Handling RFID scan:', rfid);
-//     fetchProfileData();
-//     // Record attendance based on the RFID
-//     recordAttendance(rfid);
-// }
-
-// function recordAttendance(rfid) {
-//     fetch('/recordAttendance', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ rfid: rfid })
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         console.log('Attendance recorded successfully:', data);
-//         if (data.timeInStatus === 1) {
-//             document.getElementById('TimeIn').textContent = data.timeIn;
-//             document.getElementById('DateTimeIn').textContent = data.dateOfTimeIn;
-//         } else {
-//             document.getElementById('TimeOut').textContent = data.timeOut;
-//             document.getElementById('DateTimeOut').textContent = data.dateOfTimeOut;
-//             document.getElementById('DutyHours').textContent = data.dutyHours;
-//         }
-
-//         // Fetch updated profile data
-//         fetchProfileData(rfid);
-//     })
-//     .catch(error => {
-//         console.error('Error recording attendance:', error);
-//     });
-// }
-
-// function fetchProfileData(rfid = '') {
-//     fetch(`/attendanceProfile?rfid=${rfid}`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             document.getElementById('FullName').textContent = data.fullName;
-//             document.getElementById('CallSign').textContent = data.callSign;
-//             document.getElementById('DutyHours').textContent = data.dutyHours;
-//             document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints;
-//             document.getElementById('InventoryPoints').textContent = data.inventoryPoints;
-//             document.getElementById('ActivityPoints').textContent = data.activityPoints;
-//         })
-//         .catch(error => {
-//             console.error('Error fetching profile data:', error);
-//         });
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  // Event listener to handle RFID input
-//  document.addEventListener('DOMContentLoaded', function() {
-//     const rfidInput = document.getElementById('rfidInput');
-//     rfidInput.focus();
-
-//     rfidInput.addEventListener('keypress', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             // Handle RFID scan
-//             const rfidValue = rfidInput.value;
-//             rfidInput.value = ''; // Clear the input for the next scan
-//             console.log('RFID Scanned:', rfidValue); // You can remove this line in production
-
-//             // Call your function to handle the RFID value
-//             handleRFIDScan(rfidValue);
-//         }
-//     });
-// });
-
-// function handleRFIDScan(rfid) {
-//     // Handle the RFID scan logic here
-//     console.log('Handling RFID scan:', rfid); // You can remove this line in production
-//     // You can add your code here to handle the scanned RFID value
-// }
-
-
-
-
-
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const rfidInput = document.getElementById('rfidInput');
-//     rfidInput.focus();
-
-//     rfidInput.addEventListener('keypress', function(event) {
-//         if (event.key === 'Enter') {
-//             event.preventDefault();
-//             // Handle RFID scan
-//             const rfidValue = rfidInput.value;
-//             rfidInput.value = ''; // Clear the input for the next scan
-//             console.log('RFID Scanned:', rfidValue); // You can remove this line in production
-
-//             // Call your function to handle the RFID value
-//             handleRFIDScan(rfidValue);
-//         }
-//     });
-// });
-
-// function handleRFIDScan(rfid) {
-//     // Handle the RFID scan logic here
-//     console.log('Handling RFID scan:', rfid); // You can remove this line in production
-
-//     // Example: Make an AJAX call to record attendance
-//     fetch('/recordAttendance', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ rfid: rfid })
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             return response.json();
-//         } else {
-//             throw new Error('Error recording attendance');
-//         }
-//     })
-//     .then(data => {
-//         // Update the UI with the response data
-//         document.getElementById('FullName').textContent = data.fullName;
-//         document.getElementById('CallSign').textContent = data.callSign;
-//         document.getElementById('DutyHours').textContent = data.dutyHours;
-//         document.getElementById('FireResponsePoints').textContent = data.fireResponsePoints;
-//         document.getElementById('InventoryPoints').textContent = data.inventoryPoints;
-//         document.getElementById('ActivityPoints').textContent = data.activityPoints;
-//         document.getElementById('TimeIn').textContent = data.timeIn;
-//         document.getElementById('DateTimeIn').textContent = data.dateTimeIn;
-//         document.getElementById('TimeOut').textContent = data.timeOut;
-//         document.getElementById('DateTimeOut').textContent = data.dateTimeOut;
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('Error recording attendance');
-//     });
-// }
 

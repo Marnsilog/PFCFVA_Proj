@@ -1,20 +1,6 @@
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
-  
 
-//LEADERBOARDS
+
+//IMPORTANT
   function showDutyHours(){
     var dutyH = document.getElementById('dutyH');
     var FireR = document.getElementById('FireR');
@@ -38,41 +24,19 @@ function animateProgressBar(targetWidth) {
     dutyH.classList.remove('bg-red-700','text-white');
     FireR.classList.add('text-black');
     }
+    function toggleSetting() {
 
-    function dutyhoursdetail(){
-        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
-        if (dutyhoursdetail.style.display === 'none' || dutyhoursdetail.style.display === '') {
-           
-            dutyhoursdetail.style.display = 'block';
+        var profileForm = document.getElementById('Setting');
+        
+        if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+         
+            profileForm.style.display = 'block';
         } else {
           
-            dutyhoursdetail.style.display = 'none';
+            profileForm.style.display = 'none';
         }
     }
-
-    function exitdtdetail(){
-        var dutyhoursdetail = document.getElementById('dutyhoursdetail');
-            dutyhoursdetail.style.display = 'none';
-       
-    }
-
-    function fireresponsedetai(){
-        var fireresponsedetail = document.getElementById('fireresponsedetail');
-        if (fireresponsedetail.style.display === 'none' || fireresponsedetail.style.display === '') {
-           
-            fireresponsedetail.style.display = 'block';
-        } else {
-          
-            fireresponsedetail.style.display = 'none';
-        }
-    }
-
-    function exitfrdetail(){
-        var fireresponsedetail = document.getElementById('fireresponsedetail');
-        fireresponsedetail.style.display = 'none';
-       
-    }
-
+    
     function itemstatus(selectElement) {
 
         const selectedValue = selectElement.value;
@@ -89,73 +53,9 @@ function animateProgressBar(targetWidth) {
     }
     
     
-  
-
 
 //FOR MENU
 
-function displaySection(sectionName) {
-    const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
-
-    sections.forEach(section => {
-
-        const element = document.getElementById(section);
-        if (section === sectionName) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-
-    });
-    }
-function Records() {
-    displaySection('frmRecord');
-}
-
-function Profile() {
-    displaySection('frmMyprofile');
-}
-
-function Achievements() {
-    displaySection('frmAchievement');
-}
-
-
-function Rankings() {
-    displaySection('frmRankings');
-}
-
-
-
-    function toggleSetting() {
-      addLine('prof');
-      var profileForm = document.getElementById('Setting');
-      
-
-      if (profileForm.style.display === 'none' || profileForm.style.display === '') {
-       
-          profileForm.style.display = 'block';
-      } else {
-        
-          profileForm.style.display = 'none';
-      }
-  }
-
-
-
-function addLine(LineId) {
-    const formIds = ['dashb', 'inV', 'leadB', 'conN','prof'];
-    
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === LineId) {
-            element.classList.add('underline', 'underline-offset-8');
-        }
-        else {
-            element.classList.remove('underline', 'underline-offset-8');
-        }
-    });
-}
 //INVENTORY
 function remarks(){
     var remarkstag = document.getElementById('remarkstag');
@@ -184,86 +84,8 @@ function CancelInv(){
 
 }
 
-function seeinventory(){
-    var inventorydetail = document.getElementById('inventorydetail');
-    if (inventorydetail.style.display === 'none' || inventorydetail.style.display === '') {
-       
-        inventorydetail.style.display = 'block';
-    } else {
-      
-        inventorydetail.style.display = 'none';
-    }
-}
-function exitinventorydetail(){
-    var inventorydetail = document.getElementById('inventorydetail');
-
-    inventorydetail.style.display = 'none';
- 
-}
-
-//
-  function showElement(elementId) {
-    const formIds = ['frmDashboard','frmLeaderboards', 'frmContactus', 'addInventory', 'frmMainProfile', 'Setting','editProfile','frmInventory',];
-
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === elementId) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    });
-}
-
-
-
-function showDashboard() {
-    showElement('frmDashboard');
-    addLine('dashb');
-}
-function showInventory() {
-    showElement('addInventory');
-    addLine('inV');
-}
-function showLeaderboards() {
-  showElement('frmLeaderboards');
-  addLine('leadB');
-}
-function showContactus() {
-    showElement('frmContactus');
-    addLine('conN');
-   
-}
-function myProfile() {
-    showElement('frmMainProfile');
-    
-}
-function showEdit(){
-    showElement('editProfile');
-}
-function AddInventory(){
-    showElement('addInventory');
-    
-}
-
-// window.onload = function() {
-//   showDashboard();
-// };
-
 document.addEventListener('DOMContentLoaded', function() {
-    animateProgressBar(70);
-    animateProgressBar2(40);
 
-    const logoutLink = document.getElementById('logoutLink');
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                window.location.href = 'index.html';
-            }
-        });
-    }
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -290,185 +112,298 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// document.addEventListener('DOMContentLoaded', function () {
-   
-// });
+//INVENTORY
+//VOLUNTEER INV
+window.addEventListener('load', function() {
+    if (window.location.pathname === '/volunteer_form_inv') {
+        
+        document.getElementById('Search_form_inv').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchInventory_form(searchQuery); 
+        });
+        fetchInventory_form();
+    } else if (window.location.pathname === '/volunteer_inventory') {
+        loadsVehicleAssignments();
+        const vehicleName = ''; 
+        fetchAndDisplayInventory(vehicleName); 
+        document.getElementById('searchInputInvs').addEventListener('input', function() {
+            const searchQuery = this.value.trim();
+            fetchAndDisplayInventoryforsearch(searchQuery); 
+        });
 
-
-
-
-//edit prof, working with bugs
-// // Function to populate edit form with current profile data
-// function populateEditForm(data) {
-//     document.getElementById('EditRFID').value = data.rfid;
-//     document.getElementById('EditLastName').value = data.lastName || '';
-//     document.getElementById('EditFirstName').value = data.firstName || '';
-//     document.getElementById('EditMiddleName').value = data.middleName || '';
-//     document.getElementById('EditUsername').value = data.username || '';
-//     document.getElementById('EditEmailAddress').value = data.emailAddress || '';
-//     document.getElementById('EditContactNumber').value = data.mobileNumber || '';
-//     document.getElementById('EditCivilStatus').value = data.civilStatus || '';
-//     document.getElementById('EditNationality').value = data.nationality || '';
-//     document.getElementById('EditBloodType').value = data.bloodType || '';
-//     document.getElementById('EditGender').value = data.gender || '';
-//     document.getElementById('EditCurrentAddress').value = data.currentAddress || '';
-//     document.getElementById('EditEmergencyContactPerson').value = data.emergencyContactPerson || '';
-//     document.getElementById('EditEmergencyContactNumber').value = data.emergencyContactNumber || '';
-//     document.getElementById('EditHighestEducationalAttainment').value = data.highestEducationalAttainment || '';
-//     document.getElementById('EditNameOfCompany').value = data.nameOfCompany || '';
-//     document.getElementById('EditYearsInService').value = data.yearsInService || '';
-//     document.getElementById('EditSkillsTraining').value = data.skillsTraining || '';
-//     document.getElementById('EditOtherAffiliation').value = data.otherAffiliation || '';
-// }
-
-// // Function to handle profile update
-// function saveProfile() {
-//     const rfid = document.getElementById('EditRFID').value;
-//     const lastName = document.getElementById('EditLastName').value;
-//     const firstName = document.getElementById('EditFirstName').value;
-//     const middleName = document.getElementById('EditMiddleName').value;
-//     const middleInitial = middleName.charAt(0).toUpperCase();
-//     const username = document.getElementById('EditUsername').value;
-//     const emailAddress = document.getElementById('EditEmailAddress').value;
-//     const mobileNumber = document.getElementById('EditContactNumber').value;
-//     const oldPassword = document.getElementById('EditOldPassword').value;
-//     const newPassword = document.getElementById('EditNewPassword').value;
-//     const confirmPassword = document.getElementById('EditConfirmPassword').value;
-//     const civilStatus = document.getElementById('EditCivilStatus').value;
-//     const nationality = document.getElementById('EditNationality').value;
-//     const bloodType = document.getElementById('EditBloodType').value;
-//     const gender = document.getElementById('EditGender').value;
-//     const currentAddress = document.getElementById('EditCurrentAddress').value;
-//     const emergencyContactPerson = document.getElementById('EditEmergencyContactPerson').value;
-//     const emergencyContactNumber = document.getElementById('EditEmergencyContactNumber').value;
-//     const highestEducationalAttainment = document.getElementById('EditHighestEducationalAttainment').value;
-//     const nameOfCompany = document.getElementById('EditNameOfCompany').value;
-//     const yearsInService = document.getElementById('EditYearsInService').value;
-//     const skillsTraining = document.getElementById('EditSkillsTraining').value;
-//     const otherAffiliation = document.getElementById('EditOtherAffiliation').value;
-
-//     const profileData = {
-//         rfid,
-//         lastName,
-//         firstName,
-//         middleName,
-//         middleInitial,
-//         username,
-//         emailAddress,
-//         mobileNumber,
-//         oldPassword,
-//         newPassword,
-//         confirmPassword,
-//         civilStatus,
-//         nationality,
-//         bloodType,
-//         gender,
-//         currentAddress,
-//         emergencyContactPerson,
-//         emergencyContactNumber,
-//         highestEducationalAttainment,
-//         nameOfCompany,
-//         yearsInService,
-//         skillsTraining,
-//         otherAffiliation
-//     };
-
-//     fetch('/updateProfile', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(profileData)
-//     })
-//     .then(response => response.json())
-//     .then(result => {
-//         if (result.success) {
-//             alert('Profile updated successfully');
-//             // Update the main profile display
-//             document.getElementById('FullName').textContent = `${firstName} ${middleInitial}. ${lastName}`;
-//             document.getElementById('CallSign').textContent = profileData.callSign;
-//             // other updates as needed
-//             showProfile(); // Switch back to profile view
-//         } else {
-//             alert('Failed to update profile: ' + result.message);
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error updating profile:', error);
-//         alert('An error occurred while updating the profile.');
-//     });
-// }
-
-// // Function to show the edit profile form
-// function showEdit() {
-//     fetch('/profile')
-//     .then(response => response.json())
-//     .then(data => {
-//         populateEditForm(data);
-//         document.getElementById('frmMainProfile').style.display = 'none';
-//         document.getElementById('editProfile').style.display = 'block';
-//     })
-//     .catch(error => {
-//         console.error('Error fetching profile for edit:', error);
-//     });
-// }
-
-// // Function to cancel the edit profile action
-// function cancelEdit() {
-//     document.getElementById('editProfile').style.display = 'none';
-//     document.getElementById('frmMainProfile').style.display = 'block';
-// }
-
-
-//edit profile (working)
-// document.addEventListener('DOMContentLoaded', () => {
-//     fetch('/profile') // Fetch profile from server
-//     .then(response => {
-//         if (response.status === 200) {
-//             return response.json();
-//         } else {
-//             throw new Error('Not logged in');
-//         }
-//     })
-//     .then(data => {
-//         document.getElementById('RFID').textContent = `ID#: ${data.rfid}`; // Display RFID
-//         // Set the hidden RFID field in the form
-//         document.getElementById('EditRFID').value = data.rfid;
-//         // Set other profile data...
-//     })
-//     .catch(error => {
-//         console.error('Error fetching profile:', error);
-//         window.location.href = '/';
-//     });
+        document.getElementById('vehStatus').addEventListener('change', function() {
+            const selectedStatus = this.value; 
+            fetchAndDisplayInventorySearch(selectedStatus);
+        });
     
-//     document.getElementById('editProfileForm').addEventListener('submit', function (event) {
-//         event.preventDefault(); // Prevent the default form submission
 
-//         const formData = new FormData(this);
-//         const data = {};
-//         formData.forEach((value, key) => {
-//             data[key] = value;
-//         });
+    }
+});
+function fetchInventory_form(searchTerm = '') {  
+    const url = new URL('/auth/inventory2', window.location.origin);
+    url.searchParams.append('search', searchTerm); 
 
-//         fetch('/updateProfile', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         })
-//         .then(response => response.json())
-//         .then(result => {
-//             if (result.success) {
-//                 alert('Profile updated successfully');
-//                 // Optionally, update the profile view with new data
-//             } else {
-//                 alert('Failed to update profile');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error updating profile:', error);
-//             alert('An error occurred while updating the profile');
-//         });
-//     });
-// });
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory data:', data);
+            const tbody = document.querySelector('#myTable tbody');
+            tbody.innerHTML = ''; 
+
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="4">No results found</td>';
+                tbody.appendChild(row);
+            } else {
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.classList.add('border-t-2', 'border-b-2', 'h-8', 'border-black', 'md:h-16');
+                   // console.log(item.checked_date);
+
+                    row.innerHTML = `
+                        <td>${item.checked_date || 'N/A'}</td>
+                        <td>${item.vehicle || 'N/A'}</td>
+                        <td><a class="underline underline-offset-1 md:text-xl" href="#"onclick="seeinventory('${item.checked_date}')"">See details</a></td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+            }
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}
+function fetchAndDisplayInventoryforsearch(searchQuery = '') {
+    let url = '/auth/inventory-search'; 
+
+    if (searchQuery) {
+        url += `?search=${encodeURIComponent(searchQuery)}`;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = ''; 
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t', 'border-b', 'border-gray-500', 'h-14', 'md:h-14');
+                row.dataset.itemId = item.id;
+            
+                row.innerHTML = `
+                    <td class="flex justify-center items-center">
+                        <div class="mt-2 md:mt-1">
+                            <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 object-cover md:object-fill">
+                        </div>
+                    </td>
+                    <td class="text-center p-2">
+                        <p class="text-sm md:text-base">${item.name}</p>
+                    </td>
+                    <td>
+                        <div class="flex justify-center">
+                            <select class="border border-black text-sm md:text-base w-24 md:w-32" onchange="updateStatus(this)">
+                                <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                                <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                                <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                                <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="p-2">
+                        <div class="md:flex md:justify-center">
+                            <textarea class="text-sm border border-black w-full min-h-[2rem] max-h-[3rem] px-2 py-1 bg-white focus:outline-none resize-none md:w-96"></textarea>
+                        </div>
+                    </td>
+                `;
+            
+                tbody.appendChild(row);
+            });
+            
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}
+
+function fetchAndDisplayInventory(vehicleName) {
+    let url = '/auth/inventory'; 
+
+    if (vehicleName) {
+        url += `?sortVehicle=${encodeURIComponent(vehicleName)}`; 
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#myTable2 tbody');
+            tbody.innerHTML = ''; 
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t', 'border-b', 'border-gray-500', 'h-14', 'md:h-14');
+                row.dataset.itemId = item.id;
+            
+                row.innerHTML = `
+                    <td class="flex justify-center items-center">
+                        <div class="mt-2 md:mt-1">
+                            <img src="${item.itemImage}" class="h-12 w-12 md:h-14 md:w-14 object-cover md:object-fill">
+                        </div>
+                    </td>
+                    <td class="text-center p-2">
+                        <p class="text-sm md:text-base">${item.name}</p>
+                    </td>
+                    <td>
+                        <div class="flex justify-center">
+                            <select class="border border-black text-sm md:text-base w-24 md:w-32" onchange="updateStatus(this)">
+                                <option value="" disabled ${!item.Status ? 'selected' : ''}></option>
+                                <option value="damaged" ${item.Status?.toLowerCase() === 'damaged' ? 'selected' : ''}>Damaged</option>
+                                <option value="missing" ${item.Status?.toLowerCase() === 'missing' ? 'selected' : ''}>Missing</option>
+                                <option value="good" ${item.Status?.toLowerCase() === 'good' ? 'selected' : ''}>Good</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="p-2">
+                        <div class="md:flex md:justify-center">
+                            <textarea class="text-sm border border-black w-full min-h-[2rem] max-h-[3rem] px-2 py-1 bg-white focus:outline-none resize-none md:w-96"></textarea>
+                        </div>
+                    </td>
+                `;
+            
+                tbody.appendChild(row);
+            });
+            
+            
+        })
+        .catch(err => console.error('Error fetching inventory data:', err));
+}
+function loadsVehicleAssignments() {
+    fetch('/getVehicleAssignments')
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('sortVehicleAssignment');
+            selectElement.innerHTML = '<option value="">All Vehicles</option>'; 
+
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    selectElement.innerHTML += `<option value="${item.vehicleName}">${item.vehicleName}</option>`;
+                });
+            } else {
+                console.error('No vehicle assignments found');
+            }
+
+            // Add event listener for sorting
+            selectElement.addEventListener('change', () => {
+                const selectedVehicle = selectElement.value; // Get selected value
+                fetchAndDisplayInventory(selectedVehicle); // Pass selected vehicle to the function
+            });
+        })
+        .catch(error => console.error('Error loading vehicle assignments:', error));
+}
+function cancelInventory() {
+    console.log('Cancel clicked');
+}
+//INVENTORYLOG
+function submitInventory() {
+    const tbody = document.querySelector('#myTable2 tbody');
+    const items = [];
+    
+    Array.from(tbody.children).forEach(row => {
+        const itemId = row.dataset.itemId;
+        const statusSelect = row.querySelector('select');
+        const remarksTextarea = row.querySelector('textarea');
+        
+        if (itemId && statusSelect.value) {
+            items.push({
+                itemID: itemId,
+                status: statusSelect.value,
+                remarks: remarksTextarea.value,
+            });
+        }
+    });
+    
+    fetch('/auth/inventory/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(items),
+    })
+    .then(response => {
+        if (!response.ok) {
+            // If response is not ok, throw an error to be caught below
+            return response.json().then(errData => {
+                throw new Error(errData.message || 'Failed to submit inventory');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        if (data.redirect) {
+            window.location.href = data.redirect; 
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting inventory:', error);
+        alert(error.message || 'Failed to submit inventory. Check console for details.');
+    });
+}
+
+
+async function fetchInventoryData() {
+    try {
+        const response = await fetch('/inventory'); 
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const inventoryData = await response.json();
+        populateTable(inventoryData);
+    } catch (error) {
+        console.error('Error fetching inventory data:', error);
+    }
+}
+
+//DETAILS
+function seeinventory(checked_date) {
+    console.log(`Fetching details for itemID: ${checked_date}`); 
+    fetch(`/auth/inventory2/detail/${checked_date}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched inventory details:', data); 
+            const inventoryDetailDiv = document.getElementById('inventorydetail');
+            const tbody = inventoryDetailDiv.querySelector('tbody');
+            tbody.innerHTML = ''; 
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No details available</td></tr>';
+                inventoryDetailDiv.style.display = 'block';
+                return;
+            }
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.classList.add('text-center', 'h-10');
+
+                row.innerHTML = `
+                    <td>${item.itemName || 'N/A'}</td>
+                    <td>${item.changeFrom || 'N/A'}</td>
+                     <td>${item.changeTo || 'N/A'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+            inventoryDetailDiv.style.display = 'block';
+        })
+        .catch(err => console.error('Error fetching inventory details:', err));
+}
+
+function exitinventorydetail() {
+    const inventoryDetailDiv = document.getElementById('inventorydetail');
+    inventoryDetailDiv.style.display = 'none';
+}

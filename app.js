@@ -1,7 +1,7 @@
 
 const express = require('express');
-const mysql = require('mysql');
-const bcrypt = require('bcrypt');
+const mysql = require('mysql'); 
+const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
@@ -11,16 +11,33 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
+require('dotenv').config({ path: './.env' });
+const socketIo = require('socket.io');
+const http = require('http');  // Added for HTTP server creation
+// const session = require('express-session');
+// const MySQLStore = require('express-mysql-session')(session);
+const mysql2 = require('mysql2/promise');
+const fileUpload = require('express-fileupload');
 
 
-const randomBytesAsync = promisify(crypto.randomBytes);
 
-// Create connections
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'pfcfva'
+    host: process.env.DB_HOST,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD, // Corrected this line
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+});
+const db2 = mysql2.createPool({
+    host: process.env.DB_HOST,
+    // port: process.env.DB_PORT, // Uncomment if you want to use a specific port
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD, // Corrected this line
+    database: process.env.DB_NAME,
+
 });
 
 // Connect
@@ -33,29 +50,25 @@ db.connect((err) => {
 
 const app = express();
 
-//INVENTORY requirements (multer)
-// Set storage engine
-// const storage = multer.diskStorage({
-//     destination: '/public/uploads/',
-//     filename: function(req, file, cb){
-//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-//     }
-// });
+app.use(fileUpload({
+    createParentPath: true,  // Automatically creates directories if they don't exist
+}));
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, 'public/uploads/'),
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, 'public', 'uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
     }
+    cb(null, uploadPath); // Save to 'uploads' directory inside 'public'
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename file to avoid conflicts
+  },
 });
 
 // Init upload
-const upload = multer({
-    storage: storage,
-    limits: {fileSize: 50 * 1024 * 1024}, // 50MB limit
-    fileFilter: function(req, file, cb){
-        checkFileType(file, cb);
-    }
-}).single('itemImage');
+const upload = multer({ storage: storage });
+
 
 // Check File Type
 function checkFileType(file, cb){
@@ -76,310 +89,119 @@ function checkFileType(file, cb){
 
 
 
-// Middleware to parse JSON bodies
+// middleware
 app.use(express.json());
-
-// Serve static files from the "public" directory
-// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-//session
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
-//url body
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
+//session
+// app.use(session({
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { maxAge: 1000 * 60 * 60 * 24 } 
+// }));
+app.use(session({
+    secret: 'ampotangina',
+    resave: false,
+    cookie: { secure: false },
+    saveUninitialized: true
+}));;
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// Create HTTP server and pass it to socket.io
+const server = http.createServer(app);  // Create the HTTP server
+
+const io = socketIo(server);  // Attach Socket.IO to the server
 
 
-//register route (test-hash)
-app.post('/register', (req, res) => {
-    const {
-        rfid,
-        username,
-        password,
-        accountType,
-        lastName,
-        firstName,
-        middleName,
-        middleInitial,
-        callSign,
-        currentAddress,
-        dateOfBirth,
-        civilStatus,
-        gender,
-        nationality,
-        bloodType,
-        mobileNumber,
-        emailAddress,
-        emergencyContactPerson,
-        emergencyContactNumber,
-        highestEducationalAttainment,
-        nameOfCompany,
-        yearsInService,
-        skillsTraining,
-        otherAffiliation,
-        bioDataChecked,
-        interviewChecked,
-        fireResponsePoints,
-        activityPoints,
-        inventoryPoints,
-        dutyHours
-    } = req.body;
+// io.on('connection', (socket) => {
+//     console.log('A user connected: ', socket.id);
 
-    // Check if the username already exists in the database
-    const checkUsernameQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE username = ?';
-    db.query(checkUsernameQuery, [username], (checkUsernameErr, checkUsernameResult) => {
-        if (checkUsernameErr) {
-            console.error('Error checking username:', checkUsernameErr);
-            res.status(500).send('Error checking username');
-            return;
+//     // Handle incoming messages
+//     socket.on('chatMessage', (msgData) => {
+//         // Broadcast the message object to all clients
+//         io.emit('chatMessage', msgData);
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('A user disconnected: ', socket.id);
+//     });
+// });
+
+io.on('connection', (socket) => {
+    console.log('A user connected: ', socket.id);
+
+    // Send the chat log when a user connects
+    const now = new Date();
+    const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+    const filePath = path.join(__dirname, 'public/chat_logs', fileName);
+
+    // Check if the log file exists and read it
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading chat log file:', err);
+        } else {
+            // Send the entire chat log content to the client
+            socket.emit('loadChatLog', data);
         }
+    });
 
-        if (checkUsernameResult[0].count > 0) {
-            res.status(400).send('Username already exists');
-            return;
-        }
+    // Handle incoming chat messages
+    socket.on('chatMessage', (msgData) => {
+        const now = new Date();
+        const fileName = `chat_${now.toISOString().split('T')[0]}.txt`;
+        const filePath = path.join(__dirname, 'public/chat_logs', fileName);
 
-        // Check if the RFID already exists in the database
-        const checkRfidQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE rfid = ?';
-        db.query(checkRfidQuery, [rfid], (checkRfidErr, checkRfidResult) => {
-            if (checkRfidErr) {
-                console.error('Error checking RFID:', checkRfidErr);
-                res.status(500).send('Error checking RFID');
+        const logMessage = `[${msgData.date} ${msgData.time}] ${msgData.username}: ${msgData.message}\n`;
+
+        // Save the message to the .txt file
+        fs.appendFile(filePath, logMessage, (err) => {
+            if (err) {
+                console.error('Error writing to chat log:', err);
                 return;
             }
 
-            if (checkRfidResult[0].count > 0) {
-                res.status(400).send('RFID already exists');
-                return;
-            }
-
-            // Check if the email already exists in the database
-            const checkEmailQuery = 'SELECT COUNT(*) AS count FROM tbl_accounts WHERE emailAddress = ?';
-            db.query(checkEmailQuery, [emailAddress], (checkEmailErr, checkEmailResult) => {
-                if (checkEmailErr) {
-                    console.error('Error checking email:', checkEmailErr);
-                    res.status(500).send('Error checking email');
-                    return;
+            // Store the file path in the database if it's not already saved
+            const query = 'INSERT INTO tbl_chat_logs (filePath) VALUES (?) ON DUPLICATE KEY UPDATE filePath = ?';
+            db.query(query, [filePath, filePath], (err) => {
+                if (err) {
+                    console.error('Error saving chat log path:', err);
                 }
-
-                if (checkEmailResult[0].count > 0) {
-                    res.status(400).send('Email already exists');
-                    return;
-                }
-
-                // If all details are unique, proceed with registration
-                bcrypt.hash(password, 10, (hashErr, hash) => {
-                    if (hashErr) {
-                        console.error('Error hashing password:', hashErr);
-                        res.status(500).send('Error hashing password');
-                        return;
-                    }
-
-                    const sql = `INSERT INTO tbl_accounts (
-                        rfid,
-                        username,
-                        password,
-                        accountType,
-                        lastName,
-                        firstName,
-                        middleName,
-                        middleInitial,
-                        callSign,
-                        currentAddress,
-                        dateOfBirth,
-                        civilStatus,
-                        gender,
-                        nationality,
-                        bloodType,
-                        mobileNumber,
-                        emailAddress,
-                        emergencyContactPerson,
-                        emergencyContactNumber,
-                        highestEducationalAttainment,
-                        nameOfCompany,
-                        yearsInService,
-                        skillsTraining,
-                        otherAffiliation,
-                        bioDataChecked,
-                        interviewChecked,
-                        fireResponsePoints,
-                        activityPoints,
-                        inventoryPoints,
-                        dutyHours
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-                    db.query(sql, [
-                        rfid,
-                        username,
-                        hash, // Store the hashed password 
-                        accountType,
-                        lastName,
-                        firstName,
-                        middleName,
-                        middleInitial,
-                        callSign,
-                        currentAddress,
-                        dateOfBirth,
-                        civilStatus,
-                        gender,
-                        nationality,
-                        bloodType,
-                        mobileNumber,
-                        emailAddress,
-                        emergencyContactPerson,
-                        emergencyContactNumber,
-                        highestEducationalAttainment,
-                        nameOfCompany,
-                        yearsInService,
-                        skillsTraining,
-                        otherAffiliation,
-                        bioDataChecked,
-                        interviewChecked,
-                        fireResponsePoints,
-                        activityPoints,
-                        inventoryPoints,
-                        dutyHours
-                    ], (err, result) => {
-                        if (err) {
-                            console.error('Error registering user:', err);
-                            res.status(500).send('Error registering user');
-                            return;
-                        }
-                        res.status(200).send('User registered successfully');
-                    });
-                });
             });
         });
+
+        // Broadcast the message to all clients
+        io.emit('chatMessage', msgData);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected: ', socket.id);
     });
 });
 
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// Login route (test-hash)
-//format: req.session.dataName = user.dataName;
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    const sql = 'SELECT * FROM tbl_accounts WHERE username = ?';
-    db.query(sql, [username], (err, result) => {
-        if (err) {
-            res.status(500).send('Error logging in');
-            return;
-        }
-        if (result.length === 0) {
-            res.status(401).send('Invalid username or password');
-            return;
-        }
-        const hashedPassword = result[0].password;
-        bcrypt.compare(password, hashedPassword, (compareErr, compareResult) => {
-            if (compareErr) {
-                res.status(500).send('Error comparing passwords');
-                return;
-            }
-            if (compareResult) {
-                const user = result[0];
-                req.session.loggedin = true;
-                req.session.username = user.username;
-                req.session.rfid = user.rfid; //this 2
-                //basic info
-                req.session.fullName = `${user.firstName} ${user.middleInitial +"."} ${user.lastName}`; //add middle initial
-                //temp
-                req.session.lastName = user.lastName;
-                req.session.firstName = user.firstName;
-                req.session.middleName = user.middleName;
-                //basic info 2
-                req.session.callSign = user.callSign;
-                req.session.dateOfBirth = user.dateOfBirth; //need format fix
-                req.session.gender = user.gender;
-                req.session.civilStatus = user.civilStatus;
-                req.session.nationality = user.nationality;
-                req.session.bloodType = user.bloodType;
-                req.session.highestEducationalAttainment = user.highestEducationalAttainment;
-                req.session.nameOfCompany = user.nameOfCompany;
-                req.session.yearsInService = user.yearsInService;
-                req.session.skillsTraining = user.skillsTraining;
-                req.session.otherAffiliation = user.otherAffiliation;
-                //contact info
-                req.session.emailAddress = user.emailAddress;
-                req.session.mobileNumber = user.mobileNumber;
-                req.session.currentAddress = user.currentAddress;
-                req.session.emergencyContactPerson = user.emergencyContactPerson;
-                req.session.emergencyContactNumber = user.emergencyContactNumber;
-                //points
-                req.session.dutyHours = user.dutyHours;
-                req.session.fireResponsePoints = user.fireResponsePoints;
-                req.session.inventoryPoints = user.inventoryPoints;
-                req.session.activityPoints = user.activityPoints;
-                //etc
-                req.session.accountType = user.accountType;
+//routes etc
+const authRoutes = require('./routes/auth')(db, db2); // Pass the `db` connection
+app.use('/auth', authRoutes);
 
-                res.status(200).json({ message: 'Login successful', accountType: user.accountType });
-            } else {
-                res.status(401).send('Invalid username or password');
-            }
-        });
-    });
-});
+const allRoutes = require('./routes/routes_all')(db); // Pass the `db` connection
+app.use('/routes_attendance', allRoutes);
 
-app.get('/volunteer', (req, res) => {
-    if (req.session.loggedin) {
-        res.sendFile(path.join(__dirname, 'public', 'volunteer_dashboard.html'));
-    } else {
-        res.redirect('/');
-    }
-});
 
-//profiling session
-//format: dataName: req.session.dataName,
-app.get('/profile', (req, res) => {
-    if (req.session.loggedin) {
-        res.json({ 
-            rfid: req.session.rfid,// this 3
-            //basic info
-            fullName: req.session.fullName, 
-            //temp
-            lastName: req.session.lastName,
-            firstName: req.session.firstName,
-            middleName: req.session.middleName,
-            //basic info 2
-            callSign: req.session.callSign, 
-            dateOfBirth: req.session.dateOfBirth, 
-            gender: req.session.gender,
-            civilStatus: req.session.civilStatus,
-            nationality: req.session.nationality,
-            bloodType: req.session.bloodType,
-            highestEducationalAttainment: req.session.highestEducationalAttainment,
-            nameOfCompany: req.session.nameOfCompany,
-            yearsInService: req.session.yearsInService,
-            skillsTraining: req.session.skillsTraining,
-            otherAffiliation: req.session.otherAffiliation,
-            //contact info
-            emailAddress: req.session.emailAddress,
-            mobileNumber: req.session.mobileNumber,
-            currentAddress: req.session.currentAddress,
-            emergencyContactPerson: req.session.emergencyContactPerson,
-            emergencyContactNumber: req.session.emergencyContactNumber,
-            //points
-            dutyHours: req.session.dutyHours,
-            fireResponsePoints: req.session.fireResponsePoints,
-            inventoryPoints: req.session.inventoryPoints,
-            activityPoints: req.session.activityPoints,
-            //etc
-            accountType: req.session.accountType,
-            username: req.session.username
-            
-        });
-    } else {
-        res.status(401).send('Not logged in');
-    }
-});
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 //update profile route (WITH BUGS)
@@ -499,10 +321,9 @@ function updateUserProfile(rfid, lastName, firstName, middleName, middleInitial,
 
 
 
-
-///////////////////////////////////////////////////////
-
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 // endpoint to get user profile data by RFID (working for profile)
@@ -617,7 +438,7 @@ app.get('/recentAttendance', (req, res) => {
         FROM tbl_attendance a
         JOIN tbl_accounts b ON a.accountID = b.accountID
         ORDER BY a.attendanceID DESC
-        LIMIT 10`; // pang limit kung ilan kukunin shit
+        LIMIT 50`; // pang limit kung ilan kukunin shit
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -684,8 +505,6 @@ app.get('/accountsAll', (req, res) => {
 });
 
 
-
-
 //admin attendance shit
 // endpoint to retrieve attendance details
 app.get('/attendanceDetails', (req, res) => {
@@ -743,191 +562,172 @@ app.get('/volunteerDetails', (req, res) => {
     }); 
 });
 
+// Endpoint to get current attendees with timeInStatus = 1
+app.get('/getCurrentPresent', (req, res) => {
+    const sql = `
+        SELECT b.callSign, b.firstName, b.middleInitial, b.lastName 
+        FROM tbl_attendance a
+        JOIN tbl_accounts b ON a.accountID = b.accountID
+        WHERE a.timeInStatus = 1
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) {  
+            console.error('Error retrieving current present attendees:', err);
+            res.status(500).send('Error retrieving current present attendees');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 
-
-// equipment route (bugged)
-// app.post('/uploadEquipment', upload, (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ error: 'No file uploaded.' });
-//     }
-
-//     const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//     if (!itemName || !vehicleAssignment || !dateAcquired) {
-//         return res.status(400).json({ error: 'All fields are required.' });
-//     }
-
-//     // Assuming the image is stored in the 'public/uploads' folder and accessible via a static path
-//     const itemImagePath = `/uploads/${req.file.filename}`; // Store the file path instead of the binary data
-
-//     const sql = `
-//         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//         VALUES (?, ?, ?, ?)
-//     `;
-
-//     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-//         if (err) {
-//             console.error('Failed to add equipment:', err);
-//             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-//         }
-//         res.status(201).json({
-//             message: 'Equipment added successfully!',
-//             data: {
-//                 itemName,
-//                 itemImagePath,
-//                 vehicleAssignment,
-//                 dateAcquired
-//             }
-//         });
-//     });
-// });
-
-
-
-// working with compression
-// app.post('/uploadEquipment', (req, res) => {
-//     upload(req, res, function(err) {
-//         if (err) {
-//             console.error('Upload Error:', err);
-//             return res.status(400).json({ error: err.message });
-//         }
-
-//         if (!req.file) {
-//             return res.status(400).json({ error: 'No file uploaded.' });
-//         }
-
-//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//         if (!itemName || !vehicleAssignment || !dateAcquired) {
-//             return res.status(400).json({ error: 'All fields are required.' });
-//         }
-
-//         const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename); // Ensure correct path
-
-//         // Step 1: Get image metadata to calculate the new size (30%)
-//         sharp(originalImagePath)
-//             .metadata()
-//             .then(metadata => {
-//                 const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
-//                 const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
-
-//                 // Compress and resize the image using sharp and return it as a buffer
-//                 return sharp(originalImagePath)
-//                     .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
-//                     .toBuffer();
-//             })
-//             .then(compressedBuffer => {
-//                 // Step 2: Write the compressed image buffer back to the original file path
-//                 fs.writeFile(originalImagePath, compressedBuffer, (writeErr) => {
-//                     if (writeErr) {
-//                         console.error('Error writing compressed image:', writeErr);
-//                         return res.status(500).json({ error: 'Failed to write compressed image. Please try again later.' });
-//                     }
-
-//                     console.log('Image compressed and overwritten successfully');
-
-//                     // Save the path of the compressed image to the database
-//                     const itemImagePath = `/uploads/${req.file.filename}`;  // Use the original filename
-
-//                     const sql = `
-//                         INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//                         VALUES (?, ?, ?, ?)
-//                     `;
-
-//                     db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-//                         if (err) {
-//                             console.error('Failed to add equipment:', err);
-//                             return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-//                         }
-//                         res.status(201).json({
-//                             message: 'Equipment added successfully!',
-//                             data: {
-//                                 itemName,
-//                                 itemImagePath,
-//                                 vehicleAssignment,
-//                                 dateAcquired
-//                             }
-//                         });
-//                     });
-//                 });
-//             })
-//             .catch(err => {
-//                 console.error('Error compressing image:', err);
-//                 return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
-//             });
-//     });
-// });
-
-// working with compression and anti
-app.post('/uploadEquipment', (req, res) => {
-    upload(req, res, function(err) {
+app.get('/getVehicleAssignments', (req, res) => {
+    const sql = 'SELECT * from tbl_vehicles;';
+    db.query(sql, (err, results) => {
         if (err) {
-            return res.status(400).json({ error: err.message });
+            console.error('Failed to retrieve vehicle assignments:', err);
+            res.status(500).json({ error: 'Failed to retrieve vehicle assignments' });
+        } else {
+            res.json(results);
         }
+    });
+});
 
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded.' });
-        }
 
-        const { itemName, vehicleAssignment, dateAcquired } = req.body;
-        if (!itemName || !vehicleAssignment || !dateAcquired) {
-            return res.status(400).json({ error: 'All fields are required.' });
-        }
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        // MARKED CHANGE: Check if itemName already exists
-        const checkItemNameQuery = 'SELECT COUNT(*) AS count FROM tbl_inventory WHERE itemName = ?';
-        db.query(checkItemNameQuery, [itemName], (err, result) => {
+
+app.get('/getEquipment', (req, res) => {
+    try {
+        const search = req.query.search || ''; 
+        const query = `
+            SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory 
+            WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) 
+            AND itemStatus = 'Available'
+        `;
+
+        const searchParam = `%${search}%`;
+
+        db.query(query, [searchParam, searchParam, searchParam], (err, results) => {
             if (err) {
-                return res.status(500).json({ error: 'Failed to check item name uniqueness' });
+                console.error('Failed to retrieve equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve equipment' });
             }
+            //console.log(results);
+            res.json(results); // Send results back as JSON
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).json({ error: 'An unexpected error occurred' });
+    }
+});
 
-            // MARKED CHANGE: Prevent duplicate itemName registration
-            if (result[0].count > 0) {
-                return res.status(400).json({ error: 'Item name already exists. Please choose a different name.' });
+
+
+
+app.get('/getTrashedEquipment', (req, res) => {
+    try {
+        const search = req.query.search || ''; 
+        const sql = 'SELECT itemID, itemName, itemImage, vehicleAssignment FROM tbl_inventory WHERE (itemName LIKE ? OR itemID LIKE ? OR vehicleAssignment LIKE ?) AND itemStatus = "trash"';
+
+        const searchParam = `%${search}%`;
+
+        // Pass search parameters in an array
+        db.query(sql, [searchParam, searchParam, searchParam], (err, results) => {
+            if (err) {
+                console.error('Failed to retrieve equipment:', err);
+                return res.status(500).json({ error: 'Failed to retrieve equipment' });
             }
+            //console.log(results);
+            res.json(results); // Send results back as JSON
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).json({ error: 'An unexpected error occurred' });
+    }
+});
 
-            const originalImagePath = path.join(__dirname, 'public/uploads', req.file.filename);  // Fixing path to the public directory
 
-            // Compress and resize the image using sharp
-                sharp(originalImagePath)
-                    .metadata()
-                    .then(metadata => {
-                        const newWidth = Math.round(metadata.width * 0.3);  // 30% of original width
-                        const newHeight = Math.round(metadata.height * 0.3); // 30% of original height
+app.put('/moveToTrash/:itemID', (req, res) => {
+    const itemID = req.params.itemID;
 
-                        return sharp(originalImagePath)
-                            .resize({ width: newWidth, height: newHeight })  // Resize to 30% of the original size
-                            .toBuffer();  // Compress the image to a buffer
-                    })
-                    .then(data => {
-                        // Overwrite the original image with the compressed one
-                        fs.writeFile(originalImagePath, data, (err) => {
+    // Move the item to the trash by updating its `itemStatus`
+    const sql = 'UPDATE tbl_inventory SET itemStatus = "trash" WHERE itemID = ?'; 
+    db.query(sql, [itemID], (err, result) => {
+        if (err) {
+            console.error('Error moving equipment to trash:', err);
+            return res.status(500).json({ error: 'Failed to move equipment to trash.' });
+        }
+
+        res.status(200).json({ message: 'Equipment moved to trash successfully.' });
+    });
+});
+
+
+app.delete('/deleteFromTrash/:itemID', (req, res) => {
+    const { itemID } = req.params;
+    const { password } = req.body;
+    const username = req.session.user?.username;
+
+    if (!username) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const getPasswordQuery = 'SELECT password FROM tbl_accounts WHERE username = ?';
+    db.query(getPasswordQuery, [username], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(500).json({ error: 'Error retrieving password' });
+        }
+
+        const hashedPassword = results[0].password;
+        bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+            if (err || !isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
+            }
+            const getImagePathQuery = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+
+            console.log('Executing Query:', getImagePathQuery, 'with itemID:', itemID);
+
+            db.query(getImagePathQuery, [itemID], (err, results) => {
+
+                if (err) {
+                    console.error('Error executing query:', err);
+                    return res.status(500).json({ error: 'Failed to retrieve image path' });
+                }
+
+                if (results.length === 0) {
+                    return res.status(500).json({ error: 'Failed to retrieve image path' });
+                }
+
+                const imagePath = path.join(__dirname, 'public', results[0].itemImage);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error('Failed to delete image file:', err);
+                        return res.status(500).json({ error: 'Failed to delete image file' });
+                    }
+                    const deleteLog = 'DELETE FROM tbl_inventory_logs WHERE itemID = ?';
+                    db.query(deleteLog, [itemID], (err) => {
+                        if (err) {
+                            console.log('Failed to delete log:', err);
+                        }
+                
+                        const deleteQuery = 'DELETE FROM tbl_inventory WHERE itemID = ?';
+                        db.query(deleteQuery, [itemID], (err) => {
                             if (err) {
-                                return res.status(500).json({ error: 'Failed to save compressed image.' });
+                                console.error('Failed to delete item:', err);
+                                return res.status(500).json({ error: 'Failed to delete equipment' });
                             }
-
-                            const itemImagePath = `/uploads/${req.file.filename}`;  // Path to the compressed image
-
-                            const sql = `
-                                INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-                                VALUES (?, ?, ?, ?)
-                            `;
-
-                            db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
-                                if (err) {
-                                    return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
-                                }
-                                res.status(201).json({
-                                    message: 'Equipment added successfully!',
-                                    data: { itemName, itemImagePath, vehicleAssignment, dateAcquired }
-                                });
-                            });
+                
+                            res.status(200).json({ message: 'Equipment permanently deleted from trash.' });
                         });
-                    })
-                    .catch(err => {
-                        console.error('Error compressing image:', err);
-                        return res.status(500).json({ error: 'Failed to compress image. Please try again later.' });
                     });
+                });
+                
+            });
         });
     });
 });
@@ -936,195 +736,238 @@ app.post('/uploadEquipment', (req, res) => {
 
 
 
+//edit equip route
+// app.put('/updateEquipment', (req, res) => {
+//     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+//     let itemImagePath = null;
 
-// //working upload
-// app.post('/uploadEquipment', (req, res) => {
-//     upload(req, res, function(err) {
+//     // Step 1: Get the current image path from the database
+//     const getCurrentImagePathSql = 'SELECT itemImage FROM tbl_inventory WHERE itemID = ?';
+//     db.query(getCurrentImagePathSql, [itemId], (err, results) => {
 //         if (err) {
-//             return res.status(400).json({ error: err.message });
+//             console.error('Error retrieving current image path:', err);
+//             return res.status(500).send({ success: false, message: 'Error retrieving current image' });
 //         }
 
-//         if (!req.file) {
-//             return res.status(400).json({ error: 'No file uploaded.' });
+//         // If item not found, send a 404 error
+//         if (results.length === 0) {
+//             return res.status(404).send({ success: false, message: 'Item not found' });
 //         }
 
-//         const { itemName, vehicleAssignment, dateAcquired } = req.body;
-//         if (!itemName || !vehicleAssignment || !dateAcquired) {
-//             return res.status(400).json({ error: 'All fields are required.' });
+//         // Get the current image path
+//         const currentImagePath = results[0].itemImage;
+
+//         // Step 2: Check if a new image is uploaded
+//         if (req.files && req.files.itemImage) {
+//             const itemImage = req.files.itemImage;
+//             const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+//             const uploadDir = path.join(__dirname, 'public/uploads');
+//             const uploadPath = path.join(uploadDir, uniqueFileName);
+            
+//             if (!fs.existsSync(uploadDir)) {
+//                 fs.mkdirSync(uploadDir, { recursive: true });
+//             }
+//             itemImage.mv(uploadPath, (err) => {
+//                 if (err) {
+//                     console.error('Error moving file:', err);
+//                     return res.status(500).send({ success: false, message: 'Error saving item image' });
+//                 }
+//                 itemImagePath = `uploads/${uniqueFileName}`;
+//                 if (currentImagePath) {
+//                     const existingImagePath = path.join(__dirname, 'public', currentImagePath);
+//                     if (fs.existsSync(existingImagePath)) {
+//                         fs.unlink(existingImagePath, (err) => {
+//                             if (err) {
+//                                 console.error('Error deleting existing image:', err);
+//                                 return res.status(500).send({ success: false, message: 'Error deleting existing image' });
+//                             }
+//                             updateDatabase();
+//                         });
+//                     } else {
+//                         updateDatabase();
+//                     }
+//                 } else {
+//                     updateDatabase();
+//                 }
+//             });
+//         } else {
+//             updateDatabase();
 //         }
+//     });
 
-//         const itemImagePath = `/uploads/${req.file.filename}`;
-
+//     function updateDatabase() {
 //         const sql = `
-//             INSERT INTO tbl_inventory (itemName, itemImage, vehicleAssignment, dateAcquired)
-//             VALUES (?, ?, ?, ?)
+//             UPDATE tbl_inventory
+//             SET itemName = ?, 
+//             vehicleAssignment = ?,
+//             itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+//             WHERE itemID = ?
 //         `;
 
-//         db.query(sql, [itemName, itemImagePath, vehicleAssignment, dateAcquired], (err, results) => {
+//         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
 //             if (err) {
-//                 console.error('Failed to add equipment:', err);
-//                 return res.status(500).json({ error: 'Failed to add equipment due to internal server error.' });
+//                 console.error('Database update error:', err);
+//                 return res.status(500).json({ error: 'Failed to update equipment' });
 //             }
-//             res.status(201).json({
-//                 message: 'Equipment added successfully!',
-//                 data: {
-//                     itemName,
-//                     itemImagePath,
-//                     vehicleAssignment,
-//                     dateAcquired
-//                 }
-//             });
+//             res.status(200).json({ message: 'Equipment updated successfully' });
 //         });
-//     });
+//     }
+// });
+
+// app.put('/updateEquipment', (req, res) => {
+//     const { updatedItemName, updatedVehicleAssignment, itemId } = req.body;
+//     let itemImagePath = null;
+
+//     if (req.files && req.files.itemImage) {
+//         const itemImage = req.files.itemImage;
+//         const uniqueFileName = `${updatedItemName}_${Date.now()}_${itemImage.name}`;
+//         const uploadDir = path.join(__dirname, 'public/uploads');
+//         const uploadPath = path.join(uploadDir, uniqueFileName);
+//         if (!fs.existsSync(uploadDir)) {
+//             fs.mkdirSync(uploadDir, { recursive: true });
+//         }
+//         itemImage.mv(uploadPath, (err) => {
+//             if (err) {
+//                 console.error('Error moving file:', err);
+//                 return res.status(500).send({ success: false, message: 'Error saving item image' });
+//             }
+
+//             itemImagePath = `/uploads/${uniqueFileName}`;
+//             updateDatabase();
+//         });
+//     } else {
+//         updateDatabase();
+//     }
+
+//     function updateDatabase() {
+//         const sql = `
+//             UPDATE tbl_inventory
+//             SET itemName = ?, 
+//             vehicleAssignment = ?,
+//             itemImage = COALESCE(?, itemImage) -- Only update image if a new one is uploaded
+//             WHERE itemID = ?
+//         `;
+
+//         db.query(sql, [updatedItemName, updatedVehicleAssignment, itemImagePath, itemId], (err, result) => {
+//             if (err) {
+//                 console.error('Database update error:', err);
+//                 return res.status(500).json({ error: 'Failed to update equipment' });
+//             }
+//             res.status(200).json({ message: 'Equipment updated successfully' });
+//         });
+//     }
 // });
 
 
 
-//select equip route
-app.get('/getEquipment', (req, res) => {
-    const sql = 'SELECT itemName, itemImage, vehicleAssignment FROM tbl_inventory';
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Failed to retrieve equipment:', err);
-            res.status(500).json({ error: 'Failed to retrieve equipment' });
-        } else {
-            res.json(results);
-        }
-    });
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+// POST route for saving ICS logs
+app.post('/saveICSLogs', async (req, res) => {
+    try {
+        const {
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,
+            chatLogs,
+            remarks
+        } = req.body;
+
+        // Construct the SQL query
+        const query = `
+            INSERT INTO tbl_ics_logs 
+            (supervisorName, incidentDate, dispatchTime, location, alarmStatus, whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        // Insert the data into the database
+        await db.query(query, [
+            supervisorName,
+            incidentDate,
+            dispatchTime,
+            location,
+            alarmStatus,
+            whoRequested,
+            fireType,
+            vehicleUsed,
+            responders,      // This should be a JSON string containing the attendees (callSign and name)
+            chatLogs,        // The chat log as a text
+            remarks
+        ]);
+
+        res.json({ success: true, message: 'ICS logs saved successfully.' });
+    } catch (error) {
+        console.error('Error saving ICS logs:', error);
+        res.status(500).json({ success: false, message: 'Error saving ICS logs.' });
+    }
 });
 
-//delete equip route
-app.delete('/deleteEquipment/:itemName', (req, res) => {
-    const itemName = req.params.itemName;
 
-    const sql = 'DELETE FROM tbl_inventory WHERE itemName = ?';
-    db.query(sql, [itemName], (err, result) => {
-        if (err) {
-            console.error('Error deleting equipment:', err);
-            return res.status(500).json({ error: 'Failed to delete equipment.' });
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Equipment not found.' });
-        }
-
-        res.status(200).json({ message: 'Equipment deleted successfully.' });
-    });
-});
-
-
-//edit equip route
-app.put('/updateEquipment', (req, res) => {
-    const { originalItemName, updatedItemName, updatedVehicleAssignment } = req.body;
-
-    const sql = `
-        UPDATE tbl_inventory
-        SET itemName = ?, vehicleAssignment = ?
-        WHERE itemName = ?
-    `;
+app.get('/getIcsLogs', (req, res) => {
+    const query = 'SELECT icsID, supervisorName, incidentDate, dispatchTime FROM tbl_ics_logs';  // Added icsID
     
-    db.query(sql, [updatedItemName, updatedVehicleAssignment, originalItemName], (err, result) => {
+    db.query(query, (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Failed to update equipment' });
+            return res.status(500).json({ error: 'Failed to fetch ICS logs' });
         }
-        res.status(200).json({ message: 'Equipment updated successfully' });
+        res.json(results);
     });
 });
 
 
-// // Add forgot password route (bugged)
-// app.post('/forgot-password', async (req, res) => {
-//     const { emailAddress } = req.body;
+// Route to fetch specific incident log by icsID
+app.get('/getIncidentLog/:icsID', (req, res) => {
+    const icsID = req.params.icsID;
+    
+    // Define the SQL query to fetch the log for the given icsID
+    const sql = `SELECT supervisorName, incidentDate, dispatchTime, alarmStatus, location, 
+                        whoRequested, fireType, vehicleUsed, responders, chatLogs, remarks 
+                 FROM tbl_ics_logs WHERE icsID = ?`;
 
-//     // Check if email exists in the database
-//     db.query('SELECT * FROM tbl_accounts WHERE emailAddress = ?', [emailAddress], async (err, results) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, message: 'Database error' });
-//         }
+    db.query(sql, [icsID], (err, results) => {
+        if (err) {
+            console.error('Error fetching incident log:', err);  // Log the error for debugging
+            return res.status(500).json({ error: 'Failed to fetch incident log' });
+        }
 
-//         if (results.length === 0) {
-//             return res.status(404).json({ success: false, message: 'Email not found' });
-//         }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Incident log not found' });  // Handle case where no log is found
+        }
 
-//         const user = results[0];
-//         const token = (await randomBytesAsync(20)).toString('hex');
-//         const tokenExpiry = Date.now() + 3600000; // 1 hour
+        // Return the incident log details as JSON
+        res.json(results[0]);
+    });
+});
 
-//         // Save the token and expiry to the user record
-//         db.query('UPDATE tbl_accounts SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE accountID = ?', [token, tokenExpiry, user.accountID], (err) => {
-//             if (err) {
-//                 return res.status(500).json({ success: false, message: 'Database error' });
-//             }
 
-//             // Send email with reset link
-//             const transporter = nodemailer.createTransport({
-//                 service: 'Gmail',
-//                 auth: {
-//                     user: 'kulowtsss@gmail.com',
-//                     pass: 'KULOWTS12345'
-//                 }
-//             });
 
-//             const mailOptions = {
-//                 to: emailAddress,
-//                 from: 'kulowtsss@gmail.com',
-//                 subject: 'Password Reset',
-//                 text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-//                       `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-//                       `http://${req.headers.host}/reset/${token}\n\n` +
-//                       `If you did not request this, please ignore this email and your password will remain unchanged.\n`
-//             };
 
-//             transporter.sendMail(mailOptions, (err) => {
-//                 if (err) {
-//                     return res.status(500).json({ success: false, message: 'Email sending error' });
-//                 }
 
-//                 res.status(200).json({ success: true, message: 'Password reset link has been sent to your email.' });
-//             });
-//         });
-//     });
+const pages = require('./routes/pages');
+app.use('/', pages);
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use('/profilePicture', express.static(path.join(__dirname, 'profilePicture')));
+app.use('/img', express.static(path.join(__dirname, 'public/img')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+// //port
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server started on port ${PORT}`);
 // });
 
-// // Add endpoint to handle password reset form submission
-// app.post('/reset/:token', (req, res) => {
-//     const { token } = req.params;
-//     const { newPassword } = req.body;
-
-//     // Find user with the matching token and ensure it hasn't expired
-//     db.query('SELECT * FROM tbl_accounts WHERE resetPasswordToken = ? AND resetPasswordExpires > ?', [token, Date.now()], (err, results) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, message: 'Database error' });
-//         }
-
-//         if (results.length === 0) {
-//             return res.status(400).json({ success: false, message: 'Password reset token is invalid or has expired.' });
-//         }
-
-//         const user = results[0];
-
-//         // Hash the new password
-//         bcrypt.hash(newPassword, 10, (hashErr, hash) => {
-//             if (hashErr) {
-//                 return res.status(500).json({ success: false, message: 'Error hashing password' });
-//             }
-
-//             // Update the user's password in the database
-//             db.query('UPDATE tbl_accounts SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE accountID = ?', [hash, user.accountID], (updateErr) => {
-//                 if (updateErr) {
-//                     return res.status(500).json({ success: false, message: 'Database error' });
-//                 }
-
-//                 res.status(200).json({ success: true, message: 'Password has been reset successfully.' });
-//             });
-//         });
-//     });
-// });
-
-
-
-//port
+//server instead of app for HTTP || wag baguhin.
 const PORT = 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

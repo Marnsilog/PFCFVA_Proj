@@ -10,135 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-//PROFILE CONFIG
-  function displaySection(sectionName) {
-    const sections = ['frmMyprofile', 'frmRankings','frmRecord', 'frmAchievement' ];
-
-    sections.forEach(section => {
-
-        const element = document.getElementById(section);
-        if (section === sectionName) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-
-    });
-}
-function Records() {
-    displaySection('frmRecord');
-}
-function Profile() {
-    displaySection('frmMyprofile');
-}
-function Achievements() {
-    displaySection('frmAchievement');
-}
-function Rankings() {
-    displaySection('frmRankings');
-}
-
-// //old
-// function addLine(LineId) {
-//     const formIds = ['dashb', 'reg', 'att','vol','ranks','inc','inV','prof'];
-    
-//     formIds.forEach(id => {
-//         const element = document.getElementById(id);
-//         if (id === LineId) {
-//             element.classList.add('underline', 'underline-offset-8');
-//         }
-//         else {
-//             element.classList.remove('underline', 'underline-offset-8');
-//         }
-//     });
-// }
-
-//new
-function addLine(LineId) {
-    const formIds = ['dashb','att','vol','inc','inV','prof'];
-    
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === LineId) {
-            element.classList.add('underline', 'underline-offset-8');
-        }
-        else {
-            element.classList.remove('underline', 'underline-offset-8');
-        }
-    });
-}
 
 
-  function showElement(elementId) {
-    const formIds = ['frmDashboard', 'frmRegister', 'frmAttendance','frmRanks','frmIncident', 'frmInventory','frmHtvolunteer','SummaryVolunteer', 'frmMainProfile', 'Setting', 'frmaboutus','editProfile', 'accountsConfiguration', 'frmRanksConfiguration'];
-
-    formIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (id === elementId) {
-            element.style.display = 'block';
-        } else {
-            element.style.display = 'none';
-        }
-    });
-}
-
-//DASHBOARD CONFIG ------------------------------------------------------->
-function showDashboard() {
-    showElement('frmDashboard');
-    addLine('dashb');
-}
-function showRegister(){
-    showElement('frmRegister');
-    addLine('reg');
-}
-function showAttendance(){
-    showElement('frmAttendance');
-    addLine('att');
-}
-function showRanks(){
-    showElement('frmRanks');
-    addLine('ranks');
-}
-function showVolunteer(){
-    showElement('SummaryVolunteer');
-    addLine('vol');
-}
-function showAccountsConfiguration(){
-    showElement('accountsConfiguration');
-    
-}
-
-function showRanksConfiguration(){
-    showElement('frmRanksConfiguration');
-    
-}
-
-function showIncident(){
-    showElement('frmIncident');
-    addLine('inc');
-}
-function showInventory() {
-    showElement('frmInventory');
-    addLine('inV');
-}
-
-function edit() {
-
-    var invedit = document.getElementById('invedit');
-    
-    if (invedit.style.display === 'none' || invedit.style.display === '') {
-     
-        invedit.style.display = 'block';
-    } else {
-      
-        invedit.style.display = 'none';
-    }
-}
-function exitinvedit(){
-    var invedit = document.getElementById('invedit');
-    invedit.style.display = 'none';
-
-}
 function toggleSetting() {
 
     var profileForm = document.getElementById('Setting');
@@ -153,42 +26,21 @@ function toggleSetting() {
     addLine('prof');
 }
 
-//SETTING CONFIG
-function myProfile() {
-    showElement('frmMainProfile');
+function showSettings() {
+
+    var profileForm = document.getElementById('inventorySetting');
     
+    if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+     
+        profileForm.style.display = 'block';
+    } else {
+      
+        profileForm.style.display = 'none';
+    }
+    addLine('prof');
 }
-function showAboutUs() {
-    showElement('frmaboutus');
-}
-function showHwVolunteer() {
-    showElement('frmHtvolunteer');
-}
-function showEdit(){
-    showElement('editProfile');
-}
-
-
-    window.onload = function() {
-    showDashboard();
-    };
 
 document.addEventListener('DOMContentLoaded', function() {
-    animateProgressBar(70);
-    animateProgressBar2(40);
-    animateProgressBar3(60);
-    animateProgressBar4(10);
-
-    const logoutLink = document.getElementById('logoutLink');
-    if (logoutLink) {
-        logoutLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const confirmLogout = confirm("Are you sure you want to log out?");
-            if (confirmLogout) {
-                window.location.href = 'index.html';
-            }
-        });
-    }
 
     const circles = document.querySelectorAll('.colorCircle');
     circles.forEach(circle => {
@@ -198,35 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-function animateProgressBar(targetWidth) {
-  
-    const progressBar = document.getElementById('progress');
-    if (progressBar) {
-      progressBar.style.width = targetWidth + '%';
-    }
-  }
-  
-  function animateProgressBar2(targetWidth) {
-    const progressBar2 = document.getElementById('progress2');
-    if (progressBar2) {
-      progressBar2.style.width = targetWidth + '%';
-    }
-  }
-
-  function animateProgressBar3(targetWidth) {
-    const progressBar3 = document.getElementById('progress3');
-    if (progressBar3) {
-      progressBar3.style.width = targetWidth + '%';
-    }
-  }
-
-  function animateProgressBar4(targetWidth) {
-    const progress4 = document.getElementById('progress4');
-    if (progress4) {
-        progress4.style.width = targetWidth + '%';
-    }
-  }
   
   //FORM INCIDENT ----------------------------------->
   function inciform(){
@@ -281,8 +104,8 @@ function icsBack(){
         unseen.classList.add('hidden');
        
     }
-    }      
-    function passEye2() {
+}      
+function passEye2() {
         var x = document.getElementById("confirmPassword");
         var seen = document.getElementById('seen2');
         var unseen = document.getElementById('unseen2');
@@ -290,14 +113,14 @@ function icsBack(){
             x.type = "text";
             unseen.classList.remove('hidden');
             seen.classList.add('hidden');
-    
+
         } else {
             x.type = "password";
             seen.classList.remove('hidden');
             unseen.classList.add('hidden');
            
         }
-        }    
+}    
         
     // FORM VOLUNTEER ----------------------------------------------------->
     function summarySorting(){
@@ -403,17 +226,6 @@ function icsBack(){
         }
     };
     
-    
-    
-
-    //for calendar
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const dateOfBirthInput = document.getElementById('dateOfBirth');
-        const today = new Date();
-        const minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-        dateOfBirthInput.setAttribute('max', minDate);
-    });
-
     //FOR RESPONSIVE ---------------------------------->
     document.addEventListener('DOMContentLoaded', function () {
         const menuToggle = document.getElementById('menu-toggle');
@@ -443,113 +255,121 @@ function icsBack(){
         });
         
     });
-
-
-
-
-
     //register, clear form
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('registerForm');
-        const clearButton = document.getElementById('clearButton');
-        const callSignSelect = document.getElementById('callSign');
-        const tooltipText = callSignSelect.nextElementSibling;
-
-        clearButton.addEventListener('click', function() {
-            clearForm(form);
-        });
-
-        function clearForm(form) {
-            Array.from(form.elements).forEach(element => {
-                switch(element.type) {
-                    case 'text':
-                    case 'password':
-                    case 'textarea':
-                    case 'email':
-                    case 'number':
-                    case 'date':
-                    case 'tel':
-                        element.value = '';
-                        break;
-                    case 'radio':
-                    case 'checkbox':
-                        element.checked = false;
-                        break;
-                    case 'select-one':
-                    case 'select-multiple':
-                        element.selectedIndex = -1;
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-            // reset callSign select to its initial state, may minor bug on clear, tool tip auto pops up
-            callSignSelect.disabled = true;
-            tooltipText.classList.remove('hidden');
-        }
-    });
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const form = document.getElementById('registerForm');
+    //     const clearButton = document.getElementById('clearButton');
+    //     const callSignSelect = document.getElementById('callSign');
+    //     const tooltipText = callSignSelect ? callSignSelect.nextElementSibling : null;
+    //     if (clearButton) {
+    //         clearButton.addEventListener('click', function() {
+    //             clearForm(form);
+    //         });
+    //     } else {
+    //         return;
+    //     }
     
-
-
-
-    //register, dont allow numbers
-    document.addEventListener('DOMContentLoaded', function() {
-        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson'];
+    //     function clearForm(form) {
+    //         Array.from(form.elements).forEach(element => {
+    //             switch(element.type) {
+    //                 case 'text':
+    //                 case 'password':
+    //                 case 'textarea':
+    //                 case 'email':
+    //                 case 'number':
+    //                 case 'date':
+    //                 case 'tel':
+    //                     element.value = '';
+    //                     break;
+    //                 case 'radio':
+    //                 case 'checkbox':
+    //                     element.checked = false;
+    //                     break;
+    //                 case 'select-one':
+    //                 case 'select-multiple':
+    //                     element.selectedIndex = -1;
+    //                     break;
+    //                 default:
+    //                     break;
+    //             }
+    //         });
     
-        nameFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            field.addEventListener('keypress', function(event) {
-                if (/\d/.test(event.key)) {
-                    event.preventDefault();
-                }
-            });
-        });
-    });
+    //         // Reset callSign select to its initial state
+    //         if (callSignSelect) {
+    //             callSignSelect.disabled = true;
+    //             if (tooltipText) {
+    //                 tooltipText.classList.remove('hidden');
+    //             }
+    //         }
+    //     }
+    // });
     
-    //register, don't allow letters for specific fields
-    document.addEventListener('DOMContentLoaded', function() {
-        const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
-
-        numberFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            field.addEventListener('keypress', function(event) {
-                if (/[a-zA-Z]/.test(event.key)) {
-                    event.preventDefault();
-                }
-            });
-        });
-    });
-
-
+    
+    // //register, dont allow numbers
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = ['contactNumber', 'emergencyContactNumber', 'dutyHours', 'fireResponse', 'activityPoints', 'inventoryPoints', 'yearsInService'];
+    
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { // Check if the field exists
+    //             field.addEventListener('keypress', function(event) {
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
+    
+    // //register, don't allow letters for specific fields
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const numberFields = [
+    //         'contactNumber', 
+    //         'emergencyContactNumber', 
+    //         'dutyHours', 
+    //         'fireResponse', 
+    //         'activityPoints', 
+    //         'inventoryPoints', 
+    //         'yearsInService'
+    //     ];
+    
+    //     numberFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
+    //         if (field) { 
+    //             field.addEventListener('keypress', function(event) {
+    //                 // Prevent input of letters
+    //                 if (/[a-zA-Z]/.test(event.key)) {
+    //                     event.preventDefault();
+    //                 }
+    //             });
+    //         } 
+    //     });
+    // });
     //auto format
-    document.addEventListener('DOMContentLoaded', function() {
-        const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const nameFields = ['lastName', 'firstName', 'middleName', 'emergencyContactPerson', 'nameOfCompany', 'otherAffiliation'];
     
-        // Function to capitalize the first letter of each word
-        function capitalizeWords(str) {
-            return str.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
+    //     // Function to capitalize the first letter of each word
+    //     function capitalizeWords(str) {
+    //         return str.replace(/\b\w/g, function(char) {
+    //             return char.toUpperCase();
+    //         });
+    //     }
     
-        nameFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
+    //     nameFields.forEach(fieldId => {
+    //         const field = document.getElementById(fieldId);
     
-            // Format text as the user types
-            field.addEventListener('input', function() {
-                field.value = capitalizeWords(field.value);
-            });
+    //         // Format text as the user types
+    //         field.addEventListener('input', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
     
-            // Format text when the user leaves the input field
-            field.addEventListener('blur', function() {
-                field.value = capitalizeWords(field.value);
-            });
-        });
-    });
-    
-
-
+    //         // Format text when the user leaves the input field
+    //         field.addEventListener('blur', function() {
+    //             field.value = capitalizeWords(field.value);
+    //         });
+    //     });
+    // });
      //handle accountType/callSign
      document.addEventListener('DOMContentLoaded', function() {
         const accountTypeSelect = document.getElementById('accountType');
@@ -590,3 +410,86 @@ function icsBack(){
             tooltipText.classList.add('hidden');
         });
     });
+
+
+    //ADMIN INVENTORY STATUS 
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                
+                tr.innerHTML = `
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
+                    <td>${row.item}</td>
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.vehicle}</td>
+                    <td>${row.from_vehicle}</td>
+                    <td>${row.change_to}</td>
+                    <td class="w-72 break-words">${row.remarks}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
+
+    //ADMIN VEHICLE STATUS
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/auth/admin-inventory/log2')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);  
+            const tbody = document.getElementById('inventory-log2');
+            
+            if (!data.length) {
+                console.log('No data found');
+                return; 
+            }
+    
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "md:h-auto h-8 border-t-[1px] border-b-[1px] border-gray-500";
+                
+                tr.innerHTML = `
+                    <td><div class="flex justify-center"><img src="${row.image}" class="w-10 h-10 object-fill md:mt-2" alt=""></div></td>
+                    <td>${row.item}</td>
+                    <td>${row.volunteer_name}</td>
+                    <td>${new Date(row.checked_date).toLocaleDateString()}</td>
+                    <td>${row.checked_time}</td>
+                    <td>${row.from_vehicle}</td>
+                    <td>${row.change_to}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+            
+        })
+        .catch(error => console.error('Error fetching inventory log data:', error));
+    });
+
+
+

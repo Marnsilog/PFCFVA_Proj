@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/12162a7df3.js" crossorigin="anonymous"></script>
+    <title>PFCVA || Dashboard</title>
+</head>
+
+<body class="bg-[url('img/backround.jpg')] object-fill md:bg-cover" id="mainContent">
+<div class="bg-black bg-opacity-30 h-fit w-full border-none sm:h-full">
+    <div class="bg-black bg-opacity-50 h-fit w-full border-none sm:h-full" id="blackBackround">
+        <div class="fixed w-full bg-rosered bg-opacity-70 h-20 md:h-28">
+            <div>
+                <div class="px-7 py-5 opacity-40" id="homepageSec">
+                    <div class="mt-2 md:absolute md:mt-32">
+                        <P class="text-white text-base font-JockeyOne || md:text-5xl md:pl-96">Parañaque Filipino - Chinese Fire Volunteer Association</P>
+                        <p class="text-white text-4xl leading-tight font-AdventPro mt-44 || md:mt-32 md:text-8xl md:leading-tight">"Sa pag iwas sa sunog, <br>hindi ka nag iisa!"</p>
+                        <div class="my-5">
+                            <button class="text-white border-4 border-white hover:border-gray-300 rounded-full text-lg h-12 w-40 font-bold || md:text-2xl md:h-16 md:w-56" id="loginButton" onclick="handleLogin()">LOG IN</button>
+                        </div>
+                    </div>
+                    <img src="/img/pfcfvalogo.png" class="absolute top-[90px] left-2 w-16 md:top-12 md:left-20 md:w-36">
+
+                </div>
+                <div class="md:hidden mt-4 p-5 absolute top-16 w-full bg-white text-black text-center bg-opacity-70" id="mobile-menu" style="display: none;">
+                    <a href="#" class="block py-2 px-4">Home</a>
+                    <!-- <a href="#" class="block py-2 px-4">About Us</a> -->
+                    <!-- <a href="#" class="block py-2 px-4">Volunteer</a> -->
+                    <!-- <a href="#" class="block py-2 px-4">Donate</a> -->
+                    <!-- <a href="#" class="block py-2 px-4">Leaderboards</a>
+                    <a href="#" class="block py-2 px-4">Contact Us</a> -->
+                </div>
+            </div>
+            <div class="md:grid md:grid-cols-3">
+                <div class="bg-gray-200 text-black rounded-xl mt-[12rem] absolute top-0 w-80 h-[330px] ml-7 || md:right-24 md:w-96 md:h-96 mx-5 md:mt-[15rem] md:col-end-4">
+                    <div class="flex justify-center">
+                        <form id="resetPasswordForm">
+                            <input type="hidden" id="token" name="token" />
+                            <div class="space-y-5 font-Istok text-xs mt-20">
+                                <div>
+                                    <input class="mx-5 w-72 px-3 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="password" placeholder="Enter your new password" id="newPassword">
+                                </div>
+                                <div>
+                                    <input class="mx-5 w-72 px-3 py-3 bg-white border rounded-xl focus:outline-none focus:border-black || md:w-80 md:h-10 md:px-4 md:rounded-md" type="password" placeholder="Enter your confirm password" id="confirmPasswod">
+                                </div>
+                                <div class="flex justify-center pt-8">
+                                    <button type="submit" class="bg-rosered w-[30vh] h-10 rounded-lg text-lg text-white">Reset Password</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/reset_pass.js" defer></script>
+
+</body>
+</html>
